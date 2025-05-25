@@ -59,32 +59,19 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
   
   return (
     <>
-      {/* Navigation Bar - Always solid background */}
-      <nav id="navbar" className="navbar navbar-expand-lg navbar-light navbar-custom fixed-top py-2 bg-white shadow-sm">
+      {/* Simple Navigation Bar */}
+      <nav id="navbar" className="navbar navbar-light fixed-top py-2 bg-white shadow-sm">
         <div className="container">
-          <a className="navbar-brand" href="#">
-            {config.logo && <img src={config.logo} alt={config.name} height="40" className="me-2" />}
-            <span className="ms-2 fw-bold">{config.name}</span>
-          </a>
-          
-          {/* Language toggle for mobile view */}
-          <div className="d-lg-none me-2">
-            <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
+          <div className="d-flex align-items-center">
+            <a className="navbar-brand me-4" href="#">
+              {config.logo && <img src={config.logo} alt={config.name} height="40" className="me-2" />}
+              <span className="ms-2 fw-bold">{config.name}</span>
+            </a>
           </div>
           
-          <button 
-            ref={navbarToggleRef}
-            className="navbar-toggler" 
-            type="button" 
-            data-bs-toggle="collapse" 
-            data-bs-target="#navbarNav"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          
-          <div ref={navbarCollapseRef} className="collapse navbar-collapse" id="navbarNav">
-            {/* Main navigation bar */}
-            <div className="d-none d-lg-flex mx-auto">
+          {/* Static navigation links that are always visible */}
+          <div className="d-flex align-items-center">
+            <div className="d-flex flex-wrap mx-auto">
               <a href="#intro" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.intro')}</a>
               <a href="#services" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.services')}</a>
               <a href="#reviews" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.reviews')}</a>
@@ -93,30 +80,8 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
               <a href="#contact" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.contact')}</a>
             </div>
             
-            {/* Mobile menu items */}
-            <ul className="navbar-nav d-lg-none">
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#intro">{t('nav.intro')}</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#services">{t('nav.services')}</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#reviews">{t('nav.reviews')}</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#photos">{t('nav.photos')}</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#awards">{t('nav.awards')}</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#contact">{t('nav.contact')}</a>
-              </li>
-            </ul>
-            
-            {/* Language toggle for desktop view */}
-            <div className="d-none d-lg-block ms-auto">
+            {/* Language toggle always visible */}
+            <div className="ms-3">
               <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
             </div>
           </div>
