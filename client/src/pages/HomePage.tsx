@@ -17,13 +17,13 @@ import { useToast } from '@/hooks/use-toast';
 export default function HomePage() {
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
-  
+
   const { data: config, isLoading, error } = useQuery<WebsiteConfig>({ 
     queryKey: ['/api/config'],
   });
-  
+
   const { language, toggleLanguage, t, getLocalizedValue } = useTranslation(config || null);
-  
+
   // Mutation for updating config
   const updateMutation = useMutation({
     mutationFn: async (newConfig: Partial<WebsiteConfig>) => {
@@ -53,7 +53,7 @@ export default function HomePage() {
       console.error('Update error:', error);
     },
   });
-  
+
   // Set CSS variables for the theme colors
   useEffect(() => {
     if (config) {
@@ -62,7 +62,7 @@ export default function HomePage() {
       document.documentElement.style.setProperty('--background', hexToHSL(config.backgroundColor));
     }
   }, [config]);
-  
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -72,7 +72,7 @@ export default function HomePage() {
       </div>
     );
   }
-  
+
   if (error || !config) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -82,11 +82,11 @@ export default function HomePage() {
       </div>
     );
   }
-  
+
   const handleToggleEdit = () => {
     setIsEditing(!isEditing);
   };
-  
+
   // Editor component to display when in editing mode
   const ConfigEditor = () => {
     const [activeTab, setActiveTab] = useState('general');
@@ -113,11 +113,11 @@ export default function HomePage() {
       awards: config.awards,
       chatbotQuestions: config.chatbotQuestions,
     });
-    
+
     // Function to handle form field changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       const { name, value, type } = e.target;
-      
+
       // Handle checkbox inputs
       if (type === 'checkbox') {
         const checked = (e.target as HTMLInputElement).checked;
@@ -126,7 +126,7 @@ export default function HomePage() {
         setEditConfig(prev => ({ ...prev, [name]: value }));
       }
     };
-    
+
     // Function to handle nested translations changes
     const handleTranslationChange = (key: string, language: 'en' | 'es', value: string) => {
       setEditConfig(prev => ({
@@ -140,11 +140,11 @@ export default function HomePage() {
         }
       }));
     };
-    
+
     // Function to handle service item changes
     const handleServiceChange = (index: number, field: keyof typeof editConfig.services[0], value: any, language?: 'en' | 'es') => {
       const newServices = [...(editConfig.services || [])];
-      
+
       if (language && (field === 'title' || field === 'description')) {
         newServices[index] = {
           ...newServices[index],
@@ -159,17 +159,17 @@ export default function HomePage() {
           [field]: value
         };
       }
-      
+
       setEditConfig(prev => ({
         ...prev,
         services: newServices
       }));
     };
-    
+
     // Function to handle review item changes
     const handleReviewChange = (index: number, field: keyof typeof editConfig.reviews[0], value: any, language?: 'en' | 'es') => {
       const newReviews = [...(editConfig.reviews || [])];
-      
+
       if (language && (field === 'date' || field === 'quote')) {
         newReviews[index] = {
           ...newReviews[index],
@@ -184,17 +184,17 @@ export default function HomePage() {
           [field]: value
         };
       }
-      
+
       setEditConfig(prev => ({
         ...prev,
         reviews: newReviews
       }));
     };
-    
+
     // Function to handle photo item changes
     const handlePhotoChange = (index: number, field: keyof typeof editConfig.photos[0], value: any, language?: 'en' | 'es') => {
       const newPhotos = [...(editConfig.photos || [])];
-      
+
       if (language && field === 'caption') {
         newPhotos[index] = {
           ...newPhotos[index],
@@ -209,17 +209,17 @@ export default function HomePage() {
           [field]: value
         };
       }
-      
+
       setEditConfig(prev => ({
         ...prev,
         photos: newPhotos
       }));
     };
-    
+
     // Function to handle award item changes
     const handleAwardChange = (index: number, field: keyof typeof editConfig.awards[0], value: any, language?: 'en' | 'es') => {
       const newAwards = [...(editConfig.awards || [])];
-      
+
       if (language && (field === 'title' || field === 'description')) {
         newAwards[index] = {
           ...newAwards[index],
@@ -234,17 +234,17 @@ export default function HomePage() {
           [field]: value
         };
       }
-      
+
       setEditConfig(prev => ({
         ...prev,
         awards: newAwards
       }));
     };
-    
+
     // Function to handle chatbot question changes
     const handleChatbotQuestionChange = (index: number, field: keyof typeof editConfig.chatbotQuestions[0], value: any, language?: 'en' | 'es') => {
       const newQuestions = [...(editConfig.chatbotQuestions || [])];
-      
+
       if (language && (field === 'question' || field === 'answer')) {
         newQuestions[index] = {
           ...newQuestions[index],
@@ -259,13 +259,13 @@ export default function HomePage() {
           [field]: value
         };
       }
-      
+
       setEditConfig(prev => ({
         ...prev,
         chatbotQuestions: newQuestions
       }));
     };
-    
+
     // Add a new service
     const addService = () => {
       const newService = {
@@ -273,13 +273,13 @@ export default function HomePage() {
         title: { en: 'New Service', es: 'Nuevo Servicio' },
         description: { en: 'Service description', es: 'Descripción del servicio' }
       };
-      
+
       setEditConfig(prev => ({
         ...prev,
         services: [...(prev.services || []), newService]
       }));
     };
-    
+
     // Add a new review
     const addReview = () => {
       const newReview = {
@@ -289,26 +289,26 @@ export default function HomePage() {
         date: { en: 'January 2023', es: 'Enero 2023' },
         quote: { en: 'Great service!', es: '¡Excelente servicio!' }
       };
-      
+
       setEditConfig(prev => ({
         ...prev,
         reviews: [...(prev.reviews || []), newReview]
       }));
     };
-    
+
     // Add a new photo
     const addPhoto = () => {
       const newPhoto = {
         url: 'https://via.placeholder.com/400x300',
         caption: { en: 'New Photo', es: 'Nueva Foto' }
       };
-      
+
       setEditConfig(prev => ({
         ...prev,
         photos: [...(prev.photos || []), newPhoto]
       }));
     };
-    
+
     // Add a new award
     const addAward = () => {
       const newAward = {
@@ -316,13 +316,13 @@ export default function HomePage() {
         title: { en: 'New Award', es: 'Nuevo Premio' },
         description: { en: 'Award description', es: 'Descripción del premio' }
       };
-      
+
       setEditConfig(prev => ({
         ...prev,
         awards: [...(prev.awards || []), newAward]
       }));
     };
-    
+
     // Add a new chatbot question
     const addChatbotQuestion = () => {
       const newQuestion = {
@@ -330,53 +330,53 @@ export default function HomePage() {
         question: { en: 'New Question', es: 'Nueva Pregunta' },
         answer: { en: 'Answer', es: 'Respuesta' }
       };
-      
+
       setEditConfig(prev => ({
         ...prev,
         chatbotQuestions: [...(prev.chatbotQuestions || []), newQuestion]
       }));
     };
-    
+
     // Remove a service
     const removeService = (index: number) => {
       const newServices = [...(editConfig.services || [])];
       newServices.splice(index, 1);
       setEditConfig(prev => ({ ...prev, services: newServices }));
     };
-    
+
     // Remove a review
     const removeReview = (index: number) => {
       const newReviews = [...(editConfig.reviews || [])];
       newReviews.splice(index, 1);
       setEditConfig(prev => ({ ...prev, reviews: newReviews }));
     };
-    
+
     // Remove a photo
     const removePhoto = (index: number) => {
       const newPhotos = [...(editConfig.photos || [])];
       newPhotos.splice(index, 1);
       setEditConfig(prev => ({ ...prev, photos: newPhotos }));
     };
-    
+
     // Remove an award
     const removeAward = (index: number) => {
       const newAwards = [...(editConfig.awards || [])];
       newAwards.splice(index, 1);
       setEditConfig(prev => ({ ...prev, awards: newAwards }));
     };
-    
+
     // Remove a chatbot question
     const removeChatbotQuestion = (index: number) => {
       const newQuestions = [...(editConfig.chatbotQuestions || [])];
       newQuestions.splice(index, 1);
       setEditConfig(prev => ({ ...prev, chatbotQuestions: newQuestions }));
     };
-    
+
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       updateMutation.mutate(editConfig);
     };
-    
+
     return (
       <div className="editor-panel bg-white shadow-lg border-top" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000, maxHeight: '80vh', overflowY: 'auto' }}>
         <div className="container-fluid p-0">
@@ -386,7 +386,7 @@ export default function HomePage() {
               <i className="fas fa-times"></i> Close Editor
             </button>
           </div>
-          
+
           <ul className="nav nav-tabs px-3 pt-2 bg-light">
             <li className="nav-item">
               <button 
@@ -453,7 +453,7 @@ export default function HomePage() {
               </button>
             </li>
           </ul>
-          
+
           <form onSubmit={handleSubmit} className="p-3">
             {/* General Settings Tab */}
             {activeTab === 'general' && (
@@ -470,7 +470,7 @@ export default function HomePage() {
                       onChange={handleChange}
                     />
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="logo" className="form-label">Logo URL</label>
                     <input
@@ -482,7 +482,7 @@ export default function HomePage() {
                       onChange={handleChange}
                     />
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="defaultLanguage" className="form-label">Default Language</label>
                     <select
@@ -497,7 +497,7 @@ export default function HomePage() {
                     </select>
                   </div>
                 </div>
-                
+
                 <div className="col-md-6">
                   <div className="mb-3">
                     <label htmlFor="primaryColor" className="form-label">Primary Color</label>
@@ -518,7 +518,7 @@ export default function HomePage() {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="secondaryColor" className="form-label">Secondary Color</label>
                     <div className="d-flex">
@@ -538,7 +538,7 @@ export default function HomePage() {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="backgroundColor" className="form-label">Background Color</label>
                     <div className="d-flex">
@@ -559,7 +559,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="col-12">
                   <div className="row">
                     <div className="col-md-4">
@@ -577,7 +577,7 @@ export default function HomePage() {
                         </label>
                       </div>
                     </div>
-                    
+
                     <div className="col-md-4">
                       <div className="form-check form-switch">
                         <input
@@ -593,7 +593,7 @@ export default function HomePage() {
                         </label>
                       </div>
                     </div>
-                    
+
                     <div className="col-md-4">
                       <div className="form-check form-switch">
                         <input
@@ -613,7 +613,7 @@ export default function HomePage() {
                 </div>
               </div>
             )}
-            
+
             {/* Contact Info Tab */}
             {activeTab === 'contact' && (
               <div className="row g-3">
@@ -629,7 +629,7 @@ export default function HomePage() {
                       onChange={handleChange}
                     />
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email Address</label>
                     <input
@@ -641,7 +641,7 @@ export default function HomePage() {
                       onChange={handleChange}
                     />
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="address" className="form-label">Address</label>
                     <textarea
@@ -654,7 +654,7 @@ export default function HomePage() {
                     ></textarea>
                   </div>
                 </div>
-                
+
                 <div className="col-md-6">
                   <div className="mb-3">
                     <label htmlFor="whatsappNumber" className="form-label">WhatsApp Number</label>
@@ -667,7 +667,7 @@ export default function HomePage() {
                       onChange={handleChange}
                     />
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="whatsappMessage" className="form-label">WhatsApp Default Message</label>
                     <textarea
@@ -679,7 +679,7 @@ export default function HomePage() {
                       onChange={handleChange}
                     ></textarea>
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="facebookUrl" className="form-label">Facebook URL</label>
                     <input
@@ -691,7 +691,7 @@ export default function HomePage() {
                       onChange={handleChange}
                     />
                   </div>
-                  
+
                   <div className="mb-3">
                     <label htmlFor="googleMapsEmbed" className="form-label">Google Maps Embed Code</label>
                     <textarea
@@ -706,7 +706,7 @@ export default function HomePage() {
                 </div>
               </div>
             )}
-            
+
             {/* Services Tab */}
             {activeTab === 'services' && (
               <div>
@@ -720,7 +720,7 @@ export default function HomePage() {
                     <i className="fas fa-plus me-1"></i> Add Service
                   </button>
                 </div>
-                
+
                 {editConfig.services?.map((service, index) => (
                   <div key={index} className="card mb-3">
                     <div className="card-header d-flex justify-content-between align-items-center">
@@ -745,7 +745,7 @@ export default function HomePage() {
                           />
                           <div className="form-text">Example: fas fa-tooth, fas fa-stethoscope, etc.</div>
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Title (English)</label>
                           <input
@@ -755,7 +755,7 @@ export default function HomePage() {
                             onChange={(e) => handleServiceChange(index, 'title', e.target.value, 'en')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Title (Spanish)</label>
                           <input
@@ -765,7 +765,7 @@ export default function HomePage() {
                             onChange={(e) => handleServiceChange(index, 'title', e.target.value, 'es')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Description (English)</label>
                           <textarea
@@ -775,7 +775,7 @@ export default function HomePage() {
                             onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'en')}
                           ></textarea>
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Description (Spanish)</label>
                           <textarea
@@ -789,7 +789,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 ))}
-                
+
                 {!editConfig.services?.length && (
                   <div className="alert alert-info">
                     No services added yet. Click "Add Service" to create one.
@@ -797,7 +797,7 @@ export default function HomePage() {
                 )}
               </div>
             )}
-            
+
             {/* Reviews Tab */}
             {activeTab === 'reviews' && (
               <div>
@@ -811,7 +811,7 @@ export default function HomePage() {
                     <i className="fas fa-plus me-1"></i> Add Review
                   </button>
                 </div>
-                
+
                 {editConfig.reviews?.map((review, index) => (
                   <div key={index} className="card mb-3">
                     <div className="card-header d-flex justify-content-between align-items-center">
@@ -835,7 +835,7 @@ export default function HomePage() {
                             onChange={(e) => handleReviewChange(index, 'name', e.target.value)}
                           />
                         </div>
-                        
+
                         <div className="col-md-3 mb-3">
                           <label className="form-label">Initials</label>
                           <input
@@ -845,7 +845,7 @@ export default function HomePage() {
                             onChange={(e) => handleReviewChange(index, 'initials', e.target.value)}
                           />
                         </div>
-                        
+
                         <div className="col-md-3 mb-3">
                           <label className="form-label">Rating (1-5)</label>
                           <input
@@ -857,7 +857,7 @@ export default function HomePage() {
                             onChange={(e) => handleReviewChange(index, 'rating', parseInt(e.target.value) || 5)}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Date (English)</label>
                           <input
@@ -867,7 +867,7 @@ export default function HomePage() {
                             onChange={(e) => handleReviewChange(index, 'date', e.target.value, 'en')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Date (Spanish)</label>
                           <input
@@ -877,7 +877,7 @@ export default function HomePage() {
                             onChange={(e) => handleReviewChange(index, 'date', e.target.value, 'es')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Quote (English)</label>
                           <textarea
@@ -887,7 +887,7 @@ export default function HomePage() {
                             onChange={(e) => handleReviewChange(index, 'quote', e.target.value, 'en')}
                           ></textarea>
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Quote (Spanish)</label>
                           <textarea
@@ -901,7 +901,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 ))}
-                
+
                 {!editConfig.reviews?.length && (
                   <div className="alert alert-info">
                     No reviews added yet. Click "Add Review" to create one.
@@ -909,7 +909,7 @@ export default function HomePage() {
                 )}
               </div>
             )}
-            
+
             {/* Photos Tab */}
             {activeTab === 'photos' && (
               <div>
@@ -923,7 +923,7 @@ export default function HomePage() {
                     <i className="fas fa-plus me-1"></i> Add Photo
                   </button>
                 </div>
-                
+
                 {editConfig.photos?.map((photo, index) => (
                   <div key={index} className="card mb-3">
                     <div className="card-header d-flex justify-content-between align-items-center">
@@ -947,7 +947,7 @@ export default function HomePage() {
                             onChange={(e) => handlePhotoChange(index, 'url', e.target.value)}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Caption (English)</label>
                           <input
@@ -957,7 +957,7 @@ export default function HomePage() {
                             onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'en')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Caption (Spanish)</label>
                           <input
@@ -967,7 +967,7 @@ export default function HomePage() {
                             onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'es')}
                           />
                         </div>
-                        
+
                         {photo.url && (
                           <div className="col-md-12">
                             <img 
@@ -982,7 +982,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 ))}
-                
+
                 {!editConfig.photos?.length && (
                   <div className="alert alert-info">
                     No photos added yet. Click "Add Photo" to create one.
@@ -990,7 +990,7 @@ export default function HomePage() {
                 )}
               </div>
             )}
-            
+
             {/* Awards Tab */}
             {activeTab === 'awards' && (
               <div>
@@ -1004,7 +1004,7 @@ export default function HomePage() {
                     <i className="fas fa-plus me-1"></i> Add Award
                   </button>
                 </div>
-                
+
                 {editConfig.awards?.map((award, index) => (
                   <div key={index} className="card mb-3">
                     <div className="card-header d-flex justify-content-between align-items-center">
@@ -1029,7 +1029,7 @@ export default function HomePage() {
                           />
                           <div className="form-text">Example: fas fa-trophy, fas fa-medal, etc.</div>
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Title (English)</label>
                           <input
@@ -1039,7 +1039,7 @@ export default function HomePage() {
                             onChange={(e) => handleAwardChange(index, 'title', e.target.value, 'en')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Title (Spanish)</label>
                           <input
@@ -1049,7 +1049,7 @@ export default function HomePage() {
                             onChange={(e) => handleAwardChange(index, 'title', e.target.value, 'es')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Description (English)</label>
                           <textarea
@@ -1059,7 +1059,7 @@ export default function HomePage() {
                             onChange={(e) => handleAwardChange(index, 'description', e.target.value, 'en')}
                           ></textarea>
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Description (Spanish)</label>
                           <textarea
@@ -1073,7 +1073,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 ))}
-                
+
                 {!editConfig.awards?.length && (
                   <div className="alert alert-info">
                     No awards added yet. Click "Add Award" to create one.
@@ -1081,7 +1081,7 @@ export default function HomePage() {
                 )}
               </div>
             )}
-            
+
             {/* Chatbot Tab */}
             {activeTab === 'chatbot' && (
               <div>
@@ -1095,7 +1095,7 @@ export default function HomePage() {
                     <i className="fas fa-plus me-1"></i> Add Question
                   </button>
                 </div>
-                
+
                 {editConfig.chatbotQuestions?.map((question, index) => (
                   <div key={index} className="card mb-3">
                     <div className="card-header d-flex justify-content-between align-items-center">
@@ -1119,7 +1119,7 @@ export default function HomePage() {
                             onChange={(e) => handleChatbotQuestionChange(index, 'key', e.target.value)}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Question (English)</label>
                           <input
@@ -1129,7 +1129,7 @@ export default function HomePage() {
                             onChange={(e) => handleChatbotQuestionChange(index, 'question', e.target.value, 'en')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Question (Spanish)</label>
                           <input
@@ -1139,7 +1139,7 @@ export default function HomePage() {
                             onChange={(e) => handleChatbotQuestionChange(index, 'question', e.target.value, 'es')}
                           />
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Answer (English)</label>
                           <textarea
@@ -1149,7 +1149,7 @@ export default function HomePage() {
                             onChange={(e) => handleChatbotQuestionChange(index, 'answer', e.target.value, 'en')}
                           ></textarea>
                         </div>
-                        
+
                         <div className="col-md-6 mb-3">
                           <label className="form-label">Answer (Spanish)</label>
                           <textarea
@@ -1163,7 +1163,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 ))}
-                
+
                 {!editConfig.chatbotQuestions?.length && (
                   <div className="alert alert-info">
                     No chatbot questions added yet. Click "Add Question" to create one.
@@ -1171,12 +1171,12 @@ export default function HomePage() {
                 )}
               </div>
             )}
-            
+
             {/* Translations Tab */}
             {activeTab === 'translations' && (
               <div>
                 <h4 className="mb-3">Custom Translations</h4>
-                
+
                 <div className="row mb-3">
                   <div className="col-md-12">
                     <div className="alert alert-info">
@@ -1184,7 +1184,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="row mb-3">
                   <div className="col-md-6">
                     <h5>English Translations</h5>
@@ -1214,7 +1214,7 @@ export default function HomePage() {
                       </table>
                     </div>
                   </div>
-                  
+
                   <div className="col-md-6">
                     <h5>Spanish Translations</h5>
                     <div className="table-responsive">
@@ -1246,7 +1246,7 @@ export default function HomePage() {
                 </div>
               </div>
             )}
-            
+
             <div className="col-12 mt-4">
               <div className="d-flex justify-content-end">
                 <button 
@@ -1277,7 +1277,7 @@ export default function HomePage() {
       </div>
     );
   };
-  
+
   return (
     <div className="site-container" data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="100">
       <Header 
@@ -1286,7 +1286,7 @@ export default function HomePage() {
         toggleLanguage={toggleLanguage} 
         t={t} 
       />
-      
+
       <main>
         <Intro 
           config={config} 
@@ -1294,48 +1294,48 @@ export default function HomePage() {
           t={t} 
           getLocalizedValue={getLocalizedValue}
         />
-        
+
         <Services 
           config={config} 
           language={language} 
           t={t} 
           getLocalizedValue={getLocalizedValue}
         />
-        
+
         <Reviews 
           config={config} 
           language={language} 
           t={t} 
           getLocalizedValue={getLocalizedValue}
         />
-        
+
         <Photos 
           config={config} 
           language={language} 
           t={t} 
           getLocalizedValue={getLocalizedValue}
         />
-        
+
         <Awards 
           config={config} 
           language={language} 
           t={t} 
           getLocalizedValue={getLocalizedValue}
         />
-        
+
         <Contact 
           config={config} 
           language={language} 
           t={t} 
         />
       </main>
-      
+
       <Footer 
         config={config} 
         language={language} 
         t={t} 
       />
-      
+
       {config.showChatbot && (
         <Chatbot 
           config={config} 
@@ -1344,22 +1344,24 @@ export default function HomePage() {
           getLocalizedValue={getLocalizedValue}
         />
       )}
-      
+
       {/* Analytics code if provided */}
       {config.analyticsCode && (
         <div dangerouslySetInnerHTML={{ __html: config.analyticsCode }} />
       )}
-      
-      {/* Edit button */}
-      <button 
-        className="btn btn-primary position-fixed"
-        style={{ bottom: '20px', left: '20px', zIndex: 1001 }}
-        onClick={handleToggleEdit}
-      >
-        <i className="fas fa-edit me-2"></i>
-        {isEditing ? 'Close Editor' : 'Edit Website'}
-      </button>
-      
+
+      {/* Edit button - only show in development or admin mode */}
+      {(import.meta.env.DEV || import.meta.env.VITE_ADMIN_MODE === 'true') && (
+        <button 
+          className="btn btn-primary position-fixed"
+          style={{ bottom: '20px', left: '20px', zIndex: 1001 }}
+          onClick={handleToggleEdit}
+        >
+          <i className="fas fa-edit me-2"></i>
+          {isEditing ? 'Close Editor' : 'Edit Website'}
+        </button>
+      )}
+
       {/* Config editor panel */}
       {isEditing && <ConfigEditor />}
     </div>
@@ -1370,23 +1372,23 @@ export default function HomePage() {
 function hexToHSL(hex: string): string {
   // Remove the # if present
   hex = hex.replace(/^#/, '');
-  
+
   // Parse the HEX values
   const r = parseInt(hex.substring(0, 2), 16) / 255;
   const g = parseInt(hex.substring(2, 4), 16) / 255;
   const b = parseInt(hex.substring(4, 6), 16) / 255;
-  
+
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   const diff = max - min;
-  
+
   let h = 0;
   let s = 0;
   let l = (max + min) / 2;
-  
+
   if (diff !== 0) {
     s = l > 0.5 ? diff / (2 - max - min) : diff / (max + min);
-    
+
     switch (max) {
       case r:
         h = (g - b) / diff + (g < b ? 6 : 0);
@@ -1398,14 +1400,14 @@ function hexToHSL(hex: string): string {
         h = (r - g) / diff + 4;
         break;
     }
-    
+
     h *= 60;
   }
-  
+
   // Round the values
   h = Math.round(h);
   s = Math.round(s * 100);
   l = Math.round(l * 100);
-  
+
   return `${h} ${s}% ${l}%`;
 }
