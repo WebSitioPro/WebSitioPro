@@ -34,34 +34,52 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
             <span className="ms-2 fw-bold">{config.name}</span>
           </a>
           
+          {/* Language toggle for mobile view */}
+          <div className="d-lg-none me-2">
+            <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
+          </div>
+          
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span className="navbar-toggler-icon"></span>
           </button>
           
           <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item mx-1">
-                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#intro">{t('nav.intro')}</a>
+            {/* Main navigation bar */}
+            <div className="d-none d-lg-flex mx-auto">
+              <a href="#intro" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.intro')}</a>
+              <a href="#services" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.services')}</a>
+              <a href="#reviews" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.reviews')}</a>
+              <a href="#photos" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.photos')}</a>
+              <a href="#awards" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.awards')}</a>
+              <a href="#contact" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.contact')}</a>
+            </div>
+            
+            {/* Mobile menu items */}
+            <ul className="navbar-nav d-lg-none">
+              <li className="nav-item">
+                <a className="nav-link fw-bold" href="#intro">{t('nav.intro')}</a>
               </li>
-              <li className="nav-item mx-1">
-                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#services">{t('nav.services')}</a>
+              <li className="nav-item">
+                <a className="nav-link fw-bold" href="#services">{t('nav.services')}</a>
               </li>
-              <li className="nav-item mx-1">
-                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#reviews">{t('nav.reviews')}</a>
+              <li className="nav-item">
+                <a className="nav-link fw-bold" href="#reviews">{t('nav.reviews')}</a>
               </li>
-              <li className="nav-item mx-1">
-                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#photos">{t('nav.photos')}</a>
+              <li className="nav-item">
+                <a className="nav-link fw-bold" href="#photos">{t('nav.photos')}</a>
               </li>
-              <li className="nav-item mx-1">
-                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#awards">{t('nav.awards')}</a>
+              <li className="nav-item">
+                <a className="nav-link fw-bold" href="#awards">{t('nav.awards')}</a>
               </li>
-              <li className="nav-item mx-1">
-                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#contact">{t('nav.contact')}</a>
-              </li>
-              <li className="nav-item ms-lg-3">
-                <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
+              <li className="nav-item">
+                <a className="nav-link fw-bold" href="#contact">{t('nav.contact')}</a>
               </li>
             </ul>
+            
+            {/* Language toggle for desktop view */}
+            <div className="d-none d-lg-block ms-auto">
+              <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
+            </div>
           </div>
         </div>
       </nav>
