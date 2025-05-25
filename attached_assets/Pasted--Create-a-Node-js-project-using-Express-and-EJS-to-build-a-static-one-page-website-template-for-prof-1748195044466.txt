@@ -1,0 +1,103 @@
+"Create a Node.js project using Express and EJS to build a static one-page website template for professionals like dentists, doctors, or lawyers. The site should look clean and professional with a vibrant Mexican-inspired color scheme of red (#C8102E), green (#00A859), and white (#FFFFFF), and use Bootstrap 5 (via CDN) to make it responsive on all devices.
+Structure and Sections
+The website should have these sections, all linked from a navigation bar in the header:
+Header: 
+Show the professional’s name, an optional logo (from a URL), and a tagline.
+
+Include navigation links to Intro, Services, Reviews, Photos, Awards, and Contact.
+
+Add two optional buttons: 'Why You Need a Website' (links to https://websitiopro.com/why-you-need-a-website) and 'Find Your Domain Name' (links to https://websitiopro.com/domain-checker).
+
+Add a prominent language toggle button in the top-right corner for switching between English and Spanish. The button should be large, easy to see (e.g., with a font size of 1.5em and padding), and display 'English' if the current language is Spanish, or 'Español' if it’s English. Use JavaScript to update all translatable text on the page when clicked.
+Intro: 
+An optional photo (from a URL), a bio, and a Facebook link.
+Services: 
+A list or grid of services with titles and descriptions.
+Reviews: 
+Three reviews, each with a name, rating (like 5 stars), and a quote.
+Photos: 
+A grid of extra photos (from URLs) with optional captions.
+Awards: 
+A section to list certifications, awards, or achievements.
+Contact: 
+Show an address, phone, email, a WhatsApp button (using https://wa.me/<number>?text=<message>), and a Google Map (from an embed code).
+
+Include an optional contact form (using something like Formspree).
+Footer: 
+Add 'Powered by WebSitioPro.com' with a link to your site.
+Extra Features
+Chatbot: Add an optional floating 'Chat with us' button that opens a panel with simple questions and answers (e.g., 'What are your hours?' and a reply). If enabled, ensure the questions and answers support both English and Spanish.
+
+Analytics: Include a spot for basic tracking code (like Google Analytics).
+
+Language Support: Mark all translatable text with data-i18n attributes (e.g., <h1 data-i18n="tagline"></h1>). Use JavaScript to dynamically update the text based on the selected language, pulling from a JSON object with translations.
+Customization Form
+Make the site customizable with a form that generates a JSON file. The form should include:
+Basic Fields: Text fields for name, contact info (address, phone, email), reviews (name, rating, quote), and awards.
+
+URL Fields: Inputs for the logo, intro photo, and extra photos.
+
+Toggles: Checkboxes for the 'Why You Need a Website' button, 'Find Your Domain Name' button, and chatbot.
+
+Styling: Color pickers or dropdowns for primary, secondary, and background colors.
+
+Social/Embeds: Fields for WhatsApp number and message, Google Maps embed code, and Facebook URL.
+
+Chatbot: Inputs for chatbot questions and answers (if enabled), with separate fields for each language.
+
+Language Fields: Separate inputs for each language, e.g., 'Tagline (Spanish)', 'Tagline (English)', 'Bio (Spanish)', 'Bio (English)', etc., and a dropdown or text field to set the default language (e.g., 'Default Language: Spanish').
+Technical Details
+Use Node.js with Express and EJS to create the template.
+
+Style it with Bootstrap 5 (via CDN) and a custom style.css file, using CSS variables for colors (e.g., --primary: #00A859).
+
+Implement the chatbot and language toggle functionality in a script.js file. For the language toggle, include:
+A JSON object with translations embedded in the page.
+
+A function to update text in elements with data-i18n attributes.
+
+Logic to toggle the button text ('English' or 'Español') based on the current language.
+Include a script (e.g., generate.js) to convert the EJS template and JSON data into a static index.html file, with style.css and script.js in an output folder.
+
+Ensure the site is fully responsive and deployable on Vercel.
+Example JSON Structure
+The data.json file should follow this structure:
+json
+{
+  "default_language": "es",
+  "translations": {
+    "es": {
+      "tagline": "Dentista experimentado en Chetumal",
+      "bio": "El Dr. Smith ha estado practicando odontología por más de 20 años..."
+    },
+    "en": {
+      "tagline": "Experienced Dentist in Chetumal",
+      "bio": "Dr. Smith has been practicing dentistry for over 20 years..."
+    }
+  },
+  "services": [
+    {
+      "title": {
+        "es": "Limpieza Dental",
+        "en": "Teeth Cleaning"
+      },
+      "description": {
+        "es": "Limpieza profesional para una sonrisa saludable.",
+        "en": "Professional cleaning for a healthy smile."
+      }
+    }
+  ],
+  "name": "Dr. John Smith",
+  "logo": "https://example.com/logo.png",
+  ...
+}
+
+Output
+The final output should be a static website with:
+index.html: The fully rendered page.
+
+style.css: Custom styles with Bootstrap integration.
+
+script.js: JavaScript for the chatbot, language toggle, and other interactivity.
+The site should be responsive, professional, and fully customizable via the JSON file."
+
