@@ -40,23 +40,23 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
           
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#intro">{t('nav.intro')}</a>
+              <li className="nav-item mx-1">
+                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#intro">{t('nav.intro')}</a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#services">{t('nav.services')}</a>
+              <li className="nav-item mx-1">
+                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#services">{t('nav.services')}</a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#reviews">{t('nav.reviews')}</a>
+              <li className="nav-item mx-1">
+                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#reviews">{t('nav.reviews')}</a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#photos">{t('nav.photos')}</a>
+              <li className="nav-item mx-1">
+                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#photos">{t('nav.photos')}</a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#awards">{t('nav.awards')}</a>
+              <li className="nav-item mx-1">
+                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#awards">{t('nav.awards')}</a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link fw-bold" href="#contact">{t('nav.contact')}</a>
+              <li className="nav-item mx-1">
+                <a className="nav-link fw-bold btn btn-sm btn-outline-primary" href="#contact">{t('nav.contact')}</a>
               </li>
               <li className="nav-item ms-lg-3">
                 <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
@@ -82,9 +82,15 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
               <a 
                 href="https://websitiopro.com/why-you-need-a-website" 
                 target="_blank" 
-                className="btn btn-lg btn-primary-custom px-4 py-2 fw-bold shadow-sm"
-                style={{ fontSize: '1.1rem' }}
+                className="btn btn-lg px-4 py-2 fw-bold shadow"
+                style={{ 
+                  fontSize: '1.1rem',
+                  backgroundColor: '#00A859', 
+                  color: 'white',
+                  borderColor: '#00A859'
+                }}
               >
+                <i className="fas fa-question-circle me-2"></i>
                 {t('whyWebsite')}
               </a>
             )}
@@ -93,9 +99,15 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
               <a 
                 href="https://websitiopro.com/domain-checker" 
                 target="_blank" 
-                className="btn btn-lg btn-secondary-custom px-4 py-2 fw-bold shadow-sm"
-                style={{ fontSize: '1.1rem' }}
+                className="btn btn-lg px-4 py-2 fw-bold shadow"
+                style={{ 
+                  fontSize: '1.1rem',
+                  backgroundColor: '#C8102E', 
+                  color: 'white',
+                  borderColor: '#C8102E'
+                }}
               >
+                <i className="fas fa-search me-2"></i>
                 {t('findDomain')}
               </a>
             )}
