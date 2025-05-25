@@ -135,6 +135,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Removed custom catch-all route
+
   const httpServer = createServer(app);
   return httpServer;
 }
