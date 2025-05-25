@@ -1,0 +1,568 @@
+import fs from 'fs/promises';
+import path from 'path';
+import { WebsiteConfig } from '@shared/schema';
+
+/**
+ * Generates static HTML, CSS, and JavaScript files from a website configuration
+ * @param config The website configuration to use
+ * @returns The path to the generated files
+ */
+export async function generateStaticFiles(config: WebsiteConfig): Promise<string> {
+  // Create output directory
+  const outputDir = path.resolve(process.cwd(), 'dist/static');
+  await fs.mkdir(outputDir, { recursive: true });
+
+  // Generate HTML
+  const htmlContent = generateHTML(config);
+  await fs.writeFile(path.join(outputDir, 'index.html'), htmlContent);
+
+  // Generate CSS
+  const cssContent = generateCSS(config);
+  await fs.writeFile(path.join(outputDir, 'style.css'), cssContent);
+
+  // Generate JS
+  const jsContent = generateJS(config);
+  await fs.writeFile(path.join(outputDir, 'script.js'), jsContent);
+
+  return outputDir;
+}
+
+/**
+ * Generates HTML content from a website configuration
+ */
+function generateHTML(config: WebsiteConfig): string {
+  const { primaryColor, secondaryColor, defaultLanguage } = config;
+
+  // Simplified HTML generation - in a real implementation, this would use EJS templates
+  return `<!DOCTYPE html>
+<html lang="${defaultLanguage}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${config.name}</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="100">
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-light navbar-custom fixed-top py-3">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        ${config.logo ? `<img src="${config.logo}" alt="${config.name}" height="40">` : ''}
+        <span class="ms-2 fw-bold">${config.name}</span>
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#intro" data-i18n="nav.intro">Intro</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services" data-i18n="nav.services">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#reviews" data-i18n="nav.reviews">Reviews</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#photos" data-i18n="nav.photos">Photos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#awards" data-i18n="nav.awards">Awards</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact" data-i18n="nav.contact">Contact</a>
+          </li>
+          <li class="nav-item ms-lg-3">
+            <button id="languageToggle" class="btn btn-secondary-custom language-toggle">
+              ${defaultLanguage === 'en' ? 'Español' : 'English'}
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000');">
+    <div class="header-overlay"></div>
+    <div class="container header-content text-center text-white">
+      <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
+      <p class="lead mb-5" data-i18n="subtitle">${config.translations[defaultLanguage].subtitle || ''}</p>
+      
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+        ${config.showWhyWebsiteButton ? `
+        <a href="https://websitiopro.com/why-you-need-a-website" target="_blank" class="btn btn-lg btn-primary-custom px-4 py-3" data-i18n="whyWebsite">
+          ${config.translations[defaultLanguage].whyWebsite || 'Why You Need a Website'}
+        </a>
+        ` : ''}
+        ${config.showDomainButton ? `
+        <a href="https://websitiopro.com/domain-checker" target="_blank" class="btn btn-lg btn-secondary-custom px-4 py-3" data-i18n="findDomain">
+          ${config.translations[defaultLanguage].findDomain || 'Find Your Domain Name'}
+        </a>
+        ` : ''}
+      </div>
+    </div>
+  </header>
+
+  <!-- Intro Section -->
+  <section id="intro" class="section-padding bg-light">
+    <!-- Intro content would be here -->
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="section-padding">
+    <!-- Services content would be here -->
+  </section>
+
+  <!-- Reviews Section -->
+  <section id="reviews" class="section-padding bg-light">
+    <!-- Reviews content would be here -->
+  </section>
+
+  <!-- Photos Section -->
+  <section id="photos" class="section-padding">
+    <!-- Photos content would be here -->
+  </section>
+
+  <!-- Awards Section -->
+  <section id="awards" class="section-padding bg-light">
+    <!-- Awards content would be here -->
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section-padding">
+    <!-- Contact content would be here -->
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-5">
+    <!-- Footer content would be here -->
+    <div class="container">
+      <hr class="my-4">
+      <div class="row">
+        <div class="col-md-6 text-md-end">
+          <p class="mb-0">
+            <span data-i18n="footerPoweredBy">Powered by</span> <a href="https://websitiopro.com" class="text-white">WebSitioPro.com</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  ${config.showChatbot ? `
+  <!-- Chatbot -->
+  <div id="chatbotToggle" class="chatbot-toggle">
+    <i class="fas fa-comments fa-lg"></i>
+  </div>
+  
+  <div id="chatbotPanel" class="chatbot-panel">
+    <!-- Chatbot content would be here -->
+  </div>
+  ` : ''}
+
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom JS -->
+  <script src="script.js"></script>
+  
+  ${config.analyticsCode ? config.analyticsCode : '<!-- Analytics code would go here -->'}
+</body>
+</html>`;
+}
+
+/**
+ * Generates CSS content from a website configuration
+ */
+function generateCSS(config: WebsiteConfig): string {
+  const { primaryColor, secondaryColor, backgroundColor } = config;
+  
+  return `:root {
+  --primary: ${primaryColor};
+  --secondary: ${secondaryColor};
+  --white: ${backgroundColor};
+  --light-gray: #F8F9FA;
+  --dark-gray: #343A40;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+.bg-primary-custom {
+  background-color: var(--primary);
+}
+
+.bg-secondary-custom {
+  background-color: var(--secondary);
+}
+
+.text-primary-custom {
+  color: var(--primary);
+}
+
+.text-secondary-custom {
+  color: var(--secondary);
+}
+
+.btn-primary-custom {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  background-color: #008f4c;
+  transform: translateY(-2px);
+}
+
+.btn-secondary-custom {
+  background-color: var(--secondary);
+  color: var(--white);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-custom:hover {
+  background-color: #a50d25;
+  transform: translateY(-2px);
+}
+
+.language-toggle {
+  font-size: 1.2em;
+  padding: 8px 15px;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.service-card {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.review-card {
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+  border-left: 4px solid var(--primary);
+}
+
+.photo-item {
+  overflow: hidden;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.photo-item:hover img {
+  transform: scale(1.05);
+}
+
+.photo-item img {
+  transition: transform 0.3s ease;
+}
+
+.navbar-custom {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.chatbot-toggle {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.chatbot-toggle:hover {
+  transform: scale(1.1);
+}
+
+.chatbot-panel {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 350px;
+  height: 450px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  overflow: hidden;
+  display: none;
+}
+
+.star-rating {
+  color: #FFD700;
+}
+
+.whatsapp-btn {
+  background-color: #25D366;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+  background-color: #128C7E;
+  transform: translateY(-2px);
+}
+
+.section-padding {
+  padding: 80px 0;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 50px 0;
+  }
+}
+
+.header-image {
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+}`;
+}
+
+/**
+ * Generates JavaScript content from a website configuration
+ */
+function generateJS(config: WebsiteConfig): string {
+  return `(function() {
+  // Translations data from configuration
+  const translations = ${JSON.stringify(config.translations)};
+
+  // Initialize current language
+  let currentLanguage = '${config.defaultLanguage}';
+
+  // Language toggle functionality
+  const languageToggle = document.getElementById('languageToggle');
+  
+  function updateLanguage(lang) {
+    currentLanguage = lang;
+    
+    // Update toggle button text
+    languageToggle.textContent = lang === 'en' ? 'Español' : 'English';
+    
+    // Update all translatable elements
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+      const key = element.getAttribute('data-i18n');
+      if (translations[lang][key]) {
+        element.textContent = translations[lang][key];
+      }
+    });
+    
+    // Update attributes that need translation
+    document.querySelectorAll('[data-i18n-attr]').forEach(element => {
+      const attr = element.getAttribute('data-i18n-attr').split(':');
+      const attrName = attr[0];
+      const key = attr[1];
+      if (translations[lang][key]) {
+        element.setAttribute(attrName, translations[lang][key]);
+      }
+    });
+  }
+  
+  if (languageToggle) {
+    languageToggle.addEventListener('click', function() {
+      updateLanguage(currentLanguage === 'en' ? 'es' : 'en');
+    });
+  }
+  
+  ${config.showChatbot ? `
+  // Chatbot functionality
+  const chatbotToggle = document.getElementById('chatbotToggle');
+  const chatbotPanel = document.getElementById('chatbotPanel');
+  
+  if (chatbotToggle && chatbotPanel) {
+    const chatbotClose = document.getElementById('chatbotClose');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const chatbotSend = document.getElementById('chatbotSend');
+    
+    // Sample chatbot responses
+    const chatbotResponses = ${JSON.stringify(config.chatbotQuestions.reduce((acc, q) => {
+      acc.en[q.key] = q.answer.en;
+      acc.es[q.key] = q.answer.es;
+      return acc;
+    }, { en: {}, es: {} }))};
+    
+    function toggleChatbot() {
+      chatbotPanel.style.display = chatbotPanel.style.display === 'block' ? 'none' : 'block';
+    }
+    
+    function addMessage(message, isUser = false) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'mb-3 text-' + (isUser ? 'end' : 'start');
+      
+      const messageContent = document.createElement('div');
+      messageContent.className = isUser 
+        ? 'bg-primary-custom text-white p-3 rounded-3 d-inline-block' 
+        : 'bg-light p-3 rounded-3 d-inline-block';
+      
+      const messagePara = document.createElement('p');
+      messagePara.className = 'mb-0';
+      messagePara.textContent = message;
+      
+      messageContent.appendChild(messagePara);
+      messageDiv.appendChild(messageContent);
+      chatbotMessages.appendChild(messageDiv);
+      
+      // Scroll to bottom of messages
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    function handleChatbotQuestion(question) {
+      const response = chatbotResponses[currentLanguage][question];
+      if (response) {
+        addMessage(response);
+      }
+    }
+    
+    chatbotToggle.addEventListener('click', toggleChatbot);
+    
+    if (chatbotClose) {
+      chatbotClose.addEventListener('click', toggleChatbot);
+    }
+    
+    // Set up event listeners for chatbot question buttons
+    document.querySelectorAll('[data-question]').forEach(button => {
+      button.addEventListener('click', function() {
+        const question = this.getAttribute('data-question');
+        addMessage(this.textContent, true);
+        setTimeout(() => {
+          handleChatbotQuestion(question);
+        }, 500);
+      });
+    });
+    
+    if (chatbotSend && chatbotInput) {
+      chatbotSend.addEventListener('click', function() {
+        if (chatbotInput.value.trim() !== '') {
+          addMessage(chatbotInput.value, true);
+          chatbotInput.value = '';
+          
+          // Simple mock response
+          setTimeout(() => {
+            addMessage(currentLanguage === 'en' 
+              ? "Thank you for your message. One of our staff members will respond shortly." 
+              : "Gracias por su mensaje. Uno de nuestros miembros del personal responderá en breve."
+            );
+          }, 1000);
+        }
+      });
+      
+      chatbotInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          chatbotSend.click();
+        }
+      });
+    }
+  }
+  ` : ''}
+  
+  // Contact Form Handling
+  const contactForm = document.getElementById('contactForm');
+  const formSuccess = document.getElementById('formSuccess');
+  
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // In a real implementation, this would send the form data to a service like Formspree
+      if (formSuccess) {
+        formSuccess.classList.remove('d-none');
+        contactForm.reset();
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          formSuccess.classList.add('d-none');
+        }, 5000);
+      }
+    });
+  }
+  
+  // Smooth scrolling for navbar links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop - 80, // Adjust for navbar height
+          behavior: 'smooth'
+        });
+        
+        // Close mobile menu if open
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        if (navbarCollapse.classList.contains('show')) {
+          navbarToggler.click();
+        }
+      }
+    });
+  });
+  
+  // Initialize the page with the default language
+  updateLanguage(currentLanguage);
+})();`;
+}
