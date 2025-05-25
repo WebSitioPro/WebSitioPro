@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { WebsiteConfig } from '@/lib/types';
 import LanguageToggle from './LanguageToggle';
 
@@ -11,9 +11,39 @@ interface HeaderProps {
 
 export default function Header({ config, language, toggleLanguage, t }: HeaderProps) {
   const [scrolled, setScrolled] = useState(true); // Default to scrolled for solid background
+  const navbarToggleRef = useRef<HTMLButtonElement>(null);
+  const navbarCollapseRef = useRef<HTMLDivElement>(null);
   
-  // Change navbar background on scroll
+  // Initialize Bootstrap navbar functionality
   useEffect(() => {
+    // Initialize Bootstrap navbar collapse
+    const initializeNavbar = () => {
+      if (typeof document !== 'undefined') {
+        // Make sure Bootstrap JS is available
+        if ((window as any).bootstrap) {
+          console.log('Bootstrap initialized');
+        } else {
+          // Manual implementation for navbar toggle
+          const toggleButton = navbarToggleRef.current;
+          const collapseMenu = navbarCollapseRef.current;
+          
+          if (toggleButton && collapseMenu) {
+            toggleButton.addEventListener('click', () => {
+              const isExpanded = collapseMenu.classList.contains('show');
+              if (isExpanded) {
+                collapseMenu.classList.remove('show');
+              } else {
+                collapseMenu.classList.add('show');
+              }
+            });
+          }
+        }
+      }
+    };
+    
+    initializeNavbar();
+    
+    // Add scroll handler
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
@@ -21,7 +51,10 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
     window.addEventListener('scroll', handleScroll);
     // Trigger once to initialize
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
   
   return (
@@ -39,11 +72,17 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
             <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
           </div>
           
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <button 
+            ref={navbarToggleRef}
+            className="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav"
+          >
             <span className="navbar-toggler-icon"></span>
           </button>
           
-          <div className="collapse navbar-collapse" id="navbarNav">
+          <div ref={navbarCollapseRef} className="collapse navbar-collapse" id="navbarNav">
             {/* Main navigation bar */}
             <div className="d-none d-lg-flex mx-auto">
               <a href="#intro" className="btn btn-outline-primary mx-1 fw-bold">{t('nav.intro')}</a>

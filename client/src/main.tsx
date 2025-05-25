@@ -20,10 +20,15 @@ bootstrap.rel = "stylesheet";
 bootstrap.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css";
 document.head.appendChild(bootstrap);
 
-// Add Bootstrap JS
+// Add Bootstrap JS with proper async loading
 const bootstrapScript = document.createElement("script");
 bootstrapScript.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js";
-document.body.appendChild(bootstrapScript);
+bootstrapScript.async = false;
+bootstrapScript.defer = true;
+bootstrapScript.onload = () => {
+  console.log("Bootstrap JS loaded successfully");
+};
+document.head.appendChild(bootstrapScript);
 
 // Set page title
 document.title = "Professional Website Template";
