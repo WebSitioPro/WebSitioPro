@@ -10,22 +10,24 @@ interface HeaderProps {
 }
 
 export default function Header({ config, language, toggleLanguage, t }: HeaderProps) {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(true); // Default to scrolled for solid background
   
   // Change navbar background on scroll
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 10);
     };
     
     window.addEventListener('scroll', handleScroll);
+    // Trigger once to initialize
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
   return (
     <>
-      {/* Navigation Bar */}
-      <nav id="navbar" className={`navbar navbar-expand-lg navbar-light navbar-custom fixed-top py-3 ${scrolled ? 'bg-white shadow-sm' : 'bg-transparent'}`}>
+      {/* Navigation Bar - Always solid background */}
+      <nav id="navbar" className="navbar navbar-expand-lg navbar-light navbar-custom fixed-top py-2 bg-white shadow-sm">
         <div className="container">
           <a className="navbar-brand" href="#">
             {config.logo && <img src={config.logo} alt={config.name} height="40" className="me-2" />}
@@ -39,22 +41,22 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <a className="nav-link" href="#intro">{t('nav.intro')}</a>
+                <a className="nav-link fw-bold" href="#intro">{t('nav.intro')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#services">{t('nav.services')}</a>
+                <a className="nav-link fw-bold" href="#services">{t('nav.services')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#reviews">{t('nav.reviews')}</a>
+                <a className="nav-link fw-bold" href="#reviews">{t('nav.reviews')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#photos">{t('nav.photos')}</a>
+                <a className="nav-link fw-bold" href="#photos">{t('nav.photos')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#awards">{t('nav.awards')}</a>
+                <a className="nav-link fw-bold" href="#awards">{t('nav.awards')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#contact">{t('nav.contact')}</a>
+                <a className="nav-link fw-bold" href="#contact">{t('nav.contact')}</a>
               </li>
               <li className="nav-item ms-lg-3">
                 <LanguageToggle language={language} toggleLanguage={toggleLanguage} />
@@ -64,19 +66,24 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
         </div>
       </nav>
       
-      {/* Hero Header */}
-      <header id="home" className="header-image d-flex align-items-center" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000')` }}>
+      {/* Hero Header - Reduced height */}
+      <header id="home" className="header-image d-flex align-items-center" style={{ 
+        backgroundImage: `url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000')`,
+        height: '50vh', // Reduced from 90vh to 50vh
+        marginTop: '56px' // Add margin to account for the fixed navbar
+      }}>
         <div className="header-overlay"></div>
         <div className="container header-content text-center text-white">
-          <h1 className="display-3 fw-bold mb-3">{t('tagline')}</h1>
-          <p className="lead mb-5">{t('subtitle')}</p>
+          <h1 className="display-4 fw-bold mb-3">{t('tagline')}</h1>
+          <p className="lead mb-4">{t('subtitle')}</p>
           
           <div className="d-flex flex-wrap justify-content-center gap-3">
             {config.showWhyWebsiteButton && (
               <a 
                 href="https://websitiopro.com/why-you-need-a-website" 
                 target="_blank" 
-                className="btn btn-lg btn-primary-custom px-4 py-3"
+                className="btn btn-lg btn-primary-custom px-4 py-2 fw-bold shadow-sm"
+                style={{ fontSize: '1.1rem' }}
               >
                 {t('whyWebsite')}
               </a>
@@ -86,7 +93,8 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
               <a 
                 href="https://websitiopro.com/domain-checker" 
                 target="_blank" 
-                className="btn btn-lg btn-secondary-custom px-4 py-3"
+                className="btn btn-lg btn-secondary-custom px-4 py-2 fw-bold shadow-sm"
+                style={{ fontSize: '1.1rem' }}
               >
                 {t('findDomain')}
               </a>
