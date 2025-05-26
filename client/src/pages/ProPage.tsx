@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { Shield, Star, Globe, Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe } from 'lucide-react';
 
-export default function HomePage() {
+export default function ProPage() {
   const [language, setLanguage] = useState('es');
   
   const toggleLanguage = () => {
@@ -21,45 +21,43 @@ export default function HomePage() {
         domainChecker: 'Verificar Dominio',
         contact: 'Contacto',
         proSites: 'Sitios Pro',
-        getStarted: 'Comenzar',
         
         // Hero
-        heroHeadline: 'Construye tu Negocio con WebSitioPro',
-        heroSubheadline: 'Sitios web accesibles y personalizados para México—desde 2,000 pesos',
-        exploreProPlans: 'Explorar Planes Pro',
+        proHeroHeadline: 'Sitios Web Premium por WebSitioPro',
+        proHeroSubheadline: 'Sitios personalizados y completamente administrados para Chetumal',
+        contactWhatsApp: 'Contáctanos vía WhatsApp',
         
-        // Why section
-        whyTitle: '¿Por qué Necesitas un Sitio Web?',
-        whyPoint1: '70% de los mexicanos buscan en línea',
-        whyPoint2: 'Aumenta las ventas en un 20%',
-        whyPoint3: 'Disponible 24/7 para tus clientes',
+        // Demo Note
+        demoTitle: 'Nota de Demostración',
+        demoText: '¡Si nos hemos contactado contigo vía WhatsApp, tienes una demostración personalizada lista! Finalizaremos tus detalles y fotos.',
+        finalizeYourSite: 'Finalizar tu Sitio',
         
-        // About
-        aboutTitle: 'Sobre Nosotros',
-        aboutText: 'Empoderando a los negocios de Chetumal con sitios web impresionantes',
+        // How It Works
+        howItWorksTitle: '¿Cómo Funciona Nuestro Servicio?',
+        step1Title: 'Contacto',
+        step1Desc: 'Nos pones en contacto y discutimos tus necesidades',
+        step2Title: 'Diseño',
+        step2Desc: 'Creamos tu sitio web personalizado',
+        step3Title: 'Lanzamiento y Mantenimiento',
+        step3Desc: 'Lanzamos tu sitio y lo mantenemos actualizado',
         
-        // Offerings
-        offeringsTitle: 'Lo Que Ofrecemos',
+        // Template Showcase
+        templatesTitle: 'Nuestras Plantillas Pro',
         template1: 'Profesionales',
-        template1Desc: 'Sitios elegantes para doctores, abogados y consultores',
+        template1Desc: 'Sitios elegantes para doctores, abogados y consultores con formularios de contacto y calendarios de citas',
         template2: 'Restaurantes',
-        template2Desc: 'Menús atractivos y sistemas de reservas',
+        template2Desc: 'Menús atractivos, galería de fotos y sistemas de reservas para restaurantes',
         template3: 'Negocios Turísticos',
-        template3Desc: 'Promociona tours y experiencias locales',
+        template3Desc: 'Promociona tours locales con galerías, mapas y sistemas de reservas',
         template4: 'Retail',
-        template4Desc: 'Tiendas en línea con carrito de compras',
+        template4Desc: 'Tiendas en línea completas con carrito de compras y procesamiento de pagos',
         template5: 'Servicios',
-        template5Desc: 'Plomeros, electricistas y más',
-        seeProPlans: 'Ver Planes Pro',
+        template5Desc: 'Sitios para plomeros, electricistas y servicios locales con formularios de cotización',
+        viewTemplate: 'Ver Plantilla',
         
         // Pricing
-        pricingTitle: 'Precios',
+        pricingTitle: 'Precios y Dominio',
         pricingText: 'Plan Pro: 2,000 pesos construcción + 3,000 pesos/año hosting (o 1,000 pesos inicial + 200 pesos/mes por 5 meses). Dominio incluido hasta $12 USD, extra por dominios premium.',
-        
-        // Domain Checker
-        domainTitle: 'Verificador de Dominio',
-        domainPlaceholder: 'tudominio.com',
-        checkDomain: 'Verificar Dominio',
         
         // Contact
         contactTitle: 'Contacto',
@@ -68,7 +66,11 @@ export default function HomePage() {
         contactMessage: 'Mensaje',
         sendMessage: 'Enviar Mensaje',
         whatsappText: '¡Hablemos!',
-        chatWithUs: 'Chatea con nosotros',
+        
+        // Payment
+        paymentTitle: 'Opciones de Pago',
+        paymentText: 'Paga mediante transferencia bancaria (detalles vía WhatsApp), tarjeta de crédito, o OXXO (código QR proporcionado).',
+        contactToPay: 'Contactar para Pagar',
         
         // Footer
         copyright: '© 2025 WebSitioPro',
@@ -89,45 +91,43 @@ export default function HomePage() {
         domainChecker: 'Domain Checker',
         contact: 'Contact',
         proSites: 'Pro Sites',
-        getStarted: 'Get Started',
         
         // Hero
-        heroHeadline: 'Build Your Business with WebSitioPro',
-        heroSubheadline: 'Affordable, custom sites for Mexico—starting at 2,000 pesos',
-        exploreProPlans: 'Explore Pro Plans',
+        proHeroHeadline: 'Premium Websites by WebSitioPro',
+        proHeroSubheadline: 'Custom, fully managed sites for Chetumal',
+        contactWhatsApp: 'Contact Us via WhatsApp',
         
-        // Why section
-        whyTitle: 'Why You Need a Website',
-        whyPoint1: '70% of Mexicans search online',
-        whyPoint2: 'Boost sales by 20%',
-        whyPoint3: 'Available 24/7 for your customers',
+        // Demo Note
+        demoTitle: 'Demo Note',
+        demoText: 'If we\'ve reached out via WhatsApp, you have a custom demo ready! We\'ll finalize your details and photos.',
+        finalizeYourSite: 'Let\'s Finalize Your Site',
         
-        // About
-        aboutTitle: 'About Us',
-        aboutText: 'Empowering Chetumal businesses with stunning websites',
+        // How It Works
+        howItWorksTitle: 'How Our Service Works',
+        step1Title: 'Contact',
+        step1Desc: 'Get in touch and discuss your needs',
+        step2Title: 'Design',
+        step2Desc: 'We create your custom website',
+        step3Title: 'Launch & Maintenance',
+        step3Desc: 'We launch your site and keep it updated',
         
-        // Offerings
-        offeringsTitle: 'What We Offer',
+        // Template Showcase
+        templatesTitle: 'Our Pro Templates',
         template1: 'Professionals',
-        template1Desc: 'Elegant sites for doctors, lawyers, and consultants',
+        template1Desc: 'Elegant sites for doctors, lawyers, and consultants with contact forms and appointment scheduling',
         template2: 'Restaurants',
-        template2Desc: 'Attractive menus and reservation systems',
+        template2Desc: 'Attractive menus, photo galleries, and reservation systems for restaurants',
         template3: 'Tourist Businesses',
-        template3Desc: 'Promote local tours and experiences',
+        template3Desc: 'Promote local tours with galleries, maps, and booking systems',
         template4: 'Retail',
-        template4Desc: 'Online stores with shopping carts',
+        template4Desc: 'Complete online stores with shopping carts and payment processing',
         template5: 'Services',
-        template5Desc: 'Plumbers, electricians, and more',
-        seeProPlans: 'See Pro Plans',
+        template5Desc: 'Sites for plumbers, electricians, and local services with quote forms',
+        viewTemplate: 'View Template',
         
         // Pricing
-        pricingTitle: 'Pricing',
-        pricingText: 'Pro plan: 2,000 pesos build + 3,000 pesos/year hosting (or 1,000 pesos upfront + 200 pesos/month for 5 meses). Domain included up to $12 USD, extra for premium domains.',
-        
-        // Domain Checker
-        domainTitle: 'Domain Checker',
-        domainPlaceholder: 'yourdomain.com',
-        checkDomain: 'Check Domain',
+        pricingTitle: 'Pricing & Domain',
+        pricingText: 'Pro plan: 2,000 pesos build + 3,000 pesos/year hosting (or 1,000 pesos upfront + 200 pesos/month for 5 months). Domain included up to $12 USD, extra for premium domains.',
         
         // Contact
         contactTitle: 'Contact',
@@ -136,7 +136,11 @@ export default function HomePage() {
         contactMessage: 'Message',
         sendMessage: 'Send Message',
         whatsappText: "Let's talk!",
-        chatWithUs: 'Chat with us',
+        
+        // Payment
+        paymentTitle: 'Payment Options',
+        paymentText: 'Pay via bank transfer (details via WhatsApp), credit card, or OXXO (QR code provided).',
+        contactToPay: 'Contact to Pay',
         
         // Footer
         copyright: '© 2025 WebSitioPro',
@@ -168,9 +172,9 @@ export default function HomePage() {
         <nav className="navbar navbar-expand-lg navbar-light px-3">
           <div className="container-fluid">
             {/* Logo */}
-            <a className="navbar-brand fw-bold text-primary" href="#" style={{ color: 'hsl(var(--primary))' }}>
+            <Link className="navbar-brand fw-bold text-primary" href="/" style={{ color: 'hsl(var(--primary))' }}>
               WebSitioPro
-            </a>
+            </Link>
 
             {/* Mobile toggle */}
             <button 
@@ -186,22 +190,22 @@ export default function HomePage() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav me-auto">
                 <li className="nav-item">
-                  <a className="nav-link" href="#hero">{t('home')}</a>
+                  <Link className="nav-link" href="/">{t('home')}</Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#why">{t('why')}</a>
+                  <a className="nav-link" href="/#why">{t('why')}</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#about">{t('about')}</a>
+                  <a className="nav-link" href="/#about">{t('about')}</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#offerings">{t('offerings')}</a>
+                  <a className="nav-link" href="/#offerings">{t('offerings')}</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#pricing">{t('pricing')}</a>
+                  <a className="nav-link" href="/#pricing">{t('pricing')}</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link btn btn-success text-white px-3 me-2" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                  <a className="nav-link btn btn-success text-white px-3 me-2" href="/#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
                     {t('domainChecker')}
                   </a>
                 </li>
@@ -209,11 +213,11 @@ export default function HomePage() {
                   <a className="nav-link" href="#contact">{t('contact')}</a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" href="/pro">{t('proSites')}</Link>
+                  <Link className="nav-link active" href="/pro">{t('proSites')}</Link>
                 </li>
               </ul>
               
-              {/* Language Toggle & CTA */}
+              {/* Language Toggle */}
               <div className="d-flex align-items-center gap-3">
                 <button 
                   className="btn btn-outline-primary fs-5 px-3"
@@ -223,14 +227,6 @@ export default function HomePage() {
                 >
                   {language === 'es' ? 'EN' : 'ES'}
                 </button>
-                
-                <Link 
-                  href="/pro" 
-                  className="btn btn-primary text-white px-4"
-                  style={{ backgroundColor: 'hsl(var(--primary))' }}
-                >
-                  {t('getStarted')}
-                </Link>
               </div>
             </div>
           </div>
@@ -240,103 +236,116 @@ export default function HomePage() {
       {/* Hero Section */}
       <section id="hero" className="py-5 bg-light">
         <div className="container">
-          <div className="row align-items-center min-vh-50">
-            <div className="col-lg-6">
+          <div className="row align-items-center">
+            <div className="col-lg-8 mx-auto text-center">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('heroHeadline')}
+                {t('proHeroHeadline')}
               </h1>
               <p className="lead text-muted mb-4">
-                {t('heroSubheadline')}
+                {t('proHeroSubheadline')}
               </p>
-              <Link 
-                href="/pro"
-                className="btn btn-primary btn-lg text-white px-5"
-                style={{ backgroundColor: 'hsl(var(--primary))' }}
+              <a 
+                href="https://wa.me/529831234567?text=Interested in Pro sites!"
+                className="btn btn-success btn-lg text-white px-5"
+                style={{ backgroundColor: 'hsl(var(--secondary))' }}
               >
-                {t('exploreProPlans')}
-              </Link>
-            </div>
-            <div className="col-lg-6">
-              <div className="text-center">
-                <div className="bg-secondary rounded p-5" style={{ backgroundColor: 'hsl(var(--secondary) / 0.1)' }}>
-                  <Globe size={120} className="text-primary mb-3" style={{ color: 'hsl(var(--primary))' }} />
-                  <p className="text-muted">Website Mockup Placeholder</p>
-                </div>
-              </div>
+                {t('contactWhatsApp')}
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why You Need a Website */}
-      <section id="why" className="py-5">
+      {/* Demo Note */}
+      <section className="py-4 bg-warning" style={{ backgroundColor: 'hsl(var(--accent) / 0.1)' }}>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 text-center">
+              <h4 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                {t('demoTitle')}
+              </h4>
+              <p className="mb-3">
+                {t('demoText')}
+              </p>
+              <a 
+                href="https://wa.me/529831234567?text=Let's finalize my site!"
+                className="btn btn-primary text-white"
+                style={{ backgroundColor: 'hsl(var(--primary))' }}
+              >
+                {t('finalizeYourSite')}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How Our Service Works */}
+      <section className="py-5">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {t('whyTitle')}
+            {t('howItWorksTitle')}
           </h2>
           <div className="row g-4">
             <div className="col-md-4 text-center">
               <div className="mb-3">
-                <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />
+                <Phone size={64} className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
               </div>
-              <h5>{t('whyPoint1')}</h5>
+              <h4 className="fw-bold mb-3">1. {t('step1Title')}</h4>
+              <p className="text-muted">{t('step1Desc')}</p>
             </div>
             <div className="col-md-4 text-center">
               <div className="mb-3">
-                <Shield size={48} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
+                <Palette size={64} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />
               </div>
-              <h5>{t('whyPoint2')}</h5>
+              <h4 className="fw-bold mb-3">2. {t('step2Title')}</h4>
+              <p className="text-muted">{t('step2Desc')}</p>
             </div>
             <div className="col-md-4 text-center">
               <div className="mb-3">
-                <Clock size={48} className="text-info" style={{ color: 'hsl(var(--info))' }} />
+                <Rocket size={64} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
               </div>
-              <h5>{t('whyPoint3')}</h5>
+              <h4 className="fw-bold mb-3">3. {t('step3Title')}</h4>
+              <p className="text-muted">{t('step3Desc')}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About */}
-      <section id="about" className="py-5 bg-light">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8 text-center">
-              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('aboutTitle')}
-              </h2>
-              <p className="lead text-muted">
-                {t('aboutText')}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What We Offer */}
-      <section id="offerings" className="py-5">
+      {/* Template Showcase */}
+      <section className="py-5 bg-light">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {t('offeringsTitle')}
+            {t('templatesTitle')}
           </h2>
           <div className="row g-4">
             {[1, 2, 3, 4, 5].map((num) => (
               <div key={num} className="col-lg-6">
-                <div className="card h-100 border-0 shadow-sm">
-                  <div className="row g-0">
-                    <div className="col-4">
-                      <div className="bg-light h-100 d-flex align-items-center justify-content-center">
-                        <Globe size={48} className="text-muted" />
+                <div className="card h-100 border-0 shadow">
+                  <div className="card-body p-4">
+                    <div className="row g-3">
+                      <div className="col-4">
+                        <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
+                          <Globe size={48} className="text-muted" />
+                        </div>
+                        <div className="mt-2">
+                          <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
+                          <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
+                          <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-8">
-                      <div className="card-body">
-                        <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>
+                      <div className="col-8">
+                        <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
                           {t(`template${num}` as any)}
                         </h5>
-                        <p className="card-text text-muted">
+                        <p className="text-muted mb-3 small">
                           {t(`template${num}Desc` as any)}
                         </p>
+                        <button 
+                          className="btn btn-outline-primary btn-sm"
+                          style={{ borderColor: 'hsl(var(--primary))', color: 'hsl(var(--primary))' }}
+                        >
+                          {t('viewTemplate')}
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -344,21 +353,11 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          
-          <div className="text-center mt-5">
-            <Link 
-              href="/pro"
-              className="btn btn-primary btn-lg text-white px-5"
-              style={{ backgroundColor: 'hsl(var(--primary))' }}
-            >
-              {t('seeProPlans')}
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="py-5 bg-light">
+      {/* Pricing & Domain */}
+      <section className="py-5">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
@@ -368,32 +367,6 @@ export default function HomePage() {
               <p className="lead text-muted">
                 {t('pricingText')}
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Domain Checker */}
-      <section id="domain" className="py-5">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-6">
-              <h2 className="text-center fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('domainTitle')}
-              </h2>
-              <div className="input-group input-group-lg">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder={t('domainPlaceholder')}
-                />
-                <button 
-                  className="btn btn-success text-white px-4"
-                  style={{ backgroundColor: 'hsl(var(--secondary))' }}
-                >
-                  {t('checkDomain')}
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -471,6 +444,29 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Payment */}
+      <section className="py-5">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 text-center">
+              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {t('paymentTitle')}
+              </h2>
+              <p className="lead text-muted mb-4">
+                {t('paymentText')}
+              </p>
+              <a 
+                href="https://wa.me/529831234567?text=I want to pay for my Pro site"
+                className="btn btn-success btn-lg text-white px-5"
+                style={{ backgroundColor: 'hsl(var(--secondary))' }}
+              >
+                {t('contactToPay')}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-4 bg-dark text-white">
         <div className="container">
@@ -488,20 +484,6 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
-
-      {/* Floating Chatbot Button */}
-      <button 
-        className="btn btn-primary rounded-circle position-fixed bottom-0 end-0 m-4"
-        style={{ 
-          backgroundColor: 'hsl(var(--info))',
-          width: '60px',
-          height: '60px',
-          zIndex: 1000 
-        }}
-        title={t('chatWithUs')}
-      >
-        💬
-      </button>
     </div>
   );
 }
