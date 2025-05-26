@@ -329,70 +329,77 @@ export default function EditorPage() {
           {/* Sidebar */}
           <div className="col-md-3">
             <div className="bg-white rounded shadow-sm p-3 sticky-top" style={{ top: '20px' }}>
-              <h5 className="mb-3">Editor de Contenido</h5>
+              <h5 className="mb-3">Website Editor</h5>
               <nav className="nav flex-column">
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'colors' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('colors')}
                 >
                   <Palette size={16} className="me-2" />
-                  Colores
+                  Colors
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'header' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('header')}
                 >
                   <Settings size={16} className="me-2" />
-                  Encabezado
+                  Header & Navigation
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'hero' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('hero')}
                 >
                   <Type size={16} className="me-2" />
-                  Sección Principal
+                  Hero Section
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'why' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('why')}
                 >
                   <Type size={16} className="me-2" />
-                  ¿Por Qué?
+                  Why Section
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'about' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('about')}
                 >
                   <Type size={16} className="me-2" />
-                  Acerca De
+                  About Section
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'services' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('services')}
                 >
                   <Image size={16} className="me-2" />
-                  Servicios
+                  Services/Templates
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pricing' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('pricing')}
                 >
                   <Type size={16} className="me-2" />
-                  Precios
+                  Pricing
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'contact' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('contact')}
                 >
                   <Settings size={16} className="me-2" />
-                  Contacto
+                  Contact Info
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'footer' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('footer')}
+                >
+                  <Settings size={16} className="me-2" />
+                  Footer
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pro' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('pro')}
                 >
                   <Type size={16} className="me-2" />
-                  Página Pro
+                  Pro Page
                 </button>
               </nav>
             </div>
@@ -405,10 +412,10 @@ export default function EditorPage() {
               {/* Colors Tab */}
               {activeTab === 'colors' && (
                 <div>
-                  <h4 className="mb-4">Esquema de Colores</h4>
+                  <h4 className="mb-4">Color Scheme</h4>
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label">Color Primario (Rojo)</label>
+                      <label className="form-label">Primary Color (Red)</label>
                       <div className="d-flex gap-2">
                         <input 
                           type="color" 
@@ -425,7 +432,7 @@ export default function EditorPage() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Color Secundario (Verde)</label>
+                      <label className="form-label">Secondary Color (Green)</label>
                       <div className="d-flex gap-2">
                         <input 
                           type="color" 
@@ -442,7 +449,7 @@ export default function EditorPage() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Color de Acento (Amarillo)</label>
+                      <label className="form-label">Accent Color (Yellow)</label>
                       <div className="d-flex gap-2">
                         <input 
                           type="color" 
@@ -459,7 +466,7 @@ export default function EditorPage() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Color de Información (Azul)</label>
+                      <label className="form-label">Info Color (Blue)</label>
                       <div className="d-flex gap-2">
                         <input 
                           type="color" 
@@ -482,15 +489,85 @@ export default function EditorPage() {
               {/* Header Tab */}
               {activeTab === 'header' && (
                 <div>
-                  <h4 className="mb-4">Configuración del Encabezado</h4>
-                  <div className="mb-3">
-                    <label className="form-label">Logo/Nombre del Sitio</label>
-                    <input 
-                      type="text" 
-                      className="form-control"
-                      value={websiteData.logo}
-                      onChange={(e) => handleInputChange('logo', e.target.value)}
-                    />
+                  <h4 className="mb-4">Header & Navigation Settings</h4>
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Site Logo/Name</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.logo}
+                        onChange={(e) => handleInputChange('logo', e.target.value)}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Navigation Style</label>
+                      <select className="form-control">
+                        <option>Horizontal Menu</option>
+                        <option>Dropdown Menu</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Footer Tab */}
+              {activeTab === 'footer' && (
+                <div>
+                  <h4 className="mb-4">Footer Settings</h4>
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Copyright Text (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value="© 2025 WebSitioPro"
+                        placeholder="© 2025 WebSitioPro"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Copyright Text (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value="© 2025 WebSitioPro"
+                        placeholder="© 2025 WebSitioPro"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Footer Link Text (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value="Powered by WebSitioPro"
+                        placeholder="Powered by WebSitioPro"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Footer Link Text (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value="Powered by WebSitioPro"
+                        placeholder="Powered by WebSitioPro"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Facebook URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        placeholder="https://facebook.com/yourpage"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Instagram URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        placeholder="https://instagram.com/yourprofile"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
