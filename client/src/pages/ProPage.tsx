@@ -198,12 +198,12 @@ export default function ProPage() {
             <div className="col-auto">
               <div className="d-flex align-items-center gap-3">
                 <button 
-                  className="btn btn-outline-primary fs-5 px-3"
+                  className="btn text-dark fw-bold px-3"
                   onClick={toggleLanguage}
-                  style={{ color: 'hsl(var(--info))', borderColor: 'hsl(var(--info))' }}
+                  style={{ backgroundColor: 'hsl(var(--accent))', borderColor: 'hsl(var(--accent))' }}
                   aria-label="Language toggle"
                 >
-                  {language === 'es' ? 'EN' : 'ES'}
+                  {language === 'es' ? 'English' : 'Español'}
                 </button>
               </div>
             </div>
