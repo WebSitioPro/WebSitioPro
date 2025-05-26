@@ -165,55 +165,33 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="sticky-top bg-white shadow-sm">
-        <nav className="navbar navbar-expand-lg navbar-light px-3">
-          <div className="container-fluid">
+        <div className="container-fluid">
+          <div className="row align-items-center py-3">
             {/* Logo */}
-            <a className="navbar-brand fw-bold text-primary" href="#" style={{ color: 'hsl(var(--primary))' }}>
-              WebSitioPro
-            </a>
+            <div className="col-auto">
+              <a className="fw-bold text-decoration-none fs-4" href="#" style={{ color: 'hsl(var(--primary))' }}>
+                WebSitioPro
+              </a>
+            </div>
 
-            {/* Mobile toggle */}
-            <button 
-              className="navbar-toggler" 
-              type="button" 
-              data-bs-toggle="collapse" 
-              data-bs-target="#navbarNav"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-
-            {/* Navigation */}
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav me-auto">
-                <li className="nav-item">
-                  <a className="nav-link" href="#hero">{t('home')}</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#why">{t('why')}</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#about">{t('about')}</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#offerings">{t('offerings')}</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#pricing">{t('pricing')}</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link btn btn-success text-white px-3 me-2" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
-                    {t('domainChecker')}
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#contact">{t('contact')}</a>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" href="/pro">{t('proSites')}</Link>
-                </li>
-              </ul>
-              
-              {/* Language Toggle & CTA */}
+            {/* Navigation Links */}
+            <div className="col d-none d-lg-block">
+              <div className="d-flex gap-4">
+                <a className="text-decoration-none text-dark" href="#hero">{t('home')}</a>
+                <a className="text-decoration-none text-dark" href="#why">{t('why')}</a>
+                <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
+                <a className="text-decoration-none text-dark" href="#offerings">{t('offerings')}</a>
+                <a className="text-decoration-none text-dark" href="#pricing">{t('pricing')}</a>
+                <a className="btn btn-success text-white px-3 py-1" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                  {t('domainChecker')}
+                </a>
+                <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
+                <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
+              </div>
+            </div>
+            
+            {/* Language Toggle & CTA */}
+            <div className="col-auto">
               <div className="d-flex align-items-center gap-3">
                 <button 
                   className="btn btn-outline-primary fs-5 px-3"
@@ -233,8 +211,24 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
+
+            {/* Mobile Navigation */}
+            <div className="col-12 d-lg-none mt-3">
+              <div className="d-flex flex-wrap gap-3 justify-content-center">
+                <a className="text-decoration-none text-dark" href="#hero">{t('home')}</a>
+                <a className="text-decoration-none text-dark" href="#why">{t('why')}</a>
+                <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
+                <a className="text-decoration-none text-dark" href="#offerings">{t('offerings')}</a>
+                <a className="text-decoration-none text-dark" href="#pricing">{t('pricing')}</a>
+                <a className="btn btn-success text-white px-2 py-1 small" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                  {t('domainChecker')}
+                </a>
+                <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
+                <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
+              </div>
+            </div>
           </div>
-        </nav>
+        </div>
       </header>
 
       {/* Hero Section */}
