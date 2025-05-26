@@ -4,7 +4,7 @@ import { Shield, Star, Globe, Phone, Mail, MapPin, Clock } from 'lucide-react';
 
 export default function HomePage() {
   const [language, setLanguage] = useState('es');
-  
+
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
@@ -22,22 +22,22 @@ export default function HomePage() {
         contact: 'Contacto',
         proSites: 'Sitios Pro',
         getStarted: 'Comenzar',
-        
+
         // Hero
         heroHeadline: 'Construye tu Negocio con WebSitioPro',
         heroSubheadline: 'Sitios web accesibles y personalizados para México—desde 2,000 pesos',
         exploreProPlans: 'Explorar Planes Pro',
-        
+
         // Why section
         whyTitle: '¿Por qué Necesitas un Sitio Web?',
         whyPoint1: '70% de los mexicanos buscan en línea',
         whyPoint2: 'Aumenta las ventas en un 20%',
         whyPoint3: 'Disponible 24/7 para tus clientes',
-        
+
         // About
         aboutTitle: 'Sobre Nosotros',
         aboutText: 'Empoderando a los negocios de Chetumal con sitios web impresionantes',
-        
+
         // Offerings
         offeringsTitle: 'Lo Que Ofrecemos',
         template1: 'Profesionales',
@@ -51,16 +51,16 @@ export default function HomePage() {
         template5: 'Servicios',
         template5Desc: 'Plomeros, electricistas y más',
         seeProPlans: 'Ver Planes Pro',
-        
+
         // Pricing
         pricingTitle: 'Precios',
         pricingText: 'Plan Pro: 2,000 pesos construcción + 3,000 pesos/año hosting (o 1,000 pesos inicial + 200 pesos/mes por 5 meses). Dominio incluido hasta $12 USD, extra por dominios premium.',
-        
+
         // Domain Checker
         domainTitle: 'Verificador de Dominio',
         domainPlaceholder: 'tudominio.com',
         checkDomain: 'Verificar Dominio',
-        
+
         // Contact
         contactTitle: 'Contacto',
         contactName: 'Nombre',
@@ -69,11 +69,11 @@ export default function HomePage() {
         sendMessage: 'Enviar Mensaje',
         whatsappText: '¡Hablemos!',
         chatWithUs: 'Chatea con nosotros',
-        
+
         // Footer
         copyright: '© 2025 WebSitioPro',
         poweredBy: 'Powered by WebSitioPro',
-        
+
         // Office hours
         officeHours: 'Horarios de Oficina',
         mondayFriday: 'Lun-Vie: 9:00 AM - 6:00 PM',
@@ -90,22 +90,22 @@ export default function HomePage() {
         contact: 'Contact',
         proSites: 'Pro Sites',
         getStarted: 'Get Started',
-        
+
         // Hero
         heroHeadline: 'Build Your Business with WebSitioPro',
         heroSubheadline: 'Affordable, custom sites for Mexico—starting at 2,000 pesos',
         exploreProPlans: 'Explore Pro Plans',
-        
+
         // Why section
         whyTitle: 'Why You Need a Website',
         whyPoint1: '70% of Mexicans search online',
         whyPoint2: 'Boost sales by 20%',
         whyPoint3: 'Available 24/7 for your customers',
-        
+
         // About
         aboutTitle: 'About Us',
         aboutText: 'Empowering Chetumal businesses with stunning websites',
-        
+
         // Offerings
         offeringsTitle: 'What We Offer',
         template1: 'Professionals',
@@ -119,16 +119,16 @@ export default function HomePage() {
         template5: 'Services',
         template5Desc: 'Plumbers, electricians, and more',
         seeProPlans: 'See Pro Plans',
-        
+
         // Pricing
         pricingTitle: 'Pricing',
         pricingText: 'Pro plan: 2,000 pesos build + 3,000 pesos/year hosting (or 1,000 pesos upfront + 200 pesos/month for 5 meses). Domain included up to $12 USD, extra for premium domains.',
-        
+
         // Domain Checker
         domainTitle: 'Domain Checker',
         domainPlaceholder: 'yourdomain.com',
         checkDomain: 'Check Domain',
-        
+
         // Contact
         contactTitle: 'Contact',
         contactName: 'Name',
@@ -137,18 +137,18 @@ export default function HomePage() {
         sendMessage: 'Send Message',
         whatsappText: "Let's talk!",
         chatWithUs: 'Chat with us',
-        
+
         // Footer
         copyright: '© 2025 WebSitioPro',
         poweredBy: 'Powered by WebSitioPro',
-        
+
         // Office hours
         officeHours: 'Office Hours',
         mondayFriday: 'Mon-Fri: 9:00 AM - 6:00 PM',
         saturday: 'Sat: 10:00 AM - 2:00 PM'
       }
     };
-    
+
     return translations[language as keyof typeof translations]?.[key as keyof typeof translations['es']] || key;
   };
 
@@ -159,7 +159,7 @@ export default function HomePage() {
     document.documentElement.style.setProperty('--accent', '46 100% 52%'); // Yellow #FFC107
     document.documentElement.style.setProperty('--info', '211 100% 50%'); // Blue #007BFF
     document.documentElement.style.setProperty('--background', '0 0% 100%'); // White
-    
+
     // Add scroll offset for sticky header
     const style = document.createElement('style');
     style.textContent = `
@@ -171,7 +171,7 @@ export default function HomePage() {
       }
     `;
     document.head.appendChild(style);
-    
+
     return () => {
       document.head.removeChild(style);
     };
@@ -203,10 +203,12 @@ export default function HomePage() {
                 </a>
                 <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
                 <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
-                <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Editor</Link>
+                {import.meta.env.DEV && (
+                  <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Editor</Link>
+                )}
               </div>
             </div>
-            
+
             {/* Language Toggle & CTA */}
             <div className="col-auto">
               <div className="d-flex align-items-center gap-3">
@@ -218,7 +220,7 @@ export default function HomePage() {
                 >
                   {language === 'es' ? 'English' : 'Español'}
                 </button>
-                
+
                 <Link 
                   href="/pro" 
                   className="btn btn-primary text-white px-4"
@@ -242,6 +244,9 @@ export default function HomePage() {
                 </a>
                 <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
                 <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
+                {import.meta.env.DEV && (
+                  <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Editor</Link>
+                )}
               </div>
             </div>
           </div>
@@ -355,7 +360,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          
+
           <div className="text-center mt-5">
             <Link 
               href="/pro"
@@ -416,7 +421,7 @@ export default function HomePage() {
           <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
             {t('contactTitle')}
           </h2>
-          
+
           <div className="row g-5">
             <div className="col-lg-6">
               <form>
@@ -441,7 +446,7 @@ export default function HomePage() {
                 </button>
               </form>
             </div>
-            
+
             <div className="col-lg-6">
               <div className="d-flex flex-column gap-4">
                 <div className="d-flex align-items-center gap-3">
@@ -451,14 +456,14 @@ export default function HomePage() {
                     <small className="text-muted">{t('officeHours')}</small>
                   </div>
                 </div>
-                
+
                 <div className="d-flex align-items-center gap-3">
                   <Mail className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                   <div>
                     <h6 className="mb-0">info@websitiopro.com</h6>
                   </div>
                 </div>
-                
+
                 <div className="d-flex align-items-center gap-3">
                   <MapPin className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                   <div>
@@ -466,7 +471,7 @@ export default function HomePage() {
                     <small className="text-muted">México</small>
                   </div>
                 </div>
-                
+
                 <div className="mt-3">
                   <a 
                     href="https://wa.me/529831234567?text=Let's talk!"
