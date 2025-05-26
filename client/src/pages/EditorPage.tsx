@@ -300,10 +300,10 @@ export default function EditorPage() {
             <div className="col">
               <div className="d-flex gap-3">
                 <Link href="/" className="btn btn-outline-primary">
-                  Ver Sitio Principal
+                  View Main Site
                 </Link>
                 <Link href="/pro" className="btn btn-outline-primary">
-                  Ver Página Pro
+                  View Pro Page
                 </Link>
               </div>
             </div>
@@ -311,11 +311,11 @@ export default function EditorPage() {
               <div className="d-flex gap-2">
                 <button className="btn btn-success" onClick={exportData}>
                   <Download size={16} className="me-1" />
-                  Exportar
+                  Export
                 </button>
                 <label className="btn btn-info">
                   <Upload size={16} className="me-1" />
-                  Importar
+                  Import
                   <input type="file" accept=".json" onChange={importData} style={{ display: 'none' }} />
                 </label>
               </div>
@@ -575,10 +575,10 @@ export default function EditorPage() {
               {/* Hero Tab */}
               {activeTab === 'hero' && (
                 <div>
-                  <h4 className="mb-4">Sección Principal (Hero)</h4>
+                  <h4 className="mb-4">Hero Section</h4>
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label">Título Principal (Español)</label>
+                      <label className="form-label">Main Headline (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -587,7 +587,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Título Principal (English)</label>
+                      <label className="form-label">Main Headline (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -596,7 +596,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Subtítulo (Español)</label>
+                      <label className="form-label">Subtitle (Spanish)</label>
                       <textarea 
                         className="form-control"
                         rows={3}
@@ -605,7 +605,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Subtítulo (English)</label>
+                      <label className="form-label">Subtitle (English)</label>
                       <textarea 
                         className="form-control"
                         rows={3}
@@ -614,7 +614,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-12">
-                      <label className="form-label">URL de Imagen Principal</label>
+                      <label className="form-label">Hero Image URL</label>
                       <input 
                         type="url" 
                         className="form-control"
@@ -629,10 +629,10 @@ export default function EditorPage() {
               {/* Why Tab */}
               {activeTab === 'why' && (
                 <div>
-                  <h4 className="mb-4">Sección "¿Por Qué?"</h4>
+                  <h4 className="mb-4">Why Section</h4>
                   <div className="row g-3 mb-4">
                     <div className="col-md-6">
-                      <label className="form-label">Título de Sección (Español)</label>
+                      <label className="form-label">Section Title (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -641,7 +641,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Título de Sección (English)</label>
+                      <label className="form-label">Section Title (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -651,11 +651,11 @@ export default function EditorPage() {
                     </div>
                   </div>
                   
-                  <h5 className="mb-3">Puntos Principales</h5>
+                  <h5 className="mb-3">Key Points</h5>
                   {websiteData.whyPoints.map((point, index) => (
                     <div key={index} className="row g-3 mb-3 p-3 bg-light rounded">
                       <div className="col-md-6">
-                        <label className="form-label">Punto {index + 1} (Español)</label>
+                        <label className="form-label">Point {index + 1} (Spanish)</label>
                         <input 
                           type="text" 
                           className="form-control"
@@ -664,7 +664,7 @@ export default function EditorPage() {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label className="form-label">Punto {index + 1} (English)</label>
+                        <label className="form-label">Point {index + 1} (English)</label>
                         <input 
                           type="text" 
                           className="form-control"
@@ -680,10 +680,10 @@ export default function EditorPage() {
               {/* About Tab */}
               {activeTab === 'about' && (
                 <div>
-                  <h4 className="mb-4">Sección "Acerca De"</h4>
+                  <h4 className="mb-4">About Section</h4>
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label">Título (Español)</label>
+                      <label className="form-label">Title (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -692,7 +692,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Título (English)</label>
+                      <label className="form-label">Title (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -701,7 +701,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Texto (Español)</label>
+                      <label className="form-label">Text (Spanish)</label>
                       <textarea 
                         className="form-control"
                         rows={4}
@@ -710,7 +710,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Texto (English)</label>
+                      <label className="form-label">Text (English)</label>
                       <textarea 
                         className="form-control"
                         rows={4}
@@ -725,10 +725,10 @@ export default function EditorPage() {
               {/* Services Tab */}
               {activeTab === 'services' && (
                 <div>
-                  <h4 className="mb-4">Servicios/Plantillas</h4>
+                  <h4 className="mb-4">Services/Templates</h4>
                   <div className="row g-3 mb-4">
                     <div className="col-md-6">
-                      <label className="form-label">Título de Sección (Español)</label>
+                      <label className="form-label">Section Title (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -737,7 +737,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Título de Sección (English)</label>
+                      <label className="form-label">Section Title (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -749,10 +749,10 @@ export default function EditorPage() {
 
                   {websiteData.templates.map((template, index) => (
                     <div key={index} className="border rounded p-3 mb-3">
-                      <h5 className="mb-3">Plantilla {index + 1}</h5>
+                      <h5 className="mb-3">Template {index + 1}</h5>
                       <div className="row g-3">
                         <div className="col-md-6">
-                          <label className="form-label">Título (Español)</label>
+                          <label className="form-label">Title (Spanish)</label>
                           <input 
                             type="text" 
                             className="form-control"
@@ -761,7 +761,7 @@ export default function EditorPage() {
                           />
                         </div>
                         <div className="col-md-6">
-                          <label className="form-label">Título (English)</label>
+                          <label className="form-label">Title (English)</label>
                           <input 
                             type="text" 
                             className="form-control"
@@ -770,7 +770,7 @@ export default function EditorPage() {
                           />
                         </div>
                         <div className="col-md-6">
-                          <label className="form-label">Descripción (Español)</label>
+                          <label className="form-label">Description (Spanish)</label>
                           <textarea 
                             className="form-control"
                             rows={3}
@@ -779,7 +779,7 @@ export default function EditorPage() {
                           />
                         </div>
                         <div className="col-md-6">
-                          <label className="form-label">Descripción (English)</label>
+                          <label className="form-label">Description (English)</label>
                           <textarea 
                             className="form-control"
                             rows={3}
@@ -788,7 +788,7 @@ export default function EditorPage() {
                           />
                         </div>
                         <div className="col-12">
-                          <label className="form-label">URL de Imagen</label>
+                          <label className="form-label">Image URL</label>
                           <input 
                             type="url" 
                             className="form-control"
@@ -805,10 +805,10 @@ export default function EditorPage() {
               {/* Pricing Tab */}
               {activeTab === 'pricing' && (
                 <div>
-                  <h4 className="mb-4">Sección de Precios</h4>
+                  <h4 className="mb-4">Pricing Section</h4>
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label">Título (Español)</label>
+                      <label className="form-label">Title (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -817,7 +817,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Título (English)</label>
+                      <label className="form-label">Title (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -826,7 +826,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Texto de Precios (Español)</label>
+                      <label className="form-label">Pricing Text (Spanish)</label>
                       <textarea 
                         className="form-control"
                         rows={4}
@@ -835,7 +835,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Texto de Precios (English)</label>
+                      <label className="form-label">Pricing Text (English)</label>
                       <textarea 
                         className="form-control"
                         rows={4}
@@ -850,10 +850,10 @@ export default function EditorPage() {
               {/* Contact Tab */}
               {activeTab === 'contact' && (
                 <div>
-                  <h4 className="mb-4">Información de Contacto</h4>
+                  <h4 className="mb-4">Contact Information</h4>
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label">Teléfono</label>
+                      <label className="form-label">Phone</label>
                       <input 
                         type="tel" 
                         className="form-control"
@@ -871,7 +871,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Dirección (Español)</label>
+                      <label className="form-label">Address (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -880,7 +880,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Dirección (English)</label>
+                      <label className="form-label">Address (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -889,7 +889,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Número WhatsApp (solo números)</label>
+                      <label className="form-label">WhatsApp Number (numbers only)</label>
                       <input 
                         type="tel" 
                         className="form-control"
@@ -899,7 +899,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Horarios de Oficina (Español)</label>
+                      <label className="form-label">Office Hours (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -908,7 +908,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Horarios de Oficina (English)</label>
+                      <label className="form-label">Office Hours (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
