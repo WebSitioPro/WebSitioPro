@@ -203,6 +203,7 @@ export default function HomePage() {
                 </a>
                 <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
                 <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
+                <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Editor</Link>
               </div>
             </div>
             
