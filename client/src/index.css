@@ -171,14 +171,25 @@
 }
 
 .whatsapp-btn {
-  background-color: #25D366;
-  color: white;
+  background-color: #25D366 !important;
+  color: white !important;
+  border-color: #25D366 !important;
   transition: all 0.3s ease;
 }
 
 .whatsapp-btn:hover {
-  background-color: #128C7E;
+  background-color: #128C7E !important;
+  border-color: #128C7E !important;
+  color: white !important;
   transform: translateY(-2px);
+}
+
+.whatsapp-btn:focus,
+.whatsapp-btn:active,
+.whatsapp-btn:visited {
+  background-color: #25D366 !important;
+  border-color: #25D366 !important;
+  color: white !important;
 }
 
 .service-card {

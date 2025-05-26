@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { WebsiteConfig } from '@/lib/types';
 
 interface FooterProps {
@@ -8,14 +7,6 @@ interface FooterProps {
 }
 
 export default function Footer({ config, language, t }: FooterProps) {
-  const [email, setEmail] = useState('');
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Newsletter subscription:', email);
-    setEmail('');
-    // In a real implementation, this would send the email to a newsletter service
-  };
   
   return (
     <footer className="bg-dark text-white py-5">
@@ -54,19 +45,25 @@ export default function Footer({ config, language, t }: FooterProps) {
           </div>
           
           <div className="col-md-4">
-            <h4 className="h5 mb-3">{t('footerNewsletter')}</h4>
-            <p className="mb-3">{t('footerNewsletterText')}</p>
-            <form className="d-flex" onSubmit={handleSubmit}>
-              <input 
-                type="email" 
-                className="form-control me-2" 
-                placeholder={t('footerEmailPlaceholder')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button className="btn btn-primary-custom" type="submit">{t('footerSubscribe')}</button>
-            </form>
+            <h4 className="h5 mb-3">{t('footerContact')}</h4>
+            {config.phone && (
+              <p className="mb-2">
+                <i className="fas fa-phone me-2"></i>
+                <a href={`tel:${config.phone}`} className="text-white text-decoration-none">{config.phone}</a>
+              </p>
+            )}
+            {config.email && (
+              <p className="mb-2">
+                <i className="fas fa-envelope me-2"></i>
+                <a href={`mailto:${config.email}`} className="text-white text-decoration-none">{config.email}</a>
+              </p>
+            )}
+            {config.address && (
+              <p className="mb-0">
+                <i className="fas fa-map-marker-alt me-2"></i>
+                {config.address}
+              </p>
+            )}
           </div>
         </div>
         
