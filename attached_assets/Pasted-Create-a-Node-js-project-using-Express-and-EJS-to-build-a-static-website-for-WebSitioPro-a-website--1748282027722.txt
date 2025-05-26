@@ -1,0 +1,123 @@
+Create a Node.js project using Express and EJS to build a static website for WebSitioPro, a website-building service for small businesses in Mexico. The site includes a scrollable one-page main site (websitiopro.com) and a separate Pro page (websitiopro.com/pro). Use a vibrant Mexican-inspired color scheme (red #C8102E, green #00A859, white #FFFFFF, optional yellow #FFC107 or blue #007BFF) and Bootstrap 5 (via CDN) for a responsive, mobile-friendly design.
+Main Page Structure (index.ejs)
+Header:
+Small WebSitioPro logo (placeholder URL).
+
+Sticky navigation bar with links to ‘Home’ (hero), ‘Why’ (Why You Need a Website), ‘About,’ ‘Offerings’ (What We Offer), ‘Pricing,’ ‘Domain Checker,’ ‘Contact,’ and ‘Pro Sites’ (links to /pro).
+
+Highlight ‘Domain Checker’ with a green button (#00A859).
+
+Large English/Spanish toggle button (top-right, 1.5em font, blue #007BFF).
+
+‘Get Started’ CTA button (red #C8102E, links to /pro).
+Hero:
+Headline: ‘Build Your Business with WebSitioPro.’
+
+Subheadline: ‘Affordable, custom sites for Mexico—starting at 2,000 pesos.’
+
+Placeholder image (mockup).
+
+‘Explore Pro Plans’ CTA (links to /pro).
+Why You Need a Website:
+Bullet points (placeholder: ‘70% of Mexicans search online,’ ‘Boost sales by 20%’).
+
+Placeholder icons (URLs).
+About:
+Text: ‘Empowering Chetumal businesses with stunning websites.’
+What We Offer:
+List 5 Pro templates (Professionals, Restaurants, Tourist Businesses, Retail, Services) with placeholder descriptions and 2–3 images.
+
+‘See Pro Plans’ CTA (links to /pro).
+Pricing:
+Text: ‘Pro plan: 2,000 pesos build + 3,000 pesos/year hosting (or 1,000 pesos upfront + 200 pesos/month for 5 months). Domain included up to $12 USD, extra for premium domains.’
+Domain Checker:
+Placeholder input field and button (e.g., ‘Check your domain’).
+Contact:
+Form (name, email, message) with Formspree placeholder endpoint.
+
+WhatsApp button (placeholder: https://wa.me/<number>?text=Let’s talk!).
+
+Tawk.to chatbot placeholder (floating button, dummy text: ‘Chat with us’).
+Footer:
+Copyright (‘© 2025 WebSitioPro’), placeholder social links, ‘Powered by WebSitioPro’ link.
+Pro Page Structure (pro.ejs)
+Header:
+Same as main page, but ‘Domain Checker’ links to /#domain-checker.
+Hero:
+Headline: ‘Premium Websites by WebSitioPro.’
+
+Subheadline: ‘Custom, fully managed sites for Chetumal.’
+
+‘Contact Us via WhatsApp’ CTA (WhatsApp link).
+Demo Note:
+Text: ‘If we’ve reached out via WhatsApp, you have a custom demo ready! We’ll finalize your details and photos.’
+
+WhatsApp CTA: ‘Let’s Finalize Your Site.’
+How Our Service Works:
+3 steps: ‘Contact,’ ‘Design,’ ‘Launch/Maintenance.’ Placeholder icons.
+Template Showcase:
+5 clickable Pro templates (modals or links) with placeholder mockups and descriptions.
+Pricing & Domain:
+Same as main page.
+Contact:
+Same as main page.
+Payment:
+Placeholder text: ‘Pay via bank transfer (details via WhatsApp), credit card, or OXXO (QR code provided).’
+
+‘Contact to Pay’ WhatsApp button.
+Footer:
+Same as main page.
+Features
+Language Toggle: Use JavaScript to switch text (placeholder translations in JSON, e.g., { "es": { "hero_headline": "Construye tu negocio con WebSitioPro" }, "en": { "hero_headline": "Build Your Business with WebSitioPro" } }). Default to Spanish.
+
+Chatbot: Placeholder Tawk.to button and panel (dummy Q&A).
+
+Analytics: Google Analytics placeholder code.
+
+SEO: Meta tags, schema markup (LocalBusiness JSON-LD), keywords (‘Chetumal website builder’).
+
+Accessibility: aria-label for buttons (language toggle, WhatsApp).
+Customization Form
+Create a form to generate a JSON file for editing both pages:
+Fields:
+Header: Logo URL, nav links, CTA text/link, language toggle default.
+
+Hero: Headline, subheadline, image URL, CTA.
+
+Why: Bullet points, icon URLs.
+
+About: Text.
+
+Offerings: Template names, descriptions, image URLs.
+
+Pricing: Plan details, payment plan text, domain info.
+
+Domain Checker: Placeholder text.
+
+Demo Note (Pro): Text, CTA link.
+
+Contact: Form endpoint, WhatsApp number.
+
+Chatbot: Toggle, placeholder text.
+
+Payment (Pro): Instructions text.
+
+Footer: Copyright, social links.
+
+Styling: Color pickers (primary, secondary, background).
+Output: JSON file (e.g., data.json) to populate EJS templates.
+Technical Details
+Use Node.js, Express, EJS, and Bootstrap 5 (CDN).
+
+Style with style.css (CSS variables: --primary: #C8102E).
+
+JavaScript in script.js for language toggle and placeholders.
+
+Generate static output: index.html, pro.html, style.css, script.js in an output folder.
+
+Ensure Vercel deployment readiness.
+
+Include generate.js to convert EJS templates and JSON into static files.
+Output
+A static website with index.html (main page), pro.html (Pro page), style.css, and script.js, fully responsive, customizable via JSON, and ready for Vercel."
+
