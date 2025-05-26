@@ -923,10 +923,12 @@ export default function EditorPage() {
               {/* Pro Page Tab */}
               {activeTab === 'pro' && (
                 <div>
-                  <h4 className="mb-4">Página Pro</h4>
+                  <h4 className="mb-4">Pro Page Settings</h4>
+                  
+                  <h5 className="mb-3">Hero Section</h5>
                   <div className="row g-3 mb-4">
                     <div className="col-md-6">
-                      <label className="form-label">Título Principal (Español)</label>
+                      <label className="form-label">Main Title (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -935,7 +937,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Título Principal (English)</label>
+                      <label className="form-label">Main Title (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
@@ -944,7 +946,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Subtítulo (Español)</label>
+                      <label className="form-label">Subtitle (Spanish)</label>
                       <textarea 
                         className="form-control"
                         rows={3}
@@ -953,7 +955,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Subtítulo (English)</label>
+                      <label className="form-label">Subtitle (English)</label>
                       <textarea 
                         className="form-control"
                         rows={3}
@@ -961,8 +963,21 @@ export default function EditorPage() {
                         onChange={(e) => handleInputChange('proHeroSubheadline', e.target.value, 'en')}
                       />
                     </div>
+                    <div className="col-12">
+                      <label className="form-label">Pro Page Hero Image URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        placeholder="https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Pro+Hero+Image"
+                        defaultValue=""
+                      />
+                    </div>
+                  </div>
+
+                  <h5 className="mb-3">Demo Note Section</h5>
+                  <div className="row g-3 mb-4">
                     <div className="col-md-6">
-                      <label className="form-label">Nota de Demo (Español)</label>
+                      <label className="form-label">Demo Note (Spanish)</label>
                       <textarea 
                         className="form-control"
                         rows={3}
@@ -971,7 +986,7 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Nota de Demo (English)</label>
+                      <label className="form-label">Demo Note (English)</label>
                       <textarea 
                         className="form-control"
                         rows={3}
@@ -979,15 +994,24 @@ export default function EditorPage() {
                         onChange={(e) => handleInputChange('demoNote', e.target.value, 'en')}
                       />
                     </div>
+                    <div className="col-12">
+                      <label className="form-label">Demo Note Background Image URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        placeholder="https://via.placeholder.com/1200x300/FFC107/000000?text=Demo+Background"
+                        defaultValue=""
+                      />
+                    </div>
                   </div>
 
-                  <h5 className="mb-3">Pasos del Servicio</h5>
+                  <h5 className="mb-3">Service Steps</h5>
                   {websiteData.serviceSteps.map((step, index) => (
                     <div key={index} className="border rounded p-3 mb-3">
-                      <h6>Paso {index + 1}</h6>
+                      <h6>Step {index + 1}</h6>
                       <div className="row g-3">
                         <div className="col-md-6">
-                          <label className="form-label">Título (Español)</label>
+                          <label className="form-label">Title (Spanish)</label>
                           <input 
                             type="text" 
                             className="form-control"
@@ -996,7 +1020,7 @@ export default function EditorPage() {
                           />
                         </div>
                         <div className="col-md-6">
-                          <label className="form-label">Título (English)</label>
+                          <label className="form-label">Title (English)</label>
                           <input 
                             type="text" 
                             className="form-control"
@@ -1005,7 +1029,7 @@ export default function EditorPage() {
                           />
                         </div>
                         <div className="col-md-6">
-                          <label className="form-label">Descripción (Español)</label>
+                          <label className="form-label">Description (Spanish)</label>
                           <textarea 
                             className="form-control"
                             rows={2}
@@ -1014,7 +1038,7 @@ export default function EditorPage() {
                           />
                         </div>
                         <div className="col-md-6">
-                          <label className="form-label">Descripción (English)</label>
+                          <label className="form-label">Description (English)</label>
                           <textarea 
                             className="form-control"
                             rows={2}
@@ -1022,13 +1046,51 @@ export default function EditorPage() {
                             onChange={(e) => handleServiceStepChange(index, 'description', e.target.value, 'en')}
                           />
                         </div>
+                        <div className="col-12">
+                          <label className="form-label">Step {index + 1} Icon/Image URL</label>
+                          <input 
+                            type="url" 
+                            className="form-control"
+                            placeholder={`https://via.placeholder.com/100x100/00A859/FFFFFF?text=Step+${index + 1}`}
+                            defaultValue=""
+                          />
+                        </div>
                       </div>
                     </div>
                   ))}
 
-                  <div className="row g-3 mt-4">
+                  <h5 className="mb-3">Template Showcase Images</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-12">
+                      <p className="text-muted">Add showcase images for your Pro templates that will be displayed on the Pro page.</p>
+                    </div>
+                    {[1, 2, 3, 4, 5].map((num) => (
+                      <div key={num} className="col-md-6">
+                        <div className="border rounded p-3">
+                          <h6>Template {num} Showcase Image</h6>
+                          <label className="form-label">Template {num} Preview Image URL</label>
+                          <input 
+                            type="url" 
+                            className="form-control"
+                            placeholder={`https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Template+${num}+Preview`}
+                            defaultValue=""
+                          />
+                          <label className="form-label mt-2">Template {num} Mobile Preview URL</label>
+                          <input 
+                            type="url" 
+                            className="form-control"
+                            placeholder={`https://via.placeholder.com/200x300/00A859/FFFFFF?text=Mobile+${num}`}
+                            defaultValue=""
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h5 className="mb-3">Payment Section</h5>
+                  <div className="row g-3 mb-4">
                     <div className="col-md-6">
-                      <label className="form-label">Texto de Pagos (Español)</label>
+                      <label className="form-label">Payment Text (Spanish)</label>
                       <textarea 
                         className="form-control"
                         rows={3}
@@ -1037,12 +1099,30 @@ export default function EditorPage() {
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Texto de Pagos (English)</label>
+                      <label className="form-label">Payment Text (English)</label>
                       <textarea 
                         className="form-control"
                         rows={3}
                         value={websiteData.paymentText.en}
                         onChange={(e) => handleInputChange('paymentText', e.target.value, 'en')}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Payment Methods Image URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        placeholder="https://via.placeholder.com/400x200/007BFF/FFFFFF?text=Payment+Methods"
+                        defaultValue=""
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">OXXO QR Code Image URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        placeholder="https://via.placeholder.com/200x200/000000/FFFFFF?text=QR+Code"
+                        defaultValue=""
                       />
                     </div>
                   </div>
