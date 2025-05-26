@@ -163,6 +163,25 @@ export default function ProPage() {
     document.documentElement.style.setProperty('--accent', '46 100% 52%'); // Yellow #FFC107
     document.documentElement.style.setProperty('--info', '211 100% 50%'); // Blue #007BFF
     document.documentElement.style.setProperty('--background', '0 0% 100%'); // White
+    
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
+    
+    // Add scroll offset for sticky header
+    const style = document.createElement('style');
+    style.textContent = `
+      html {
+        scroll-padding-top: 120px;
+      }
+      section {
+        scroll-margin-top: 120px;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
   }, []);
 
   return (
