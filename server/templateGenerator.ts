@@ -169,33 +169,33 @@ function generateHTML(config: WebsiteConfig): string {
     <i class="fas fa-comments fa-lg"></i>
   </div>
   
-  <div id="chatbotPanel" class="chatbot-panel" style="display: none;">
-    <div class="d-flex flex-column h-100">
-      <div class="p-3 bg-primary-custom text-white">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5 class="mb-0" data-i18n="chatbotTitle">Chat with us</h5>
-          <button id="chatbotClose" class="btn btn-sm text-white">
-            <i class="fas fa-times"></i>
+  <div id="chatbotPanel" style="display: none; position: fixed; bottom: 100px; right: 30px; width: 350px; height: 450px; background: white; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 999; overflow: hidden;">
+    <div style="display: flex; flex-direction: column; height: 100%;">
+      <div style="padding: 15px; background-color: ${config.primaryColor}; color: white;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h5 style="margin: 0; font-size: 1.1rem;">Chat with us</h5>
+          <button id="chatbotClose" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">
+            ×
           </button>
         </div>
       </div>
       
-      <div class="p-3 flex-grow-1 overflow-auto" id="chatbotMessages" style="max-height: 300px;">
+      <div id="chatbotMessages" style="padding: 15px; flex-grow: 1; overflow-y: auto; max-height: 300px;">
         <!-- Messages will be added here -->
       </div>
       
-      <div class="p-3 border-top">
-        <div class="mb-2" id="chatbotQuestions">
+      <div style="padding: 15px; border-top: 1px solid #eee;">
+        <div style="margin-bottom: 10px;" id="chatbotQuestions">
           ${config.chatbotQuestions.map(q => `
-            <button class="btn btn-outline-primary btn-sm me-2 mb-2" data-question="${q.key}">
+            <button style="background: white; border: 1px solid ${config.primaryColor}; color: ${config.primaryColor}; padding: 5px 10px; margin: 2px; border-radius: 15px; font-size: 12px; cursor: pointer;" data-question="${q.key}">
               ${q.question[config.defaultLanguage]}
             </button>
           `).join('')}
         </div>
-        <div class="input-group">
-          <input type="text" class="form-control" id="chatbotInput" placeholder="Type your message...">
-          <button class="btn btn-primary-custom" id="chatbotSend">
-            <i class="fas fa-paper-plane"></i>
+        <div style="display: flex;">
+          <input type="text" id="chatbotInput" placeholder="Type your message..." style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px 0 0 4px; border-right: none;">
+          <button id="chatbotSend" style="background-color: ${config.primaryColor}; color: white; border: none; padding: 8px 12px; border-radius: 0 4px 4px 0; cursor: pointer;">
+            →
           </button>
         </div>
       </div>
@@ -471,87 +471,97 @@ function generateJS(config: WebsiteConfig): string {
     return acc;
   }, {}))};
   
-  let chatbotInitialized = false;
+  let chatbotOpened = false;
   
-  function addChatMessage(message, isUser = false) {
+  function addMessage(text, isUser) {
     if (!chatbotMessages) return;
     
     const messageDiv = document.createElement('div');
-    messageDiv.className = 'mb-3 text-' + (isUser ? 'end' : 'start');
+    messageDiv.style.marginBottom = '10px';
+    messageDiv.style.textAlign = isUser ? 'right' : 'left';
     
-    const messageContent = document.createElement('div');
-    messageContent.className = isUser 
-      ? 'bg-primary-custom text-white p-2 rounded d-inline-block' 
-      : 'bg-light p-2 rounded d-inline-block';
+    const bubble = document.createElement('div');
+    bubble.style.display = 'inline-block';
+    bubble.style.padding = '8px 12px';
+    bubble.style.borderRadius = '15px';
+    bubble.style.maxWidth = '80%';
+    bubble.style.wordWrap = 'break-word';
     
-    messageContent.innerHTML = '<small>' + message + '</small>';
-    messageDiv.appendChild(messageContent);
+    if (isUser) {
+      bubble.style.backgroundColor = '${config.primaryColor}';
+      bubble.style.color = 'white';
+    } else {
+      bubble.style.backgroundColor = '#f1f1f1';
+      bubble.style.color = '#333';
+    }
+    
+    bubble.textContent = text;
+    messageDiv.appendChild(bubble);
     chatbotMessages.appendChild(messageDiv);
-    
-    // Scroll to bottom
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
   }
   
-  function initializeChatbot() {
-    if (chatbotInitialized) return;
-    chatbotInitialized = true;
-    
-    // Add welcome message
-    addChatMessage(currentLanguage === 'en' 
-      ? 'Hello! How can I help you today?' 
-      : '¡Hola! ¿Cómo puedo ayudarte hoy?'
-    );
-  }
-  
-  function toggleChatbot() {
+  function openChatbot() {
     if (!chatbotPanel) return;
+    chatbotPanel.style.display = 'block';
     
-    if (chatbotPanel.style.display === 'block') {
-      chatbotPanel.style.display = 'none';
-    } else {
-      chatbotPanel.style.display = 'block';
-      initializeChatbot();
+    if (!chatbotOpened) {
+      chatbotOpened = true;
+      addMessage(currentLanguage === 'en' ? 'Hello! How can I help you today?' : '¡Hola! ¿Cómo puedo ayudarte hoy?', false);
     }
   }
   
+  function closeChatbot() {
+    if (!chatbotPanel) return;
+    chatbotPanel.style.display = 'none';
+  }
+  
+  // Event listeners
   if (chatbotToggle) {
-    chatbotToggle.addEventListener('click', toggleChatbot);
+    chatbotToggle.addEventListener('click', function() {
+      if (chatbotPanel.style.display === 'block') {
+        closeChatbot();
+      } else {
+        openChatbot();
+      }
+    });
   }
   
   if (chatbotClose) {
-    chatbotClose.addEventListener('click', toggleChatbot);
+    chatbotClose.addEventListener('click', closeChatbot);
   }
   
-  // Handle question buttons
-  document.querySelectorAll('[data-question]').forEach(button => {
-    button.addEventListener('click', function() {
-      const questionKey = this.getAttribute('data-question');
-      const questionText = this.textContent;
-      
-      addChatMessage(questionText, true);
-      
-      setTimeout(() => {
-        const response = chatbotResponses[questionKey];
-        if (response) {
-          addChatMessage(response[currentLanguage] || response.en);
-        }
-      }, 500);
+  // Question buttons
+  setTimeout(function() {
+    document.querySelectorAll('[data-question]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        const questionKey = this.getAttribute('data-question');
+        const questionText = this.textContent;
+        
+        addMessage(questionText, true);
+        
+        setTimeout(function() {
+          const response = chatbotResponses[questionKey];
+          if (response) {
+            addMessage(response[currentLanguage] || response.en, false);
+          }
+        }, 500);
+      });
     });
-  });
+  }, 100);
   
-  // Handle send button and input
+  // Send message
   function sendMessage() {
     if (!chatbotInput || !chatbotInput.value.trim()) return;
     
     const message = chatbotInput.value.trim();
-    addChatMessage(message, true);
+    addMessage(message, true);
     chatbotInput.value = '';
     
-    setTimeout(() => {
-      addChatMessage(currentLanguage === 'en' 
+    setTimeout(function() {
+      addMessage(currentLanguage === 'en' 
         ? 'Thank you for your message. Someone will respond shortly.' 
-        : 'Gracias por tu mensaje. Alguien te responderá pronto.'
-      );
+        : 'Gracias por tu mensaje. Alguien te responderá pronto.', false);
     }, 1000);
   }
   
