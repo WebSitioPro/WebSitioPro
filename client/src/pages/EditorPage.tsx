@@ -62,7 +62,7 @@ interface WebsiteData {
 export default function EditorPage() {
   const params = useParams();
   const clientId = params.clientId || 'default';
-  const [activeTab, setActiveTab] = useState('template');
+  const [activeTab, setActiveTab] = useState('tools');
   const [selectedTemplate, setSelectedTemplate] = useState('professionals');
 
   // Handle template change
@@ -392,11 +392,11 @@ export default function EditorPage() {
               <h5 className="mb-3">Website Editor</h5>
               <nav className="nav flex-column">
                 <button 
-                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'template' ? 'active fw-bold' : ''}`}
-                  onClick={() => setActiveTab('template')}
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'tools' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('tools')}
                 >
                   <Type size={16} className="me-2" />
-                  Business Type
+                  Developer Tools
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'content' ? 'active fw-bold' : ''}`}
@@ -490,8 +490,44 @@ export default function EditorPage() {
           <div className="col-md-6">
             <div className="bg-white rounded shadow-sm p-4">
               
-              {/* Business Template Selection */}
-              {activeTab === 'template' && (
+              {/* Developer Tools */}
+              {activeTab === 'tools' && (
+                <div>
+                  <h4 className="mb-4">Developer Tools</h4>
+                  <p className="text-muted mb-4">Access template editor and client website management tools.</p>
+                  
+                  <div className="row g-4">
+                    <div className="col-md-6">
+                      <div className="card border-0 shadow-sm">
+                        <div className="card-body text-center">
+                          <div className="mb-3" style={{ fontSize: '2rem' }}>🎨</div>
+                          <h5 className="card-title">Template Editor</h5>
+                          <p className="card-text text-muted small">Create and customize business templates for clients</p>
+                          <Link href="/template-editor/professionals" className="btn btn-primary">
+                            Open Template Editor
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="col-md-6">
+                      <div className="card border-0 shadow-sm">
+                        <div className="card-body text-center">
+                          <div className="mb-3" style={{ fontSize: '2rem' }}>🌐</div>
+                          <h5 className="card-title">Client Websites</h5>
+                          <p className="card-text text-muted small">Manage client subdomains and deployments</p>
+                          <button className="btn btn-outline-primary">
+                            Manage Clients
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Content Editor Tab */}
+              {activeTab === 'content' && (
                 <div>
                   <h4 className="mb-4">Choose Your Business Template</h4>
                   <p className="text-muted mb-4">Select the template that best matches your business type. Each template includes specialized features and content structure for your industry.</p>

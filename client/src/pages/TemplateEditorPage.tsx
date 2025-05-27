@@ -225,6 +225,13 @@ export default function TemplateEditorPage() {
                   Colors & Style
                 </button>
                 <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'images' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('images')}
+                >
+                  <Image size={16} className="me-2" />
+                  Photos & Images
+                </button>
+                <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'contact' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('contact')}
                 >
@@ -476,6 +483,151 @@ export default function TemplateEditorPage() {
                         onChange={(e) => handleInputChange('backgroundColor', e.target.value)}
                       />
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Images Tab */}
+              {activeTab === 'images' && (
+                <div>
+                  <h4 className="mb-4">Photos & Images</h4>
+                  <p className="text-muted mb-4">Upload and manage images for your {templateType} website template.</p>
+                  
+                  <div className="row g-3">
+                    <div className="col-12">
+                      <h6>Hero Section Image</h6>
+                      <div className="border-2 border-dashed border-light rounded p-4 text-center bg-light">
+                        <Image size={48} className="text-muted mb-2" />
+                        <p className="text-muted mb-2">Main hero/banner image</p>
+                        <button className="btn btn-outline-primary btn-sm">Upload Image</button>
+                      </div>
+                    </div>
+                    
+                    {templateType === 'restaurant' && (
+                      <>
+                        <div className="col-md-6">
+                          <h6>Food Gallery</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Food photos</p>
+                            <button className="btn btn-outline-warning btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>Restaurant Interior</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Interior photos</p>
+                            <button className="btn btn-outline-warning btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    
+                    {templateType === 'tourist' && (
+                      <>
+                        <div className="col-md-6">
+                          <h6>Destination Photos</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Tour destinations</p>
+                            <button className="btn btn-outline-info btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>Activity Photos</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Tour activities</p>
+                            <button className="btn btn-outline-info btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    
+                    {templateType === 'retail' && (
+                      <>
+                        <div className="col-md-6">
+                          <h6>Product Photos</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Product catalog</p>
+                            <button className="btn btn-outline-primary btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>Store Photos</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Store images</p>
+                            <button className="btn btn-outline-primary btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    
+                    {templateType === 'services' && (
+                      <>
+                        <div className="col-md-6">
+                          <h6>Before/After Gallery</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Work examples</p>
+                            <button className="btn btn-outline-danger btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>Team Photos</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Team members</p>
+                            <button className="btn btn-outline-danger btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    
+                    {templateType === 'artisans' && (
+                      <>
+                        <div className="col-md-6">
+                          <h6>Portfolio Gallery</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Craft portfolio</p>
+                            <button className="btn btn-outline-secondary btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>Process Photos</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Craft process</p>
+                            <button className="btn btn-outline-secondary btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    
+                    {templateType === 'professionals' && (
+                      <>
+                        <div className="col-md-6">
+                          <h6>Professional Photos</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Professional headshots</p>
+                            <button className="btn btn-outline-success btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>Office/Clinic Photos</h6>
+                          <div className="border-2 border-dashed border-light rounded p-3 text-center bg-light">
+                            <Image size={32} className="text-muted mb-1" />
+                            <p className="small text-muted mb-1">Workplace images</p>
+                            <button className="btn btn-outline-success btn-sm">Add Photos</button>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               )}
