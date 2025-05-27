@@ -15,6 +15,19 @@ export default function HomePage() {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
 
+  const checkDomain = () => {
+    if (!domainInput.trim()) return;
+    
+    // Simulate domain availability check
+    const commonDomains = ['google', 'facebook', 'amazon', 'microsoft', 'apple', 'youtube', 'instagram'];
+    const isCommon = commonDomains.some(domain => domainInput.toLowerCase().includes(domain));
+    
+    setDomainResult({
+      available: !isCommon,
+      domain: domainInput
+    });
+  };
+
   // Chatbot Q&A data
   const chatbotResponses = {
     es: {
@@ -231,20 +244,6 @@ export default function HomePage() {
     };
 
     return translations[language as keyof typeof translations]?.[key as keyof typeof translations['es']] || key;
-  };
-
-  const checkDomain = () => {
-    if (!domainInput.trim()) return;
-    
-    // Simulate domain availability check
-    // In a real app, you'd call a domain checking API
-    const commonDomains = ['google', 'facebook', 'amazon', 'microsoft', 'apple', 'youtube', 'instagram'];
-    const isCommon = commonDomains.some(domain => domainInput.toLowerCase().includes(domain));
-    
-    setDomainResult({
-      available: !isCommon,
-      domain: domainInput
-    });
   };
 
   useEffect(() => {
