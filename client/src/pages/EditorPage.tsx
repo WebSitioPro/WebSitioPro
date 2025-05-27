@@ -442,6 +442,13 @@ export default function EditorPage() {
                   Footer
                 </button>
                 <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'chatbot' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('chatbot')}
+                >
+                  <Settings size={16} className="me-2" />
+                  Chatbot
+                </button>
+                <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pro' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('pro')}
                 >
@@ -961,6 +968,157 @@ export default function EditorPage() {
                         className="form-control"
                         value={websiteData.officeHours.en}
                         onChange={(e) => handleInputChange('officeHours', e.target.value, 'en')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Chatbot Tab */}
+              {activeTab === 'chatbot' && (
+                <div>
+                  <h4 className="mb-4">Chatbot Settings</h4>
+                  
+                  <h5 className="mb-3">General Settings</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Enable Chatbot</label>
+                      <select className="form-control">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                      </select>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Chatbot Color</label>
+                      <input 
+                        type="color" 
+                        className="form-control form-control-color"
+                        defaultValue="#007BFF"
+                      />
+                    </div>
+                  </div>
+
+                  <h5 className="mb-3">Chatbot Text</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Chat Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        defaultValue="Chat con WebSitioPro"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Chat Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        defaultValue="Chat with WebSitioPro"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Welcome Message (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        defaultValue="¡Hola! ¿En qué puedo ayudarte con tu sitio web?"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Welcome Message (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        defaultValue="Hello! How can I help you with your website?"
+                      />
+                    </div>
+                  </div>
+
+                  <h5 className="mb-3">Automated Responses</h5>
+                  <p className="text-muted mb-3">Configure keyword-based responses for common questions</p>
+                  
+                  {/* Spanish Responses */}
+                  <h6>Spanish Responses</h6>
+                  <div className="mb-4">
+                    {[
+                      { keyword: 'hola', response: '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte hoy?' },
+                      { keyword: 'precios', response: 'Nuestros sitios Pro cuestan 2,000 pesos de construcción + 3,000 pesos/año de hosting.' },
+                      { keyword: 'servicios', response: 'Ofrecemos sitios web para profesionales, restaurantes, negocios turísticos, retail y servicios.' },
+                      { keyword: 'contacto', response: 'Puedes contactarnos por WhatsApp al +52 983 123 4567 o por email a info@websitiopro.com' },
+                      { keyword: 'tiempo', response: 'Típicamente creamos tu sitio web en 5-7 días hábiles después de recibir todo tu contenido.' }
+                    ].map((item, index) => (
+                      <div key={index} className="border rounded p-3 mb-3">
+                        <div className="row g-3">
+                          <div className="col-md-4">
+                            <label className="form-label">Keyword</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              defaultValue={item.keyword}
+                            />
+                          </div>
+                          <div className="col-md-8">
+                            <label className="form-label">Response</label>
+                            <textarea 
+                              className="form-control"
+                              rows={2}
+                              defaultValue={item.response}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* English Responses */}
+                  <h6>English Responses</h6>
+                  <div className="mb-4">
+                    {[
+                      { keyword: 'hello', response: 'Hello! I\'m the WebSitioPro assistant. How can I help you today?' },
+                      { keyword: 'pricing', response: 'Our Pro sites cost 2,000 pesos for construction + 3,000 pesos/year for hosting.' },
+                      { keyword: 'services', response: 'We offer websites for professionals, restaurants, tourist businesses, retail, and services.' },
+                      { keyword: 'contact', response: 'You can contact us via WhatsApp at +52 983 123 4567 or email us at info@websitiopro.com' },
+                      { keyword: 'time', response: 'We typically create your website in 5-7 business days after receiving all your content.' }
+                    ].map((item, index) => (
+                      <div key={index} className="border rounded p-3 mb-3">
+                        <div className="row g-3">
+                          <div className="col-md-4">
+                            <label className="form-label">Keyword</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              defaultValue={item.keyword}
+                            />
+                          </div>
+                          <div className="col-md-8">
+                            <label className="form-label">Response</label>
+                            <textarea 
+                              className="form-control"
+                              rows={2}
+                              defaultValue={item.response}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h5 className="mb-3">Default Response</h5>
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Default Response (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        defaultValue="Gracias por tu pregunta. Para una respuesta personalizada, por favor contáctanos por WhatsApp al +52 983 123 4567"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Default Response (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        defaultValue="Thanks for your question. For a personalized answer, please contact us via WhatsApp at +52 983 123 4567"
                       />
                     </div>
                   </div>

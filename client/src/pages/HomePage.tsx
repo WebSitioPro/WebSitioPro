@@ -1,12 +1,76 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { Shield, Star, Globe, Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send } from 'lucide-react';
 
 export default function HomePage() {
   const [language, setLanguage] = useState('es');
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messages, setMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+  const [currentMessage, setCurrentMessage] = useState('');
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
+  };
+
+  // Chatbot Q&A data
+  const chatbotResponses = {
+    es: {
+      'hola': '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte hoy?',
+      'precios': 'Nuestros sitios Pro cuestan 2,000 pesos de construcción + 3,000 pesos/año de hosting. También ofrecemos planes de pago flexibles.',
+      'servicios': 'Ofrecemos sitios web para profesionales, restaurantes, negocios turísticos, retail y servicios. Todos completamente personalizados.',
+      'contacto': 'Puedes contactarnos por WhatsApp al +52 983 123 4567 o por email a info@websitiopro.com',
+      'tiempo': 'Típicamente creamos tu sitio web en 5-7 días hábiles después de recibir todo tu contenido.',
+      'dominio': 'Sí, incluimos un dominio gratis hasta $12 USD. Para dominios premium hay costo adicional.',
+      'default': 'Gracias por tu pregunta. Para una respuesta personalizada, por favor contáctanos por WhatsApp al +52 983 123 4567'
+    },
+    en: {
+      'hello': 'Hello! I\'m the WebSitioPro assistant. How can I help you today?',
+      'pricing': 'Our Pro sites cost 2,000 pesos for construction + 3,000 pesos/year for hosting. We also offer flexible payment plans.',
+      'services': 'We offer websites for professionals, restaurants, tourist businesses, retail, and services. All completely customized.',
+      'contact': 'You can contact us via WhatsApp at +52 983 123 4567 or email us at info@websitiopro.com',
+      'time': 'We typically create your website in 5-7 business days after receiving all your content.',
+      'domain': 'Yes, we include a free domain up to $12 USD. Premium domains have additional cost.',
+      'default': 'Thanks for your question. For a personalized answer, please contact us via WhatsApp at +52 983 123 4567'
+    }
+  };
+
+  const handleChatSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentMessage.trim()) return;
+
+    // Add user message
+    const userMessage = { text: currentMessage, isUser: true };
+    setMessages(prev => [...prev, userMessage]);
+
+    // Generate bot response
+    const responses = chatbotResponses[language as keyof typeof chatbotResponses];
+    const messageLower = currentMessage.toLowerCase();
+    let botResponse = responses.default;
+
+    // Simple keyword matching
+    for (const [keyword, response] of Object.entries(responses)) {
+      if (messageLower.includes(keyword)) {
+        botResponse = response;
+        break;
+      }
+    }
+
+    // Add bot response with delay
+    setTimeout(() => {
+      setMessages(prev => [...prev, { text: botResponse, isUser: false }]);
+    }, 500);
+
+    setCurrentMessage('');
+  };
+
+  const openChat = () => {
+    setChatOpen(true);
+    if (messages.length === 0) {
+      // Add welcome message
+      setTimeout(() => {
+        setMessages([{ text: t('chatbotWelcome'), isUser: false }]);
+      }, 300);
+    }
   };
 
   const t = (key: string) => {
@@ -77,7 +141,14 @@ export default function HomePage() {
         // Office hours
         officeHours: 'Horarios de Oficina',
         mondayFriday: 'Lun-Vie: 9:00 AM - 6:00 PM',
-        saturday: 'Sáb: 10:00 AM - 2:00 PM'
+        saturday: 'Sáb: 10:00 AM - 2:00 PM',
+        
+        // Chatbot
+        chatbotTitle: 'Chat con WebSitioPro',
+        chatbotWelcome: '¡Hola! ¿En qué puedo ayudarte con tu sitio web?',
+        chatbotPlaceholder: 'Escribe tu pregunta...',
+        chatbotSend: 'Enviar',
+        chatbotClose: 'Cerrar'
       },
       en: {
         // Header
@@ -145,7 +216,14 @@ export default function HomePage() {
         // Office hours
         officeHours: 'Office Hours',
         mondayFriday: 'Mon-Fri: 9:00 AM - 6:00 PM',
-        saturday: 'Sat: 10:00 AM - 2:00 PM'
+        saturday: 'Sat: 10:00 AM - 2:00 PM',
+        
+        // Chatbot
+        chatbotTitle: 'Chat with WebSitioPro',
+        chatbotWelcome: 'Hello! How can I help you with your website?',
+        chatbotPlaceholder: 'Type your question...',
+        chatbotSend: 'Send',
+        chatbotClose: 'Close'
       }
     };
 
@@ -505,19 +583,92 @@ export default function HomePage() {
         </div>
       </footer>
 
-      {/* Floating Chatbot Button */}
-      <button 
-        className="btn btn-primary rounded-circle position-fixed bottom-0 end-0 m-4"
-        style={{ 
-          backgroundColor: 'hsl(var(--info))',
-          width: '60px',
-          height: '60px',
-          zIndex: 1000 
-        }}
-        title={t('chatWithUs')}
-      >
-        💬
-      </button>
+      {/* Chatbot */}
+      {!chatOpen && (
+        <button 
+          onClick={openChat}
+          className="btn btn-primary rounded-circle position-fixed bottom-0 end-0 m-4"
+          style={{ 
+            backgroundColor: 'hsl(var(--info))',
+            width: '60px',
+            height: '60px',
+            zIndex: 1000 
+          }}
+          title={t('chatWithUs')}
+        >
+          <MessageCircle size={24} />
+        </button>
+      )}
+
+      {/* Chat Window */}
+      {chatOpen && (
+        <div 
+          className="position-fixed bottom-0 end-0 m-4 bg-white rounded shadow-lg border"
+          style={{ 
+            width: '350px', 
+            height: '500px', 
+            zIndex: 1001,
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          {/* Chat Header */}
+          <div 
+            className="p-3 rounded-top text-white d-flex justify-content-between align-items-center"
+            style={{ backgroundColor: 'hsl(var(--primary))' }}
+          >
+            <h6 className="mb-0">{t('chatbotTitle')}</h6>
+            <button 
+              onClick={() => setChatOpen(false)}
+              className="btn btn-sm text-white p-0"
+              style={{ background: 'none', border: 'none' }}
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Chat Messages */}
+          <div className="flex-grow-1 p-3 overflow-auto" style={{ maxHeight: '350px' }}>
+            {messages.map((message, index) => (
+              <div key={index} className={`mb-3 ${message.isUser ? 'text-end' : 'text-start'}`}>
+                <div 
+                  className={`d-inline-block p-2 rounded ${
+                    message.isUser 
+                      ? 'text-white' 
+                      : 'bg-light'
+                  }`}
+                  style={{ 
+                    backgroundColor: message.isUser ? 'hsl(var(--primary))' : undefined,
+                    maxWidth: '80%'
+                  }}
+                >
+                  {message.text}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Chat Input */}
+          <form onSubmit={handleChatSubmit} className="p-3 border-top">
+            <div className="input-group">
+              <input 
+                type="text"
+                className="form-control"
+                placeholder={t('chatbotPlaceholder')}
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+              />
+              <button 
+                type="submit"
+                className="btn text-white"
+                style={{ backgroundColor: 'hsl(var(--primary))' }}
+              >
+                <Send size={16} />
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
