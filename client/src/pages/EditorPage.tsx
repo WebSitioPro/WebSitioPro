@@ -399,6 +399,13 @@ export default function EditorPage() {
                   Business Type
                 </button>
                 <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'content' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('content')}
+                >
+                  <Settings size={16} className="me-2" />
+                  Content Editor
+                </button>
+                <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'colors' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('colors')}
                 >
@@ -479,8 +486,8 @@ export default function EditorPage() {
             </div>
           </div>
 
-          {/* Main Content */}
-          <div className="col-md-9">
+          {/* Editor Panel */}
+          <div className="col-md-6">
             <div className="bg-white rounded shadow-sm p-4">
               
               {/* Business Template Selection */}
@@ -817,6 +824,248 @@ export default function EditorPage() {
               )}
 
               {/* Colors Tab */}
+              {activeTab === 'content' && (
+                <div>
+                  <h4 className="mb-4">Content Editor - {selectedTemplate.charAt(0).toUpperCase() + selectedTemplate.slice(1)} Template</h4>
+                  
+                  {/* Restaurant Content Fields */}
+                  {selectedTemplate === 'restaurant' && (
+                    <div className="space-y-4">
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Restaurant Name</label>
+                          <input type="text" className="form-control" placeholder="Mi Restaurante Mexicano" />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Cuisine Type</label>
+                          <input type="text" className="form-control" placeholder="Auténtica Cocina Mexicana" />
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <h6>Menu Items</h6>
+                        <div className="row g-3">
+                          <div className="col-md-4">
+                            <input type="text" className="form-control" placeholder="Dish Name" />
+                          </div>
+                          <div className="col-md-6">
+                            <input type="text" className="form-control" placeholder="Description" />
+                          </div>
+                          <div className="col-md-2">
+                            <input type="text" className="form-control" placeholder="$Price" />
+                          </div>
+                        </div>
+                        <button className="btn btn-outline-success mt-2 btn-sm">+ Add Menu Item</button>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <h6>Restaurant Settings</h6>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="enableReservations" />
+                          <label className="form-check-label" htmlFor="enableReservations">Enable Online Reservations</label>
+                        </div>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="showChefStory" />
+                          <label className="form-check-label" htmlFor="showChefStory">Show Chef Story Section</label>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Tourist Content Fields */}
+                  {selectedTemplate === 'tourist' && (
+                    <div className="space-y-4">
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Tour Company Name</label>
+                          <input type="text" className="form-control" placeholder="Riviera Maya Tours" />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Main Destination</label>
+                          <input type="text" className="form-control" placeholder="Cancún & Riviera Maya" />
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <h6>Tour Packages</h6>
+                        <div className="row g-3">
+                          <div className="col-md-4">
+                            <input type="text" className="form-control" placeholder="Tour Name" />
+                          </div>
+                          <div className="col-md-4">
+                            <input type="text" className="form-control" placeholder="Duration" />
+                          </div>
+                          <div className="col-md-4">
+                            <input type="text" className="form-control" placeholder="Price" />
+                          </div>
+                        </div>
+                        <button className="btn btn-outline-info mt-2 btn-sm">+ Add Tour Package</button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Retail Content Fields */}
+                  {selectedTemplate === 'retail' && (
+                    <div className="space-y-4">
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Store Name</label>
+                          <input type="text" className="form-control" placeholder="Mi Tienda" />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Store Type</label>
+                          <input type="text" className="form-control" placeholder="Ropa y Accesorios" />
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <h6>Product Categories</h6>
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <input type="text" className="form-control" placeholder="Category Name" />
+                          </div>
+                          <div className="col-md-6">
+                            <input type="text" className="form-control" placeholder="Description" />
+                          </div>
+                        </div>
+                        <button className="btn btn-outline-primary mt-2 btn-sm">+ Add Category</button>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="enableCart" />
+                          <label className="form-check-label" htmlFor="enableCart">Enable Shopping Cart</label>
+                        </div>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="showInventory" />
+                          <label className="form-check-label" htmlFor="showInventory">Show Stock Quantities</label>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Services Content Fields */}
+                  {selectedTemplate === 'services' && (
+                    <div className="space-y-4">
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Service Company Name</label>
+                          <input type="text" className="form-control" placeholder="Servicios del Hogar" />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Emergency Phone</label>
+                          <input type="text" className="form-control" placeholder="24/7 Emergency Number" />
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <h6>Service Areas</h6>
+                        <div className="row g-3">
+                          <div className="col-md-8">
+                            <input type="text" className="form-control" placeholder="Coverage Area" />
+                          </div>
+                          <div className="col-md-4">
+                            <input type="text" className="form-control" placeholder="Response Time" />
+                          </div>
+                        </div>
+                        <button className="btn btn-outline-danger mt-2 btn-sm">+ Add Service Area</button>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="emergency24" />
+                          <label className="form-check-label" htmlFor="emergency24">24/7 Emergency Services</label>
+                        </div>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="beforeAfter" />
+                          <label className="form-check-label" htmlFor="beforeAfter">Show Before/After Gallery</label>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Artisans Content Fields */}
+                  {selectedTemplate === 'artisans' && (
+                    <div className="space-y-4">
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Artisan Name</label>
+                          <input type="text" className="form-control" placeholder="Nombre del Artesano" />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Craft Specialty</label>
+                          <input type="text" className="form-control" placeholder="Cerámica Tradicional" />
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <h6>Portfolio Items</h6>
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <input type="text" className="form-control" placeholder="Piece Name" />
+                          </div>
+                          <div className="col-md-6">
+                            <input type="text" className="form-control" placeholder="Materials Used" />
+                          </div>
+                        </div>
+                        <button className="btn btn-outline-secondary mt-2 btn-sm">+ Add Portfolio Item</button>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="customOrders" />
+                          <label className="form-check-label" htmlFor="customOrders">Accept Custom Orders</label>
+                        </div>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="processGallery" />
+                          <label className="form-check-label" htmlFor="processGallery">Show Craft Process</label>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Professionals Content Fields */}
+                  {selectedTemplate === 'professionals' && (
+                    <div className="space-y-4">
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Professional Name</label>
+                          <input type="text" className="form-control" placeholder="Dr. María González" />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Profession</label>
+                          <input type="text" className="form-control" placeholder="Médico General" />
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <h6>Services Offered</h6>
+                        <div className="row g-3">
+                          <div className="col-md-8">
+                            <input type="text" className="form-control" placeholder="Service Name" />
+                          </div>
+                          <div className="col-md-4">
+                            <input type="text" className="form-control" placeholder="Duration" />
+                          </div>
+                        </div>
+                        <button className="btn btn-outline-success mt-2 btn-sm">+ Add Service</button>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="showCredentials" />
+                          <label className="form-check-label" htmlFor="showCredentials">Display Credentials</label>
+                        </div>
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="onlineAppointments" />
+                          <label className="form-check-label" htmlFor="onlineAppointments">Enable Online Appointments</label>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {activeTab === 'colors' && (
                 <div>
                   <h4 className="mb-4">Color Scheme</h4>
@@ -1705,6 +1954,211 @@ export default function EditorPage() {
 
               <div className="text-center mt-4 pt-4 border-top">
                 <p className="text-muted">Los cambios se guardan automáticamente. Usa "Exportar" para descargar tu configuración.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Live Preview Panel */}
+          <div className="col-md-3">
+            <div className="bg-white rounded shadow-sm p-3 sticky-top" style={{ top: '20px' }}>
+              <h5 className="mb-3">Live Preview</h5>
+              <div className="preview-container border rounded p-3" style={{ minHeight: '600px', backgroundColor: '#f8f9fa' }}>
+                
+                {/* Restaurant Template Preview */}
+                {selectedTemplate === 'restaurant' && (
+                  <div className="template-preview">
+                    <div className="mb-3 text-center">
+                      <h6 className="text-warning mb-1">🍽️ Mi Restaurante</h6>
+                      <small className="text-muted">Auténtica Cocina Mexicana</small>
+                    </div>
+                    
+                    <div className="preview-section mb-3">
+                      <div className="d-flex justify-content-between align-items-center mb-2">
+                        <strong style={{ fontSize: '12px' }}>Menu Digital</strong>
+                        <span className="badge bg-warning" style={{ fontSize: '10px' }}>Featured</span>
+                      </div>
+                      <div className="small text-muted mb-1">Tacos al Pastor - $85</div>
+                      <div className="small text-muted mb-1">Enchiladas Verdes - $95</div>
+                      <div className="small text-muted">Mole Poblano - $120</div>
+                    </div>
+
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Reservaciones</strong>
+                      <div className="mt-2 p-2 bg-light rounded small">
+                        <div className="text-center">📅 Reserve Mesa</div>
+                      </div>
+                    </div>
+
+                    <div className="preview-section">
+                      <strong style={{ fontSize: '12px' }}>Galería</strong>
+                      <div className="row g-1 mt-1">
+                        <div className="col-4"><div className="bg-secondary rounded" style={{ height: '40px' }}></div></div>
+                        <div className="col-4"><div className="bg-secondary rounded" style={{ height: '40px' }}></div></div>
+                        <div className="col-4"><div className="bg-secondary rounded" style={{ height: '40px' }}></div></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tourist Template Preview */}
+                {selectedTemplate === 'tourist' && (
+                  <div className="template-preview">
+                    <div className="mb-3 text-center">
+                      <h6 className="text-info mb-1">🏛️ Riviera Maya Tours</h6>
+                      <small className="text-muted">Cancún & Riviera Maya</small>
+                    </div>
+                    
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Tour Packages</strong>
+                      <div className="small text-muted mb-1">Chichen Itzá Tour - $1,200</div>
+                      <div className="small text-muted mb-1">Cenotes Adventure - $850</div>
+                      <div className="small text-muted">Tulum Ruins - $950</div>
+                    </div>
+
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Online Booking</strong>
+                      <div className="mt-2 p-2 bg-light rounded small text-center">
+                        📅 Book Your Tour
+                      </div>
+                    </div>
+
+                    <div className="preview-section">
+                      <strong style={{ fontSize: '12px' }}>Destinations</strong>
+                      <div className="row g-1 mt-1">
+                        <div className="col-6"><div className="bg-info rounded p-1 text-white text-center small">Chichen</div></div>
+                        <div className="col-6"><div className="bg-info rounded p-1 text-white text-center small">Tulum</div></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Retail Template Preview */}
+                {selectedTemplate === 'retail' && (
+                  <div className="template-preview">
+                    <div className="mb-3 text-center">
+                      <h6 className="text-primary mb-1">🛍️ Mi Tienda</h6>
+                      <small className="text-muted">Ropa y Accesorios</small>
+                    </div>
+                    
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Product Catalog</strong>
+                      <div className="small text-muted mb-1">Vestido Casual - $450</div>
+                      <div className="small text-muted mb-1">Blusa Elegante - $320</div>
+                      <div className="small text-muted">Jeans Premium - $680</div>
+                    </div>
+
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Shopping Cart</strong>
+                      <div className="mt-2 p-2 bg-light rounded small text-center">
+                        🛒 Cart (3 items)
+                      </div>
+                    </div>
+
+                    <div className="preview-section">
+                      <strong style={{ fontSize: '12px' }}>Categories</strong>
+                      <div className="row g-1 mt-1">
+                        <div className="col-6"><span className="badge bg-primary small">Vestidos</span></div>
+                        <div className="col-6"><span className="badge bg-primary small">Blusas</span></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Services Template Preview */}
+                {selectedTemplate === 'services' && (
+                  <div className="template-preview">
+                    <div className="mb-3 text-center">
+                      <h6 className="text-danger mb-1">🔧 Servicios del Hogar</h6>
+                      <small className="text-muted">24/7 Emergency Services</small>
+                    </div>
+                    
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Emergency Contact</strong>
+                      <div className="mt-2 p-2 bg-danger text-white rounded small text-center">
+                        📞 Emergency: 555-0123
+                      </div>
+                    </div>
+
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Service Areas</strong>
+                      <div className="small text-muted mb-1">• Ciudad de México</div>
+                      <div className="small text-muted mb-1">• Estado de México</div>
+                      <div className="small text-muted">• Guadalajara</div>
+                    </div>
+
+                    <div className="preview-section">
+                      <strong style={{ fontSize: '12px' }}>Before/After Gallery</strong>
+                      <div className="row g-1 mt-1">
+                        <div className="col-6 text-center small">Before</div>
+                        <div className="col-6 text-center small">After</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Artisans Template Preview */}
+                {selectedTemplate === 'artisans' && (
+                  <div className="template-preview">
+                    <div className="mb-3 text-center">
+                      <h6 className="text-secondary mb-1">🎨 Artesano</h6>
+                      <small className="text-muted">Cerámica Tradicional</small>
+                    </div>
+                    
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Portfolio</strong>
+                      <div className="small text-muted mb-1">Jarrón Talavera - $1,200</div>
+                      <div className="small text-muted mb-1">Platos Decorativos - $450</div>
+                      <div className="small text-muted">Figuras Artesanales - $800</div>
+                    </div>
+
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Custom Orders</strong>
+                      <div className="mt-2 p-2 bg-light rounded small text-center">
+                        ✉️ Request Custom Piece
+                      </div>
+                    </div>
+
+                    <div className="preview-section">
+                      <strong style={{ fontSize: '12px' }}>Craft Process</strong>
+                      <div className="row g-1 mt-1">
+                        <div className="col-4 text-center small">Clay</div>
+                        <div className="col-4 text-center small">Shape</div>
+                        <div className="col-4 text-center small">Fire</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Professionals Template Preview */}
+                {selectedTemplate === 'professionals' && (
+                  <div className="template-preview">
+                    <div className="mb-3 text-center">
+                      <h6 className="text-success mb-1">🏥 Dr. María González</h6>
+                      <small className="text-muted">Médico General</small>
+                    </div>
+                    
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Services</strong>
+                      <div className="small text-muted mb-1">Consulta General - 45 min</div>
+                      <div className="small text-muted mb-1">Medicina Preventiva - 30 min</div>
+                      <div className="small text-muted">Certificados Médicos - 15 min</div>
+                    </div>
+
+                    <div className="preview-section mb-3">
+                      <strong style={{ fontSize: '12px' }}>Credentials</strong>
+                      <div className="small text-muted mb-1">• UNAM Medical School</div>
+                      <div className="small text-muted">• 15 años experiencia</div>
+                    </div>
+
+                    <div className="preview-section">
+                      <strong style={{ fontSize: '12px' }}>Appointments</strong>
+                      <div className="mt-2 p-2 bg-light rounded small text-center">
+                        📅 Schedule Appointment
+                      </div>
+                    </div>
+                  </div>
+                )}
+
               </div>
             </div>
           </div>
