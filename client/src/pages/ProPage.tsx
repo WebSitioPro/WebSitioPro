@@ -330,41 +330,199 @@ export default function ProPage() {
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
             {t('templatesTitle')}
           </h2>
+          <p className="text-center text-muted mb-5">
+            {language === 'es' 
+              ? 'Explora nuestros ejemplos de sitios web profesionales para diferentes tipos de negocios. Haz clic para ver una demo completa.'
+              : 'Explore our professional website examples for different business types. Click to see a full demo.'
+            }
+          </p>
+          
           <div className="row g-4">
-            {[1, 2, 3, 4, 5].map((num) => (
-              <div key={num} className="col-lg-6">
-                <div className="card h-100 border-0 shadow">
-                  <div className="card-body p-4">
-                    <div className="row g-3">
-                      <div className="col-4">
-                        <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
-                          <Globe size={48} className="text-muted" />
-                        </div>
-                        <div className="mt-2">
-                          <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
-                          <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
-                          <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
-                        </div>
+            {/* Restaurant Template */}
+            <div className="col-lg-6">
+              <Link href="/template/restaurant" className="text-decoration-none">
+                <div className="card h-100 border-0 shadow-sm hover-card">
+                  <div className="row g-0">
+                    <div className="col-4">
+                      <div className="bg-warning bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🍽️</div>
                       </div>
-                      <div className="col-8">
-                        <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                          {t(`template${num}` as any)}
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body">
+                        <h5 className="card-title text-warning">
+                          {language === 'es' ? 'Restaurantes' : 'Restaurants'}
                         </h5>
-                        <p className="text-muted mb-3 small">
-                          {t(`template${num}Desc` as any)}
+                        <p className="card-text text-muted small">
+                          {language === 'es' 
+                            ? 'Menús digitales, reservaciones, galerías de comida'
+                            : 'Digital menus, reservations, food galleries'
+                          }
                         </p>
-                        <button 
-                          className="btn btn-outline-primary btn-sm"
-                          style={{ borderColor: 'hsl(var(--primary))', color: 'hsl(var(--primary))' }}
-                        >
-                          {t('viewTemplate')}
-                        </button>
+                        <small className="text-warning fw-bold">
+                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
+                        </small>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              </Link>
+            </div>
+
+            {/* Tourist Template */}
+            <div className="col-lg-6">
+              <Link href="/template/tourist" className="text-decoration-none">
+                <div className="card h-100 border-0 shadow-sm hover-card">
+                  <div className="row g-0">
+                    <div className="col-4">
+                      <div className="bg-info bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🏛️</div>
+                      </div>
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body">
+                        <h5 className="card-title text-info">
+                          {language === 'es' ? 'Turismo y Tours' : 'Tourism & Tours'}
+                        </h5>
+                        <p className="card-text text-muted small">
+                          {language === 'es' 
+                            ? 'Paquetes de tours, reservaciones en línea, destinos'
+                            : 'Tour packages, online booking, destinations'
+                          }
+                        </p>
+                        <small className="text-info fw-bold">
+                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Retail Template */}
+            <div className="col-lg-6">
+              <Link href="/template/retail" className="text-decoration-none">
+                <div className="card h-100 border-0 shadow-sm hover-card">
+                  <div className="row g-0">
+                    <div className="col-4">
+                      <div className="bg-primary bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🛍️</div>
+                      </div>
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body">
+                        <h5 className="card-title text-primary">
+                          {language === 'es' ? 'Tiendas y E-commerce' : 'Retail & E-commerce'}
+                        </h5>
+                        <p className="card-text text-muted small">
+                          {language === 'es' 
+                            ? 'Catálogo de productos, carrito de compras, categorías'
+                            : 'Product catalog, shopping cart, categories'
+                          }
+                        </p>
+                        <small className="text-primary fw-bold">
+                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Services Template */}
+            <div className="col-lg-6">
+              <Link href="/template/services" className="text-decoration-none">
+                <div className="card h-100 border-0 shadow-sm hover-card">
+                  <div className="row g-0">
+                    <div className="col-4">
+                      <div className="bg-danger bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🔧</div>
+                      </div>
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body">
+                        <h5 className="card-title text-danger">
+                          {language === 'es' ? 'Servicios del Hogar' : 'Home Services'}
+                        </h5>
+                        <p className="card-text text-muted small">
+                          {language === 'es' 
+                            ? 'Contacto de emergencia, áreas de servicio, certificaciones'
+                            : 'Emergency contact, service areas, certifications'
+                          }
+                        </p>
+                        <small className="text-danger fw-bold">
+                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Artisans Template */}
+            <div className="col-lg-6">
+              <Link href="/template/artisans" className="text-decoration-none">
+                <div className="card h-100 border-0 shadow-sm hover-card">
+                  <div className="row g-0">
+                    <div className="col-4">
+                      <div className="bg-secondary bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🎨</div>
+                      </div>
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body">
+                        <h5 className="card-title text-secondary">
+                          {language === 'es' ? 'Artesanos y Manualidades' : 'Artisans & Crafts'}
+                        </h5>
+                        <p className="card-text text-muted small">
+                          {language === 'es' 
+                            ? 'Portafolio, pedidos personalizados, proceso artesanal'
+                            : 'Portfolio, custom orders, craft process'
+                          }
+                        </p>
+                        <small className="text-secondary fw-bold">
+                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Professionals Template */}
+            <div className="col-lg-6">
+              <Link href="/template/professionals" className="text-decoration-none">
+                <div className="card h-100 border-0 shadow-sm hover-card">
+                  <div className="row g-0">
+                    <div className="col-4">
+                      <div className="bg-success bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🏥</div>
+                      </div>
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body">
+                        <h5 className="card-title text-success">
+                          {language === 'es' ? 'Profesionales' : 'Professionals'}
+                        </h5>
+                        <p className="card-text text-muted small">
+                          {language === 'es' 
+                            ? 'Credenciales, servicios, citas en línea, testimonios'
+                            : 'Credentials, services, online appointments, testimonials'
+                          }
+                        </p>
+                        <small className="text-success fw-bold">
+                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -457,84 +615,7 @@ export default function ProPage() {
         </div>
       </section>
 
-      {/* Template Examples */}
-      <section className="py-5 bg-light">
-        <div className="container">
-          <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {language === 'es' ? 'Ejemplos de Sitios Web' : 'Website Examples'}
-          </h2>
-          <p className="text-center text-muted mb-5">
-            {language === 'es' 
-              ? 'Explora nuestros ejemplos de sitios web profesionales para diferentes tipos de negocios.'
-              : 'Explore our professional website examples for different business types.'
-            }
-          </p>
-          
-          <div className="row g-4">
-            {/* Restaurant Template */}
-            <div className="col-lg-6">
-              <Link href="/template/restaurant" className="text-decoration-none">
-                <div className="card h-100 border-0 shadow-sm hover-card">
-                  <div className="row g-0">
-                    <div className="col-4">
-                      <div className="bg-warning bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
-                        <div style={{ fontSize: '3rem' }}>🍽️</div>
-                      </div>
-                    </div>
-                    <div className="col-8">
-                      <div className="card-body">
-                        <h5 className="card-title text-warning">
-                          {language === 'es' ? 'Restaurantes' : 'Restaurants'}
-                        </h5>
-                        <p className="card-text text-muted small">
-                          {language === 'es' 
-                            ? 'Menús digitales, reservaciones, galerías de comida'
-                            : 'Digital menus, reservations, food galleries'
-                          }
-                        </p>
-                        <small className="text-warning fw-bold">
-                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
 
-            {/* Professionals Template */}
-            <div className="col-lg-6">
-              <Link href="/template/professionals" className="text-decoration-none">
-                <div className="card h-100 border-0 shadow-sm hover-card">
-                  <div className="row g-0">
-                    <div className="col-4">
-                      <div className="bg-success bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
-                        <div style={{ fontSize: '3rem' }}>🏥</div>
-                      </div>
-                    </div>
-                    <div className="col-8">
-                      <div className="card-body">
-                        <h5 className="card-title text-success">
-                          {language === 'es' ? 'Profesionales' : 'Professionals'}
-                        </h5>
-                        <p className="card-text text-muted small">
-                          {language === 'es' 
-                            ? 'Credenciales, servicios, citas en línea, testimonios'
-                            : 'Credentials, services, online appointments, testimonials'
-                          }
-                        </p>
-                        <small className="text-success fw-bold">
-                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Payment */}
       <section className="py-5">
