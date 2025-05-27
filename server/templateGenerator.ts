@@ -169,8 +169,37 @@ function generateHTML(config: WebsiteConfig): string {
     <i class="fas fa-comments fa-lg"></i>
   </div>
   
-  <div id="chatbotPanel" class="chatbot-panel">
-    <!-- Chatbot content would be here -->
+  <div id="chatbotPanel" class="chatbot-panel" style="display: none;">
+    <div class="d-flex flex-column h-100">
+      <div class="p-3 bg-primary-custom text-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0" data-i18n="chatbotTitle">Chat with us</h5>
+          <button id="chatbotClose" class="btn btn-sm text-white">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="p-3 flex-grow-1 overflow-auto" id="chatbotMessages" style="max-height: 300px;">
+        <!-- Messages will be added here -->
+      </div>
+      
+      <div class="p-3 border-top">
+        <div class="mb-2" id="chatbotQuestions">
+          ${config.chatbotQuestions.map(q => `
+            <button class="btn btn-outline-primary btn-sm me-2 mb-2" data-question="${q.key}">
+              ${q.question[config.defaultLanguage]}
+            </button>
+          `).join('')}
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" id="chatbotInput" placeholder="Type your message...">
+          <button class="btn btn-primary-custom" id="chatbotSend">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
   ` : ''}
 
@@ -428,26 +457,112 @@ function generateJS(config: WebsiteConfig): string {
   // Chatbot functionality
   const chatbotToggle = document.getElementById('chatbotToggle');
   const chatbotPanel = document.getElementById('chatbotPanel');
+  const chatbotClose = document.getElementById('chatbotClose');
+  const chatbotMessages = document.getElementById('chatbotMessages');
+  const chatbotInput = document.getElementById('chatbotInput');
+  const chatbotSend = document.getElementById('chatbotSend');
   
-  if (chatbotToggle && chatbotPanel) {
-    function toggleChatbot() {
-      if (chatbotPanel.style.display === 'block') {
-        chatbotPanel.style.display = 'none';
-      } else {
-        chatbotPanel.style.display = 'block';
-      }
+  // Chatbot responses
+  const chatbotResponses = ${JSON.stringify(config.chatbotQuestions.reduce((acc, q) => {
+    acc[q.key] = {
+      en: q.answer.en,
+      es: q.answer.es
+    };
+    return acc;
+  }, {}))};
+  
+  let chatbotInitialized = false;
+  
+  function addChatMessage(message, isUser = false) {
+    if (!chatbotMessages) return;
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'mb-3 text-' + (isUser ? 'end' : 'start');
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = isUser 
+      ? 'bg-primary-custom text-white p-2 rounded d-inline-block' 
+      : 'bg-light p-2 rounded d-inline-block';
+    
+    messageContent.innerHTML = '<small>' + message + '</small>';
+    messageDiv.appendChild(messageContent);
+    chatbotMessages.appendChild(messageDiv);
+    
+    // Scroll to bottom
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+  
+  function initializeChatbot() {
+    if (chatbotInitialized) return;
+    chatbotInitialized = true;
+    
+    // Add welcome message
+    addChatMessage(currentLanguage === 'en' 
+      ? 'Hello! How can I help you today?' 
+      : '¡Hola! ¿Cómo puedo ayudarte hoy?'
+    );
+  }
+  
+  function toggleChatbot() {
+    if (!chatbotPanel) return;
+    
+    if (chatbotPanel.style.display === 'block') {
+      chatbotPanel.style.display = 'none';
+    } else {
+      chatbotPanel.style.display = 'block';
+      initializeChatbot();
     }
-    
+  }
+  
+  if (chatbotToggle) {
     chatbotToggle.addEventListener('click', toggleChatbot);
+  }
+  
+  if (chatbotClose) {
+    chatbotClose.addEventListener('click', toggleChatbot);
+  }
+  
+  // Handle question buttons
+  document.querySelectorAll('[data-question]').forEach(button => {
+    button.addEventListener('click', function() {
+      const questionKey = this.getAttribute('data-question');
+      const questionText = this.textContent;
+      
+      addChatMessage(questionText, true);
+      
+      setTimeout(() => {
+        const response = chatbotResponses[questionKey];
+        if (response) {
+          addChatMessage(response[currentLanguage] || response.en);
+        }
+      }, 500);
+    });
+  });
+  
+  // Handle send button and input
+  function sendMessage() {
+    if (!chatbotInput || !chatbotInput.value.trim()) return;
     
-    // Add welcome message when chatbot opens
-    chatbotToggle.addEventListener('click', function() {
-      if (chatbotPanel.style.display === 'block') {
-        const messagesDiv = document.createElement('div');
-        messagesDiv.innerHTML = '<div class="p-3 bg-light rounded mb-2"><small>' + 
-          (currentLanguage === 'en' ? 'Hello! How can I help you today?' : '¡Hola! ¿Cómo puedo ayudarte hoy?') + 
-          '</small></div>';
-        chatbotPanel.appendChild(messagesDiv);
+    const message = chatbotInput.value.trim();
+    addChatMessage(message, true);
+    chatbotInput.value = '';
+    
+    setTimeout(() => {
+      addChatMessage(currentLanguage === 'en' 
+        ? 'Thank you for your message. Someone will respond shortly.' 
+        : 'Gracias por tu mensaje. Alguien te responderá pronto.'
+      );
+    }, 1000);
+  }
+  
+  if (chatbotSend) {
+    chatbotSend.addEventListener('click', sendMessage);
+  }
+  
+  if (chatbotInput) {
+    chatbotInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
       }
     });
   }
