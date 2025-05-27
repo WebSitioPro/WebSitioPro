@@ -3,6 +3,9 @@ import { Link, useParams } from 'wouter';
 import { Save, Download, Upload, Palette, Type, Image, Settings } from 'lucide-react';
 
 interface WebsiteData {
+  // Template Selection
+  templateType?: string;
+  
   // Colors
   primaryColor: string;
   secondaryColor: string;
@@ -222,7 +225,7 @@ export default function EditorPage() {
     });
   };
 
-  const handleTemplateChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+  const handleTemplateFieldChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
       templates: prev.templates.map((template, i) => {
@@ -646,6 +649,122 @@ export default function EditorPage() {
                             </button>
                           )}
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Template Preview */}
+                  <div className="mt-5">
+                    <h5 className="mb-3">Template Preview - {selectedTemplate.charAt(0).toUpperCase() + selectedTemplate.slice(1)}</h5>
+                    <div className="card border-2" style={{ borderColor: selectedTemplate === 'professionals' ? '#00A859' : selectedTemplate === 'restaurant' ? '#ffc107' : selectedTemplate === 'tourist' ? '#0dcaf0' : selectedTemplate === 'retail' ? '#0d6efd' : selectedTemplate === 'services' ? '#dc3545' : '#6c757d' }}>
+                      <div className="card-body">
+                        {selectedTemplate === 'restaurant' && (
+                          <div>
+                            <div className="d-flex align-items-center mb-3">
+                              <span style={{ fontSize: '2rem' }}>🍽️</span>
+                              <div className="ms-3">
+                                <h6 className="mb-1 text-warning">Restaurant Template Active</h6>
+                                <small className="text-muted">Dark header • Digital menu • Reservation system • Food galleries</small>
+                              </div>
+                            </div>
+                            <div className="preview-sections">
+                              <span className="badge bg-warning me-2">Menu Digital</span>
+                              <span className="badge bg-primary me-2">Reservations</span>
+                              <span className="badge bg-success me-2">Food Gallery</span>
+                              <span className="badge bg-secondary">Chef Story</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {selectedTemplate === 'tourist' && (
+                          <div>
+                            <div className="d-flex align-items-center mb-3">
+                              <span style={{ fontSize: '2rem' }}>🏛️</span>
+                              <div className="ms-3">
+                                <h6 className="mb-1 text-info">Tours & Tourism Template Active</h6>
+                                <small className="text-muted">Tour packages • Destination galleries • Online booking • Seasonal offers</small>
+                              </div>
+                            </div>
+                            <div className="preview-sections">
+                              <span className="badge bg-info me-2">Tour Packages</span>
+                              <span className="badge bg-primary me-2">Online Booking</span>
+                              <span className="badge bg-success me-2">Destinations</span>
+                              <span className="badge bg-warning">Seasonal Offers</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {selectedTemplate === 'retail' && (
+                          <div>
+                            <div className="d-flex align-items-center mb-3">
+                              <span style={{ fontSize: '2rem' }}>🛍️</span>
+                              <div className="ms-3">
+                                <h6 className="mb-1 text-primary">Retail & E-commerce Template Active</h6>
+                                <small className="text-muted">Product catalog • Shopping cart • Category organization • Featured products</small>
+                              </div>
+                            </div>
+                            <div className="preview-sections">
+                              <span className="badge bg-primary me-2">Product Catalog</span>
+                              <span className="badge bg-success me-2">Shopping Cart</span>
+                              <span className="badge bg-warning me-2">Categories</span>
+                              <span className="badge bg-info">Featured Items</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {selectedTemplate === 'services' && (
+                          <div>
+                            <div className="d-flex align-items-center mb-3">
+                              <span style={{ fontSize: '2rem' }}>🔧</span>
+                              <div className="ms-3">
+                                <h6 className="mb-1 text-danger">Home Services Template Active</h6>
+                                <small className="text-muted">Service areas • 24/7 emergency contact • Before/after galleries</small>
+                              </div>
+                            </div>
+                            <div className="preview-sections">
+                              <span className="badge bg-danger me-2">Emergency 24/7</span>
+                              <span className="badge bg-primary me-2">Service Areas</span>
+                              <span className="badge bg-success me-2">Before/After</span>
+                              <span className="badge bg-warning">Certifications</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {selectedTemplate === 'artisans' && (
+                          <div>
+                            <div className="d-flex align-items-center mb-3">
+                              <span style={{ fontSize: '2rem' }}>🎨</span>
+                              <div className="ms-3">
+                                <h6 className="mb-1 text-secondary">Artisans & Crafts Template Active</h6>
+                                <small className="text-muted">Portfolio showcase • Custom orders • Craft process gallery</small>
+                              </div>
+                            </div>
+                            <div className="preview-sections">
+                              <span className="badge bg-secondary me-2">Portfolio</span>
+                              <span className="badge bg-primary me-2">Custom Orders</span>
+                              <span className="badge bg-success me-2">Process Gallery</span>
+                              <span className="badge bg-warning">Artisan Story</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {selectedTemplate === 'professionals' && (
+                          <div>
+                            <div className="d-flex align-items-center mb-3">
+                              <span style={{ fontSize: '2rem' }}>⚖️</span>
+                              <div className="ms-3">
+                                <h6 className="mb-1 text-success">Professionals Template Active</h6>
+                                <small className="text-muted">Clean design • Credentials display • Appointment scheduling</small>
+                              </div>
+                            </div>
+                            <div className="preview-sections">
+                              <span className="badge bg-success me-2">Credentials</span>
+                              <span className="badge bg-primary me-2">Services</span>
+                              <span className="badge bg-info me-2">Testimonials</span>
+                              <span className="badge bg-warning">Appointments</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
