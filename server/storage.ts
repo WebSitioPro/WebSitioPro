@@ -33,30 +33,506 @@ export class MemStorage implements IStorage {
   }
 
   private initializeDefaultConfig() {
+    // Create default configs for each template type
+    this.createDefaultProfessionalsTemplate();
+    this.createDefaultRestaurantTemplate();
+    this.createDefaultTouristTemplate();
+    this.createDefaultRetailTemplate();
+    this.createDefaultServicesTemplate();
+  }
+
+  private createDefaultProfessionalsTemplate() {
     const defaultConfig: WebsiteConfig = {
       id: this.currentConfigId++,
-      name: "Dr. John Smith",
-      logo: "https://via.placeholder.com/150x50",
-      defaultLanguage: "en",
+      name: "Dr. Juan González",
+      logo: null,
+      templateType: "professionals",
+      defaultLanguage: "es",
       showWhyWebsiteButton: true,
       showDomainButton: true,
       showChatbot: true,
-      whatsappNumber: "52987654321",
-      whatsappMessage: "Hello, I would like to schedule an appointment",
-      facebookUrl: "https://facebook.com",
-      googleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118512.58023648334!2d-88.39913461528183!3d18.51958518800781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba377a0246b03%3A0xb429c9d207b111d9!2sChetumal%2C%20Quintana%20Roo%2C%20Mexico!5e0!3m2!1sen!2sus!4v1620151766401!5m2!1sen!2sus",
-      address: "123 Dental Avenue, Chetumal, Quintana Roo, Mexico, 77000",
-      phone: "+52 987 654 321",
-      email: "drsmith@example.com",
+      enableReservations: false,
+      enableTourBookings: false,
+      enableShoppingCart: false,
+      enableEmergencyServices: false,
+      whatsappNumber: "52983123456",
+      whatsappMessage: "Hola, me gustaría agendar una cita",
+      facebookUrl: null,
+      googleMapsEmbed: null,
+      address: "Av. Insurgentes 123, Chetumal, Quintana Roo, México",
+      phone: "+52 983 123 456",
+      email: "contacto@drjuangonzalez.com",
       officeHours: {
         mondayToFriday: "9:00 AM - 6:00 PM",
         saturday: "10:00 AM - 2:00 PM"
       },
-      analyticsCode: "",
+      analyticsCode: null,
+      primaryColor: "#00A859",
+      secondaryColor: "#C8102E", 
+      backgroundColor: "#FFFFFF",
+      translations: {
+        es: {
+          heroTitle: "Dr. Juan González - Especialista en Salud",
+          heroSubtitle: "Brindando atención médica de calidad con más de 15 años de experiencia",
+          aboutTitle: "Sobre Nosotros",
+          aboutText: "Somos un consultorio médico comprometido con la salud y bienestar de nuestros pacientes.",
+          servicesTitle: "Nuestros Servicios",
+          contactTitle: "Contacto"
+        },
+        en: {
+          heroTitle: "Dr. Juan González - Health Specialist", 
+          heroSubtitle: "Providing quality medical care with over 15 years of experience",
+          aboutTitle: "About Us",
+          aboutText: "We are a medical practice committed to the health and wellbeing of our patients.",
+          servicesTitle: "Our Services",
+          contactTitle: "Contact"
+        }
+      },
+      services: [
+        {
+          icon: "🏥",
+          title: { es: "Consulta General", en: "General Consultation" },
+          description: { es: "Atención médica integral para toda la familia", en: "Comprehensive medical care for the whole family" }
+        },
+        {
+          icon: "💊", 
+          title: { es: "Medicina Preventiva", en: "Preventive Medicine" },
+          description: { es: "Programas de prevención y chequeos regulares", en: "Prevention programs and regular checkups" }
+        }
+      ],
+      reviews: [
+        {
+          name: "María García",
+          initials: "MG",
+          rating: 5,
+          date: { es: "15 de enero, 2025", en: "January 15, 2025" },
+          quote: { es: "Excelente atención médica, muy profesional", en: "Excellent medical care, very professional" }
+        }
+      ],
+      photos: [
+        {
+          url: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=500",
+          caption: { es: "Nuestro consultorio moderno", en: "Our modern office" }
+        }
+      ],
+      awards: [],
+      chatbotQuestions: [],
+      menuItems: null,
+      tourPackages: null,
+      products: null,
+      serviceAreas: null,
+      certifications: null
+    };
+    this.websiteConfigs.set(defaultConfig.id, defaultConfig);
+  }
+
+  private createDefaultRestaurantTemplate() {
+    const restaurantConfig: WebsiteConfig = {
+      id: this.currentConfigId++,
+      name: "Restaurante Los Sabores",
+      logo: null,
+      templateType: "restaurant",
+      defaultLanguage: "es",
+      showWhyWebsiteButton: true,
+      showDomainButton: true,
+      showChatbot: true,
+      enableReservations: true,
+      enableTourBookings: false,
+      enableShoppingCart: false,
+      enableEmergencyServices: false,
+      whatsappNumber: "52983234567",
+      whatsappMessage: "Hola, me gustaría hacer una reservación",
+      facebookUrl: null,
+      googleMapsEmbed: null,
+      address: "Calle Centro 456, Playa del Carmen, Quintana Roo, México",
+      phone: "+52 983 234 567",
+      email: "reservaciones@lossabores.com",
+      officeHours: {
+        mondayToFriday: "12:00 PM - 11:00 PM", 
+        saturday: "12:00 PM - 12:00 AM"
+      },
+      analyticsCode: null,
       primaryColor: "#00A859",
       secondaryColor: "#C8102E",
       backgroundColor: "#FFFFFF",
       translations: {
+        es: {
+          heroTitle: "Restaurante Los Sabores",
+          heroSubtitle: "Auténtica cocina mexicana en el corazón de la Riviera Maya",
+          aboutTitle: "Nuestra Historia",
+          aboutText: "Desde 1995, hemos sido el hogar de los sabores tradicionales mexicanos.",
+          servicesTitle: "Especialidades",
+          contactTitle: "Reservaciones"
+        },
+        en: {
+          heroTitle: "Los Sabores Restaurant",
+          heroSubtitle: "Authentic Mexican cuisine in the heart of the Riviera Maya",
+          aboutTitle: "Our Story", 
+          aboutText: "Since 1995, we have been the home of traditional Mexican flavors.",
+          servicesTitle: "Specialties",
+          contactTitle: "Reservations"
+        }
+      },
+      services: [],
+      reviews: [
+        {
+          name: "Carlos Mendoza",
+          initials: "CM",
+          rating: 5,
+          date: { es: "10 de enero, 2025", en: "January 10, 2025" },
+          quote: { es: "La mejor comida mexicana de la zona, muy recomendado", en: "The best Mexican food in the area, highly recommended" }
+        }
+      ],
+      photos: [
+        {
+          url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500",
+          caption: { es: "Nuestro ambiente acogedor", en: "Our cozy atmosphere" }
+        }
+      ],
+      awards: [],
+      chatbotQuestions: [],
+      menuItems: [
+        {
+          category: { es: "Entradas", en: "Appetizers" },
+          name: { es: "Guacamole Tradicional", en: "Traditional Guacamole" },
+          description: { es: "Aguacate fresco con tomate, cebolla y cilantro", en: "Fresh avocado with tomato, onion and cilantro" },
+          price: "$120 MXN"
+        },
+        {
+          category: { es: "Platos Principales", en: "Main Dishes" },
+          name: { es: "Cochinita Pibil", en: "Cochinita Pibil" },
+          description: { es: "Cerdo marinado en achiote, cocinado en hoja de plátano", en: "Pork marinated in achiote, cooked in banana leaf" },
+          price: "$250 MXN"
+        }
+      ],
+      tourPackages: null,
+      products: null,
+      serviceAreas: null,
+      certifications: null
+    };
+    this.websiteConfigs.set(restaurantConfig.id, restaurantConfig);
+  }
+
+  private createDefaultTouristTemplate() {
+    const touristConfig: WebsiteConfig = {
+      id: this.currentConfigId++,
+      name: "Maya Tours Expeditions",
+      logo: null,
+      templateType: "tourist",
+      defaultLanguage: "es",
+      showWhyWebsiteButton: true,
+      showDomainButton: true,
+      showChatbot: true,
+      enableReservations: false,
+      enableTourBookings: true,
+      enableShoppingCart: false,
+      enableEmergencyServices: false,
+      whatsappNumber: "52983345678",
+      whatsappMessage: "Hola, me interesa reservar un tour",
+      facebookUrl: null,
+      googleMapsEmbed: null,
+      address: "Av. Tulum 789, Tulum, Quintana Roo, México",
+      phone: "+52 983 345 678",
+      email: "tours@mayaexpeditions.com",
+      officeHours: {
+        mondayToFriday: "7:00 AM - 7:00 PM",
+        saturday: "8:00 AM - 6:00 PM"
+      },
+      analyticsCode: null,
+      primaryColor: "#00A859",
+      secondaryColor: "#C8102E",
+      backgroundColor: "#FFFFFF", 
+      translations: {
+        es: {
+          heroTitle: "Maya Tours Expeditions",
+          heroSubtitle: "Descubre la magia del mundo maya con nuestros tours exclusivos",
+          aboutTitle: "Nuestra Experiencia",
+          aboutText: "Especialistas en turismo arqueológico y ecológico con más de 20 años de experiencia.",
+          servicesTitle: "Nuestros Tours",
+          contactTitle: "Reservaciones"
+        },
+        en: {
+          heroTitle: "Maya Tours Expeditions",
+          heroSubtitle: "Discover the magic of the Mayan world with our exclusive tours",
+          aboutTitle: "Our Experience",
+          aboutText: "Specialists in archaeological and ecological tourism with over 20 years of experience.",
+          servicesTitle: "Our Tours",
+          contactTitle: "Reservations"
+        }
+      },
+      services: [],
+      reviews: [
+        {
+          name: "Ana Torres",
+          initials: "AT",
+          rating: 5,
+          date: { es: "5 de enero, 2025", en: "January 5, 2025" },
+          quote: { es: "Tour increíble a Chichen Itzá, guías muy conocedores", en: "Amazing tour to Chichen Itza, very knowledgeable guides" }
+        }
+      ],
+      photos: [
+        {
+          url: "https://images.unsplash.com/photo-1518638150340-f706e86654de?w=500",
+          caption: { es: "Explorando sitios arqueológicos", en: "Exploring archaeological sites" }
+        }
+      ],
+      awards: [],
+      chatbotQuestions: [],
+      menuItems: null,
+      tourPackages: [
+        {
+          name: { es: "Chichen Itzá Clásico", en: "Classic Chichen Itza" },
+          description: { es: "Visita a la maravilla del mundo con guía certificado", en: "Visit to the world wonder with certified guide" },
+          duration: { es: "8 horas", en: "8 hours" },
+          price: "$1,200 MXN",
+          includes: { es: ["Transporte", "Guía", "Entrada"], en: ["Transportation", "Guide", "Entrance"] }
+        },
+        {
+          name: { es: "Tulum y Cenote", en: "Tulum and Cenote" },
+          description: { es: "Combina arqueología y naturaleza en un día perfecto", en: "Combine archaeology and nature in a perfect day" },
+          duration: { es: "6 horas", en: "6 hours" },
+          price: "$950 MXN",
+          includes: { es: ["Transporte", "Guía", "Equipo snorkel"], en: ["Transportation", "Guide", "Snorkel equipment"] }
+        }
+      ],
+      products: null,
+      serviceAreas: null,
+      certifications: null
+    };
+    this.websiteConfigs.set(touristConfig.id, touristConfig);
+  }
+
+  private createDefaultRetailTemplate() {
+    const retailConfig: WebsiteConfig = {
+      id: this.currentConfigId++,
+      name: "Artesanías Maya",
+      logo: null,
+      templateType: "retail",
+      defaultLanguage: "es",
+      showWhyWebsiteButton: true,
+      showDomainButton: true,
+      showChatbot: true,
+      enableReservations: false,
+      enableTourBookings: false,
+      enableShoppingCart: true,
+      enableEmergencyServices: false,
+      whatsappNumber: "52983456789",
+      whatsappMessage: "Hola, me interesa comprar productos artesanales",
+      facebookUrl: null,
+      googleMapsEmbed: null,
+      address: "Mercado de Artesanías, Cancún, Quintana Roo, México",
+      phone: "+52 983 456 789",
+      email: "ventas@artesaniasmaya.com",
+      officeHours: {
+        mondayToFriday: "9:00 AM - 8:00 PM",
+        saturday: "9:00 AM - 9:00 PM"
+      },
+      analyticsCode: null,
+      primaryColor: "#00A859",
+      secondaryColor: "#C8102E",
+      backgroundColor: "#FFFFFF",
+      translations: {
+        es: {
+          heroTitle: "Artesanías Maya",
+          heroSubtitle: "Auténticas artesanías mexicanas hechas a mano por maestros artesanos",
+          aboutTitle: "Nuestra Tradición",
+          aboutText: "Preservamos las tradiciones artesanales mayas con productos 100% auténticos.",
+          servicesTitle: "Nuestros Productos",
+          contactTitle: "Contáctanos"
+        },
+        en: {
+          heroTitle: "Maya Handicrafts",
+          heroSubtitle: "Authentic Mexican handicrafts handmade by master artisans",
+          aboutTitle: "Our Tradition",
+          aboutText: "We preserve Mayan artisan traditions with 100% authentic products.",
+          servicesTitle: "Our Products",
+          contactTitle: "Contact Us"
+        }
+      },
+      services: [],
+      reviews: [
+        {
+          name: "Roberto Silva",
+          initials: "RS",
+          rating: 5,
+          date: { es: "20 de diciembre, 2024", en: "December 20, 2024" },
+          quote: { es: "Productos auténticos y de excelente calidad", en: "Authentic products of excellent quality" }
+        }
+      ],
+      photos: [
+        {
+          url: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500",
+          caption: { es: "Nuestras artesanías únicas", en: "Our unique handicrafts" }
+        }
+      ],
+      awards: [],
+      chatbotQuestions: [],
+      menuItems: null,
+      tourPackages: null,
+      products: [
+        {
+          name: { es: "Máscara Maya Tradicional", en: "Traditional Maya Mask" },
+          description: { es: "Máscara tallada a mano en madera de cedro", en: "Hand-carved mask in cedar wood" },
+          price: "$450 MXN",
+          category: { es: "Decoración", en: "Decoration" },
+          featured: true
+        },
+        {
+          name: { es: "Huipil Bordado", en: "Embroidered Huipil" },
+          description: { es: "Huipil tradicional bordado a mano con motivos mayas", en: "Traditional huipil hand-embroidered with Mayan motifs" },
+          price: "$680 MXN",
+          category: { es: "Textiles", en: "Textiles" },
+          featured: true
+        }
+      ],
+      serviceAreas: null,
+      certifications: null
+    };
+    this.websiteConfigs.set(retailConfig.id, retailConfig);
+  }
+
+  private createDefaultServicesTemplate() {
+    const servicesConfig: WebsiteConfig = {
+      id: this.currentConfigId++,
+      name: "Plomería González",
+      logo: null,
+      templateType: "services",
+      defaultLanguage: "es",
+      showWhyWebsiteButton: true,
+      showDomainButton: true,
+      showChatbot: true,
+      enableReservations: false,
+      enableTourBookings: false,
+      enableShoppingCart: false,
+      enableEmergencyServices: true,
+      whatsappNumber: "52983567890",
+      whatsappMessage: "Necesito servicio de plomería urgente",
+      facebookUrl: null,
+      googleMapsEmbed: null,
+      address: "Colonia Centro, Chetumal, Quintana Roo, México",
+      phone: "+52 983 567 890",
+      email: "servicios@plomeriagonzalez.com",
+      officeHours: {
+        mondayToFriday: "7:00 AM - 6:00 PM",
+        saturday: "8:00 AM - 4:00 PM"
+      },
+      analyticsCode: null,
+      primaryColor: "#00A859",
+      secondaryColor: "#C8102E",
+      backgroundColor: "#FFFFFF",
+      translations: {
+        es: {
+          heroTitle: "Plomería González",
+          heroSubtitle: "Servicios de plomería profesionales las 24 horas, los 7 días de la semana",
+          aboutTitle: "Nuestra Experiencia",
+          aboutText: "Más de 25 años brindando servicios de plomería confiables en Quintana Roo.",
+          servicesTitle: "Nuestros Servicios",
+          contactTitle: "Emergencias 24/7"
+        },
+        en: {
+          heroTitle: "González Plumbing",
+          heroSubtitle: "Professional plumbing services 24 hours a day, 7 days a week",
+          aboutTitle: "Our Experience",
+          aboutText: "Over 25 years providing reliable plumbing services in Quintana Roo.",
+          servicesTitle: "Our Services",
+          contactTitle: "24/7 Emergency"
+        }
+      },
+      services: [],
+      reviews: [
+        {
+          name: "Luis Herrera",
+          initials: "LH",
+          rating: 5,
+          date: { es: "2 de enero, 2025", en: "January 2, 2025" },
+          quote: { es: "Excelente servicio de emergencia, muy rápidos y profesionales", en: "Excellent emergency service, very fast and professional" }
+        }
+      ],
+      photos: [
+        {
+          url: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=500",
+          caption: { es: "Herramientas profesionales", en: "Professional tools" }
+        }
+      ],
+      awards: [],
+      chatbotQuestions: [],
+      menuItems: null,
+      tourPackages: null,
+      products: null,
+      serviceAreas: [
+        {
+          area: { es: "Chetumal Centro", en: "Downtown Chetumal" },
+          services: { es: ["Reparaciones", "Instalaciones"], en: ["Repairs", "Installations"] },
+          emergencyAvailable: true
+        },
+        {
+          area: { es: "Zona Hotelera", en: "Hotel Zone" },
+          services: { es: ["Mantenimiento", "Emergencias"], en: ["Maintenance", "Emergency"] },
+          emergencyAvailable: true
+        }
+      ],
+      certifications: [
+        {
+          name: { es: "Técnico Certificado", en: "Certified Technician" },
+          issuer: { es: "Cámara de Comercio", en: "Chamber of Commerce" },
+          year: "2020"
+        }
+      ]
+    };
+    this.websiteConfigs.set(servicesConfig.id, servicesConfig);
+  }
+
+  async getUser(id: number): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    for (const user of this.users.values()) {
+      if (user.username === username) {
+        return user;
+      }
+    }
+    return undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const id = this.currentUserId++;
+    const user: User = { ...insertUser, id };
+    this.users.set(id, user);
+    return user;
+  }
+
+  async getWebsiteConfig(id: number): Promise<WebsiteConfig | undefined> {
+    return this.websiteConfigs.get(id);
+  }
+
+  async getAllWebsiteConfigs(): Promise<WebsiteConfig[]> {
+    return Array.from(this.websiteConfigs.values());
+  }
+
+  async createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig> {
+    const id = this.currentConfigId++;
+    const newConfig: WebsiteConfig = { ...config, id };
+    this.websiteConfigs.set(id, newConfig);
+    return newConfig;
+  }
+
+  async updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined> {
+    const existingConfig = this.websiteConfigs.get(id);
+    if (!existingConfig) return undefined;
+    
+    const updatedConfig: WebsiteConfig = { ...existingConfig, ...config };
+    this.websiteConfigs.set(id, updatedConfig);
+    return updatedConfig;
+  }
+
+  async deleteWebsiteConfig(id: number): Promise<boolean> {
+    return this.websiteConfigs.delete(id);
+  }
+
+  async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
+    const configs = Array.from(this.websiteConfigs.values());
+    return configs[0]; // Return first config as default
         en: {
           "tagline": "Experienced Dentist in Chetumal",
           "subtitle": "Providing quality dental care for over 20 years",

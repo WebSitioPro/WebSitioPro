@@ -1,0 +1,60 @@
+Please create 4 new website templates for the WebSitioPro platform, following the existing "Professionals" template pattern. Each template should be a complete, functional website generator with unique features suitable for different business types.
+
+Required Templates:
+
+Restaurant Template
+Features: Menu display, photo gallery, location/hours, optional reservation system (toggle)
+Special elements: Food photos, menu categories, chef bio section
+Call-to-action: "Make Reservation" button (when enabled), "View Menu" section
+Tourist Business Template
+Features: Tour packages, booking system (toggle), photo galleries, testimonials
+Special elements: Tour itineraries, pricing tables, seasonal offerings
+Call-to-action: "Book Tour" button (when enabled), "Contact for Custom Tours"
+Retail/E-commerce Template
+Features: Product showcase, categories, shopping cart functionality, store hours
+Special elements: Product grids, featured products, store policies
+Call-to-action: "Shop Now" buttons, "Contact for Orders"
+Services Template (plumbers, electricians, contractors)
+Features: Service areas, emergency contact, before/after galleries, certifications
+Special elements: Service pricing, coverage areas, emergency availability
+Call-to-action: "Get Quote" button, emergency contact prominence
+Technical Requirements:
+
+Database Schema Updates: Expand the existing WebsiteConfig schema to include:
+Template type field (professionals, restaurant, tourist, retail, services)
+Template-specific toggle fields (reservations, bookings, shopping cart)
+Template-specific content fields
+Template Generator Updates: Enhance server/templateGenerator.ts to:
+Generate different HTML/CSS/JS based on template type
+Include template-specific sections and functionality
+Implement toggleable features (reservations, bookings, etc.)
+Editor Interface Updates: Modify client/src/pages/EditorPage.tsx to:
+Add template type selection
+Show/hide template-specific editing fields
+Include toggle controls for optional features
+Provide template-specific content editing
+Preview Functionality: Each template should:
+Generate fully functional static HTML sites
+Include mobile-responsive design
+Work with the existing chatbot system
+Support bilingual content (Spanish/English)
+Include WhatsApp integration
+Specific Toggle Features to Implement:
+
+Reservations (Restaurant): Enable/disable reservation form and booking system
+Tour Bookings (Tourist): Enable/disable tour booking functionality
+Shopping Cart (Retail): Enable/disable e-commerce features
+Emergency Services (Services): Enable/disable 24/7 emergency contact section
+Existing Pattern to Follow:
+
+Study the current Professionals template in templateGenerator.ts
+Use the same color system, chatbot integration, and responsive design
+Maintain consistency with the existing WebSitioPro branding and structure
+Ensure all templates work with the current editor system
+File Structure Considerations:
+
+Keep template generation logic in server/templateGenerator.ts
+Template selection and editing in client/src/pages/EditorPage.tsx
+Schema updates in shared/schema.ts
+Maintain backward compatibility with existing Professional templates
+Please implement this as a complete system where users can select a template type, configure template-specific features with toggles, and generate fully functional static websites for each business type.
