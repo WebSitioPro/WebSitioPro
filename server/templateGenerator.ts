@@ -430,89 +430,26 @@ function generateJS(config: WebsiteConfig): string {
   const chatbotPanel = document.getElementById('chatbotPanel');
   
   if (chatbotToggle && chatbotPanel) {
-    const chatbotClose = document.getElementById('chatbotClose');
-    const chatbotMessages = document.getElementById('chatbotMessages');
-    const chatbotInput = document.getElementById('chatbotInput');
-    const chatbotSend = document.getElementById('chatbotSend');
-    
-    // Sample chatbot responses
-    const chatbotResponses = ${JSON.stringify(config.chatbotQuestions.reduce((acc, q) => {
-      acc.en[q.key] = q.answer.en;
-      acc.es[q.key] = q.answer.es;
-      return acc;
-    }, { en: {}, es: {} }))};
-    
     function toggleChatbot() {
-      chatbotPanel.style.display = chatbotPanel.style.display === 'block' ? 'none' : 'block';
-    }
-    
-    function addMessage(message, isUser = false) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = 'mb-3 text-' + (isUser ? 'end' : 'start');
-      
-      const messageContent = document.createElement('div');
-      messageContent.className = isUser 
-        ? 'bg-primary-custom text-white p-3 rounded-3 d-inline-block' 
-        : 'bg-light p-3 rounded-3 d-inline-block';
-      
-      const messagePara = document.createElement('p');
-      messagePara.className = 'mb-0';
-      messagePara.textContent = message;
-      
-      messageContent.appendChild(messagePara);
-      messageDiv.appendChild(messageContent);
-      chatbotMessages.appendChild(messageDiv);
-      
-      // Scroll to bottom of messages
-      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-    }
-    
-    function handleChatbotQuestion(question) {
-      const response = chatbotResponses[currentLanguage][question];
-      if (response) {
-        addMessage(response);
+      if (chatbotPanel.style.display === 'block') {
+        chatbotPanel.style.display = 'none';
+      } else {
+        chatbotPanel.style.display = 'block';
       }
     }
     
     chatbotToggle.addEventListener('click', toggleChatbot);
     
-    if (chatbotClose) {
-      chatbotClose.addEventListener('click', toggleChatbot);
-    }
-    
-    // Set up event listeners for chatbot question buttons
-    document.querySelectorAll('[data-question]').forEach(button => {
-      button.addEventListener('click', function() {
-        const question = this.getAttribute('data-question');
-        addMessage(this.textContent, true);
-        setTimeout(() => {
-          handleChatbotQuestion(question);
-        }, 500);
-      });
+    // Add welcome message when chatbot opens
+    chatbotToggle.addEventListener('click', function() {
+      if (chatbotPanel.style.display === 'block') {
+        const messagesDiv = document.createElement('div');
+        messagesDiv.innerHTML = '<div class="p-3 bg-light rounded mb-2"><small>' + 
+          (currentLanguage === 'en' ? 'Hello! How can I help you today?' : '¡Hola! ¿Cómo puedo ayudarte hoy?') + 
+          '</small></div>';
+        chatbotPanel.appendChild(messagesDiv);
+      }
     });
-    
-    if (chatbotSend && chatbotInput) {
-      chatbotSend.addEventListener('click', function() {
-        if (chatbotInput.value.trim() !== '') {
-          addMessage(chatbotInput.value, true);
-          chatbotInput.value = '';
-          
-          // Simple mock response
-          setTimeout(() => {
-            addMessage(currentLanguage === 'en' 
-              ? "Thank you for your message. One of our staff members will respond shortly." 
-              : "Gracias por su mensaje. Uno de nuestros miembros del personal responderá en breve."
-            );
-          }, 1000);
-        }
-      });
-      
-      chatbotInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          chatbotSend.click();
-        }
-      });
-    }
   }
   ` : ''}
   
