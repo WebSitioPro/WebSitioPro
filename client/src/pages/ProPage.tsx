@@ -457,6 +457,85 @@ export default function ProPage() {
         </div>
       </section>
 
+      {/* Template Examples */}
+      <section className="py-5 bg-light">
+        <div className="container">
+          <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+            {language === 'es' ? 'Ejemplos de Sitios Web' : 'Website Examples'}
+          </h2>
+          <p className="text-center text-muted mb-5">
+            {language === 'es' 
+              ? 'Explora nuestros ejemplos de sitios web profesionales para diferentes tipos de negocios.'
+              : 'Explore our professional website examples for different business types.'
+            }
+          </p>
+          
+          <div className="row g-4">
+            {/* Restaurant Template */}
+            <div className="col-lg-6">
+              <Link href="/template/restaurant" className="text-decoration-none">
+                <div className="card h-100 border-0 shadow-sm hover-card">
+                  <div className="row g-0">
+                    <div className="col-4">
+                      <div className="bg-warning bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🍽️</div>
+                      </div>
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body">
+                        <h5 className="card-title text-warning">
+                          {language === 'es' ? 'Restaurantes' : 'Restaurants'}
+                        </h5>
+                        <p className="card-text text-muted small">
+                          {language === 'es' 
+                            ? 'Menús digitales, reservaciones, galerías de comida'
+                            : 'Digital menus, reservations, food galleries'
+                          }
+                        </p>
+                        <small className="text-warning fw-bold">
+                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Professionals Template */}
+            <div className="col-lg-6">
+              <Link href="/template/professionals" className="text-decoration-none">
+                <div className="card h-100 border-0 shadow-sm hover-card">
+                  <div className="row g-0">
+                    <div className="col-4">
+                      <div className="bg-success bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🏥</div>
+                      </div>
+                    </div>
+                    <div className="col-8">
+                      <div className="card-body">
+                        <h5 className="card-title text-success">
+                          {language === 'es' ? 'Profesionales' : 'Professionals'}
+                        </h5>
+                        <p className="card-text text-muted small">
+                          {language === 'es' 
+                            ? 'Credenciales, servicios, citas en línea, testimonios'
+                            : 'Credentials, services, online appointments, testimonials'
+                          }
+                        </p>
+                        <small className="text-success fw-bold">
+                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Payment */}
       <section className="py-5">
         <div className="container">

@@ -385,7 +385,7 @@ export default function EditorPage() {
       </header>
 
       <div className="container-fluid py-4">
-        <div className="row">
+        <div className="row justify-content-center">
           {/* Sidebar */}
           <div className="col-md-3">
             <div className="bg-white rounded shadow-sm p-3 sticky-top" style={{ top: '20px' }}>
