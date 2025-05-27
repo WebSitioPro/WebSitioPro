@@ -432,7 +432,7 @@ function generateJS(config: WebsiteConfig): string {
   if (chatbotToggle && chatbotPanel) {
     const chatbotClose = document.getElementById('chatbotClose');
     const chatbotMessages = document.getElementById('chatbotMessages');
-    const chatbotInput = document.getElementById('chatbotInput'););
+    const chatbotInput = document.getElementById('chatbotInput');
     const chatbotSend = document.getElementById('chatbotSend');
     
     // Sample chatbot responses
@@ -474,7 +474,7 @@ function generateJS(config: WebsiteConfig): string {
       }
     }
     
-    chatbotToggle.addEventListener('click', toggleChatbot););
+    chatbotToggle.addEventListener('click', toggleChatbot);
     
     if (chatbotClose) {
       chatbotClose.addEventListener('click', toggleChatbot);
