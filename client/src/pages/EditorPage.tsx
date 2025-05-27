@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'wouter';
+import { Link, useParams } from 'wouter';
 import { Save, Download, Upload, Palette, Type, Image, Settings } from 'lucide-react';
 
 interface WebsiteData {
@@ -57,6 +57,8 @@ interface WebsiteData {
 }
 
 export default function EditorPage() {
+  const params = useParams();
+  const clientId = params.clientId || 'default';
   const [activeTab, setActiveTab] = useState('colors');
   const [websiteData, setWebsiteData] = useState<WebsiteData>({
     // Default colors (Mexican theme)
@@ -259,10 +261,51 @@ export default function EditorPage() {
     }));
   };
 
+  // Load client-specific config on mount
+  useEffect(() => {
+    const loadClientConfig = async () => {
+      try {
+        const response = await fetch(`/api/config/${clientId}`);
+        if (response.ok) {
+          const config = await response.json();
+          // Map the config to your websiteData format
+          console.log('Loaded config for client:', clientId, config);
+        }
+      } catch (error) {
+        console.log('Using default config for new client:', clientId);
+      }
+    };
+    
+    if (clientId !== 'default') {
+      loadClientConfig();
+    }
+  }, [clientId]);
+
+  const saveData = async () => {
+    try {
+      const response = await fetch(`/api/config/${clientId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(websiteData),
+      });
+      
+      if (response.ok) {
+        alert('Configuration saved successfully!');
+      } else {
+        alert('Failed to save configuration');
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      alert('Error saving configuration');
+    }
+  };
+
   const exportData = () => {
     const dataStr = JSON.stringify(websiteData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    const exportFileDefaultName = 'websitiopro-config.json';
+    const exportFileDefaultName = `websitiopro-config-${clientId}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -294,7 +337,7 @@ export default function EditorPage() {
           <div className="row align-items-center py-3">
             <div className="col-auto">
               <Link className="fw-bold text-decoration-none fs-4" href="/" style={{ color: websiteData.primaryColor }}>
-                WebSitioPro Editor
+                WebSitioPro Editor - Client: {clientId}
               </Link>
             </div>
             <div className="col">
@@ -309,6 +352,10 @@ export default function EditorPage() {
             </div>
             <div className="col-auto">
               <div className="d-flex gap-2">
+                <button className="btn btn-primary" onClick={saveData}>
+                  <Save size={16} className="me-1" />
+                  Save
+                </button>
                 <button className="btn btn-success" onClick={exportData}>
                   <Download size={16} className="me-1" />
                   Export
