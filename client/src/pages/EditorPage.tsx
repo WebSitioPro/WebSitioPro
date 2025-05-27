@@ -59,7 +59,8 @@ interface WebsiteData {
 export default function EditorPage() {
   const params = useParams();
   const clientId = params.clientId || 'default';
-  const [activeTab, setActiveTab] = useState('colors');
+  const [activeTab, setActiveTab] = useState('template');
+  const [selectedTemplate, setSelectedTemplate] = useState('professionals');
   const [websiteData, setWebsiteData] = useState<WebsiteData>({
     // Default colors (Mexican theme)
     primaryColor: '#C8102E',
@@ -479,10 +480,10 @@ export default function EditorPage() {
                   <div className="row g-4">
                     {/* Professionals Template */}
                     <div className="col-md-6 col-lg-4">
-                      <div className="card h-100 border-2 border-success">
+                      <div className={`card h-100 border-2 ${selectedTemplate === 'professionals' ? 'border-success' : 'border-light'}`}>
                         <div className="card-body text-center">
                           <div className="mb-3" style={{ fontSize: '3rem' }}>🏥</div>
-                          <h5 className="card-title text-success">Professionals</h5>
+                          <h5 className={`card-title ${selectedTemplate === 'professionals' ? 'text-success' : ''}`}>Professionals</h5>
                           <p className="card-text small">Perfect for doctors, lawyers, consultants, and other professional services.</p>
                           <ul className="list-unstyled small text-muted text-start">
                             <li>✓ Professional credentials display</li>
@@ -490,17 +491,26 @@ export default function EditorPage() {
                             <li>✓ Client testimonials</li>
                             <li>✓ Appointment scheduling</li>
                           </ul>
-                          <button className="btn btn-success mt-3">Currently Selected</button>
+                          {selectedTemplate === 'professionals' ? (
+                            <button className="btn btn-success mt-3">Currently Selected</button>
+                          ) : (
+                            <button 
+                              className="btn btn-outline-success mt-3" 
+                              onClick={() => setSelectedTemplate('professionals')}
+                            >
+                              Select Template
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     {/* Restaurant Template */}
                     <div className="col-md-6 col-lg-4">
-                      <div className="card h-100 border-2 border-warning">
+                      <div className={`card h-100 border-2 ${selectedTemplate === 'restaurant' ? 'border-warning' : 'border-light'}`}>
                         <div className="card-body text-center">
                           <div className="mb-3" style={{ fontSize: '3rem' }}>🍽️</div>
-                          <h5 className="card-title text-warning">Restaurant</h5>
+                          <h5 className={`card-title ${selectedTemplate === 'restaurant' ? 'text-warning' : ''}`}>Restaurant</h5>
                           <p className="card-text small">Ideal for restaurants, cafes, bars, and food service businesses.</p>
                           <ul className="list-unstyled small text-muted text-start">
                             <li>✓ Digital menu display</li>
@@ -508,17 +518,26 @@ export default function EditorPage() {
                             <li>✓ Table reservations</li>
                             <li>✓ Chef & story section</li>
                           </ul>
-                          <button className="btn btn-outline-warning mt-3">Select Template</button>
+                          {selectedTemplate === 'restaurant' ? (
+                            <button className="btn btn-warning mt-3">Currently Selected</button>
+                          ) : (
+                            <button 
+                              className="btn btn-outline-warning mt-3" 
+                              onClick={() => setSelectedTemplate('restaurant')}
+                            >
+                              Select Template
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     {/* Tourist Template */}
                     <div className="col-md-6 col-lg-4">
-                      <div className="card h-100 border-2 border-info">
+                      <div className={`card h-100 border-2 ${selectedTemplate === 'tourist' ? 'border-info' : 'border-light'}`}>
                         <div className="card-body text-center">
                           <div className="mb-3" style={{ fontSize: '3rem' }}>🏛️</div>
-                          <h5 className="card-title text-info">Tours & Tourism</h5>
+                          <h5 className={`card-title ${selectedTemplate === 'tourist' ? 'text-info' : ''}`}>Tours & Tourism</h5>
                           <p className="card-text small">Perfect for tour operators, travel agencies, and tourist attractions.</p>
                           <ul className="list-unstyled small text-muted text-start">
                             <li>✓ Tour packages showcase</li>
@@ -526,17 +545,26 @@ export default function EditorPage() {
                             <li>✓ Destination galleries</li>
                             <li>✓ Seasonal offerings</li>
                           </ul>
-                          <button className="btn btn-outline-info mt-3">Select Template</button>
+                          {selectedTemplate === 'tourist' ? (
+                            <button className="btn btn-info mt-3">Currently Selected</button>
+                          ) : (
+                            <button 
+                              className="btn btn-outline-info mt-3" 
+                              onClick={() => setSelectedTemplate('tourist')}
+                            >
+                              Select Template
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     {/* Retail Template */}
                     <div className="col-md-6 col-lg-4">
-                      <div className="card h-100 border-2 border-primary">
+                      <div className={`card h-100 border-2 ${selectedTemplate === 'retail' ? 'border-primary' : 'border-light'}`}>
                         <div className="card-body text-center">
                           <div className="mb-3" style={{ fontSize: '3rem' }}>🛍️</div>
-                          <h5 className="card-title text-primary">Retail & E-commerce</h5>
+                          <h5 className={`card-title ${selectedTemplate === 'retail' ? 'text-primary' : ''}`}>Retail & E-commerce</h5>
                           <p className="card-text small">Great for shops, boutiques, and online retail businesses.</p>
                           <ul className="list-unstyled small text-muted text-start">
                             <li>✓ Product catalog</li>
@@ -544,17 +572,26 @@ export default function EditorPage() {
                             <li>✓ Category organization</li>
                             <li>✓ Featured products</li>
                           </ul>
-                          <button className="btn btn-outline-primary mt-3">Select Template</button>
+                          {selectedTemplate === 'retail' ? (
+                            <button className="btn btn-primary mt-3">Currently Selected</button>
+                          ) : (
+                            <button 
+                              className="btn btn-outline-primary mt-3" 
+                              onClick={() => setSelectedTemplate('retail')}
+                            >
+                              Select Template
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     {/* Services Template */}
                     <div className="col-md-6 col-lg-4">
-                      <div className="card h-100 border-2 border-danger">
+                      <div className={`card h-100 border-2 ${selectedTemplate === 'services' ? 'border-danger' : 'border-light'}`}>
                         <div className="card-body text-center">
                           <div className="mb-3" style={{ fontSize: '3rem' }}>🔧</div>
-                          <h5 className="card-title text-danger">Home Services</h5>
+                          <h5 className={`card-title ${selectedTemplate === 'services' ? 'text-danger' : ''}`}>Home Services</h5>
                           <p className="card-text small">Perfect for plumbers, electricians, contractors, and repair services.</p>
                           <ul className="list-unstyled small text-muted text-start">
                             <li>✓ Service area coverage</li>
@@ -562,17 +599,26 @@ export default function EditorPage() {
                             <li>✓ Before/after galleries</li>
                             <li>✓ Certifications display</li>
                           </ul>
-                          <button className="btn btn-outline-danger mt-3">Select Template</button>
+                          {selectedTemplate === 'services' ? (
+                            <button className="btn btn-danger mt-3">Currently Selected</button>
+                          ) : (
+                            <button 
+                              className="btn btn-outline-danger mt-3" 
+                              onClick={() => setSelectedTemplate('services')}
+                            >
+                              Select Template
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     {/* Artisans Template */}
                     <div className="col-md-6 col-lg-4">
-                      <div className="card h-100 border-2 border-secondary">
+                      <div className={`card h-100 border-2 ${selectedTemplate === 'artisans' ? 'border-secondary' : 'border-light'}`}>
                         <div className="card-body text-center">
                           <div className="mb-3" style={{ fontSize: '3rem' }}>🎨</div>
-                          <h5 className="card-title text-secondary">Artisans & Crafts</h5>
+                          <h5 className={`card-title ${selectedTemplate === 'artisans' ? 'text-secondary' : ''}`}>Artisans & Crafts</h5>
                           <p className="card-text small">Designed for artists, craftspeople, and traditional artisans.</p>
                           <ul className="list-unstyled small text-muted text-start">
                             <li>✓ Portfolio showcase</li>
@@ -580,7 +626,16 @@ export default function EditorPage() {
                             <li>✓ Craft process gallery</li>
                             <li>✓ Artisan story section</li>
                           </ul>
-                          <button className="btn btn-outline-secondary mt-3">Select Template</button>
+                          {selectedTemplate === 'artisans' ? (
+                            <button className="btn btn-secondary mt-3">Currently Selected</button>
+                          ) : (
+                            <button 
+                              className="btn btn-outline-secondary mt-3" 
+                              onClick={() => setSelectedTemplate('artisans')}
+                            >
+                              Select Template
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
