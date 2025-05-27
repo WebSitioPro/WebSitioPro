@@ -529,8 +529,31 @@ export default function EditorPage() {
               {/* Content Editor Tab */}
               {activeTab === 'content' && (
                 <div>
-                  <h4 className="mb-4">Choose Your Business Template</h4>
-                  <p className="text-muted mb-4">Select the template that best matches your business type. Each template includes specialized features and content structure for your industry.</p>
+                  <h4 className="mb-4">Main Website Content</h4>
+                  <p className="text-muted mb-4">Edit the content for the WebSitioPro main website and Pro page.</p>
+                  
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Hero Headline</label>
+                      <input type="text" className="form-control" placeholder="Sitios web profesionales para tu negocio" />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Hero Subheadline</label>
+                      <input type="text" className="form-control" placeholder="Diseños únicos, hosting incluido" />
+                    </div>
+                    <div className="col-12">
+                      <label className="form-label">About Text</label>
+                      <textarea className="form-control" rows={3} placeholder="Descripción de WebSitioPro..."></textarea>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Contact Phone</label>
+                      <input type="text" className="form-control" placeholder="+52 983 123 4567" />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Contact Email</label>
+                      <input type="email" className="form-control" placeholder="info@websitiopro.com" />
+                    </div>
+                  </div>
                   
                   <div className="row g-4">
                     {/* Professionals Template */}

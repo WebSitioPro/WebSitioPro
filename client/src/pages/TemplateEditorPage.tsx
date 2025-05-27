@@ -176,9 +176,24 @@ export default function TemplateEditorPage() {
             </div>
             <div className="col">
               <h4 className="mb-0 fw-bold" style={{ color: '#C8102E' }}>
-                Template Editor - {getTemplateDisplayName(templateType)}
+                Template Editor
               </h4>
-              <small className="text-muted">Edit your {templateType} website template</small>
+              <div className="d-flex align-items-center gap-3 mt-2">
+                <small className="text-muted">Business Type:</small>
+                <select 
+                  className="form-select form-select-sm" 
+                  style={{ width: 'auto' }}
+                  value={templateType}
+                  onChange={(e) => window.location.href = `/template-editor/${e.target.value}`}
+                >
+                  <option value="professionals">Professionals</option>
+                  <option value="restaurant">Restaurant</option>
+                  <option value="tourist">Tourism & Tours</option>
+                  <option value="retail">Retail & E-commerce</option>
+                  <option value="services">Home Services</option>
+                  <option value="artisans">Artisans & Crafts</option>
+                </select>
+              </div>
             </div>
             <div className="col-auto">
               <div className="d-flex gap-2">
@@ -243,7 +258,7 @@ export default function TemplateEditorPage() {
           </div>
 
           {/* Main Editor */}
-          <div className="col-md-6">
+          <div className="col-md-9">
             <div className="bg-white rounded shadow-sm p-4">
               
               {/* Basic Info Tab */}
@@ -680,82 +695,7 @@ export default function TemplateEditorPage() {
             </div>
           </div>
 
-          {/* Live Preview */}
-          <div className="col-md-3">
-            <div className="bg-white rounded shadow-sm p-3 sticky-top" style={{ top: '20px' }}>
-              <h5 className="mb-3">Live Preview</h5>
-              <div className="preview-container border rounded p-3" style={{ minHeight: '600px', backgroundColor: '#f8f9fa' }}>
-                
-                {/* Template Preview Header */}
-                <div className="mb-3 text-center">
-                  <h6 className="mb-1" style={{ color: templateData.primaryColor }}>
-                    {templateData.businessName || 'Business Name'}
-                  </h6>
-                  <small className="text-muted">{templateData.businessType || 'Business Type'}</small>
-                </div>
 
-                {/* Tagline */}
-                {templateData.tagline && (
-                  <div className="text-center mb-3">
-                    <small className="text-muted fst-italic">"{templateData.tagline}"</small>
-                  </div>
-                )}
-
-                {/* Template-specific preview content */}
-                {templateType === 'restaurant' && (
-                  <div>
-                    <div className="preview-section mb-3">
-                      <strong style={{ fontSize: '12px' }}>Menu Digital</strong>
-                      {templateData.specialContent.menuItems?.slice(0, 3).map((item: any, index: number) => (
-                        <div key={index} className="small text-muted mb-1">
-                          {item.name} - {item.price}
-                        </div>
-                      ))}
-                    </div>
-                    
-                    {templateData.specialContent.enableReservations && (
-                      <div className="preview-section mb-3">
-                        <div className="mt-2 p-2 bg-light rounded small text-center">
-                          📅 Reserve Mesa
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {templateType === 'tourist' && (
-                  <div>
-                    <div className="preview-section mb-3">
-                      <strong style={{ fontSize: '12px' }}>Tour Packages</strong>
-                      {templateData.specialContent.tourPackages?.slice(0, 3).map((tour: any, index: number) => (
-                        <div key={index} className="small text-muted mb-1">
-                          {tour.name} - {tour.price}
-                        </div>
-                      ))}
-                    </div>
-                    
-                    {templateData.specialContent.onlineBooking && (
-                      <div className="preview-section mb-3">
-                        <div className="mt-2 p-2 bg-light rounded small text-center">
-                          📅 Book Your Tour
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Contact Preview */}
-                {(templateData.phone || templateData.email) && (
-                  <div className="preview-section mt-3 pt-3 border-top">
-                    <strong style={{ fontSize: '12px' }}>Contact</strong>
-                    {templateData.phone && <div className="small text-muted">📞 {templateData.phone}</div>}
-                    {templateData.email && <div className="small text-muted">✉️ {templateData.email}</div>}
-                  </div>
-                )}
-
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
