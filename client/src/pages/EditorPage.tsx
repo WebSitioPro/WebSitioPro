@@ -470,6 +470,169 @@ export default function EditorPage() {
           <div className="col-md-9">
             <div className="bg-white rounded shadow-sm p-4">
               
+              {/* Business Template Selection */}
+              {activeTab === 'template' && (
+                <div>
+                  <h4 className="mb-4">Choose Your Business Template</h4>
+                  <p className="text-muted mb-4">Select the template that best matches your business type. Each template includes specialized features and content structure for your industry.</p>
+                  
+                  <div className="row g-4">
+                    {/* Professionals Template */}
+                    <div className="col-md-6 col-lg-4">
+                      <div className="card h-100 border-2 border-success">
+                        <div className="card-body text-center">
+                          <div className="mb-3" style={{ fontSize: '3rem' }}>🏥</div>
+                          <h5 className="card-title text-success">Professionals</h5>
+                          <p className="card-text small">Perfect for doctors, lawyers, consultants, and other professional services.</p>
+                          <ul className="list-unstyled small text-muted text-start">
+                            <li>✓ Professional credentials display</li>
+                            <li>✓ Service showcase</li>
+                            <li>✓ Client testimonials</li>
+                            <li>✓ Appointment scheduling</li>
+                          </ul>
+                          <button className="btn btn-success mt-3">Currently Selected</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Restaurant Template */}
+                    <div className="col-md-6 col-lg-4">
+                      <div className="card h-100 border-2 border-warning">
+                        <div className="card-body text-center">
+                          <div className="mb-3" style={{ fontSize: '3rem' }}>🍽️</div>
+                          <h5 className="card-title text-warning">Restaurant</h5>
+                          <p className="card-text small">Ideal for restaurants, cafes, bars, and food service businesses.</p>
+                          <ul className="list-unstyled small text-muted text-start">
+                            <li>✓ Digital menu display</li>
+                            <li>✓ Food photo galleries</li>
+                            <li>✓ Table reservations</li>
+                            <li>✓ Chef & story section</li>
+                          </ul>
+                          <button className="btn btn-outline-warning mt-3">Select Template</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tourist Template */}
+                    <div className="col-md-6 col-lg-4">
+                      <div className="card h-100 border-2 border-info">
+                        <div className="card-body text-center">
+                          <div className="mb-3" style={{ fontSize: '3rem' }}>🏛️</div>
+                          <h5 className="card-title text-info">Tours & Tourism</h5>
+                          <p className="card-text small">Perfect for tour operators, travel agencies, and tourist attractions.</p>
+                          <ul className="list-unstyled small text-muted text-start">
+                            <li>✓ Tour packages showcase</li>
+                            <li>✓ Online booking system</li>
+                            <li>✓ Destination galleries</li>
+                            <li>✓ Seasonal offerings</li>
+                          </ul>
+                          <button className="btn btn-outline-info mt-3">Select Template</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Retail Template */}
+                    <div className="col-md-6 col-lg-4">
+                      <div className="card h-100 border-2 border-primary">
+                        <div className="card-body text-center">
+                          <div className="mb-3" style={{ fontSize: '3rem' }}>🛍️</div>
+                          <h5 className="card-title text-primary">Retail & E-commerce</h5>
+                          <p className="card-text small">Great for shops, boutiques, and online retail businesses.</p>
+                          <ul className="list-unstyled small text-muted text-start">
+                            <li>✓ Product catalog</li>
+                            <li>✓ Shopping cart system</li>
+                            <li>✓ Category organization</li>
+                            <li>✓ Featured products</li>
+                          </ul>
+                          <button className="btn btn-outline-primary mt-3">Select Template</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Services Template */}
+                    <div className="col-md-6 col-lg-4">
+                      <div className="card h-100 border-2 border-danger">
+                        <div className="card-body text-center">
+                          <div className="mb-3" style={{ fontSize: '3rem' }}>🔧</div>
+                          <h5 className="card-title text-danger">Home Services</h5>
+                          <p className="card-text small">Perfect for plumbers, electricians, contractors, and repair services.</p>
+                          <ul className="list-unstyled small text-muted text-start">
+                            <li>✓ Service area coverage</li>
+                            <li>✓ 24/7 emergency contact</li>
+                            <li>✓ Before/after galleries</li>
+                            <li>✓ Certifications display</li>
+                          </ul>
+                          <button className="btn btn-outline-danger mt-3">Select Template</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Artisans Template */}
+                    <div className="col-md-6 col-lg-4">
+                      <div className="card h-100 border-2 border-secondary">
+                        <div className="card-body text-center">
+                          <div className="mb-3" style={{ fontSize: '3rem' }}>🎨</div>
+                          <h5 className="card-title text-secondary">Artisans & Crafts</h5>
+                          <p className="card-text small">Designed for artists, craftspeople, and traditional artisans.</p>
+                          <ul className="list-unstyled small text-muted text-start">
+                            <li>✓ Portfolio showcase</li>
+                            <li>✓ Custom order forms</li>
+                            <li>✓ Craft process gallery</li>
+                            <li>✓ Artisan story section</li>
+                          </ul>
+                          <button className="btn btn-outline-secondary mt-3">Select Template</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Template Features Configuration */}
+                  <div className="mt-5 p-4 bg-light rounded">
+                    <h6 className="mb-3">Available Template Features</h6>
+                    <p className="small text-muted mb-3">Toggle these features on or off based on your business needs. Each template has its own specialized toggles.</p>
+                    
+                    <div className="row g-3">
+                      <div className="col-md-3">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="reservations" />
+                          <label className="form-check-label" htmlFor="reservations">
+                            <strong>Reservations System</strong><br />
+                            <small className="text-muted">Restaurant bookings</small>
+                          </label>
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="bookings" />
+                          <label className="form-check-label" htmlFor="bookings">
+                            <strong>Tour Bookings</strong><br />
+                            <small className="text-muted">Online tour reservations</small>
+                          </label>
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="shopping" />
+                          <label className="form-check-label" htmlFor="shopping">
+                            <strong>Shopping Cart</strong><br />
+                            <small className="text-muted">E-commerce functionality</small>
+                          </label>
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="form-check">
+                          <input className="form-check-input" type="checkbox" id="emergency" />
+                          <label className="form-check-label" htmlFor="emergency">
+                            <strong>24/7 Emergency</strong><br />
+                            <small className="text-muted">Emergency services contact</small>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Colors Tab */}
               {activeTab === 'colors' && (
                 <div>
