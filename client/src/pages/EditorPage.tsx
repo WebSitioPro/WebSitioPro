@@ -61,6 +61,15 @@ export default function EditorPage() {
   const clientId = params.clientId || 'default';
   const [activeTab, setActiveTab] = useState('template');
   const [selectedTemplate, setSelectedTemplate] = useState('professionals');
+
+  // Handle template change
+  const handleTemplateChange = (templateType: string) => {
+    setSelectedTemplate(templateType);
+    setWebsiteData(prev => ({
+      ...prev,
+      templateType
+    }));
+  };
   const [websiteData, setWebsiteData] = useState<WebsiteData>({
     // Default colors (Mexican theme)
     primaryColor: '#C8102E',
@@ -496,7 +505,7 @@ export default function EditorPage() {
                           ) : (
                             <button 
                               className="btn btn-outline-success mt-3" 
-                              onClick={() => setSelectedTemplate('professionals')}
+                              onClick={() => handleTemplateChange('professionals')}
                             >
                               Select Template
                             </button>
