@@ -8,6 +8,8 @@ export default function HomePage() {
   const [messages, setMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [chatbotIcon, setChatbotIcon] = useState('📞'); // Default to phone icon
+  const [domainInput, setDomainInput] = useState('');
+  const [domainResult, setDomainResult] = useState<{available: boolean, domain: string} | null>(null);
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
@@ -229,6 +231,20 @@ export default function HomePage() {
     };
 
     return translations[language as keyof typeof translations]?.[key as keyof typeof translations['es']] || key;
+  };
+
+  const checkDomain = () => {
+    if (!domainInput.trim()) return;
+    
+    // Simulate domain availability check
+    // In a real app, you'd call a domain checking API
+    const commonDomains = ['google', 'facebook', 'amazon', 'microsoft', 'apple', 'youtube', 'instagram'];
+    const isCommon = commonDomains.some(domain => domainInput.toLowerCase().includes(domain));
+    
+    setDomainResult({
+      available: !isCommon,
+      domain: domainInput
+    });
   };
 
   useEffect(() => {
@@ -650,14 +666,39 @@ export default function HomePage() {
                   type="text" 
                   className="form-control" 
                   placeholder={t('domainPlaceholder')}
+                  value={domainInput}
+                  onChange={(e) => setDomainInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && checkDomain()}
                 />
                 <button 
                   className="btn btn-success text-white px-4"
                   style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                  onClick={checkDomain}
+                  disabled={!domainInput.trim()}
                 >
                   {t('checkDomain')}
                 </button>
               </div>
+              
+              {domainResult && (
+                <div className={`alert mt-3 ${domainResult.available ? 'alert-success' : 'alert-warning'}`}>
+                  <strong>
+                    {domainResult.available 
+                      ? `✅ ${domainInput} ${language === 'es' ? 'está disponible!' : 'is available!'}`
+                      : `⚠️ ${domainInput} ${language === 'es' ? 'no está disponible' : 'is not available'}`
+                    }
+                  </strong>
+                  <div className="mt-2">
+                    <a 
+                      href={`https://wa.me/529831234567?text=${language === 'es' ? 'Hola! Me interesa el dominio' : 'Hi! I\'m interested in the domain'} ${domainInput}`}
+                      className="btn btn-sm btn-success text-white"
+                      style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                    >
+                      {language === 'es' ? 'Contactar por WhatsApp' : 'Contact via WhatsApp'}
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
