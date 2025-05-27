@@ -981,14 +981,30 @@ export default function EditorPage() {
                   
                   <h5 className="mb-3">General Settings</h5>
                   <div className="row g-3 mb-4">
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                       <label className="form-label">Enable Chatbot</label>
                       <select className="form-control">
                         <option value="true">Enabled</option>
                         <option value="false">Disabled</option>
                       </select>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-4">
+                      <label className="form-label">Chatbot Icon</label>
+                      <select className="form-control">
+                        <option value="📞">📞 Teléfono (Most Clear)</option>
+                        <option value="💬">💬 Conversación</option>
+                        <option value="🤝">🤝 Ayuda</option>
+                        <option value="👋">👋 Saludo</option>
+                        <option value="💡">💡 Información</option>
+                        <option value="📱">📱 WhatsApp Style</option>
+                        <option value="✉️">✉️ Mensaje</option>
+                        <option value="❓">❓ Preguntas</option>
+                        <option value="🗣️">🗣️ Hablar</option>
+                        <option value="💭">💭 Pensar</option>
+                      </select>
+                      <small className="text-muted">Preview: <span style={{fontSize: '20px'}}>📞</span></small>
+                    </div>
+                    <div className="col-md-4">
                       <label className="form-label">Chatbot Color</label>
                       <input 
                         type="color" 

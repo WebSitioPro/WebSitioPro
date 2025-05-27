@@ -7,6 +7,7 @@ export default function HomePage() {
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [currentMessage, setCurrentMessage] = useState('');
+  const [chatbotIcon, setChatbotIcon] = useState('📞'); // Default to phone icon
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
@@ -596,7 +597,7 @@ export default function HomePage() {
           }}
           title={t('chatWithUs')}
         >
-          <MessageCircle size={24} />
+          <span style={{ fontSize: '24px' }}>{chatbotIcon}</span>
         </button>
       )}
 
