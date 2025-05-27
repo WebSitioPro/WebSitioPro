@@ -379,6 +379,13 @@ export default function EditorPage() {
               <h5 className="mb-3">Website Editor</h5>
               <nav className="nav flex-column">
                 <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'template' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('template')}
+                >
+                  <Type size={16} className="me-2" />
+                  Business Type
+                </button>
+                <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'colors' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('colors')}
                 >
