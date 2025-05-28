@@ -364,8 +364,8 @@ export default function ProPage() {
                           </p>
                           <Link 
                             href={templateLinks[num - 1]}
-                            className="btn btn-outline-primary btn-sm text-decoration-none"
-                            style={{ borderColor: 'hsl(var(--primary))', color: 'hsl(var(--primary))' }}
+                            className="btn btn-sm text-decoration-none text-white"
+                            style={{ backgroundColor: '#C8102E' }}
                           >
                             {t('viewTemplate')}
                           </Link>

@@ -428,32 +428,37 @@ export default function HomePage() {
                   ];
                   
                   return (
-                    <Link 
-                      href={templateLinks[num - 1]}
-                      className="text-decoration-none"
-                    >
-                      <div className="card h-100 border-0 shadow-sm hover-card">
-                        <div className="row g-0">
+                    <div className="card h-100 border-0 shadow-sm">
+                      <div className="card-body p-4">
+                        <div className="row g-3">
                           <div className="col-4">
-                            <div className="bg-light h-100 d-flex align-items-center justify-content-center">
+                            <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
                               <Globe size={48} className="text-muted" />
+                            </div>
+                            <div className="mt-2">
+                              <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
+                              <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
+                              <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
                             </div>
                           </div>
                           <div className="col-8">
-                            <div className="card-body">
-                              <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>
-                                {t(`template${num}` as any)}
-                                <small className="badge bg-success ms-2">Live Demo</small>
-                              </h5>
-                              <p className="card-text text-muted">
-                                {t(`template${num}Desc` as any)}
-                              </p>
-                              <small className="text-primary">Click to view live example →</small>
-                            </div>
+                            <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                              {t(`template${num}` as any)}
+                            </h5>
+                            <p className="text-muted mb-3 small">
+                              {t(`template${num}Desc` as any)}
+                            </p>
+                            <Link 
+                              href={templateLinks[num - 1]}
+                              className="btn btn-sm text-decoration-none text-white"
+                              style={{ backgroundColor: '#C8102E' }}
+                            >
+                              View Template
+                            </Link>
                           </div>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   );
                 })()}
               </div>
