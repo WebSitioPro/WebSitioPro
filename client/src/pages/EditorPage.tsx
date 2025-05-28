@@ -455,6 +455,14 @@ export default function EditorPage() {
                   <Type size={16} className="me-2" />
                   Pro Page
                 </button>
+                <hr className="my-2" />
+                <Link 
+                  href="/template-editor"
+                  className="nav-link text-start border-0 bg-transparent text-primary"
+                >
+                  <Type size={16} className="me-2" />
+                  Template Editor
+                </Link>
               </nav>
             </div>
           </div>

@@ -8,6 +8,7 @@ import HomePage from "@/pages/HomePage";
 import ProPage from "@/pages/ProPage";
 import EditorPage from "@/pages/EditorPage";
 import ProfessionalsDemo from "@/pages/ProfessionalsDemo";
+import TemplateEditor from "@/pages/TemplateEditor";
 
 function Router() {
   return (
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/pro" component={ProPage} />
       <Route path="/editor" component={EditorPage} />
       <Route path="/professionals-demo" component={ProfessionalsDemo} />
+      <Route path="/template-editor" component={TemplateEditor} />
       <Route component={NotFound} />
     </Switch>
   );
