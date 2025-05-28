@@ -304,163 +304,20 @@ function generateComprehensiveTemplate(config: WebsiteConfig, businessType: stri
 </html>`;
 }
 
-/**
- * Get business-specific configuration for templates
- */
-function getBusinessConfig(businessType: string, lang: string): any {
-  const configs = {
-    restaurant: {
-      title: 'Restaurante',
-      icon: '🍽️',
-      heroTitle: 'Restaurante',
-      heroSubtitle: 'Auténtica cocina mexicana con sabores tradicionales de Quintana Roo',
-      heroIcon: 'fas fa-utensils',
-      imageLabel: 'Foto del restaurante',
-      servicesLabel: 'Menú',
-      servicesTitle: 'Nuestro Menú',
-      ctaButton: 'Ver Menú',
-      secondaryButton: 'Reservar Mesa',
-      contentHTML: `
-        <div class="row g-4">
-          <div class="col-md-6">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body">
-                <h4 class="card-title mb-4" style="color: var(--secondary);">🥩 Platos Principales</h4>
-                <div class="d-flex justify-content-between mb-3 pb-2 border-bottom">
-                  <div><strong>Cochinita Pibil</strong><br><small class="text-muted">Cerdo marinado en achiote</small></div>
-                  <span class="fw-bold text-primary">$280</span>
-                </div>
-                <div class="d-flex justify-content-between mb-3 pb-2 border-bottom">
-                  <div><strong>Pescado Tikin Xic</strong><br><small class="text-muted">Mero asado en hoja de plátano</small></div>
-                  <span class="fw-bold text-primary">$320</span>
-                </div>
-                <div class="d-flex justify-content-between mb-3 pb-2">
-                  <div><strong>Pollo Pibil</strong><br><small class="text-muted">Pollo marinado en recado rojo</small></div>
-                  <span class="fw-bold text-primary">$250</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body">
-                <h4 class="card-title mb-4" style="color: var(--secondary);">🌮 Antojitos</h4>
-                <div class="d-flex justify-content-between mb-3 pb-2 border-bottom">
-                  <div><strong>Tacos de Cochinita</strong><br><small class="text-muted">3 tacos con cebolla morada</small></div>
-                  <span class="fw-bold text-primary">$180</span>
-                </div>
-                <div class="d-flex justify-content-between mb-3 pb-2 border-bottom">
-                  <div><strong>Sopa de Lima</strong><br><small class="text-muted">Tradicional sopa yucateca</small></div>
-                  <span class="fw-bold text-primary">$120</span>
-                </div>
-                <div class="d-flex justify-content-between mb-3 pb-2">
-                  <div><strong>Panuchos</strong><br><small class="text-muted">Tortillas rellenas de frijol</small></div>
-                  <span class="fw-bold text-primary">$150</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `,
-      photoPlaceholders: [
-        { icon: 'fas fa-camera', label: 'Ambiente del restaurante' },
-        { icon: 'fas fa-utensils', label: 'Platillos especiales' },
-        { icon: 'fas fa-users', label: 'Área familiar' }
-      ],
-      reviews: [
-        { initials: 'CF', name: 'Carlos Fernández', text: 'La mejor cochinita pibil de Chetumal. Sabor auténtico y ambiente familiar.', date: 'Hace 1 semana' },
-        { initials: 'LM', name: 'Lucía Morales', text: 'Excelente servicio y comida deliciosa. Los panuchos están increíbles.', date: 'Hace 2 semanas' },
-        { initials: 'RG', name: 'Roberto García', text: 'Perfecto para comer en familia. La sopa de lima es espectacular.', date: 'Hace 10 días' }
-      ],
-      awards: [
-        { icon: 'fas fa-award', color: '#ffc107', title: 'Mejor Restaurante Local', description: 'Premio Chetumal Gastronómico 2024' },
-        { icon: 'fas fa-certificate', color: 'var(--secondary)', title: 'Certificación', description: 'Manejo Higiénico de Alimentos - COFEPRIS' },
-        { icon: 'fas fa-star', color: '#ffc107', title: '15+ Años', description: 'Sirviendo auténtica comida yucateca' }
-      ],
-      defaultAddress: 'Av. Héroes 156, Centro, Chetumal, Q.R.',
-      defaultEmail: 'reservas@restaurante.com',
-      hours: 'Lun-Dom: 12:00-22:00',
-      formName: 'Nombre para reserva',
-      formMessage: 'Comentarios especiales',
-      formButton: 'Reservar Mesa',
-      mapLabel: 'Ubicación del restaurante',
-      whatsappMessage: 'Hola,%20me%20gustaría%20hacer%20una%20reserva%20en',
-      chatMessage: '¡Hola! Para reservas rápidas, llámanos al'
-    },
-    professionals: {
-      title: 'Servicios Profesionales',
-      icon: '🏥',
-      heroTitle: 'Dr.',
-      heroSubtitle: 'Especialista en medicina general con más de 15 años de experiencia',
-      heroIcon: 'fas fa-user-md',
-      imageLabel: 'Foto del doctor',
-      servicesLabel: 'Servicios',
-      servicesTitle: 'Nuestros Servicios',
-      ctaButton: 'Agendar Cita',
-      secondaryButton: 'Llamar Ahora',
-      contentHTML: `
-        <div class="row g-4">
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-0 shadow-sm hover-card">
-              <div class="card-body text-center">
-                <i class="fas fa-stethoscope fa-3x mb-3" style="color: var(--primary);"></i>
-                <h5 class="card-title">Consulta General</h5>
-                <p class="card-text">Revisiones médicas completas y diagnósticos precisos</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-0 shadow-sm hover-card">
-              <div class="card-body text-center">
-                <i class="fas fa-heart fa-3x mb-3" style="color: var(--secondary);"></i>
-                <h5 class="card-title">Cardiología</h5>
-                <p class="card-text">Especialista en salud cardiovascular y prevención</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-0 shadow-sm hover-card">
-              <div class="card-body text-center">
-                <i class="fas fa-syringe fa-3x mb-3" style="color: var(--primary);"></i>
-                <h5 class="card-title">Vacunación</h5>
-                <p class="card-text">Esquemas de vacunación para toda la familia</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `,
-      photoPlaceholders: [
-        { icon: 'fas fa-clinic-medical', label: 'Consultorio principal' },
-        { icon: 'fas fa-procedures', label: 'Área de procedimientos' },
-        { icon: 'fas fa-couch', label: 'Sala de espera' }
-      ],
-      reviews: [
-        { initials: 'MG', name: 'María González', text: 'Excelente atención médica. El doctor es muy profesional y dedicado.', date: 'Hace 2 semanas' },
-        { initials: 'JL', name: 'Juan López', text: 'Muy recomendado. Las instalaciones están limpias y el trato es excepcional.', date: 'Hace 1 mes' },
-        { initials: 'AR', name: 'Ana Rodríguez', text: 'El mejor doctor de la zona. Siempre disponible y profesional.', date: 'Hace 3 semanas' }
-      ],
-      awards: [
-        { icon: 'fas fa-award', color: '#ffc107', title: 'Colegio Médico', description: 'Miembro certificado del Colegio de Médicos de Q.R.' },
-        { icon: 'fas fa-certificate', color: 'var(--secondary)', title: 'Especialidad', description: 'Certificación en Medicina Interna' },
-        { icon: 'fas fa-medal', color: '#ffc107', title: '15+ Años', description: 'Más de 15 años de experiencia' }
-      ],
-      defaultAddress: 'Av. Insurgentes Sur 123, Centro, Chetumal, Q.R.',
-      defaultEmail: 'info@doctor.com',
-      hours: 'Lun-Vie: 9:00-18:00, Sáb: 9:00-14:00',
-      formName: 'Nombre completo',
-      formMessage: 'Mensaje',
-      formButton: 'Enviar Mensaje',
-      mapLabel: 'Ubicación del consultorio',
-      whatsappMessage: 'Hola%20Dr.,%20me%20gustaría%20agendar%20una%20cita%20en',
-      chatMessage: '¡Hola! Soy el asistente. Para citas, llámanos al'
-    }
-  };
-
-  return configs[businessType] || configs.professionals;
-}
-
 function generateRestaurantHTML(config: WebsiteConfig): string {
-  return generateComprehensiveTemplate(config, 'restaurant');
+  // For now, redirect to home page to use our comprehensive template
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;url=/">
+  <title>Redirecting to Restaurant Template...</title>
+</head>
+<body>
+  <p>Redirecting to restaurant template...</p>
+  <script>window.location.href = "/";</script>
+</body>
+</html>`;
 }
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
