@@ -273,7 +273,156 @@ export default function TemplatePreviewPage() {
             </div>
           )}
 
-          {/* Add other template types content here */}
+          {/* Professionals Template */}
+          {templateType === 'professionals' && (
+            <>
+              {/* Services Section */}
+              <div className="row g-5 mb-5">
+                <div className="col-lg-8">
+                  <h2 className="mb-4" style={{ color: '#C8102E' }}>
+                    {language === 'es' ? 'Servicios Médicos' : 'Medical Services'}
+                  </h2>
+                  <div className="row g-4">
+                    {template.services.map((service: any, index: number) => (
+                      <div key={index} className="col-md-6">
+                        <div className="card h-100 border-0 shadow-sm">
+                          <div className="card-body">
+                            <h5 className="card-title text-success">{service.name[language]}</h5>
+                            <p className="card-text text-muted">{service.duration[language]}</p>
+                            <button className="btn btn-outline-success btn-sm">
+                              {language === 'es' ? 'Más Info' : 'Learn More'}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="col-lg-4">
+                  <div className="card border-0 shadow-sm">
+                    <div className="card-body text-center">
+                      <h5 className="card-title">{t('appointments')}</h5>
+                      <p className="card-text">{t('credentials')}</p>
+                      <button className="btn btn-success">
+                        {language === 'es' ? 'Agendar Cita' : 'Book Appointment'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reviews Section */}
+              <div className="row mb-5">
+                <div className="col-12">
+                  <h2 className="text-center mb-4" style={{ color: '#C8102E' }}>
+                    {language === 'es' ? 'Testimonios de Pacientes' : 'Patient Testimonials'}
+                  </h2>
+                  <div className="row g-4">
+                    <div className="col-md-4">
+                      <div className="card border-0 shadow-sm h-100">
+                        <div className="card-body text-center">
+                          <div className="mb-3">
+                            <div className="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
+                              <span className="fw-bold">MG</span>
+                            </div>
+                          </div>
+                          <h6>María García</h6>
+                          <div className="text-warning mb-2">★★★★★</div>
+                          <p className="card-text small text-muted">
+                            {language === 'es' 
+                              ? 'Excelente atención médica. La doctora es muy profesional y dedicada.'
+                              : 'Excellent medical care. The doctor is very professional and dedicated.'
+                            }
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="card border-0 shadow-sm h-100">
+                        <div className="card-body text-center">
+                          <div className="mb-3">
+                            <div className="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
+                              <span className="fw-bold">JL</span>
+                            </div>
+                          </div>
+                          <h6>Juan López</h6>
+                          <div className="text-warning mb-2">★★★★★</div>
+                          <p className="card-text small text-muted">
+                            {language === 'es' 
+                              ? 'Muy recomendable. Atención personalizada y trato excelente.'
+                              : 'Highly recommended. Personalized attention and excellent treatment.'
+                            }
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <div className="card border-0 shadow-sm h-100">
+                        <div className="card-body text-center">
+                          <div className="mb-3">
+                            <div className="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
+                              <span className="fw-bold">AR</span>
+                            </div>
+                          </div>
+                          <h6>Ana Rodríguez</h6>
+                          <div className="text-warning mb-2">★★★★★</div>
+                          <p className="card-text small text-muted">
+                            {language === 'es' 
+                              ? 'La mejor doctora de la zona. Siempre disponible para sus pacientes.'
+                              : 'The best doctor in the area. Always available for her patients.'
+                            }
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Credentials & Experience */}
+              <div className="row mb-5">
+                <div className="col-12">
+                  <div className="card border-0 shadow-sm">
+                    <div className="card-body text-center p-4">
+                      <h3 className="mb-3" style={{ color: '#C8102E' }}>
+                        {language === 'es' ? 'Experiencia y Credenciales' : 'Experience & Credentials'}
+                      </h3>
+                      <div className="row g-4">
+                        <div className="col-md-3">
+                          <div className="text-success mb-2" style={{ fontSize: '2rem' }}>🎓</div>
+                          <h5>UNAM</h5>
+                          <p className="text-muted small">
+                            {language === 'es' ? 'Medicina General' : 'General Medicine'}
+                          </p>
+                        </div>
+                        <div className="col-md-3">
+                          <div className="text-success mb-2" style={{ fontSize: '2rem' }}>🏥</div>
+                          <h5>15 {language === 'es' ? 'Años' : 'Years'}</h5>
+                          <p className="text-muted small">
+                            {language === 'es' ? 'Experiencia' : 'Experience'}
+                          </p>
+                        </div>
+                        <div className="col-md-3">
+                          <div className="text-success mb-2" style={{ fontSize: '2rem' }}>📋</div>
+                          <h5>SSA</h5>
+                          <p className="text-muted small">
+                            {language === 'es' ? 'Certificado' : 'Certified'}
+                          </p>
+                        </div>
+                        <div className="col-md-3">
+                          <div className="text-success mb-2" style={{ fontSize: '2rem' }}>👥</div>
+                          <h5>500+</h5>
+                          <p className="text-muted small">
+                            {language === 'es' ? 'Pacientes' : 'Patients'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
         </div>
       </section>
