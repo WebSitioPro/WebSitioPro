@@ -146,7 +146,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Read the generated HTML file
       const htmlPath = path.join(outputDir, 'index.html');
-      const htmlContent = await fs.readFile(htmlPath, 'utf-8');
+      const htmlContent = await fs.promises.readFile(htmlPath, { encoding: 'utf-8' });
 
       // Serve the HTML content
       res.setHeader('Content-Type', 'text/html');
