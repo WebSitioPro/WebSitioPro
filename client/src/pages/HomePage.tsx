@@ -436,29 +436,29 @@ export default function HomePage() {
             }
           </p>
           
-          <div className="row g-4">
-            {/* Restaurant Template */}
+          <div className="row g-4 justify-content-center">
+            {/* Professionals Template - Working Example */}
             <div className="col-lg-6">
-              <Link href="/template/restaurant" className="text-decoration-none">
+              <Link href="/template/professionals" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
-                      <div className="bg-warning bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
-                        <div style={{ fontSize: '3rem' }}>🍽️</div>
+                      <div className="bg-success bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
+                        <div style={{ fontSize: '3rem' }}>🏥</div>
                       </div>
                     </div>
                     <div className="col-8">
                       <div className="card-body">
-                        <h5 className="card-title text-warning">
-                          {language === 'es' ? 'Restaurantes' : 'Restaurants'}
+                        <h5 className="card-title text-success">
+                          {language === 'es' ? 'Profesionales de la Salud' : 'Healthcare Professionals'}
                         </h5>
                         <p className="card-text text-muted small">
                           {language === 'es' 
-                            ? 'Menús digitales, reservaciones, galerías de comida'
-                            : 'Digital menus, reservations, food galleries'
+                            ? 'Consultorios, citas en línea, certificaciones'
+                            : 'Clinics, online appointments, certifications'
                           }
                         </p>
-                        <small className="text-warning fw-bold">
+                        <small className="text-success fw-bold">
                           {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
                         </small>
                       </div>
