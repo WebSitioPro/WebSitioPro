@@ -419,10 +419,8 @@ export default function HomePage() {
               <div key={num} className="col-lg-6">
                 {/* Professionals Template - Make it clickable */}
                 {num === 1 ? (
-                  <a 
-                    href="https://node-express-template-bluerockchris.replit.app/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                  <Link 
+                    href="/professionals-demo"
                     className="text-decoration-none"
                   >
                     <div className="card h-100 border-0 shadow-sm hover-card">
@@ -446,7 +444,7 @@ export default function HomePage() {
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 ) : (
                   /* Other templates - not clickable yet */
                   <div className="card h-100 border-0 shadow-sm">
