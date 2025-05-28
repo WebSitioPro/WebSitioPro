@@ -6,14 +6,16 @@ import { z } from "zod";
 export const websiteConfigs = pgTable("website_configs", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
+  templateType: text("template_type").default("professionals").notNull(),
   logo: text("logo"),
-  defaultLanguage: text("default_language").default("en").notNull(),
+  defaultLanguage: text("default_language").default("es").notNull(),
   showWhyWebsiteButton: boolean("show_why_website_button").default(true),
   showDomainButton: boolean("show_domain_button").default(true),
   showChatbot: boolean("show_chatbot").default(true),
   whatsappNumber: text("whatsapp_number"),
   whatsappMessage: text("whatsapp_message"),
   facebookUrl: text("facebook_url"),
+  socialLink: text("social_link"),
   googleMapsEmbed: text("google_maps_embed"),
   address: text("address"),
   phone: text("phone"),
@@ -23,17 +25,32 @@ export const websiteConfigs = pgTable("website_configs", {
     saturday: string;
   }>(),
   analyticsCode: text("analytics_code"),
-  primaryColor: text("primary_color").default("#00A859"),
-  secondaryColor: text("secondary_color").default("#C8102E"),
+  primaryColor: text("primary_color").default("#C8102E"),
+  secondaryColor: text("secondary_color").default("#00A859"),
   backgroundColor: text("background_color").default("#FFFFFF"),
+  aiOptimizedNote: text("ai_optimized_note").default("AI-optimized for speed and search"),
   translations: json("translations").$type<{
     en: Record<string, string>;
     es: Record<string, string>;
   }>(),
+  // Business-specific data
   services: json("services").$type<Array<{
-    icon: string;
-    title: { en: string; es: string };
-    description: { en: string; es: string };
+    name: string;
+    description: string;
+  }>>(),
+  menuImages: json("menu_images").$type<string[]>(),
+  tours: json("tours").$type<Array<{
+    name: string;
+    price: string;
+  }>>(),
+  products: json("products").$type<Array<{
+    name: string;
+    description: string;
+    price: string;
+  }>>(),
+  serviceAreas: json("service_areas").$type<Array<{
+    name: string;
+    description: string;
   }>>(),
   reviews: json("reviews").$type<Array<{
     name: string;
@@ -42,15 +59,7 @@ export const websiteConfigs = pgTable("website_configs", {
     date: { en: string; es: string };
     quote: { en: string; es: string };
   }>>(),
-  photos: json("photos").$type<Array<{
-    url: string;
-    caption: { en: string; es: string };
-  }>>(),
-  awards: json("awards").$type<Array<{
-    icon: string;
-    title: { en: string; es: string };
-    description: { en: string; es: string };
-  }>>(),
+  photos: json("photos").$type<string[]>(),
   chatbotQuestions: json("chatbot_questions").$type<Array<{
     key: string;
     question: { en: string; es: string };

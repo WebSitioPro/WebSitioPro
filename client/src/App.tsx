@@ -8,6 +8,10 @@ import HomePage from "@/pages/HomePage";
 import ProPage from "@/pages/ProPage";
 import EditorPage from "@/pages/EditorPage";
 import ProfessionalsDemo from "@/pages/ProfessionalsDemo";
+import RestaurantsDemo from "@/pages/RestaurantsDemo";
+import TourismDemo from "@/pages/TourismDemo";
+import RetailDemo from "@/pages/RetailDemo";
+import ServicesDemo from "@/pages/ServicesDemo";
 import TemplateEditor from "@/pages/TemplateEditor";
 
 function Router() {

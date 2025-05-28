@@ -1,0 +1,421 @@
+import { useState } from 'react';
+import { Phone, Mail, MapPin, Clock, Star, Menu, X, DollarSign } from 'lucide-react';
+
+// Mock data for tourism template
+const mockTourismData = {
+  businessName: "Aventuras Caribe",
+  intro: {
+    es: "Descubre las maravillas de Chetumal y la Riviera Maya con nuestros tours personalizados y guías expertos",
+    en: "Discover the wonders of Chetumal and the Riviera Maya with our personalized tours and expert guides"
+  },
+  tours: [
+    {
+      name: "Tour Laguna de Bacalar",
+      price: "$850 MXN"
+    },
+    {
+      name: "Excursión Ruinas de Kohunlich",
+      price: "$1,200 MXN"
+    },
+    {
+      name: "Tour Cenotes y Naturaleza",
+      price: "$950 MXN"
+    },
+    {
+      name: "Aventura Río Hondo",
+      price: "$1,100 MXN"
+    }
+  ],
+  photos: [
+    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Bacalar+Lagoon",
+    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Mayan+Ruins",
+    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Cenote+Swimming",
+    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Jungle+Tour",
+    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Beach+Sunset",
+    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Cultural+Site"
+  ],
+  reviews: [
+    {
+      name: "Jennifer Smith",
+      rating: 5,
+      text: { es: "¡Increíble experiencia en Bacalar! Guías muy profesionales y conocedores.", en: "Amazing experience in Bacalar! Very professional and knowledgeable guides." }
+    },
+    {
+      name: "Roberto Martínez",
+      rating: 5,
+      text: { es: "Tours bien organizados, precios justos. Recomendamos la excursión a Kohunlich.", en: "Well-organized tours, fair prices. We recommend the Kohunlich excursion." }
+    },
+    {
+      name: "Lisa Johnson",
+      rating: 5,
+      text: { es: "Excelente atención al cliente. Nos ayudaron a planear todo nuestro viaje.", en: "Excellent customer service. They helped us plan our entire trip." }
+    }
+  ],
+  address: "Av. Héroes 456, Centro, Chetumal, Q.R.",
+  phone: "+52 983 456 7890",
+  email: "info@aventurascaribe.com",
+  socialLink: "https://instagram.com/aventurascaribe",
+  whatsappNumber: "529834567890"
+};
+
+const translations = {
+  es: {
+    home: "Inicio",
+    tours: "Tours",
+    photos: "Fotos",
+    reviews: "Reseñas",
+    contact: "Contacto",
+    whatsappButton: "WhatsApp",
+    toursTitle: "Nuestros Tours",
+    photosTitle: "Galería de Aventuras",
+    reviewsTitle: "Experiencias de nuestros viajeros",
+    contactTitle: "Contáctanos",
+    contactInfo: "Información de Contacto",
+    hours: "Horarios",
+    mondayFriday: "Lunes a Viernes: 7:00 AM - 7:00 PM",
+    saturday: "Sábado: 8:00 AM - 6:00 PM",
+    phone: "+52 983 456 7890",
+    email: "info@aventurascaribe.com",
+    address: "Av. Héroes 456, Centro, Chetumal, Q.R.",
+    followUs: "Síguenos",
+    bookTour: "Reservar Tour"
+  },
+  en: {
+    home: "Home",
+    tours: "Tours",
+    photos: "Photos",
+    reviews: "Reviews",
+    contact: "Contact",
+    whatsappButton: "WhatsApp",
+    toursTitle: "Our Tours",
+    photosTitle: "Adventure Gallery",
+    reviewsTitle: "Our travelers' experiences",
+    contactTitle: "Contact Us",
+    contactInfo: "Contact Information",
+    hours: "Hours",
+    mondayFriday: "Monday to Friday: 7:00 AM - 7:00 PM",
+    saturday: "Saturday: 8:00 AM - 6:00 PM",
+    phone: "+52 983 456 7890",
+    email: "info@aventurascaribe.com",
+    address: "Av. Héroes 456, Centro, Chetumal, Q.R.",
+    followUs: "Follow Us",
+    bookTour: "Book Tour"
+  }
+};
+
+export default function TourismDemo() {
+  const [language, setLanguage] = useState<'es' | 'en'>('es');
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+  const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
+  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'es' ? 'en' : 'es');
+  };
+
+  return (
+    <div className="min-vh-100 bg-white">
+      {/* Header */}
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div className="container">
+          <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
+            {mockTourismData.businessName}
+          </a>
+          
+          <div className="d-flex align-items-center">
+            <button
+              className="btn btn-outline-warning btn-sm me-3"
+              onClick={toggleLanguage}
+              style={{ fontSize: '1.5em' }}
+            >
+              {language === 'es' ? 'English' : 'Español'}
+            </button>
+            
+            <button
+              className="navbar-toggler"
+              type="button"
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+            >
+              {showMobileMenu ? <X /> : <Menu />}
+            </button>
+          </div>
+
+          <div className={`collapse navbar-collapse ${showMobileMenu ? 'show' : ''}`}>
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <a className="nav-link" href="#home">{t('home')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#tours">{t('tours')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#photos">{t('photos')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#reviews">{t('reviews')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#contact">{t('contact')}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {/* Intro Section */}
+      <section id="home" className="py-5">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-8">
+              <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {mockTourismData.businessName}
+              </h1>
+              <p className="lead mb-4 text-muted">
+                {getLocalizedValue(mockTourismData.intro)}
+              </p>
+              <a 
+                href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Hola, me gustaría información sobre sus tours`}
+                className="btn btn-lg text-white"
+                style={{ backgroundColor: '#25D366' }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Phone size={20} className="me-2" />
+                {t('whatsappButton')}
+              </a>
+            </div>
+            <div className="col-lg-4 text-center">
+              <img 
+                src="https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Tourism+Logo" 
+                alt="Tourism" 
+                className="img-fluid rounded shadow"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tours Section */}
+      <section id="tours" className="py-5 bg-light">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('toursTitle')}
+          </h2>
+          <div className="row g-4">
+            {mockTourismData.tours.map((tour, index) => (
+              <div key={index} className="col-md-6 col-lg-3">
+                <div className="card border-0 shadow-sm h-100">
+                  <div className="card-body p-4 text-center">
+                    <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                      {tour.name}
+                    </h5>
+                    <div className="mb-3">
+                      <span className="badge fs-6 px-3 py-2" style={{ backgroundColor: 'hsl(var(--secondary))', color: 'white' }}>
+                        <DollarSign size={16} className="me-1" />
+                        {tour.price}
+                      </span>
+                    </div>
+                    <a 
+                      href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Me interesa el ${tour.name}`}
+                      className="btn btn-outline-primary btn-sm"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t('bookTour')}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section id="reviews" className="py-4 bg-light">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+            {t('reviewsTitle')}
+          </h2>
+          <div className="row g-4 justify-content-center">
+            {mockTourismData.reviews.map((review, index) => (
+              <div key={index} className="col-lg-4 col-md-6">
+                <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
+                  <div className="card-body p-4 text-center d-flex flex-column">
+                    <div className="mb-3 d-flex justify-content-center gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star key={star} size={16} fill="gold" color="gold" />
+                      ))}
+                    </div>
+                    <div className="flex-grow-1 d-flex flex-column justify-content-center">
+                      <p className="mb-3 text-muted">
+                        "{getLocalizedValue(review.text)}"
+                      </p>
+                    </div>
+                    <h6 className="mb-0 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+                      {review.name}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Photos Section */}
+      <section id="photos" className="py-5">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('photosTitle')}
+          </h2>
+          <div className="row g-3">
+            {mockTourismData.photos.slice(0, 12).map((photo, index) => (
+              <div key={index} className="col-md-4 col-sm-6">
+                <img 
+                  src={photo} 
+                  alt={`Tourism photo ${index + 1}`} 
+                  className="img-fluid rounded shadow-sm"
+                  style={{ 
+                    width: '100%',
+                    height: '200px', 
+                    objectFit: 'cover' 
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-5 bg-light">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('contactTitle')}
+          </h2>
+          <div className="row g-4">
+            <div className="col-lg-6">
+              <div className="card border-0 shadow-sm h-100">
+                <div className="card-body p-4">
+                  <h5 className="mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                    {t('contactInfo')}
+                  </h5>
+                  <div className="row g-4">
+                    <div className="col-12">
+                      <div className="d-flex align-items-center mb-3">
+                        <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Teléfono</h6>
+                          <p className="mb-0 text-muted">{t('phone')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <div className="d-flex align-items-center mb-3">
+                        <Mail className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Email</h6>
+                          <p className="mb-0 text-muted">{t('email')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <div className="d-flex align-items-center mb-3">
+                        <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Dirección</h6>
+                          <p className="mb-0 text-muted">{t('address')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <div className="d-flex align-items-center mb-3">
+                        <Clock className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">{t('hours')}</h6>
+                          <p className="mb-1 text-muted">{t('mondayFriday')}</p>
+                          <p className="mb-0 text-muted">{t('saturday')}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4">
+                    <a 
+                      href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Hola, me gustaría información sobre sus tours`}
+                      className="btn w-100 text-white mb-2"
+                      style={{ backgroundColor: '#25D366' }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Phone size={16} className="me-2" />
+                      {t('whatsappButton')}
+                    </a>
+                    {mockTourismData.socialLink && (
+                      <a 
+                        href={mockTourismData.socialLink}
+                        className="btn btn-outline-primary w-100"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t('followUs')}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="card border-0 shadow-sm h-100">
+                <div className="card-body p-4">
+                  <h6 className="mb-3 d-flex align-items-center">
+                    <MapPin className="me-2" size={20} style={{ color: 'hsl(var(--primary))' }} />
+                    Ubicación
+                  </h6>
+                  <div className="ratio ratio-16x9">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
+                      style={{ border: 0, borderRadius: '8px' }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+                  <div className="mt-3">
+                    <small className="text-muted">
+                      {t('address')}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Chatbot Placeholder */}
+      <div id="chatbot" className="chatbot-placeholder position-fixed" style={{ bottom: '20px', right: '20px', zIndex: 1000 }}>
+        <button className="btn btn-success rounded-circle" style={{ width: '60px', height: '60px' }}>
+          💬
+        </button>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-dark text-white py-4">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <h5>{mockTourismData.businessName}</h5>
+              <p className="mb-0">AI-optimized for speed and search</p>
+            </div>
+            <div className="col-md-6 text-md-end">
+              <p className="mb-0">© 2024 WebSitioPro - Todos los derechos reservados</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

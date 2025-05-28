@@ -1,0 +1,438 @@
+import { useState } from 'react';
+import { Phone, Mail, MapPin, Clock, Star, Menu, X, ShoppingBag } from 'lucide-react';
+
+// Mock data for retail template
+const mockRetailData = {
+  businessName: "Maya Boutique",
+  intro: {
+    es: "Descubre regalos únicos y artesanías auténticas en el corazón de Chetumal. Productos hechos a mano con amor",
+    en: "Discover unique gifts and authentic crafts in the heart of Chetumal. Handmade products with love"
+  },
+  products: [
+    {
+      name: "Textiles Mayas",
+      description: "Huipiles y rebozos tradicionales",
+      price: "$450 - $1,200 MXN"
+    },
+    {
+      name: "Joyería Artesanal",
+      description: "Collares y aretes de plata",
+      price: "$200 - $800 MXN"
+    },
+    {
+      name: "Cerámica Local",
+      description: "Vasijas y platos decorativos",
+      price: "$150 - $600 MXN"
+    },
+    {
+      name: "Bolsas Tejidas",
+      description: "Morales y bolsos tradicionales",
+      price: "$180 - $400 MXN"
+    },
+    {
+      name: "Arte en Madera",
+      description: "Figuras y máscaras talladas",
+      price: "$300 - $900 MXN"
+    },
+    {
+      name: "Especias y Condimentos",
+      description: "Chiles y condimentos locales",
+      price: "$50 - $150 MXN"
+    }
+  ],
+  photos: [
+    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Textiles+Display",
+    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Jewelry+Collection",
+    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Ceramic+Art",
+    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Handwoven+Bags",
+    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Wood+Crafts",
+    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Store+Interior"
+  ],
+  reviews: [
+    {
+      name: "Patricia González",
+      rating: 5,
+      text: { es: "Productos hermosos y auténticos. Excelente atención al cliente y precios justos.", en: "Beautiful and authentic products. Excellent customer service and fair prices." }
+    },
+    {
+      name: "Michael Davis",
+      rating: 5,
+      text: { es: "Encontré regalos únicos que no conseguiría en otro lugar. Muy recomendado.", en: "Found unique gifts I couldn't get anywhere else. Highly recommended." }
+    },
+    {
+      name: "Carmen Ruiz",
+      rating: 5,
+      text: { es: "La mejor tienda de artesanías en Chetumal. Calidad excepcional en todos sus productos.", en: "The best craft store in Chetumal. Exceptional quality in all their products." }
+    }
+  ],
+  address: "Av. Héroes 789, Centro, Chetumal, Q.R.",
+  phone: "+52 983 789 0123",
+  email: "info@mayaboutique.com",
+  socialLink: "https://facebook.com/mayaboutique",
+  whatsappNumber: "529837890123"
+};
+
+const translations = {
+  es: {
+    home: "Inicio",
+    products: "Productos",
+    photos: "Fotos",
+    reviews: "Reseñas",
+    contact: "Contacto",
+    whatsappButton: "WhatsApp",
+    productsTitle: "Nuestros Productos",
+    photosTitle: "Galería de la Tienda",
+    reviewsTitle: "Lo que dicen nuestros clientes",
+    contactTitle: "Contáctanos",
+    contactInfo: "Información de Contacto",
+    hours: "Horarios",
+    mondayFriday: "Lunes a Viernes: 9:00 AM - 7:00 PM",
+    saturday: "Sábado: 9:00 AM - 8:00 PM",
+    phone: "+52 983 789 0123",
+    email: "info@mayaboutique.com",
+    address: "Av. Héroes 789, Centro, Chetumal, Q.R.",
+    followUs: "Síguenos",
+    askPrice: "Preguntar Precio"
+  },
+  en: {
+    home: "Home",
+    products: "Products",
+    photos: "Photos",
+    reviews: "Reviews",
+    contact: "Contact",
+    whatsappButton: "WhatsApp",
+    productsTitle: "Our Products",
+    photosTitle: "Store Gallery",
+    reviewsTitle: "What our customers say",
+    contactTitle: "Contact Us",
+    contactInfo: "Contact Information",
+    hours: "Hours",
+    mondayFriday: "Monday to Friday: 9:00 AM - 7:00 PM",
+    saturday: "Saturday: 9:00 AM - 8:00 PM",
+    phone: "+52 983 789 0123",
+    email: "info@mayaboutique.com",
+    address: "Av. Héroes 789, Centro, Chetumal, Q.R.",
+    followUs: "Follow Us",
+    askPrice: "Ask Price"
+  }
+};
+
+export default function RetailDemo() {
+  const [language, setLanguage] = useState<'es' | 'en'>('es');
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+  const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
+  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'es' ? 'en' : 'es');
+  };
+
+  return (
+    <div className="min-vh-100 bg-white">
+      {/* Header */}
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div className="container">
+          <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
+            {mockRetailData.businessName}
+          </a>
+          
+          <div className="d-flex align-items-center">
+            <button
+              className="btn btn-outline-warning btn-sm me-3"
+              onClick={toggleLanguage}
+              style={{ fontSize: '1.5em' }}
+            >
+              {language === 'es' ? 'English' : 'Español'}
+            </button>
+            
+            <button
+              className="navbar-toggler"
+              type="button"
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+            >
+              {showMobileMenu ? <X /> : <Menu />}
+            </button>
+          </div>
+
+          <div className={`collapse navbar-collapse ${showMobileMenu ? 'show' : ''}`}>
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <a className="nav-link" href="#home">{t('home')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#products">{t('products')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#photos">{t('photos')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#reviews">{t('reviews')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#contact">{t('contact')}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {/* Intro Section */}
+      <section id="home" className="py-5">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-8">
+              <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {mockRetailData.businessName}
+              </h1>
+              <p className="lead mb-4 text-muted">
+                {getLocalizedValue(mockRetailData.intro)}
+              </p>
+              <a 
+                href={`https://wa.me/${mockRetailData.whatsappNumber}?text=Hola, me interesa conocer más sobre sus productos`}
+                className="btn btn-lg text-white"
+                style={{ backgroundColor: '#25D366' }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Phone size={20} className="me-2" />
+                {t('whatsappButton')}
+              </a>
+            </div>
+            <div className="col-lg-4 text-center">
+              <img 
+                src="https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Boutique+Logo" 
+                alt="Boutique" 
+                className="img-fluid rounded shadow"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Products Section */}
+      <section id="products" className="py-5 bg-light">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('productsTitle')}
+          </h2>
+          <div className="row g-4">
+            {mockRetailData.products.map((product, index) => (
+              <div key={index} className="col-md-6 col-lg-4">
+                <div className="card border-0 shadow-sm h-100">
+                  <div className="card-body p-4">
+                    <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                      <ShoppingBag size={20} className="me-2" />
+                      {product.name}
+                    </h5>
+                    <p className="text-muted mb-3">
+                      {product.description}
+                    </p>
+                    <div className="mb-3">
+                      <span className="badge fs-6 px-3 py-2" style={{ backgroundColor: 'hsl(var(--secondary))', color: 'white' }}>
+                        {product.price}
+                      </span>
+                    </div>
+                    <a 
+                      href={`https://wa.me/${mockRetailData.whatsappNumber}?text=Me interesa ${product.name}`}
+                      className="btn btn-outline-primary btn-sm"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t('askPrice')}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section id="reviews" className="py-4 bg-light">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+            {t('reviewsTitle')}
+          </h2>
+          <div className="row g-4 justify-content-center">
+            {mockRetailData.reviews.map((review, index) => (
+              <div key={index} className="col-lg-4 col-md-6">
+                <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
+                  <div className="card-body p-4 text-center d-flex flex-column">
+                    <div className="mb-3 d-flex justify-content-center gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star key={star} size={16} fill="gold" color="gold" />
+                      ))}
+                    </div>
+                    <div className="flex-grow-1 d-flex flex-column justify-content-center">
+                      <p className="mb-3 text-muted">
+                        "{getLocalizedValue(review.text)}"
+                      </p>
+                    </div>
+                    <h6 className="mb-0 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+                      {review.name}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Photos Section */}
+      <section id="photos" className="py-5">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('photosTitle')}
+          </h2>
+          <div className="row g-3">
+            {mockRetailData.photos.slice(0, 12).map((photo, index) => (
+              <div key={index} className="col-md-4 col-sm-6">
+                <img 
+                  src={photo} 
+                  alt={`Store photo ${index + 1}`} 
+                  className="img-fluid rounded shadow-sm"
+                  style={{ 
+                    width: '100%',
+                    height: '200px', 
+                    objectFit: 'cover' 
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-5 bg-light">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('contactTitle')}
+          </h2>
+          <div className="row g-4">
+            <div className="col-lg-6">
+              <div className="card border-0 shadow-sm h-100">
+                <div className="card-body p-4">
+                  <h5 className="mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                    {t('contactInfo')}
+                  </h5>
+                  <div className="row g-4">
+                    <div className="col-12">
+                      <div className="d-flex align-items-center mb-3">
+                        <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Teléfono</h6>
+                          <p className="mb-0 text-muted">{t('phone')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <div className="d-flex align-items-center mb-3">
+                        <Mail className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Email</h6>
+                          <p className="mb-0 text-muted">{t('email')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <div className="d-flex align-items-center mb-3">
+                        <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Dirección</h6>
+                          <p className="mb-0 text-muted">{t('address')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <div className="d-flex align-items-center mb-3">
+                        <Clock className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">{t('hours')}</h6>
+                          <p className="mb-1 text-muted">{t('mondayFriday')}</p>
+                          <p className="mb-0 text-muted">{t('saturday')}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4">
+                    <a 
+                      href={`https://wa.me/${mockRetailData.whatsappNumber}?text=Hola, me interesa conocer más sobre sus productos`}
+                      className="btn w-100 text-white mb-2"
+                      style={{ backgroundColor: '#25D366' }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Phone size={16} className="me-2" />
+                      {t('whatsappButton')}
+                    </a>
+                    {mockRetailData.socialLink && (
+                      <a 
+                        href={mockRetailData.socialLink}
+                        className="btn btn-outline-primary w-100"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t('followUs')}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="card border-0 shadow-sm h-100">
+                <div className="card-body p-4">
+                  <h6 className="mb-3 d-flex align-items-center">
+                    <MapPin className="me-2" size={20} style={{ color: 'hsl(var(--primary))' }} />
+                    Ubicación
+                  </h6>
+                  <div className="ratio ratio-16x9">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
+                      style={{ border: 0, borderRadius: '8px' }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+                  <div className="mt-3">
+                    <small className="text-muted">
+                      {t('address')}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Chatbot Placeholder */}
+      <div id="chatbot" className="chatbot-placeholder position-fixed" style={{ bottom: '20px', right: '20px', zIndex: 1000 }}>
+        <button className="btn btn-success rounded-circle" style={{ width: '60px', height: '60px' }}>
+          💬
+        </button>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-dark text-white py-4">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <h5>{mockRetailData.businessName}</h5>
+              <p className="mb-0">AI-optimized for speed and search</p>
+            </div>
+            <div className="col-md-6 text-md-end">
+              <p className="mb-0">© 2024 WebSitioPro - Todos los derechos reservados</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

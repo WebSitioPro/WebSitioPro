@@ -1,0 +1,199 @@
+"Update the WebSitioPro project in Replit (Node.js, Express, EJS, Bootstrap 5 via CDN) to achieve the following goal: create four new templates (Restaurants, Tourist Businesses, Retail, Services) by adapting the Professionals template, and consolidate the five template editors into a single sub-editor with a dropdown menu for selecting the template type. The main page (index.ejs) and Pro page (pro.ejs) are complete and must remain unchanged. The templates are static, one-page websites for Chetumal businesses, used for pre-built demos on subdomains (e.g., clientname.websitiopro.com) for WhatsApp pitches, targeting 5–10 clients daily. Below are the detailed requirements.
+Synopsis
+The goal is to expand the WebSitioPro project with four new templates that share the Professionals template’s design and features, differing only in their business-specific section (e.g., Menu Images for Restaurants). Each template is a static site for Vercel deployment, with a cohesive Mexican-inspired design (colors: red #C8102E, green #00A859, white #FFFFFF). A single template editor at /editor/tools (sub-editor within the main site’s development tools editor) will streamline demo creation, using a dropdown to select the template type and load its fields. Features include an expandable photo gallery (12 images), Contact Info with WhatsApp, Tawk.to chatbot placeholder, and AI optimization (SEO, note). The setup must avoid complex integrations to prevent checkpoints, ensuring static output in output/<template_type>/.
+Requirements
+1. Create Four New Templates
+Copy Professionals Template:
+Duplicate templates/professionals.ejs to create restaurants.ejs, tourism.ejs, retail.ejs, services.ejs.
+Shared Structure:
+Sections: Header, Intro, Business-Specific Section, Reviews, Photos, Contact, Contact Info, Footer.
+
+Remove the Awards section from all templates.
+Design:
+Colors: red (#C8102E), green (#00A859), white (#FFFFFF).
+
+Responsive layout with Bootstrap 5 (CDN).
+
+Typography: Roboto or Open Sans.
+Shared Features:
+Language Toggle: 1.5em English/Spanish button (top-right), switching text via JSON (e.g., { "es": { "intro": "Bienvenidos" }, "en": { "intro": "Welcome" } }). Default: Spanish.
+
+WhatsApp Button: Link to https://wa.me/<your-number>?text=Let’s discuss my site!.
+
+Google Maps Embed: Use data.address for the client’s location.
+
+Formspree Form: In Contact section, fields: name, email, message.
+
+Tawk.to Chatbot: Floating placeholder button (<div id="chatbot" class="chatbot-placeholder"><button class="btn btn-success">Chat with us</button></div>), styled in style.css (bottom-right, z-index: 1000).
+
+Google Analytics: Placeholder code (e.g., <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXX"></script>).
+
+Toggleable Sections:
+“Why You Need a Website” (collapsible, text: “70% of Mexicans search online”).
+
+“Find Your Domain Name” (collapsible, text: “Domain up to $12 USD included, extra for premium”).
+AI Optimization:
+Dynamic meta tags (e.g., <meta name="keywords" content="<%= data.business_name %>, Chetumal, <%= data.template_type %>">).
+
+Note in Footer: <p><%= data.ai_optimized_note %></p> (default: “AI-optimized for speed and search”).
+SEO & Accessibility:
+Meta tags, LocalBusiness schema for Chetumal keywords (e.g., “Chetumal restaurant”).
+
+aria-label for buttons (language toggle, WhatsApp).
+Photos Section:
+Expandable gallery, up to 12 ImgBB URLs.
+
+3-column Bootstrap grid (col-md-4):
+html
+<section id="photos">
+  <h2>Photos</h2>
+  <div class="row">
+    <% data.photos.slice(0, 12).forEach(photo => { %>
+      <div class="col-md-4 col-sm-6 mb-3">
+        <img src="<%= photo %>" alt="Business photo" class="img-fluid">
+      </div>
+    <% }) %>
+  </div>
+</section>
+CSS: max-height: 200px; object-fit: cover;.
+Contact Info Section:
+Below Contact, Bootstrap card:
+html
+<section id="contact-info">
+  <div class="card">
+    <div class="card-body">
+      <h2>Contact Info</h2>
+      <p><strong><%= data.business_name %></strong></p>
+      <p><%= data.address %></p>
+      <p><a href="tel:<%= data.phone %>"><%= data.phone %></a></p>
+      <p><a href="mailto:<%= data.email %>"><%= data.email %></a></p>
+      <% if (data.social_link) { %>
+        <p><a href="<%= data.social_link %>">Follow us</a></p>
+      <% } %>
+      <a href="https://wa.me/<%= data.whatsapp_number %>?text=Contact us!" class="btn btn-success">WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+Fields: business_name, address, phone, email, social_link, whatsapp_number.
+2. Business-Specific Sections
+Professionals:
+Intro: Professional bio (e.g., “Dr. Garcia, trusted dentist”).
+
+Services: List of services.
+
+EJS: <h2>Services</h2> <% data.services.forEach(item => { %> <li><%= item.name %> - <%= item.description %></li> <% }) %>.
+Restaurants:
+Intro: Restaurant story (e.g., “Family-owned taquería since 1990”).
+
+Menu Images: Up to 9 menu page images (ImgBB URLs).
+
+EJS:
+html
+<section id="menu-images">
+  <h2>Our Menu</h2>
+  <div class="row">
+    <% data.menu_images.slice(0, 9).forEach(image => { %>
+      <div class="col-md-4 col-sm-6 mb-3">
+        <img src="<%= image %>" alt="Menu page" class="img-fluid menu-image">
+      </div>
+    <% }) %>
+  </div>
+</section>
+CSS: max-height: 400px; object-fit: contain; border: 2px solid #00A859;.
+Tourist Businesses:
+Intro: Tour offerings (e.g., “Explore Chetumal’s beaches”).
+
+Tours: List of packages.
+
+EJS: <h2>Tours</h2> <% data.tours.forEach(item => { %> <li><%= item.name %> - <%= item.price %></li> <% }) %>.
+Retail:
+Intro: Store description (e.g., “Unique gifts at Maya Boutique”).
+
+Products: List of items.
+
+EJS: <h2>Products</h2> <% data.products.forEach(item => { %> <li><%= item.name %> - <%= item.description %> (<%= item.price %>)</li> <% }) %>.
+Services:
+Intro: Service provider bio (e.g., “Trusted plumber”).
+
+Service Areas: List of work types.
+
+EJS: <h2>Service Areas</h2> <% data.service_areas.forEach(item => { %> <li><%= item.name %> - <%= item.description %></li> <% }) %>.
+3. Update Professionals Template
+Add Tawk.to chatbot placeholder (missing from rebuild):
+html
+<div id="chatbot" class="chatbot-placeholder">
+  <button class="btn btn-success">Chat with us</button>
+</div>
+Add Contact Info section (as above).
+
+Remove Awards section.
+
+Ensure photo gallery supports 12 images.
+4. Consolidate Template Editors
+Location: Sub-editor at /editor/tools, within the main site’s development tools editor.
+
+Interface:
+Create templates/editor.ejs with a dropdown menu:
+html
+<select id="template-type" name="template_type">
+  <option value="professionals">Professionals</option>
+  <option value="restaurants">Restaurants</option>
+  <option value="tourism">Tourist Businesses</option>
+  <option value="retail">Retail</option>
+  <option value="services">Services</option>
+</select>
+Use JavaScript to load fields dynamically based on template_type (e.g., menu_images for Restaurants, services for Professionals).
+
+Form fields:
+Shared: business_name, logo_url, intro, reviews, photos (12 URLs), address, phone, email, social_link, whatsapp_number, language_default, chatbot_enabled, ai_optimized_note.
+
+Business-Specific:
+Professionals: services: [{ name, description }].
+
+Restaurants: menu_images: [] (9 URLs).
+
+Tourist Businesses: tours: [{ name, price }].
+
+Retail: products: [{ name, description, price }].
+
+Services: service_areas: [{ name, description }].
+Save as data/clientname.json with template_type.
+Backend:
+Update app.js with a route: POST /editor/tools/save.
+
+Modify generate.js to select the correct EJS template based on template_type.
+Integration: Add a link in the main editor (editor.ejs) to /editor/tools (e.g., “Template Editor” tab).
+5. Technical Details
+Tech Stack: Node.js, Express, EJS, Bootstrap 5 (CDN).
+
+File Structure:
+Templates: templates/<type>.ejs.
+
+Editor: templates/editor.ejs.
+
+JSON: data/clientname.json.
+
+Output: output/<template_type>/index.html.
+Dependencies: Ensure package.json includes express, ejs.
+
+Avoid Checkpoints:
+Use placeholders for APIs (e.g., domain checker, chatbot).
+
+Specify file paths clearly.
+Vercel Readiness: Generate static files for deployment.
+
+Testing:
+Test each template with sample data (e.g., 9 menu images for Restaurants, 3 services for Professionals).
+
+Verify editor dropdown and JSON output.
+
+Check static outputs in output/.
+Output
+Four new templates (restaurants.ejs, tourism.ejs, retail.ejs, services.ejs).
+
+Updated Professionals template with chatbot and Contact Info.
+
+Single template editor at /editor/tools with dropdown.
+
+Static files in output/<template_type>/ for all templates."
+
