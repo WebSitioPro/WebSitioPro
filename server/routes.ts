@@ -141,11 +141,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get default config or create a sample professionals config
       const config = await storage.getDefaultWebsiteConfig();
 
-      // Generate the template with professionals-specific settings
-      // Assuming generateTemplate function exists and handles professionals template
-      const templateHtml = await generateStaticFiles(config);
+      // Generate the template files
+      const outputDir = await generateStaticFiles(config);
+      
+      // Read the generated HTML file
+      const htmlPath = path.join(outputDir, 'index.html');
+      const htmlContent = await fs.readFile(htmlPath, 'utf-8');
 
-      res.send(templateHtml);
+      // Serve the HTML content
+      res.setHeader('Content-Type', 'text/html');
+      res.send(htmlContent);
     } catch (error) {
       console.error('Error generating professionals template:', error);
       res.status(500).send('Error generating template');
