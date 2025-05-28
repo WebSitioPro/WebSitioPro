@@ -402,7 +402,7 @@ export default function ProPage() {
 
             {/* Retail Template */}
             <div className="col-lg-6">
-              <Link href="/template/retail" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
@@ -433,7 +433,7 @@ export default function ProPage() {
 
             {/* Services Template */}
             <div className="col-lg-6">
-              <Link href="/template/services" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
@@ -464,7 +464,7 @@ export default function ProPage() {
 
             {/* Artisans Template */}
             <div className="col-lg-6">
-              <Link href="/template/artisans" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
