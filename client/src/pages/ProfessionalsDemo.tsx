@@ -311,35 +311,39 @@ export default function ProfessionalsDemo() {
       </section>
 
       {/* Reviews Section */}
-      <section id="reviews" className="py-5 bg-light">
+      <section id="reviews" className="py-4 bg-light">
         <div className="container">
           <h2 className="text-center fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
             {t('reviewsTitle')}
           </h2>
-          <div className="row g-3">
-            {[1, 2, 3].map((num) => (
-              <div key={num} className="col-lg-4">
-                <div className="card border-0 shadow-sm">
-                  <div className="card-body p-3">
-                    <div className="d-flex align-items-center mb-2">
-                      <div className="me-3">
-                        <div className="mb-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star key={star} size={14} fill="gold" color="gold" />
-                          ))}
+          <div className="row justify-content-center">
+            <div className="col-lg-10">
+              <div className="d-flex gap-3 overflow-auto">
+                {[1, 2, 3].map((num) => (
+                  <div key={num} className="flex-shrink-0" style={{ minWidth: '300px' }}>
+                    <div className="card border-0 shadow-sm h-100">
+                      <div className="card-body p-3">
+                        <div className="d-flex align-items-start mb-2">
+                          <div>
+                            <div className="mb-1">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star key={star} size={12} fill="gold" color="gold" />
+                              ))}
+                            </div>
+                            <h6 className="mb-2 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+                              {t(`review${num}Name` as any)}
+                            </h6>
+                            <p className="mb-0 text-muted small">
+                              "{t(`review${num}Text` as any)}"
+                            </p>
+                          </div>
                         </div>
-                        <h6 className="mb-0 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-                          {t(`review${num}Name` as any)}
-                        </h6>
                       </div>
                     </div>
-                    <p className="mb-0 text-muted small">
-                      "{t(`review${num}Text` as any)}"
-                    </p>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
