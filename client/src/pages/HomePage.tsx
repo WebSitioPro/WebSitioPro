@@ -423,54 +423,67 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* What We Offer */}
-      <section id="offerings" className="py-5">
+      {/* Template Example */}
+      <section id="example" className="py-5">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {t('offeringsTitle')}
+            {language === 'es' ? 'Ejemplo de Sitio Web' : 'Website Example'}
           </h2>
           <p className="text-center text-muted mb-5">
             {language === 'es' 
-              ? 'Explora nuestros ejemplos de sitios web para diferentes tipos de negocios. Haz clic para ver una demo completa.'
-              : 'Explore our website examples for different business types. Click to see a full demo.'
+              ? 'Ve cómo se ve un sitio web profesional creado con WebSitioPro'
+              : 'See how a professional website created with WebSitioPro looks'
             }
           </p>
           
-          <div className="row g-4 justify-content-center">
-            {/* Professionals Template - Working Example */}
-            <div className="col-lg-6">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
               <Link href="/template/professionals" className="text-decoration-none">
-                <div className="card h-100 border-0 shadow-sm hover-card">
+                <div className="card border-0 shadow-lg hover-card">
                   <div className="row g-0">
-                    <div className="col-4">
-                      <div className="bg-success bg-opacity-10 h-100 d-flex align-items-center justify-content-center">
-                        <div style={{ fontSize: '3rem' }}>🏥</div>
+                    <div className="col-md-4">
+                      <div className="bg-success bg-opacity-10 h-100 d-flex align-items-center justify-content-center p-4">
+                        <div style={{ fontSize: '4rem' }}>🏥</div>
                       </div>
                     </div>
-                    <div className="col-8">
-                      <div className="card-body">
-                        <h5 className="card-title text-success">
+                    <div className="col-md-8">
+                      <div className="card-body p-4">
+                        <h4 className="card-title text-success mb-3">
                           {language === 'es' ? 'Profesionales de la Salud' : 'Healthcare Professionals'}
-                        </h5>
-                        <p className="card-text text-muted small">
+                        </h4>
+                        <p className="card-text text-muted mb-3">
                           {language === 'es' 
-                            ? 'Consultorios, citas en línea, certificaciones'
-                            : 'Clinics, online appointments, certifications'
+                            ? 'Sitio web completo para doctores y profesionales médicos con sistema de citas, información de servicios, testimonios de pacientes y más.'
+                            : 'Complete website for doctors and medical professionals with appointment system, service information, patient testimonials and more.'
                           }
                         </p>
-                        <small className="text-success fw-bold">
-                          {language === 'es' ? 'Ver Ejemplo →' : 'View Example →'}
-                        </small>
+                        <div className="d-flex align-items-center">
+                          <span className="badge bg-success me-2">
+                            {language === 'es' ? 'Completamente Funcional' : 'Fully Functional'}
+                          </span>
+                          <small className="text-success fw-bold">
+                            {language === 'es' ? 'Ver Demo Completo →' : 'View Full Demo →'}
+                          </small>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </Link>
             </div>
+          </div>
 
-            {/* Tourist Template */}
-            <div className="col-lg-6">
-              <Link href="/template/tourist" className="text-decoration-none">
+          <div className="text-center mt-5">
+            <Link 
+              href="/pro"
+              className="btn btn-primary btn-lg text-white px-5"
+              style={{ backgroundColor: 'hsl(var(--primary))' }}
+            >
+              {language === 'es' ? 'Ver Planes Pro' : 'See Pro Plans'}
+            </Link>
+          </div>
+        </div>
+      </section>
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
