@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { Phone, Mail, MapPin, Clock, Calendar, Star, Shield, Award } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Star, Shield, Award } from 'lucide-react';
 
 export default function ProfessionalsDemo() {
   const [language, setLanguage] = useState('es');
@@ -16,9 +16,8 @@ export default function ProfessionalsDemo() {
         home: 'Inicio',
         about: 'Acerca de',
         services: 'Servicios',
-        contact: 'Contacto',
         reviews: 'Reseñas',
-        appointment: 'Cita',
+        contact: 'Contacto',
         language: 'English',
         
         // Hero
@@ -26,15 +25,6 @@ export default function ProfessionalsDemo() {
         heroSubtitle: 'Especialista en Medicina Familiar',
         heroDescription: 'Más de 15 años de experiencia brindando atención médica integral a familias en Chetumal',
         scheduleAppointment: 'Contactar por WhatsApp',
-        
-        // Reviews
-        reviewsTitle: 'Lo que dicen nuestros pacientes',
-        review1Name: 'Ana López',
-        review1Text: 'Excelente doctora, muy profesional y atenta. Siempre disponible para emergencias.',
-        review2Name: 'Carlos Méndez',
-        review2Text: 'La mejor atención médica en Chetumal. Mi familia y yo confiamos completamente en la Dra. González.',
-        review3Name: 'María Fernández',
-        review3Text: 'Muy recomendada. Explica todo claramente y tiene mucha paciencia con los niños.',
         
         // About
         aboutTitle: 'Acerca de la Doctora',
@@ -50,6 +40,18 @@ export default function ProfessionalsDemo() {
         service3Desc: 'Cuidado especializado para niños y adolescentes',
         service4: 'Geriatría',
         service4Desc: 'Atención especializada para adultos mayores',
+        
+        // Photos
+        photosTitle: 'Nuestras Instalaciones',
+        
+        // Reviews
+        reviewsTitle: 'Lo que dicen nuestros pacientes',
+        review1Name: 'Ana López',
+        review1Text: 'Excelente doctora, muy profesional y atenta. Siempre disponible para emergencias.',
+        review2Name: 'Carlos Méndez',
+        review2Text: 'La mejor atención médica en Chetumal. Mi familia y yo confiamos completamente en la Dra. González.',
+        review3Name: 'María Fernández',
+        review3Text: 'Muy recomendada. Explica todo claramente y tiene mucha paciencia con los niños.',
         
         // Contact
         contactTitle: 'Información de Contacto',
@@ -71,9 +73,8 @@ export default function ProfessionalsDemo() {
         home: 'Home',
         about: 'About',
         services: 'Services',
-        contact: 'Contact',
         reviews: 'Reviews',
-        appointment: 'Appointment',
+        contact: 'Contact',
         language: 'Español',
         
         // Hero
@@ -81,15 +82,6 @@ export default function ProfessionalsDemo() {
         heroSubtitle: 'Family Medicine Specialist',
         heroDescription: 'Over 15 years of experience providing comprehensive medical care to families in Chetumal',
         scheduleAppointment: 'Contact via WhatsApp',
-        
-        // Reviews
-        reviewsTitle: 'What our patients say',
-        review1Name: 'Ana López',
-        review1Text: 'Excellent doctor, very professional and caring. Always available for emergencies.',
-        review2Name: 'Carlos Méndez',
-        review2Text: 'The best medical care in Chetumal. My family and I completely trust Dr. González.',
-        review3Name: 'María Fernández',
-        review3Text: 'Highly recommended. Explains everything clearly and has great patience with children.',
         
         // About
         aboutTitle: 'About the Doctor',
@@ -105,6 +97,18 @@ export default function ProfessionalsDemo() {
         service3Desc: 'Specialized care for children and adolescents',
         service4: 'Geriatrics',
         service4Desc: 'Specialized care for seniors',
+        
+        // Photos
+        photosTitle: 'Our Facilities',
+        
+        // Reviews
+        reviewsTitle: 'What our patients say',
+        review1Name: 'Ana López',
+        review1Text: 'Excellent doctor, very professional and caring. Always available for emergencies.',
+        review2Name: 'Carlos Méndez',
+        review2Text: 'The best medical care in Chetumal. My family and I completely trust Dr. González.',
+        review3Name: 'María Fernández',
+        review3Text: 'Highly recommended. Explains everything clearly and has great patience with children.',
         
         // Contact
         contactTitle: 'Contact Information',
@@ -179,18 +183,22 @@ export default function ProfessionalsDemo() {
             <div className="col-lg-6">
               <div className="text-center">
                 <div 
-                  className="rounded-circle mx-auto mb-3"
+                  className="rounded-circle mx-auto mb-3 overflow-hidden border border-3"
                   style={{ 
                     width: '300px', 
                     height: '300px', 
                     backgroundColor: 'hsl(var(--primary) / 0.1)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+                    borderColor: 'hsl(var(--primary)) !important'
                   }}
                 >
-                  <Shield size={120} style={{ color: 'hsl(var(--primary))' }} />
+                  <img 
+                    src="https://via.placeholder.com/300x300/00A859/FFFFFF?text=Dr.+María+González"
+                    alt="Dr. María González"
+                    className="w-100 h-100"
+                    style={{ objectFit: 'cover' }}
+                  />
                 </div>
+                <p className="text-muted">Especialista en Medicina Familiar</p>
               </div>
             </div>
           </div>
@@ -226,36 +234,6 @@ export default function ProfessionalsDemo() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Reviews Section */}
-      <section id="reviews" className="py-5">
-        <div className="container">
-          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
-            {t('reviewsTitle')}
-          </h2>
-          <div className="row g-4">
-            {[1, 2, 3].map((num) => (
-              <div key={num} className="col-lg-4">
-                <div className="card h-100 border-0 shadow-sm">
-                  <div className="card-body p-4 text-center">
-                    <div className="mb-3">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} size={20} fill="gold" color="gold" />
-                      ))}
-                    </div>
-                    <p className="mb-3 text-muted">
-                      "{t(`review${num}Text` as any)}"
-                    </p>
-                    <h6 className="fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-                      {t(`review${num}Name` as any)}
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -301,73 +279,144 @@ export default function ProfessionalsDemo() {
         </div>
       </section>
 
+      {/* Photo Gallery Section */}
+      <section className="py-5">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('photosTitle')}
+          </h2>
+          <div className="row g-4">
+            {[1, 2, 3, 4, 5, 6].map((num) => (
+              <div key={num} className="col-lg-4 col-md-6">
+                <div className="card border-0 shadow-sm h-100">
+                  <div 
+                    className="card-img-top bg-light d-flex align-items-center justify-content-center"
+                    style={{ height: '200px' }}
+                  >
+                    <img 
+                      src={`https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+${num}`}
+                      alt={`Consultorio ${num}`}
+                      className="w-100 h-100"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </div>
+                  <div className="card-body text-center">
+                    <p className="text-muted mb-0">Consultorio {num}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section id="reviews" className="py-5 bg-light">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('reviewsTitle')}
+          </h2>
+          <div className="row g-4">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="col-lg-4">
+                <div className="card h-100 border-0 shadow-sm">
+                  <div className="card-body p-4 text-center">
+                    <div className="mb-3">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star key={star} size={20} fill="gold" color="gold" />
+                      ))}
+                    </div>
+                    <p className="mb-3 text-muted">
+                      "{t(`review${num}Text` as any)}"
+                    </p>
+                    <h6 className="fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+                      {t(`review${num}Name` as any)}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section id="contact" className="py-5">
         <div className="container">
           <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
             {t('contactTitle')}
           </h2>
-          <div className="row g-4">
-            <div className="col-lg-6">
-              <div className="card border-0 shadow-sm h-100">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="card border-0 shadow-sm">
                 <div className="card-body p-4">
-                  <div className="d-flex align-items-center mb-3">
-                    <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
-                    <div>
-                      <h6 className="mb-0">Teléfono</h6>
-                      <p className="mb-0 text-muted">{t('phone')}</p>
+                  <div className="row g-4">
+                    <div className="col-md-6">
+                      <div className="d-flex align-items-center mb-3">
+                        <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Teléfono</h6>
+                          <p className="mb-0 text-muted">{t('phone')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="d-flex align-items-center mb-3">
+                        <Mail className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Email</h6>
+                          <p className="mb-0 text-muted">{t('email')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="d-flex align-items-center mb-3">
+                        <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">Dirección</h6>
+                          <p className="mb-0 text-muted">{t('address')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="d-flex align-items-center mb-3">
+                        <Clock className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
+                        <div>
+                          <h6 className="mb-0">{t('hours')}</h6>
+                          <p className="mb-1 text-muted">{t('mondayFriday')}</p>
+                          <p className="mb-0 text-muted">{t('saturday')}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="d-flex align-items-center mb-3">
-                    <Mail className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
-                    <div>
-                      <h6 className="mb-0">Email</h6>
-                      <p className="mb-0 text-muted">{t('email')}</p>
+                  
+                  <div className="mt-4">
+                    <div className="row g-2">
+                      <div className="col-6">
+                        <a 
+                          href="https://wa.me/529831234567?text=Hola, me gustaría agendar una cita médica"
+                          className="btn w-100 text-white"
+                          style={{ backgroundColor: '#25D366' }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Phone size={16} className="me-2" />
+                          {t('whatsappButton')}
+                        </a>
+                      </div>
+                      <div className="col-6">
+                        <a 
+                          href="https://maps.google.com/?q=Av.+Héroes+123,+Centro,+Chetumal,+Q.R."
+                          className="btn btn-outline-primary w-100"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <MapPin size={16} className="me-2" />
+                          {t('viewOnMaps')}
+                        </a>
+                      </div>
                     </div>
                   </div>
-                  <div className="d-flex align-items-center mb-3">
-                    <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
-                    <div>
-                      <h6 className="mb-0">Dirección</h6>
-                      <p className="mb-0 text-muted">{t('address')}</p>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <Clock className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
-                    <div>
-                      <h6 className="mb-0">{t('hours')}</h6>
-                      <p className="mb-1 text-muted">{t('mondayFriday')}</p>
-                      <p className="mb-0 text-muted">{t('saturday')}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="card border-0 shadow-sm h-100">
-                <div className="card-body p-4">
-                  <h5 className="mb-3">Agendar Cita</h5>
-                  <form>
-                    <div className="mb-3">
-                      <input type="text" className="form-control" placeholder="Nombre completo" />
-                    </div>
-                    <div className="mb-3">
-                      <input type="email" className="form-control" placeholder="Email" />
-                    </div>
-                    <div className="mb-3">
-                      <input type="tel" className="form-control" placeholder="Teléfono" />
-                    </div>
-                    <div className="mb-3">
-                      <textarea className="form-control" rows={3} placeholder="Motivo de la consulta"></textarea>
-                    </div>
-                    <button 
-                      type="submit" 
-                      className="btn btn-primary w-100 text-white"
-                      style={{ backgroundColor: 'hsl(var(--primary))' }}
-                    >
-                      Enviar Solicitud
-                    </button>
-                  </form>
                 </div>
               </div>
             </div>
