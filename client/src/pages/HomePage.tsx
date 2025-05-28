@@ -49,7 +49,7 @@ export default function HomePage() {
                 <Link href="/pro" className="btn btn-primary btn-lg">
                   {language === 'es' ? 'Ver Planes' : 'View Plans'}
                 </Link>
-                <Link href="/template/professionals" className="btn btn-outline-success btn-lg">
+                <Link href="/pro" className="btn btn-outline-success btn-lg">
                   {language === 'es' ? 'Ver Ejemplo' : 'View Example'}
                 </Link>
               </div>
@@ -81,7 +81,7 @@ export default function HomePage() {
           
           <div className="row justify-content-center">
             <div className="col-lg-8">
-              <Link href="/template/professionals" className="text-decoration-none">
+              <Link href="/pro" className="text-decoration-none">
                 <div className="card border-0 shadow-lg hover-card">
                   <div className="row g-0">
                     <div className="col-md-4">
