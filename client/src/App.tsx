@@ -21,6 +21,10 @@ function Router() {
       <Route path="/pro" component={ProPage} />
       <Route path="/editor" component={EditorPage} />
       <Route path="/professionals-demo" component={ProfessionalsDemo} />
+      <Route path="/restaurants-demo" component={RestaurantsDemo} />
+      <Route path="/tourism-demo" component={TourismDemo} />
+      <Route path="/retail-demo" component={RetailDemo} />
+      <Route path="/services-demo" component={ServicesDemo} />
       <Route path="/template-editor" component={TemplateEditor} />
       <Route component={NotFound} />
     </Switch>
