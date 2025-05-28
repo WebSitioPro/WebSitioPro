@@ -17,14 +17,24 @@ export default function ProfessionalsDemo() {
         about: 'Acerca de',
         services: 'Servicios',
         contact: 'Contacto',
+        reviews: 'Reseñas',
         appointment: 'Cita',
-        language: 'Español',
+        language: 'English',
         
         // Hero
         heroTitle: 'Dr. María González',
         heroSubtitle: 'Especialista en Medicina Familiar',
         heroDescription: 'Más de 15 años de experiencia brindando atención médica integral a familias en Chetumal',
-        scheduleAppointment: 'Agendar Cita',
+        scheduleAppointment: 'Contactar por WhatsApp',
+        
+        // Reviews
+        reviewsTitle: 'Lo que dicen nuestros pacientes',
+        review1Name: 'Ana López',
+        review1Text: 'Excelente doctora, muy profesional y atenta. Siempre disponible para emergencias.',
+        review2Name: 'Carlos Méndez',
+        review2Text: 'La mejor atención médica en Chetumal. Mi familia y yo confiamos completamente en la Dra. González.',
+        review3Name: 'María Fernández',
+        review3Text: 'Muy recomendada. Explica todo claramente y tiene mucha paciencia con los niños.',
         
         // About
         aboutTitle: 'Acerca de la Doctora',
@@ -49,6 +59,8 @@ export default function ProfessionalsDemo() {
         hours: 'Horarios de Atención',
         mondayFriday: 'Lun-Vie: 8:00 AM - 6:00 PM',
         saturday: 'Sáb: 9:00 AM - 2:00 PM',
+        whatsappButton: 'WhatsApp',
+        viewOnMaps: 'Ver en Google Maps',
         
         // Footer
         copyright: '© 2025 Dr. María González - Medicina Familiar',
@@ -60,14 +72,24 @@ export default function ProfessionalsDemo() {
         about: 'About',
         services: 'Services',
         contact: 'Contact',
+        reviews: 'Reviews',
         appointment: 'Appointment',
-        language: 'English',
+        language: 'Español',
         
         // Hero
         heroTitle: 'Dr. María González',
         heroSubtitle: 'Family Medicine Specialist',
         heroDescription: 'Over 15 years of experience providing comprehensive medical care to families in Chetumal',
-        scheduleAppointment: 'Schedule Appointment',
+        scheduleAppointment: 'Contact via WhatsApp',
+        
+        // Reviews
+        reviewsTitle: 'What our patients say',
+        review1Name: 'Ana López',
+        review1Text: 'Excellent doctor, very professional and caring. Always available for emergencies.',
+        review2Name: 'Carlos Méndez',
+        review2Text: 'The best medical care in Chetumal. My family and I completely trust Dr. González.',
+        review3Name: 'María Fernández',
+        review3Text: 'Highly recommended. Explains everything clearly and has great patience with children.',
         
         // About
         aboutTitle: 'About the Doctor',
@@ -92,6 +114,8 @@ export default function ProfessionalsDemo() {
         hours: 'Office Hours',
         mondayFriday: 'Mon-Fri: 8:00 AM - 6:00 PM',
         saturday: 'Sat: 9:00 AM - 2:00 PM',
+        whatsappButton: 'WhatsApp',
+        viewOnMaps: 'View on Google Maps',
         
         // Footer
         copyright: '© 2025 Dr. María González - Family Medicine',
@@ -114,6 +138,7 @@ export default function ProfessionalsDemo() {
           <div className="navbar-nav ms-auto d-flex flex-row align-items-center">
             <a className="nav-link me-3" href="#about">{t('about')}</a>
             <a className="nav-link me-3" href="#services">{t('services')}</a>
+            <a className="nav-link me-3" href="#reviews">{t('reviews')}</a>
             <a className="nav-link me-3" href="#contact">{t('contact')}</a>
             <button 
               onClick={toggleLanguage}
@@ -140,13 +165,16 @@ export default function ProfessionalsDemo() {
               <p className="lead mb-4 text-muted">
                 {t('heroDescription')}
               </p>
-              <button 
+              <a 
+                href="https://wa.me/529831234567?text=Hola, me gustaría agendar una cita médica"
                 className="btn btn-primary btn-lg text-white"
-                style={{ backgroundColor: 'hsl(var(--primary))' }}
+                style={{ backgroundColor: '#25D366' }}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <Calendar className="me-2" size={20} />
+                <Phone className="me-2" size={20} />
                 {t('scheduleAppointment')}
-              </button>
+              </a>
             </div>
             <div className="col-lg-6">
               <div className="text-center">
@@ -198,6 +226,36 @@ export default function ProfessionalsDemo() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section id="reviews" className="py-5">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('reviewsTitle')}
+          </h2>
+          <div className="row g-4">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="col-lg-4">
+                <div className="card h-100 border-0 shadow-sm">
+                  <div className="card-body p-4 text-center">
+                    <div className="mb-3">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star key={star} size={20} fill="gold" color="gold" />
+                      ))}
+                    </div>
+                    <p className="mb-3 text-muted">
+                      "{t(`review${num}Text` as any)}"
+                    </p>
+                    <h6 className="fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+                      {t(`review${num}Name` as any)}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
