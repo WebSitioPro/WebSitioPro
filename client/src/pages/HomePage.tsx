@@ -439,7 +439,7 @@ export default function HomePage() {
           <div className="row g-4">
             {/* Restaurant Template */}
             <div className="col-lg-6">
-              <Link href="/template/restaurant" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
@@ -470,7 +470,7 @@ export default function HomePage() {
 
             {/* Tourist Template */}
             <div className="col-lg-6">
-              <Link href="/template/tourist" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
@@ -501,7 +501,7 @@ export default function HomePage() {
 
             {/* Retail Template */}
             <div className="col-lg-6">
-              <Link href="/template/retail" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
@@ -532,7 +532,7 @@ export default function HomePage() {
 
             {/* Services Template */}
             <div className="col-lg-6">
-              <Link href="/template/services" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
@@ -563,7 +563,7 @@ export default function HomePage() {
 
             {/* Artisans Template */}
             <div className="col-lg-6">
-              <Link href="/template/artisans" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
@@ -594,7 +594,7 @@ export default function HomePage() {
 
             {/* Professionals Template */}
             <div className="col-lg-6">
-              <Link href="/template/professionals" className="text-decoration-none">
+              <Link href="/" className="text-decoration-none">
                 <div className="card h-100 border-0 shadow-sm hover-card">
                   <div className="row g-0">
                     <div className="col-4">
