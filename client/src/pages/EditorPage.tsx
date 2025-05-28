@@ -461,10 +461,11 @@ export default function EditorPage() {
                 </button>
                 <hr className="my-2" />
                 <Link 
-                  href="/template-editor"
-                  className="nav-link text-start border-0 bg-transparent text-primary"
+                  href="/editor/tools"
+                  className="nav-link text-start border-0 bg-transparent text-white"
+                  style={{ backgroundColor: '#C8102E' }}
                 >
-                  <Type size={16} className="me-2" />
+                  <Settings size={16} className="me-2" />
                   Template Editor
                 </Link>
               </nav>
