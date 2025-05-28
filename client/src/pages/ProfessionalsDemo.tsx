@@ -321,7 +321,7 @@ export default function ProfessionalsDemo() {
               <div key={num} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
-                    <div className="mb-3">
+                    <div className="mb-3 d-flex justify-content-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star key={star} size={16} fill="gold" color="gold" />
                       ))}
