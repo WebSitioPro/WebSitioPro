@@ -41,14 +41,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/config", async (req: Request, res: Response) => {
     try {
       const validationResult = insertWebsiteConfigSchema.safeParse(req.body);
-      
+
       if (!validationResult.success) {
         return res.status(400).json({ 
           error: "Invalid configuration data", 
           details: validationResult.error.format() 
         });
       }
-      
+
       const newConfig = await storage.createWebsiteConfig(validationResult.data);
       res.status(201).json(newConfig);
     } catch (error) {
@@ -67,19 +67,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Partial validation of the update data
       const partialSchema = insertWebsiteConfigSchema.partial();
       const validationResult = partialSchema.safeParse(req.body);
-      
+
       if (!validationResult.success) {
         return res.status(400).json({ 
           error: "Invalid configuration data", 
           details: validationResult.error.format() 
         });
       }
-      
+
       const updatedConfig = await storage.updateWebsiteConfig(id, validationResult.data);
       if (!updatedConfig) {
         return res.status(404).json({ error: "Configuration not found" });
       }
-      
+
       res.json(updatedConfig);
     } catch (error) {
       res.status(500).json({ error: "Failed to update website configuration" });
@@ -98,7 +98,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!success) {
         return res.status(404).json({ error: "Configuration not found" });
       }
-      
+
       res.status(204).send();
     } catch (error) {
       res.status(500).json({ error: "Failed to delete website configuration" });
@@ -109,7 +109,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/generate-static", async (req: Request, res: Response) => {
     try {
       const configId = req.body.configId ? parseInt(req.body.configId) : undefined;
-      
+
       let config;
       if (configId && !isNaN(configId)) {
         config = await storage.getWebsiteConfig(configId);
@@ -119,7 +119,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else {
         config = await storage.getDefaultWebsiteConfig();
       }
-      
+
       const outputPath = await generateStaticFiles(config);
       res.json({ 
         success: true, 
@@ -132,6 +132,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         error: "Failed to generate static files",
         details: error instanceof Error ? error.message : "Unknown error" 
       });
+    }
+  });
+
+  // Serve generated Professionals template
+  app.get('/templates/professionals', async (req, res) => {
+    try {
+      // Get default config or create a sample professionals config
+      const config = await storage.getDefaultWebsiteConfig();
+
+      // Generate the template with professionals-specific settings
+      // Assuming generateTemplate function exists and handles professionals template
+      const templateHtml = await generateStaticFiles(config);
+
+      res.send(templateHtml);
+    } catch (error) {
+      console.error('Error generating professionals template:', error);
+      res.status(500).send('Error generating template');
     }
   });
 
