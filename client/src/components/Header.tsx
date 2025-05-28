@@ -3,7 +3,7 @@ import { WebsiteConfig } from '@/lib/types';
 import LanguageToggle from './LanguageToggle';
 
 interface HeaderProps {
-  config: WebsiteConfig | null;
+  config: WebsiteConfig;
   language: string;
   toggleLanguage: () => void;
   t: (key: string) => string;
@@ -64,8 +64,8 @@ export default function Header({ config, language, toggleLanguage, t }: HeaderPr
         <div className="container">
           <div className="d-flex align-items-center">
             <a className="navbar-brand me-4" href="#">
-              {config?.logo && <img src={config.logo} alt={config.name} height="40" className="me-2" />}
-              <span className="ms-2 fw-bold">{config?.name || 'WebSitioPro'}</span>
+              {config.logo && <img src={config.logo} alt={config.name} height="40" className="me-2" />}
+              <span className="ms-2 fw-bold">{config.name}</span>
             </a>
           </div>
           

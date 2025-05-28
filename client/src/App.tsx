@@ -7,8 +7,6 @@ import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/HomePage";
 import ProPage from "@/pages/ProPage";
 import EditorPage from "@/pages/EditorPage";
-import TemplateEditorPage from "@/pages/TemplateEditorPage";
-import TemplatePreviewPage from "@/pages/TemplatePreviewPage";
 
 function Router() {
   return (
@@ -16,8 +14,6 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/pro" component={ProPage} />
       <Route path="/editor" component={EditorPage} />
-      <Route path="/template-editor/:templateType" component={TemplateEditorPage} />
-      <Route path="/template/:templateType" component={TemplatePreviewPage} />
       <Route component={NotFound} />
     </Switch>
   );

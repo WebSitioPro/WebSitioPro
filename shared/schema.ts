@@ -7,18 +7,10 @@ export const websiteConfigs = pgTable("website_configs", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   logo: text("logo"),
-  templateType: text("template_type").default("professionals").notNull(), // professionals, restaurant, tourist, retail, services
   defaultLanguage: text("default_language").default("en").notNull(),
   showWhyWebsiteButton: boolean("show_why_website_button").default(true),
   showDomainButton: boolean("show_domain_button").default(true),
   showChatbot: boolean("show_chatbot").default(true),
-  
-  // Template-specific toggles
-  enableReservations: boolean("enable_reservations").default(false), // Restaurant
-  enableTourBookings: boolean("enable_tour_bookings").default(false), // Tourist
-  enableShoppingCart: boolean("enable_shopping_cart").default(false), // Retail
-  enableEmergencyServices: boolean("enable_emergency_services").default(false), // Services
-  
   whatsappNumber: text("whatsapp_number"),
   whatsappMessage: text("whatsapp_message"),
   facebookUrl: text("facebook_url"),
@@ -64,46 +56,6 @@ export const websiteConfigs = pgTable("website_configs", {
     question: { en: string; es: string };
     answer: { en: string; es: string };
   }>>(),
-  
-  // Template-specific content fields
-  menuItems: json("menu_items").$type<Array<{
-    category: { en: string; es: string };
-    name: { en: string; es: string };
-    description: { en: string; es: string };
-    price: string;
-    image?: string;
-  }>>(), // Restaurant
-  
-  tourPackages: json("tour_packages").$type<Array<{
-    name: { en: string; es: string };
-    description: { en: string; es: string };
-    duration: { en: string; es: string };
-    price: string;
-    includes: { en: string[]; es: string[] };
-    image?: string;
-  }>>(), // Tourist
-  
-  products: json("products").$type<Array<{
-    name: { en: string; es: string };
-    description: { en: string; es: string };
-    price: string;
-    category: { en: string; es: string };
-    image?: string;
-    featured: boolean;
-  }>>(), // Retail
-  
-  serviceAreas: json("service_areas").$type<Array<{
-    area: { en: string; es: string };
-    services: { en: string[]; es: string[] };
-    emergencyAvailable: boolean;
-  }>>(), // Services
-  
-  certifications: json("certifications").$type<Array<{
-    name: { en: string; es: string };
-    issuer: { en: string; es: string };
-    year: string;
-    image?: string;
-  }>>(), // Services
 });
 
 // Define insert schema
