@@ -331,40 +331,51 @@ export default function ProPage() {
             {t('templatesTitle')}
           </h2>
           <div className="row g-4">
-            {[1, 2, 3, 4, 5].map((num) => (
-              <div key={num} className="col-lg-6">
-                <div className="card h-100 border-0 shadow">
-                  <div className="card-body p-4">
-                    <div className="row g-3">
-                      <div className="col-4">
-                        <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
-                          <Globe size={48} className="text-muted" />
+            {[1, 2, 3, 4, 5].map((num) => {
+              const templateLinks = [
+                '/professionals-demo',
+                '/restaurants-demo', 
+                '/tourism-demo',
+                '/retail-demo',
+                '/services-demo'
+              ];
+              
+              return (
+                <div key={num} className="col-lg-6">
+                  <div className="card h-100 border-0 shadow">
+                    <div className="card-body p-4">
+                      <div className="row g-3">
+                        <div className="col-4">
+                          <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
+                            <Globe size={48} className="text-muted" />
+                          </div>
+                          <div className="mt-2">
+                            <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
+                            <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
+                            <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                          </div>
                         </div>
-                        <div className="mt-2">
-                          <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
-                          <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
-                          <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                        <div className="col-8">
+                          <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                            {t(`template${num}` as any)}
+                          </h5>
+                          <p className="text-muted mb-3 small">
+                            {t(`template${num}Desc` as any)}
+                          </p>
+                          <Link 
+                            href={templateLinks[num - 1]}
+                            className="btn btn-outline-primary btn-sm text-decoration-none"
+                            style={{ borderColor: 'hsl(var(--primary))', color: 'hsl(var(--primary))' }}
+                          >
+                            {t('viewTemplate')}
+                          </Link>
                         </div>
-                      </div>
-                      <div className="col-8">
-                        <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                          {t(`template${num}` as any)}
-                        </h5>
-                        <p className="text-muted mb-3 small">
-                          {t(`template${num}Desc` as any)}
-                        </p>
-                        <button 
-                          className="btn btn-outline-primary btn-sm"
-                          style={{ borderColor: 'hsl(var(--primary))', color: 'hsl(var(--primary))' }}
-                        >
-                          {t('viewTemplate')}
-                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

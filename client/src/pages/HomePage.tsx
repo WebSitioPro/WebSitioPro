@@ -418,56 +418,44 @@ export default function HomePage() {
             {[1, 2, 3, 4, 5].map((num) => (
               <div key={num} className="col-lg-6">
                 {/* Professionals Template - Make it clickable */}
-                {num === 1 ? (
-                  <Link 
-                    href="/professionals-demo"
-                    className="text-decoration-none"
-                  >
-                    <div className="card h-100 border-0 shadow-sm hover-card">
-                      <div className="row g-0">
-                        <div className="col-4">
-                          <div className="bg-light h-100 d-flex align-items-center justify-content-center">
-                            <Globe size={48} className="text-muted" />
+                {(() => {
+                  const templateLinks = [
+                    '/professionals-demo',
+                    '/restaurants-demo', 
+                    '/tourism-demo',
+                    '/retail-demo',
+                    '/services-demo'
+                  ];
+                  
+                  return (
+                    <Link 
+                      href={templateLinks[num - 1]}
+                      className="text-decoration-none"
+                    >
+                      <div className="card h-100 border-0 shadow-sm hover-card">
+                        <div className="row g-0">
+                          <div className="col-4">
+                            <div className="bg-light h-100 d-flex align-items-center justify-content-center">
+                              <Globe size={48} className="text-muted" />
+                            </div>
+                          </div>
+                          <div className="col-8">
+                            <div className="card-body">
+                              <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>
+                                {t(`template${num}` as any)}
+                                <small className="badge bg-success ms-2">Live Demo</small>
+                              </h5>
+                              <p className="card-text text-muted">
+                                {t(`template${num}Desc` as any)}
+                              </p>
+                              <small className="text-primary">Click to view live example →</small>
+                            </div>
                           </div>
                         </div>
-                        <div className="col-8">
-                          <div className="card-body">
-                            <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>
-                              {t(`template${num}` as any)}
-                              <small className="badge bg-success ms-2">Live Demo</small>
-                            </h5>
-                            <p className="card-text text-muted">
-                              {t(`template${num}Desc` as any)}
-                            </p>
-                            <small className="text-primary">Click to view live example →</small>
-                          </div>
-                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ) : (
-                  /* Other templates - not clickable yet */
-                  <div className="card h-100 border-0 shadow-sm">
-                    <div className="row g-0">
-                      <div className="col-4">
-                        <div className="bg-light h-100 d-flex align-items-center justify-content-center">
-                          <Globe size={48} className="text-muted" />
-                        </div>
-                      </div>
-                      <div className="col-8">
-                        <div className="card-body">
-                          <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>
-                            {t(`template${num}` as any)}
-                          </h5>
-                          <p className="card-text text-muted">
-                            {t(`template${num}Desc` as any)}
-                          </p>
-                          <small className="text-muted">Coming Soon</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                    </Link>
+                  );
+                })()}
               </div>
             ))}
           </div>
