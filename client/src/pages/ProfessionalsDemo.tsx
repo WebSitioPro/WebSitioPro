@@ -313,25 +313,29 @@ export default function ProfessionalsDemo() {
       {/* Reviews Section */}
       <section id="reviews" className="py-5 bg-light">
         <div className="container">
-          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+          <h2 className="text-center fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
             {t('reviewsTitle')}
           </h2>
-          <div className="row g-4">
+          <div className="row g-3">
             {[1, 2, 3].map((num) => (
               <div key={num} className="col-lg-4">
-                <div className="card h-100 border-0 shadow-sm">
-                  <div className="card-body p-4 text-center">
-                    <div className="mb-3">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} size={20} fill="gold" color="gold" />
-                      ))}
+                <div className="card border-0 shadow-sm">
+                  <div className="card-body p-3">
+                    <div className="d-flex align-items-center mb-2">
+                      <div className="me-3">
+                        <div className="mb-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} size={14} fill="gold" color="gold" />
+                          ))}
+                        </div>
+                        <h6 className="mb-0 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+                          {t(`review${num}Name` as any)}
+                        </h6>
+                      </div>
                     </div>
-                    <p className="mb-3 text-muted">
+                    <p className="mb-0 text-muted small">
                       "{t(`review${num}Text` as any)}"
                     </p>
-                    <h6 className="fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-                      {t(`review${num}Name` as any)}
-                    </h6>
                   </div>
                 </div>
               </div>
@@ -346,12 +350,12 @@ export default function ProfessionalsDemo() {
           <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
             {t('contactTitle')}
           </h2>
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="card border-0 shadow-sm">
+          <div className="row g-4">
+            <div className="col-lg-6">
+              <div className="card border-0 shadow-sm h-100">
                 <div className="card-body p-4">
                   <div className="row g-4">
-                    <div className="col-md-6">
+                    <div className="col-12">
                       <div className="d-flex align-items-center mb-3">
                         <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
@@ -360,7 +364,7 @@ export default function ProfessionalsDemo() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12">
                       <div className="d-flex align-items-center mb-3">
                         <Mail className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
@@ -369,7 +373,7 @@ export default function ProfessionalsDemo() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12">
                       <div className="d-flex align-items-center mb-3">
                         <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
@@ -378,7 +382,7 @@ export default function ProfessionalsDemo() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12">
                       <div className="d-flex align-items-center mb-3">
                         <Clock className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
@@ -391,31 +395,40 @@ export default function ProfessionalsDemo() {
                   </div>
                   
                   <div className="mt-4">
-                    <div className="row g-2">
-                      <div className="col-6">
-                        <a 
-                          href="https://wa.me/529831234567?text=Hola, me gustaría agendar una cita médica"
-                          className="btn w-100 text-white"
-                          style={{ backgroundColor: '#25D366' }}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Phone size={16} className="me-2" />
-                          {t('whatsappButton')}
-                        </a>
-                      </div>
-                      <div className="col-6">
-                        <a 
-                          href="https://maps.google.com/?q=Av.+Héroes+123,+Centro,+Chetumal,+Q.R."
-                          className="btn btn-outline-primary w-100"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <MapPin size={16} className="me-2" />
-                          {t('viewOnMaps')}
-                        </a>
-                      </div>
-                    </div>
+                    <a 
+                      href="https://wa.me/529831234567?text=Hola, me gustaría agendar una cita médica"
+                      className="btn w-100 text-white"
+                      style={{ backgroundColor: '#25D366' }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Phone size={16} className="me-2" />
+                      {t('whatsappButton')}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="card border-0 shadow-sm h-100">
+                <div className="card-body p-4">
+                  <h6 className="mb-3 d-flex align-items-center">
+                    <MapPin className="me-2" size={20} style={{ color: 'hsl(var(--primary))' }} />
+                    Ubicación
+                  </h6>
+                  <div className="ratio ratio-16x9">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
+                      style={{ border: 0, borderRadius: '8px' }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+                  <div className="mt-3">
+                    <small className="text-muted">
+                      {t('address')}
+                    </small>
                   </div>
                 </div>
               </div>
