@@ -348,6 +348,10 @@ export default function EditorPage() {
                 <Link href="/pro" className="btn btn-outline-primary">
                   View Pro Page
                 </Link>
+                <Link href="/editor/tools" className="btn text-white" style={{ backgroundColor: '#C8102E' }}>
+                  <Settings size={16} className="me-1" />
+                  Template Editor
+                </Link>
               </div>
             </div>
             <div className="col-auto">

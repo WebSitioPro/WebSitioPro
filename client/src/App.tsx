@@ -13,6 +13,7 @@ import TourismDemo from "@/pages/TourismDemo";
 import RetailDemo from "@/pages/RetailDemo";
 import ServicesDemo from "@/pages/ServicesDemo";
 import TemplateEditor from "@/pages/TemplateEditor";
+import TemplateTools from "@/pages/TemplateTools";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/retail-demo" component={RetailDemo} />
       <Route path="/services-demo" component={ServicesDemo} />
       <Route path="/template-editor" component={TemplateEditor} />
+      <Route path="/editor/tools" component={TemplateTools} />
       <Route component={NotFound} />
     </Switch>
   );
