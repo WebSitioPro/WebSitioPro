@@ -420,7 +420,7 @@ export default function HomePage() {
                 {/* Professionals Template - Make it clickable */}
                 {num === 1 ? (
                   <a 
-                    href="YOUR_DEPLOYED_PROFESSIONALS_URL_HERE" 
+                    href="https://node-express-template-bluerockchris.replit.app/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-decoration-none"
