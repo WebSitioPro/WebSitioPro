@@ -155,7 +155,7 @@ export default function RetailDemo() {
             {mockRetailData.businessName}
           </a>
           
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center d-lg-none">
             <button
               className="btn btn-outline-warning btn-sm me-3"
               onClick={toggleLanguage}
@@ -173,8 +173,8 @@ export default function RetailDemo() {
             </button>
           </div>
 
-          <div className={`collapse navbar-collapse ${showMobileMenu ? 'show' : ''}`}>
-            <ul className="navbar-nav ms-auto">
+          <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
+            <ul className="navbar-nav ms-auto d-flex align-items-center">
               <li className="nav-item">
                 <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
               </li>
@@ -192,6 +192,15 @@ export default function RetailDemo() {
               </li>
               <li className="nav-item">
                 <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
+              </li>
+              <li className="nav-item d-none d-lg-block">
+                <button
+                  className="btn btn-outline-warning btn-sm ms-3"
+                  onClick={toggleLanguage}
+                  style={{ fontSize: '1.5em' }}
+                >
+                  {language === 'es' ? 'English' : 'Español'}
+                </button>
               </li>
             </ul>
           </div>
