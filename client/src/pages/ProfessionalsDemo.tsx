@@ -4,9 +4,27 @@ import { Phone, Mail, MapPin, Clock, Star, Shield, Award } from 'lucide-react';
 
 export default function ProfessionalsDemo() {
   const [language, setLanguage] = useState('es');
+  const [showChat, setShowChat] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
+  };
+
+  const handleChatSubmit = (question: string) => {
+    setChatMessages(prev => [...prev, { text: question, isUser: true }]);
+    
+    setTimeout(() => {
+      let response = "Gracias por contactarnos. ¿En qué puedo ayudarte?";
+      if (question.toLowerCase().includes('cita') || question.toLowerCase().includes('appointment')) {
+        response = "Para agendar una cita, puedes contactarnos por WhatsApp al +52 983 123 4567 o llamarnos directamente.";
+      } else if (question.toLowerCase().includes('hora') || question.toLowerCase().includes('hours')) {
+        response = "Nuestros horarios son: Lunes a viernes de 8:00 AM a 6:00 PM, y sábados de 9:00 AM a 2:00 PM.";
+      } else if (question.toLowerCase().includes('servicios') || question.toLowerCase().includes('services')) {
+        response = "Ofrecemos consultas generales, medicina preventiva, control de diabetes y hipertensión, y atención pediátrica.";
+      }
+      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
+    }, 1000);
   };
 
   const t = (key: string) => {
@@ -454,6 +472,111 @@ export default function ProfessionalsDemo() {
           </div>
         </div>
       </footer>
+
+      {/* Chat Button */}
+      <button
+        className="btn btn-primary rounded-circle position-fixed"
+        style={{
+          bottom: '20px',
+          right: '20px',
+          width: '60px',
+          height: '60px',
+          backgroundColor: '#25D366',
+          border: 'none',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          zIndex: 1000
+        }}
+        onClick={() => setShowChat(!showChat)}
+      >
+        💬
+      </button>
+
+      {/* Chat Interface */}
+      {showChat && (
+        <div
+          className="position-fixed bg-white border rounded shadow-lg"
+          style={{
+            bottom: '90px',
+            right: '20px',
+            width: '300px',
+            height: '400px',
+            zIndex: 1000
+          }}
+        >
+          <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
+            <h6 className="mb-0">Chat de Ayuda</h6>
+            <button
+              className="btn btn-sm btn-outline-secondary"
+              onClick={() => setShowChat(false)}
+            >
+              ×
+            </button>
+          </div>
+          
+          <div className="p-3" style={{ height: '280px', overflowY: 'auto' }}>
+            {chatMessages.length === 0 && (
+              <div className="text-center text-muted">
+                <p>¡Hola! ¿En qué puedo ayudarte?</p>
+                <div className="d-grid gap-2">
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => handleChatSubmit('¿Cómo agendo una cita?')}
+                  >
+                    ¿Cómo agendo una cita?
+                  </button>
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => handleChatSubmit('¿Cuáles son sus horarios?')}
+                  >
+                    ¿Cuáles son sus horarios?
+                  </button>
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => handleChatSubmit('¿Qué servicios ofrecen?')}
+                  >
+                    ¿Qué servicios ofrecen?
+                  </button>
+                </div>
+              </div>
+            )}
+            
+            {chatMessages.map((message, index) => (
+              <div
+                key={index}
+                className={`mb-3 ${message.isUser ? 'text-end' : 'text-start'}`}
+              >
+                <div
+                  className={`d-inline-block p-2 rounded ${
+                    message.isUser
+                      ? 'bg-primary text-white'
+                      : 'bg-light text-dark'
+                  }`}
+                  style={{ maxWidth: '80%' }}
+                >
+                  {message.text}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="p-3 border-top">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Escribe tu pregunta..."
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  const input = e.target as HTMLInputElement;
+                  if (input.value.trim()) {
+                    handleChatSubmit(input.value);
+                    input.value = '';
+                  }
+                }
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

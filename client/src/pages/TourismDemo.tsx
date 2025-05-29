@@ -106,12 +106,30 @@ const translations = {
 export default function TourismDemo() {
   const [language, setLanguage] = useState<'es' | 'en'>('es');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
 
   const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
   const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
 
   const toggleLanguage = () => {
     setLanguage(language === 'es' ? 'en' : 'es');
+  };
+
+  const handleChatSubmit = (question: string) => {
+    setChatMessages(prev => [...prev, { text: question, isUser: true }]);
+    
+    setTimeout(() => {
+      let response = "Gracias por tu interés en nuestros tours. ¿En qué puedo ayudarte?";
+      if (question.toLowerCase().includes('precio')) {
+        response = "Nuestros precios varían según el tour. ¡Contáctanos por WhatsApp para precios específicos y ofertas especiales!";
+      } else if (question.toLowerCase().includes('reserv') || question.toLowerCase().includes('book')) {
+        response = "Para hacer una reservación, contáctanos por WhatsApp. Te ayudaremos a elegir el mejor tour para ti.";
+      } else if (question.toLowerCase().includes('hora')) {
+        response = "Operamos todos los días de 8:00 AM a 6:00 PM. Los tours salen en diferentes horarios según el tipo.";
+      }
+      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
+    }, 1000);
   };
 
   return (
