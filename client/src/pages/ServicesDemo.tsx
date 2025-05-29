@@ -116,12 +116,30 @@ const translations = {
 export default function ServicesDemo() {
   const [language, setLanguage] = useState<'es' | 'en'>('es');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
 
   const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
   const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
 
   const toggleLanguage = () => {
     setLanguage(language === 'es' ? 'en' : 'es');
+  };
+
+  const handleChatSubmit = (question: string) => {
+    setChatMessages(prev => [...prev, { text: question, isUser: true }]);
+    
+    setTimeout(() => {
+      let response = "Gracias por contactarnos. ¿En qué podemos ayudarte hoy?";
+      if (question.toLowerCase().includes('precio') || question.toLowerCase().includes('costo')) {
+        response = "Nuestros precios varían según el servicio. ¡Contáctanos por WhatsApp para una cotización gratuita!";
+      } else if (question.toLowerCase().includes('emergencia')) {
+        response = "Ofrecemos servicio de emergencia 24/7. Llámanos al +52 983 321 6540 para asistencia inmediata.";
+      } else if (question.toLowerCase().includes('hora')) {
+        response = "Trabajamos de lunes a viernes de 7:00 AM a 7:00 PM, y sábados de 8:00 AM a 5:00 PM.";
+      }
+      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
+    }, 1000);
   };
 
   return (
@@ -154,19 +172,22 @@ export default function ServicesDemo() {
           <div className={`collapse navbar-collapse ${showMobileMenu ? 'show' : ''}`}>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <a className="nav-link" href="#home">{t('home')}</a>
+                <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#services">{t('services')}</a>
+                <a className="nav-link" href="#services" onClick={() => setShowMobileMenu(false)}>{t('services')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#photos">{t('photos')}</a>
+                <a className="nav-link" href="#photos" onClick={() => setShowMobileMenu(false)}>{t('photos')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#reviews">{t('reviews')}</a>
+                <a className="nav-link" href="#reviews" onClick={() => setShowMobileMenu(false)}>{t('reviews')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#contact">{t('contact')}</a>
+                <a className="nav-link" href="#contact" onClick={() => setShowMobileMenu(false)}>{t('contact')}</a>
+              </li>
+              <li className="nav-item">
+                <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
               </li>
             </ul>
           </div>

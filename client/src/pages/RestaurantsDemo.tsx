@@ -94,12 +94,31 @@ const translations = {
 export default function RestaurantsDemo() {
   const [language, setLanguage] = useState<'es' | 'en'>('es');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
 
   const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
   const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
 
   const toggleLanguage = () => {
     setLanguage(language === 'es' ? 'en' : 'es');
+  };
+
+  const handleChatSubmit = (question: string) => {
+    setChatMessages(prev => [...prev, { text: question, isUser: true }]);
+    
+    // Simulate bot response
+    setTimeout(() => {
+      let response = "Gracias por tu pregunta. ¿Puedo ayudarte con información sobre nuestro menú o reservaciones?";
+      if (question.toLowerCase().includes('menu')) {
+        response = "Nuestro menú incluye tacos, quesadillas, pozole y muchos platillos tradicionales mexicanos. ¿Te gustaría hacer una reservación?";
+      } else if (question.toLowerCase().includes('reserv')) {
+        response = "Para reservaciones, puedes contactarnos por WhatsApp al +52 983 123 4567 o llamarnos directamente.";
+      } else if (question.toLowerCase().includes('hora')) {
+        response = "Estamos abiertos de lunes a viernes de 8:00 AM a 10:00 PM, y sábados de 9:00 AM a 11:00 PM.";
+      }
+      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
+    }, 1000);
   };
 
   return (
@@ -132,19 +151,22 @@ export default function RestaurantsDemo() {
           <div className={`collapse navbar-collapse ${showMobileMenu ? 'show' : ''}`}>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <a className="nav-link" href="#home">{t('home')}</a>
+                <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#menu">{t('menu')}</a>
+                <a className="nav-link" href="#menu" onClick={() => setShowMobileMenu(false)}>{t('menu')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#photos">{t('photos')}</a>
+                <a className="nav-link" href="#photos" onClick={() => setShowMobileMenu(false)}>{t('photos')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#reviews">{t('reviews')}</a>
+                <a className="nav-link" href="#reviews" onClick={() => setShowMobileMenu(false)}>{t('reviews')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#contact">{t('contact')}</a>
+                <a className="nav-link" href="#contact" onClick={() => setShowMobileMenu(false)}>{t('contact')}</a>
+              </li>
+              <li className="nav-item">
+                <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
               </li>
             </ul>
           </div>
@@ -396,6 +418,111 @@ export default function RestaurantsDemo() {
           </div>
         </div>
       </footer>
+
+      {/* Chat Button */}
+      <button
+        className="btn btn-primary rounded-circle position-fixed"
+        style={{
+          bottom: '20px',
+          right: '20px',
+          width: '60px',
+          height: '60px',
+          backgroundColor: '#25D366',
+          border: 'none',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          zIndex: 1000
+        }}
+        onClick={() => setShowChat(!showChat)}
+      >
+        💬
+      </button>
+
+      {/* Chat Interface */}
+      {showChat && (
+        <div
+          className="position-fixed bg-white border rounded shadow-lg"
+          style={{
+            bottom: '90px',
+            right: '20px',
+            width: '300px',
+            height: '400px',
+            zIndex: 1000
+          }}
+        >
+          <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
+            <h6 className="mb-0">Chat de Ayuda</h6>
+            <button
+              className="btn btn-sm btn-outline-secondary"
+              onClick={() => setShowChat(false)}
+            >
+              ×
+            </button>
+          </div>
+          
+          <div className="p-3" style={{ height: '280px', overflowY: 'auto' }}>
+            {chatMessages.length === 0 && (
+              <div className="text-center text-muted">
+                <p>¡Hola! ¿En qué puedo ayudarte?</p>
+                <div className="d-grid gap-2">
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => handleChatSubmit('¿Cuál es su menú?')}
+                  >
+                    ¿Cuál es su menú?
+                  </button>
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => handleChatSubmit('¿Cómo hago una reservación?')}
+                  >
+                    ¿Cómo hago una reservación?
+                  </button>
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => handleChatSubmit('¿Cuáles son sus horarios?')}
+                  >
+                    ¿Cuáles son sus horarios?
+                  </button>
+                </div>
+              </div>
+            )}
+            
+            {chatMessages.map((message, index) => (
+              <div
+                key={index}
+                className={`mb-3 ${message.isUser ? 'text-end' : 'text-start'}`}
+              >
+                <div
+                  className={`d-inline-block p-2 rounded ${
+                    message.isUser
+                      ? 'bg-primary text-white'
+                      : 'bg-light text-dark'
+                  }`}
+                  style={{ maxWidth: '80%' }}
+                >
+                  {message.text}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="p-3 border-top">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Escribe tu pregunta..."
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  const input = e.target as HTMLInputElement;
+                  if (input.value.trim()) {
+                    handleChatSubmit(input.value);
+                    input.value = '';
+                  }
+                }
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
