@@ -160,7 +160,7 @@ export default function TourismDemo() {
           </div>
 
           <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
-            <ul className="navbar-nav ms-auto d-flex align-items-center">
+            <ul className="navbar-nav ms-auto d-flex align-items-center flex-row flex-wrap">
               <li className="nav-item">
                 <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
               </li>
