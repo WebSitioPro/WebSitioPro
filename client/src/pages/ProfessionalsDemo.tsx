@@ -140,6 +140,8 @@ export default function ProfessionalsDemo() {
           </span>
           
           <div className="navbar-nav ms-auto d-flex flex-row align-items-center">
+            <a className="nav-link me-3" href="/">{t('home')}</a>
+            <a className="nav-link me-3" href="/pro">{t('proSites')}</a>
             <a className="nav-link me-3" href="#about">{t('about')}</a>
             <a className="nav-link me-3" href="#services">{t('services')}</a>
             <a className="nav-link me-3" href="#reviews">{t('reviews')}</a>

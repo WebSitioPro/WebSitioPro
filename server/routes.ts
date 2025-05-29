@@ -21,9 +21,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // API route for getting a specific website configuration
   app.get("/api/config/:id", async (req: Request, res: Response) => {
     try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid ID format" });
+      const idParam = req.params.id;
+      let id: number;
+      
+      if (idParam === "default") {
+        id = 1; // Use ID 1 for default configuration
+      } else {
+        id = parseInt(idParam);
+        if (isNaN(id)) {
+          return res.status(400).json({ error: "Invalid ID format" });
+        }
       }
 
       const config = await storage.getWebsiteConfig(id);
@@ -59,9 +66,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // API route for updating a website configuration
   app.put("/api/config/:id", async (req: Request, res: Response) => {
     try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid ID format" });
+      const idParam = req.params.id;
+      let id: number;
+      
+      if (idParam === "default") {
+        id = 1; // Use ID 1 for default configuration
+      } else {
+        id = parseInt(idParam);
+        if (isNaN(id)) {
+          return res.status(400).json({ error: "Invalid ID format" });
+        }
       }
 
       // Partial validation of the update data
