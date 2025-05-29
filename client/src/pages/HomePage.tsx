@@ -300,13 +300,14 @@ export default function HomePage() {
                   {language === 'es' ? 'English' : 'Español'}
                 </button>
 
-                <Link 
+                <a 
                   href="/pro" 
                   className="btn btn-primary text-white px-4"
                   style={{ backgroundColor: 'hsl(var(--primary))' }}
+                  onClick={() => window.scrollTo(0, 0)}
                 >
                   {t('getStarted')}
-                </Link>
+                </a>
               </div>
             </div>
 

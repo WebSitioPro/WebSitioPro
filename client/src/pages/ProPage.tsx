@@ -30,7 +30,7 @@ export default function ProPage() {
         // Demo Note
         demoTitle: 'Nota de Demostración',
         demoText: '¡Si nos hemos contactado contigo vía WhatsApp, tienes una demostración personalizada lista! Finalizaremos tus detalles y fotos.',
-        finalizeYourSite: 'Finalizar tu Sitio',
+        contactUs: 'Contáctanos',
         
         // How It Works
         howItWorksTitle: '¿Cómo Funciona Nuestro Servicio?',
@@ -100,7 +100,7 @@ export default function ProPage() {
         // Demo Note
         demoTitle: 'Demo Note',
         demoText: 'If we\'ve reached out via WhatsApp, you have a custom demo ready! We\'ll finalize your details and photos.',
-        finalizeYourSite: 'Let\'s Finalize Your Site',
+        contactUs: 'Contact Us',
         
         // How It Works
         howItWorksTitle: 'How Our Service Works',
@@ -281,11 +281,11 @@ export default function ProPage() {
                 {t('demoText')}
               </p>
               <a 
-                href="https://wa.me/529831234567?text=Let's finalize my site!"
+                href="https://wa.me/529831234567?text=Me interesa un sitio web profesional"
                 className="btn btn-primary text-white"
                 style={{ backgroundColor: 'hsl(var(--primary))' }}
               >
-                {t('finalizeYourSite')}
+                {t('contactUs')}
               </a>
             </div>
           </div>
