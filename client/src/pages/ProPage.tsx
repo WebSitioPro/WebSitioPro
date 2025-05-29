@@ -362,13 +362,14 @@ export default function ProPage() {
                           <p className="text-muted mb-3 small">
                             {t(`template${num}Desc` as any)}
                           </p>
-                          <Link 
+                          <a 
                             href={templateLinks[num - 1]}
                             className="btn btn-sm text-decoration-none text-white"
                             style={{ backgroundColor: '#C8102E' }}
+                            onClick={() => window.scrollTo(0, 0)}
                           >
                             {t('viewTemplate')}
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </div>
