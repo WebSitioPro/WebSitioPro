@@ -10,6 +10,7 @@ export default function HomePage() {
   const [chatbotIcon, setChatbotIcon] = useState('📞'); // Default to phone icon
   const [domainInput, setDomainInput] = useState('');
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
+  const [savedConfig, setSavedConfig] = useState<any>(null);
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
@@ -33,6 +34,12 @@ export default function HomePage() {
       }
     `;
     document.head.appendChild(style);
+
+    // Load saved configuration to demonstrate Editor functionality
+    fetch('/api/config/default')
+      .then(res => res.json())
+      .then(data => setSavedConfig(data))
+      .catch(err => console.log('Config not loaded:', err));
 
     return () => {
       document.head.removeChild(style);
@@ -582,6 +589,82 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Editor Test Section - Shows saved configuration data */}
+      {savedConfig && (
+        <section className="py-4" style={{ backgroundColor: 'hsl(var(--accent) / 0.1)' }}>
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-10">
+                <div className="bg-white rounded p-4 shadow-sm">
+                  <h4 className="fw-bold text-center mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                    Editor Test - Saved Configuration Data
+                  </h4>
+                  <div className="row g-4">
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Hero Headline</h6>
+                          <p className="card-text small">
+                            Spanish: {savedConfig.translations?.es?.heroHeadline || 'Not set'}
+                          </p>
+                          <p className="card-text small">
+                            English: {savedConfig.translations?.en?.heroHeadline || 'Not set'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Contact Info</h6>
+                          <p className="card-text small">
+                            Phone: {savedConfig.phone || 'Not set'}
+                          </p>
+                          <p className="card-text small">
+                            Email: {savedConfig.email || 'Not set'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Colors</h6>
+                          <p className="card-text small">
+                            Primary: {savedConfig.primaryColor || 'Not set'}
+                          </p>
+                          <p className="card-text small">
+                            Secondary: {savedConfig.secondaryColor || 'Not set'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved About Text</h6>
+                          <p className="card-text small">
+                            Spanish: {savedConfig.translations?.es?.aboutText || 'Not set'}
+                          </p>
+                          <p className="card-text small">
+                            English: {savedConfig.translations?.en?.aboutText || 'Not set'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-center mt-3">
+                    <small className="text-muted">
+                      This section shows data saved from the Editor. Make changes in the Editor and refresh this page to see updates.
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Contact */}
       <section id="contact" className="py-5 bg-light">
