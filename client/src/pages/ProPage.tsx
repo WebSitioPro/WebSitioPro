@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe } from 'lucide-react';
+import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, MessageCircle } from 'lucide-react';
 
 export default function ProPage() {
   const [language, setLanguage] = useState('es');
