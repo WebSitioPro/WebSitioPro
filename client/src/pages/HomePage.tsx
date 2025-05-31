@@ -10,11 +10,47 @@ export default function HomePage() {
   const [chatbotIcon, setChatbotIcon] = useState('📞'); // Default to phone icon
   const [domainInput, setDomainInput] = useState('');
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
+  const [config, setConfig] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
+
+  // Load configuration data
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        const response = await fetch('/api/config/default');
+        if (response.ok) {
+          const configData = await response.json();
+          setConfig(configData);
+        }
+      } catch (error) {
+        console.error('Failed to load configuration:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadConfig();
+  }, []);
+
+  // Helper function to get translated text from config or fallback to hardcoded
+  const getTranslation = (key: string, fallback: string = '') => {
+    if (!config?.translations) return fallback;
+    return config.translations[language]?.[key] || fallback;
+  };
+
+  // Show loading state
+  if (loading) {
+    return <div className="d-flex justify-content-center align-items-center min-vh-100">
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>;
+  }
 
   const checkDomain = async () => {
     if (!domainInput.trim()) return;
@@ -365,10 +401,10 @@ export default function HomePage() {
           <div className="row align-items-center min-vh-50">
             <div className="col-lg-6">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('heroHeadline')}
+                {getTranslation('heroHeadline', t('heroHeadline'))}
               </h1>
               <p className="lead text-muted mb-4">
-                {t('heroSubheadline')}
+                {getTranslation('heroSubheadline', t('heroSubheadline'))}
               </p>
               <Link 
                 href="/pro"
@@ -425,10 +461,10 @@ export default function HomePage() {
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('aboutTitle')}
+                {getTranslation('aboutTitle', t('aboutTitle'))}
               </h2>
               <p className="lead text-muted">
-                {t('aboutText')}
+                {getTranslation('aboutText', t('aboutText'))}
               </p>
             </div>
           </div>
