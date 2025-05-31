@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { Phone, Mail, MapPin, Clock, Star, Shield, Award } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Star, Shield, Award, Menu, X } from 'lucide-react';
 
 export default function ProfessionalsDemo() {
   const [language, setLanguage] = useState('es');
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
@@ -151,26 +152,68 @@ export default function ProfessionalsDemo() {
   return (
     <div className="min-vh-100">
       {/* Header */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
-          <span className="navbar-brand fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+          <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
             {t('heroTitle')}
-          </span>
+          </a>
           
-          <div className="navbar-nav ms-auto d-flex flex-row align-items-center">
-            <a className="nav-link me-3" href="/">{t('home')}</a>
-            <a className="nav-link me-3" href="/pro">{t('proSites')}</a>
-            <a className="nav-link me-3" href="#about">{t('about')}</a>
-            <a className="nav-link me-3" href="#services">{t('services')}</a>
-            <a className="nav-link me-3" href="#reviews">{t('reviews')}</a>
-            <a className="nav-link me-3" href="#contact">{t('contact')}</a>
-            <button 
+          <div className="d-flex align-items-center d-lg-none">
+            <button
+              className="btn btn-outline-warning btn-sm me-3"
               onClick={toggleLanguage}
-              className="btn btn-sm text-warning border-0 bg-transparent"
-              style={{ color: 'hsl(var(--accent))' }}
+              style={{ fontSize: '1.5em' }}
             >
-              {t('language')}
+              {language === 'es' ? 'English' : 'Español'}
             </button>
+            
+            <button
+              className="navbar-toggler"
+              type="button"
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+            >
+              {showMobileMenu ? <X /> : <Menu />}
+            </button>
+          </div>
+
+          <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
+            <div className="d-none d-lg-flex gap-4 ms-auto align-items-center">
+              <a className="text-decoration-none text-dark" href="#home">{t('home')}</a>
+              <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
+              <a className="text-decoration-none text-dark" href="#services">{t('services')}</a>
+              <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
+              <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
+              <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
+              <button
+                className="btn btn-outline-warning btn-sm"
+                onClick={toggleLanguage}
+                style={{ fontSize: '1.5em' }}
+              >
+                {language === 'es' ? 'English' : 'Español'}
+              </button>
+            </div>
+            
+            {/* Mobile menu */}
+            <ul className={`navbar-nav d-lg-none ${showMobileMenu ? 'd-block' : 'd-none'}`}>
+              <li className="nav-item">
+                <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#about" onClick={() => setShowMobileMenu(false)}>{t('about')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#services" onClick={() => setShowMobileMenu(false)}>{t('services')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#reviews" onClick={() => setShowMobileMenu(false)}>{t('reviews')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#contact" onClick={() => setShowMobileMenu(false)}>{t('contact')}</a>
+              </li>
+              <li className="nav-item">
+                <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
+              </li>
+            </ul>
           </div>
         </div>
       </nav>
