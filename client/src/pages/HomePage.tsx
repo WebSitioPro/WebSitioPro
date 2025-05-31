@@ -10,47 +10,34 @@ export default function HomePage() {
   const [chatbotIcon, setChatbotIcon] = useState('📞'); // Default to phone icon
   const [domainInput, setDomainInput] = useState('');
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
-  const [config, setConfig] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
 
-  // Helper function to get translated text from config or fallback to hardcoded
-  const getTranslation = (key: string, fallback: string = '') => {
-    if (!config?.translations) return fallback;
-    return config.translations[language]?.[key] || fallback;
-  };
-
-  // Load configuration data
   useEffect(() => {
-    const loadConfig = async () => {
-      try {
-        const response = await fetch('/api/config/default');
-        if (response.ok) {
-          const configData = await response.json();
-          setConfig(configData);
-        }
-      } catch (error) {
-        console.error('Failed to load configuration:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadConfig();
-  }, []);
+    // Set Mexican-inspired CSS variables
+    document.documentElement.style.setProperty('--primary', '200 87% 46%'); // Red #C8102E
+    document.documentElement.style.setProperty('--secondary', '144 100% 33%'); // Green #00A859  
+    document.documentElement.style.setProperty('--accent', '46 100% 52%'); // Yellow #FFC107
+    document.documentElement.style.setProperty('--info', '211 100% 50%'); // Blue #007BFF
+    document.documentElement.style.setProperty('--background', '0 0% 100%'); // White
 
-  // Show loading state
-  if (loading) {
-    return <div className="d-flex justify-content-center align-items-center min-vh-100">
-      <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    </div>;
-  }
+    // Add scroll offset for sticky header
+    const style = document.createElement('style');
+    style.textContent = `
+      html {
+        scroll-padding-top: 120px;
+      }
+      section {
+        scroll-margin-top: 120px;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   const checkDomain = async () => {
     if (!domainInput.trim()) return;
@@ -293,30 +280,7 @@ export default function HomePage() {
     return translations[language as keyof typeof translations]?.[key as keyof typeof translations['es']] || key;
   };
 
-  useEffect(() => {
-    // Set Mexican-inspired CSS variables
-    document.documentElement.style.setProperty('--primary', '200 87% 46%'); // Red #C8102E
-    document.documentElement.style.setProperty('--secondary', '144 100% 33%'); // Green #00A859  
-    document.documentElement.style.setProperty('--accent', '46 100% 52%'); // Yellow #FFC107
-    document.documentElement.style.setProperty('--info', '211 100% 50%'); // Blue #007BFF
-    document.documentElement.style.setProperty('--background', '0 0% 100%'); // White
 
-    // Add scroll offset for sticky header
-    const style = document.createElement('style');
-    style.textContent = `
-      html {
-        scroll-padding-top: 120px;
-      }
-      section {
-        scroll-margin-top: 120px;
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -401,10 +365,10 @@ export default function HomePage() {
           <div className="row align-items-center min-vh-50">
             <div className="col-lg-6">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {getTranslation('heroHeadline', t('heroHeadline'))}
+                {t('heroHeadline')}
               </h1>
               <p className="lead text-muted mb-4">
-                {getTranslation('heroSubheadline', t('heroSubheadline'))}
+                {t('heroSubheadline')}
               </p>
               <Link 
                 href="/pro"
@@ -461,10 +425,10 @@ export default function HomePage() {
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {getTranslation('aboutTitle', t('aboutTitle'))}
+                {t('aboutTitle')}
               </h2>
               <p className="lead text-muted">
-                {getTranslation('aboutText', t('aboutText'))}
+                {t('aboutText')}
               </p>
             </div>
           </div>
