@@ -10,6 +10,12 @@ export default function HomePage() {
   const [chatbotIcon, setChatbotIcon] = useState('📞'); // Default to phone icon
   const [domainInput, setDomainInput] = useState('');
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
@@ -34,6 +40,35 @@ export default function HomePage() {
       setDomainStatus('error');
       setTimeout(() => setDomainStatus('idle'), 5000);
     }
+  };
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
+      return;
+    }
+
+    setContactStatus('sending');
+
+    // Create WhatsApp message with form data
+    const whatsappMessage = `Hola! Soy ${contactForm.name}. 
+Email: ${contactForm.email}
+Mensaje: ${contactForm.message}`;
+    
+    const whatsappUrl = `https://wa.me/529831234567?text=${encodeURIComponent(whatsappMessage)}`;
+    
+    // Open WhatsApp with the message
+    window.open(whatsappUrl, '_blank');
+    
+    // Show success message
+    setContactStatus('sent');
+    
+    // Reset form
+    setTimeout(() => {
+      setContactForm({ name: '', email: '', message: '' });
+      setContactStatus('idle');
+    }, 3000);
   };
 
   // Chatbot Q&A data
@@ -589,26 +624,56 @@ export default function HomePage() {
 
           <div className="row g-5">
             <div className="col-lg-6">
-              <form>
+              <form onSubmit={handleContactSubmit}>
                 <div className="mb-3">
                   <label className="form-label">{t('contactName')}</label>
-                  <input type="text" className="form-control" />
+                  <input 
+                    type="text" 
+                    className="form-control"
+                    value={contactForm.name}
+                    onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                    required
+                  />
                 </div>
                 <div className="mb-3">
                   <label className="form-label">{t('contactEmail')}</label>
-                  <input type="email" className="form-control" />
+                  <input 
+                    type="email" 
+                    className="form-control"
+                    value={contactForm.email}
+                    onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                    required
+                  />
                 </div>
                 <div className="mb-3">
                   <label className="form-label">{t('contactMessage')}</label>
-                  <textarea className="form-control" rows={4}></textarea>
+                  <textarea 
+                    className="form-control" 
+                    rows={4}
+                    value={contactForm.message}
+                    onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                    required
+                  ></textarea>
                 </div>
                 <button 
                   type="submit" 
                   className="btn btn-primary text-white"
                   style={{ backgroundColor: 'hsl(var(--primary))' }}
+                  disabled={contactStatus === 'sending'}
                 >
-                  {t('sendMessage')}
+                  {contactStatus === 'sending' ? 'Enviando...' : 
+                   contactStatus === 'sent' ? '¡Enviado!' : 
+                   t('sendMessage')}
                 </button>
+                
+                {/* Contact Status Display */}
+                {contactStatus === 'sent' && (
+                  <div className="mt-3">
+                    <div className="alert alert-success">
+                      <strong>¡Mensaje enviado!</strong> Te redirigimos a WhatsApp para completar el envío.
+                    </div>
+                  </div>
+                )}
               </form>
             </div>
 
