@@ -283,18 +283,67 @@ export default function EditorPage() {
 
   const saveData = async () => {
     try {
+      // Transform websiteData to match the API schema
+      const configData = {
+        name: `Website ${clientId}`,
+        primaryColor: websiteData.primaryColor,
+        secondaryColor: websiteData.secondaryColor,
+        backgroundColor: websiteData.backgroundColor,
+        phone: websiteData.phone,
+        email: websiteData.email,
+        whatsappNumber: websiteData.whatsappNumber,
+        address: JSON.stringify(websiteData.address),
+        officeHours: {
+          mondayToFriday: websiteData.officeHours.es,
+          saturday: websiteData.officeHours.en
+        },
+        logo: websiteData.logo,
+        translations: {
+          es: {
+            heroHeadline: websiteData.heroHeadline.es,
+            heroSubheadline: websiteData.heroSubheadline.es,
+            whyTitle: websiteData.whyTitle.es,
+            aboutTitle: websiteData.aboutTitle.es,
+            aboutText: websiteData.aboutText.es,
+            offeringsTitle: websiteData.offeringsTitle.es,
+            pricingTitle: websiteData.pricingTitle.es,
+            pricingText: websiteData.pricingText.es,
+            proHeroHeadline: websiteData.proHeroHeadline.es,
+            proHeroSubheadline: websiteData.proHeroSubheadline.es,
+            demoNote: websiteData.demoNote.es,
+            paymentText: websiteData.paymentText.es
+          },
+          en: {
+            heroHeadline: websiteData.heroHeadline.en,
+            heroSubheadline: websiteData.heroSubheadline.en,
+            whyTitle: websiteData.whyTitle.en,
+            aboutTitle: websiteData.aboutTitle.en,
+            aboutText: websiteData.aboutText.en,
+            offeringsTitle: websiteData.offeringsTitle.en,
+            pricingTitle: websiteData.pricingTitle.en,
+            pricingText: websiteData.pricingText.en,
+            proHeroHeadline: websiteData.proHeroHeadline.en,
+            proHeroSubheadline: websiteData.proHeroSubheadline.en,
+            demoNote: websiteData.demoNote.en,
+            paymentText: websiteData.paymentText.en
+          }
+        }
+      };
+
       const response = await fetch(`/api/config/${clientId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(websiteData),
+        body: JSON.stringify(configData),
       });
       
       if (response.ok) {
         alert('Configuration saved successfully!');
       } else {
-        alert('Failed to save configuration');
+        const errorData = await response.json();
+        console.error('Save failed:', errorData);
+        alert(`Failed to save configuration: ${errorData.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Save error:', error);
