@@ -18,6 +18,12 @@ export default function HomePage() {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
 
+  // Helper function to get translated text from config or fallback to hardcoded
+  const getTranslation = (key: string, fallback: string = '') => {
+    if (!config?.translations) return fallback;
+    return config.translations[language]?.[key] || fallback;
+  };
+
   // Load configuration data
   useEffect(() => {
     const loadConfig = async () => {
@@ -36,12 +42,6 @@ export default function HomePage() {
     
     loadConfig();
   }, []);
-
-  // Helper function to get translated text from config or fallback to hardcoded
-  const getTranslation = (key: string, fallback: string = '') => {
-    if (!config?.translations) return fallback;
-    return config.translations[language]?.[key] || fallback;
-  };
 
   // Show loading state
   if (loading) {
