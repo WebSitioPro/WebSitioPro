@@ -4,10 +4,19 @@ import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, Messag
 
 export default function ProPage() {
   const [language, setLanguage] = useState('es');
+  const [savedConfig, setSavedConfig] = useState<any>(null);
   
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
+
+  useEffect(() => {
+    // Load saved configuration to demonstrate Editor functionality
+    fetch('/api/config/default')
+      .then(res => res.json())
+      .then(data => setSavedConfig(data))
+      .catch(err => console.log('Config not loaded:', err));
+  }, []);
 
   const t = (key: string) => {
     const translations = {
@@ -401,6 +410,82 @@ export default function ProPage() {
           </div>
         </div>
       </section>
+
+      {/* Editor Test Section - Shows saved configuration data */}
+      {savedConfig && (
+        <section className="py-4" style={{ backgroundColor: 'hsl(var(--accent) / 0.1)' }}>
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-10">
+                <div className="bg-white rounded p-4 shadow-sm">
+                  <h4 className="fw-bold text-center mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                    Editor Test - Saved Configuration Data (Pro Page)
+                  </h4>
+                  <div className="row g-4">
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Pro Headlines</h6>
+                          <p className="card-text small">
+                            Spanish: {savedConfig.translations?.es?.proHeroHeadline || 'Not set'}
+                          </p>
+                          <p className="card-text small">
+                            English: {savedConfig.translations?.en?.proHeroHeadline || 'Not set'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Payment Text</h6>
+                          <p className="card-text small">
+                            Spanish: {savedConfig.translations?.es?.paymentText || 'Not set'}
+                          </p>
+                          <p className="card-text small">
+                            English: {savedConfig.translations?.en?.paymentText || 'Not set'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Contact Info</h6>
+                          <p className="card-text small">
+                            Phone: {savedConfig.phone || 'Not set'}
+                          </p>
+                          <p className="card-text small">
+                            WhatsApp: {savedConfig.whatsappNumber || 'Not set'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Demo Note</h6>
+                          <p className="card-text small">
+                            Spanish: {savedConfig.translations?.es?.demoNote || 'Not set'}
+                          </p>
+                          <p className="card-text small">
+                            English: {savedConfig.translations?.en?.demoNote || 'Not set'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-center mt-3">
+                    <small className="text-muted">
+                      This section shows data saved from the Editor. Make changes in the Editor and refresh this page to see updates.
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Contact */}
       <section id="contact" className="py-5 bg-light">

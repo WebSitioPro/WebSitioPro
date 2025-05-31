@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Phone, Mail, MapPin, Clock, Star, Shield, Award, Menu, X } from 'lucide-react';
 
@@ -7,6 +7,15 @@ export default function ProfessionalsDemo() {
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [savedConfig, setSavedConfig] = useState<any>(null);
+
+  useEffect(() => {
+    // Load saved configuration to demonstrate Editor functionality
+    fetch('/api/config/default')
+      .then(res => res.json())
+      .then(data => setSavedConfig(data))
+      .catch(err => console.log('Config not loaded:', err));
+  }, []);
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
@@ -617,6 +626,45 @@ export default function ProfessionalsDemo() {
                 }
               }}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Editor Test Section - Shows saved configuration data */}
+      {savedConfig && (
+        <div className="py-4" style={{ backgroundColor: '#FFC107', opacity: 0.1 }}>
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-10">
+                <div className="bg-white rounded p-4 shadow-sm">
+                  <h4 className="fw-bold text-center mb-4" style={{ color: '#C8102E' }}>
+                    Editor Test - Professionals Template
+                  </h4>
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Contact Info</h6>
+                          <p className="card-text small">Phone: {savedConfig.phone || 'Not set'}</p>
+                          <p className="card-text small">Email: {savedConfig.email || 'Not set'}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="card border-0 bg-light">
+                        <div className="card-body">
+                          <h6 className="card-title text-primary">Saved Text Content</h6>
+                          <p className="card-text small">About Text: {savedConfig.translations?.es?.aboutText || 'Not set'}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-center mt-3">
+                    <small className="text-muted">Editor changes appear here after saving</small>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
