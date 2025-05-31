@@ -8,9 +8,32 @@ export default function HomePage() {
   const [messages, setMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [chatbotIcon, setChatbotIcon] = useState('📞'); // Default to phone icon
+  const [domainInput, setDomainInput] = useState('');
+  const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
+  };
+
+  const checkDomain = async () => {
+    if (!domainInput.trim()) return;
+    
+    setDomainStatus('checking');
+    
+    try {
+      // Simulate domain checking - in a real application, this would call a domain checking API
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // For demonstration, randomly determine availability
+      const isAvailable = Math.random() > 0.5;
+      setDomainStatus(isAvailable ? 'available' : 'taken');
+      
+      // Reset status after 5 seconds
+      setTimeout(() => setDomainStatus('idle'), 5000);
+    } catch (error) {
+      setDomainStatus('error');
+      setTimeout(() => setDomainStatus('idle'), 5000);
+    }
   };
 
   // Chatbot Q&A data
@@ -508,14 +531,50 @@ export default function HomePage() {
                   type="text" 
                   className="form-control" 
                   placeholder={t('domainPlaceholder')}
+                  value={domainInput}
+                  onChange={(e) => setDomainInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && checkDomain()}
                 />
                 <button 
                   className="btn btn-success text-white px-4"
                   style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                  onClick={checkDomain}
+                  disabled={domainStatus === 'checking' || !domainInput.trim()}
                 >
-                  {t('checkDomain')}
+                  {domainStatus === 'checking' ? 'Verificando...' : t('checkDomain')}
                 </button>
               </div>
+              
+              {/* Domain Status Display */}
+              {domainStatus !== 'idle' && (
+                <div className="mt-3 text-center">
+                  {domainStatus === 'checking' && (
+                    <div className="text-muted">
+                      <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+                      Verificando disponibilidad de dominio...
+                    </div>
+                  )}
+                  {domainStatus === 'available' && (
+                    <div className="alert alert-success">
+                      <strong>¡Disponible!</strong> El dominio {domainInput}.com está disponible.
+                      <br />
+                      <small>Contáctanos para registrarlo con tu sitio web.</small>
+                    </div>
+                  )}
+                  {domainStatus === 'taken' && (
+                    <div className="alert alert-warning">
+                      <strong>No disponible</strong> El dominio {domainInput}.com ya está tomado.
+                      <br />
+                      <small>Prueba con otro nombre o contáctanos para más opciones.</small>
+                    </div>
+                  )}
+                  {domainStatus === 'error' && (
+                    <div className="alert alert-danger">
+                      <strong>Error</strong> No pudimos verificar el dominio. Inténtalo de nuevo.
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
