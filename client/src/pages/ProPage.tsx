@@ -200,7 +200,13 @@ export default function ProPage() {
             {/* Navigation Links */}
             <div className="col d-none d-lg-block">
               <div className="d-flex gap-4">
-                <Link className="text-decoration-none text-dark" href="/">{t('home')}</Link>
+                <Link 
+                  className="text-decoration-none text-dark" 
+                  href="/"
+                  onClick={() => setTimeout(() => window.scrollTo(0, 0), 100)}
+                >
+                  {t('home')}
+                </Link>
                 <a className="text-decoration-none text-dark" href="/#why">{t('why')}</a>
                 <a className="text-decoration-none text-dark" href="/#about">{t('about')}</a>
                 <a className="text-decoration-none text-dark" href="/#offerings">{t('offerings')}</a>
@@ -230,7 +236,13 @@ export default function ProPage() {
             {/* Mobile Navigation */}
             <div className="col-12 d-lg-none mt-3">
               <div className="d-flex flex-wrap gap-3 justify-content-center">
-                <Link className="text-decoration-none text-dark" href="/">{t('home')}</Link>
+                <Link 
+                  className="text-decoration-none text-dark" 
+                  href="/"
+                  onClick={() => setTimeout(() => window.scrollTo(0, 0), 100)}
+                >
+                  {t('home')}
+                </Link>
                 <a className="text-decoration-none text-dark" href="/#why">{t('why')}</a>
                 <a className="text-decoration-none text-dark" href="/#about">{t('about')}</a>
                 <a className="text-decoration-none text-dark" href="/#offerings">{t('offerings')}</a>
@@ -277,16 +289,9 @@ export default function ProPage() {
               <h4 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
                 {t('demoTitle')}
               </h4>
-              <p className="mb-3">
+              <p className="mb-0">
                 {t('demoText')}
               </p>
-              <a 
-                href="https://wa.me/529831234567?text=Me interesa un sitio web profesional"
-                className="btn btn-primary text-white"
-                style={{ backgroundColor: 'hsl(var(--primary))' }}
-              >
-                {t('contactUs')}
-              </a>
             </div>
           </div>
         </div>
