@@ -174,7 +174,24 @@ export default function RetailDemo() {
           </div>
 
           <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
-            <ul className="navbar-nav ms-auto d-flex align-items-center flex-row flex-wrap">
+            <div className="d-none d-lg-flex gap-4 ms-auto align-items-center">
+              <a className="text-decoration-none text-dark" href="#home">{t('home')}</a>
+              <a className="text-decoration-none text-dark" href="#products">{t('products')}</a>
+              <a className="text-decoration-none text-dark" href="#photos">{t('photos')}</a>
+              <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
+              <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
+              <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
+              <button
+                className="btn btn-outline-warning btn-sm"
+                onClick={toggleLanguage}
+                style={{ fontSize: '1.5em' }}
+              >
+                {language === 'es' ? 'English' : 'Español'}
+              </button>
+            </div>
+            
+            {/* Mobile menu */}
+            <ul className={`navbar-nav d-lg-none ${showMobileMenu ? 'd-block' : 'd-none'}`}>
               <li className="nav-item">
                 <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
               </li>
@@ -192,15 +209,6 @@ export default function RetailDemo() {
               </li>
               <li className="nav-item">
                 <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
-              </li>
-              <li className="nav-item d-none d-lg-block">
-                <button
-                  className="btn btn-outline-warning btn-sm ms-3"
-                  onClick={toggleLanguage}
-                  style={{ fontSize: '1.5em' }}
-                >
-                  {language === 'es' ? 'English' : 'Español'}
-                </button>
               </li>
             </ul>
           </div>
