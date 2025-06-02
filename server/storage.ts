@@ -465,6 +465,33 @@ export class MemStorage implements IStorage {
     const configs = await this.getAllWebsiteConfigs();
     return configs[0];
   }
+
+  async cleanupExpiredConfigs(): Promise<number> {
+    const now = new Date();
+    let deletedCount = 0;
+    
+    for (const [id, config] of this.websiteConfigs) {
+      if (config.expiresAt && config.expiresAt < now) {
+        this.websiteConfigs.delete(id);
+        deletedCount++;
+      }
+    }
+    
+    return deletedCount;
+  }
+
+  async getActiveConfigsCount(): Promise<number> {
+    const now = new Date();
+    let activeCount = 0;
+    
+    for (const config of this.websiteConfigs.values()) {
+      if (!config.expiresAt || config.expiresAt > now) {
+        activeCount++;
+      }
+    }
+    
+    return activeCount;
+  }
 }
 
 export const storage = new MemStorage();
