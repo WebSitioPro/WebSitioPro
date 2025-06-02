@@ -14,7 +14,6 @@ import RestaurantsDemo from "@/pages/RestaurantsDemo";
 import TourismDemo from "@/pages/TourismDemo";
 import RetailDemo from "@/pages/RetailDemo";
 import ServicesDemo from "@/pages/ServicesDemo";
-import TemplateTools from "@/pages/TemplateTools";
 
 function Router() {
   return (
