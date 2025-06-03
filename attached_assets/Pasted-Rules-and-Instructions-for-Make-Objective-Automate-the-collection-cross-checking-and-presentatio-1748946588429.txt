@@ -1,0 +1,187 @@
+Rules and Instructions for Make
+Objective
+Automate the collection, cross-checking, and presentation of data for 30 businesses daily without websites, generating pre-built Pro sites via websitiopro.com/pro-form with tailored content (e.g., dentist bios) to minimize client changes, and outputting data for manual WhatsApp messaging.
+Rules
+Target Businesses:
+Search for professionals (e.g., dentists, doctors, lawyers) and businesses (e.g., restaurants, tourist shops) in Chetumal.
+
+Filter businesses with no website field in Google Maps or Facebook Pages to ensure they lack a website.
+
+Prioritize businesses with active Facebook Pages for higher engagement potential.
+Data Sources:
+Google Maps (Places API): Extract name, formatted_address, formatted_phone_number, rating, one photo (photos.photo_reference).
+
+Facebook (Meta Business Suite API): Extract category, about, hours, one photo (profile image). Verify no website in about section.
+
+Cross-check: Match businesses by name and location (e.g., “Dr. Garcia, Chetumal”). Use fuzzy matching for slight name variations (e.g., “Garcia Dental” vs. “Dr. Garcia”). Exclude if website found on Facebook but not Google.
+Presentation Decisions:
+Bio Generation:
+Dentists/Doctors (“Dentist & Dental Office,” “Medical & Health”): “¡Bienvenidos a [name]! Con [years from ‘about’ or ‘X años’ if unavailable] de experiencia, ofrecemos [‘cuidado dental’ for dentists, ‘servicios médicos’ for doctors] profesional en Chetumal. Contáctenos al [phone] para su cita.”
+
+Restaurants (“Restaurant,” “Cafe”): “¡Descubre [name]! Disfruta de [cuisine from ‘category’ or ‘deliciosos platillos’] en Chetumal. Visítanos en [address] o llama al [phone].”
+
+Lawyers (“Lawyer & Law Office”): “¡Bienvenidos a [name]! Con [years] de experiencia, ofrecemos servicios legales confiables en Chetumal. Contáctenos al [phone].”
+
+Tourist Businesses (“Travel & Transportation”): “¡Explora Chetumal con [name]! Ofrecemos [‘tours únicos’ or from ‘about’] para una experiencia inolvidable. Llama al [phone].”
+
+Fallback (Other Categories): “[name] ofrece servicios profesionales en Chetumal. Contáctenos al [phone].”
+Photo Selection: Use Google Maps photo (e.g., clinic exterior) for professional appeal. Fallback to Facebook profile photo if Google’s is unavailable or low-quality (based on resolution metadata).
+
+Additional Fields:
+Include hours (Facebook) in a “Schedule” section.
+
+Use rating (Google Maps) in a testimonial section (e.g., “4.8/5 estrellas”).
+
+Generate map embed (Google Maps API) for Pro site contact section.
+Localization: All text in Spanish with Chetumal references (e.g., “en Chetumal”).
+Integration:
+Format data as JSON: { "name": "", "bio": "", "address": "", "phone": "", "rating": "", "photo_url": "", "hours": "", "category": "" }.
+
+Send to websitiopro.com/pro-form via HTTP webhook/API. If unsupported, export to Google Sheets (columns: name, bio, address, phone, rating, photo_url, hours, category, preview_url).
+
+Generate preview URL (e.g., drgarcia.websitiopro.com) for each site.
+Output for WhatsApp:
+Export data and preview URLs to Google Sheets for manual messaging.
+
+Suggested message template: “Hola [name], creamos su sitio web profesional con datos de Google y Facebook: [preview_url]. Personalícelo por $100 + $10/mes.”
+Automation:
+Process 30 businesses daily in ~5–10 minutes via a scheduled scenario (6 AM).
+
+Batch searches (e.g., one search for 20 results, filter 5–10 without websites) to minimize API calls.
+
+Flag businesses without Facebook Pages as lower priority but include if Google Maps data is complete.
+Instructions for Make Scenario
+Trigger:
+Schedule daily at 6 AM or allow manual trigger.
+Step 1: Search Businesses:
+Module: Outscraper or Google Maps (Places API).
+
+Action: Search “dentists in Chetumal,” “restaurants in Chetumal,” etc. (20 results per query).
+
+Output: List of businesses with place_id, name, location.
+Step 2: Filter Non-Website Businesses:
+Module: Filter.
+
+Condition: website field empty/null in Google Maps.
+
+Output: 5–10 businesses per search without websites.
+Step 3: Fetch Google Maps Data:
+Module: Google Maps (Places API).
+
+Action: Get Place Details using place_id.
+
+Fields: name, formatted_address, formatted_phone_number, rating, photos.photo_reference (limit to one photo).
+
+Output: JSON with Google Maps data.
+Step 4: Cross-Check with Facebook:
+Module: Facebook Pages (Meta Business Suite API).
+
+Action: Search Pages by name and location (e.g., “Dr. Garcia Chetumal”).
+
+Fields: category, about, hours, picture (profile photo). Verify no website in about.
+
+Logic: Use text parser for fuzzy matching (e.g., 80% name similarity). If no Page, use Google Maps data only.
+
+Output: JSON with Facebook data or null.
+Step 5: Apply Presentation Rules:
+Module: Router.
+
+Routes:
+Dentists/Doctors: If category contains “Dentist” or “Medical,” set bio: “¡Bienvenidos a [name]! Con [years or ‘X años’] de experiencia...”.
+
+Restaurants: If category contains “Restaurant” or “Cafe,” set bio: “¡Descubre [name]! Disfruta de [cuisine or ‘deliciosos platillos’]...”.
+
+Lawyers: If category contains “Lawyer,” set bio: “¡Bienvenidos a [name]! Con [years]...”.
+
+Tourist Businesses: If category contains “Travel,” set bio: “¡Explora Chetumal con [name]!...”.
+
+Fallback: Set bio: “[name] ofrece servicios profesionales...”.
+Photo: Select Google Maps photo_url (default); use Facebook picture if Google’s unavailable.
+
+Additional: Set hours to “Schedule,” rating to testimonial, generate map embed URL.
+
+Output: Merged JSON.
+Step 6: Send to WebSitioPro:
+Module: HTTP or Google Sheets.
+
+Action: Send JSON to websitiopro.com/pro-form via webhook/API. If unsupported, export to Google Sheets (columns: name, bio, address, phone, rating, photo_url, hours, category, preview_url).
+
+Output: Preview URL (e.g., drgarcia.websitiopro.com).
+Step 7: Prepare for WhatsApp:
+Module: Google Sheets.
+
+Action: Append data and preview URLs to spreadsheet.
+
+Output: 30 rows with data for manual messaging.
+Setup Notes
+APIs: Configure Google Maps API key (cloud.google.com) and Meta Business Suite API (developers.facebook.com). Use field masking to reduce costs (e.g., Google: name,formatted_address, Facebook: category,about,picture).
+
+Time: ~2–3 hours for initial setup (API configuration, scenario building, testing with 5 businesses).
+
+Daily Operation: Trigger scenario (1 minute), review Sheet (5 minutes), send WhatsApp messages (30–60 minutes).
+
+Cost: $22–$61/month (Google Maps: ~$22, Outscraper: $0–$30, Make: $0–$9).
+Example Output (Dentist)
+Google Maps: “Dr. Garcia, 123 Calle Principal, Chetumal, +52 123 456 7890, 4.8 stars, photo_url.”
+
+Facebook: “Category: Dentist & Dental Office, About: ‘Serving Chetumal since 2010,’ Hours: Mon-Fri 9AM-5PM, picture.”
+
+Bio: “¡Bienvenidos a Dr. Garcia! Con 15 años de experiencia, ofrecemos cuidado dental profesional en Chetumal. Contáctenos al +52 123 456 7890 para su cita.”
+
+JSON: { "name": "Dr. Garcia", "bio": "¡Bienvenidos a Dr. Garcia!...", "address": "123 Calle Principal", "phone": "+52 123 456 7890", "rating": 4.8, "photo_url": "...", "hours": "Mon-Fri 9AM-5PM", "category": "Dentist & Dental Office" }.
+
+WhatsApp: “Hola Dr. Garcia, creamos su sitio web profesional: drgarcia.websitiopro.com. Personalícelo por $100 + $10/mes.”
+These rules and instructions are clear and actionable for Make, leveraging its visual interface to automate data collection, cross-checking, and presentation for 30 client-ready Pro sites daily, minimizing changes through tailored, localized content.
+Would you like to refine these rules further (e.g., add specific bio templates for other categories) or receive a visual Makeറ
+System: It looks like your message was cut off. Based on the context, it seems you were about to ask if I can refine the rules further or provide a visual representation of the Make scenario. Since the primary request was to create a set of rules and instructions for the agent (Make), and we’ve completed that, I’ll assume you’d like to refine the rules or explore a visual setup for clarity. I’ll provide a concise response addressing both possibilities, focusing on ensuring the instructions remain simple for Make and your WebSitioPro workflow.
+Refining the Rules
+The provided rules and instructions are already tailored to your goal of pre-building 30 WebSitioPro Pro sites daily for Chetumal professionals and businesses (e.g., dentists, restaurants) without websites, using Google Maps and Facebook data to create client-ready sites with minimal changes. They are designed to be simple for Make, leveraging its no-code interface with pre-built modules (Google Maps, Facebook Pages, HTTP, Google Sheets) and straightforward logic (routers, filters, text formatters). The setup requires ~2–3 hours initially and ~5–10 minutes daily (plus 30–60 minutes for manual WhatsApp messaging), fitting your low-tech, cost-effective model ($22–$61/month).
+To refine the rules further, we could:
+Add More Category-Specific Bio Templates:
+Retail (e.g., shops): “¡Visita [name] en Chetumal! Encuentra [products from ‘about’ or ‘productos únicos’] de alta calidad. Contáctanos al [phone].”
+
+Services (e.g., salons, mechanics): “¡Confía en [name] para tus necesidades en Chetumal! Ofrecemos [service from ‘about’ or ‘servicios profesionales’]. Llama al [phone].”
+
+This ensures bios for additional categories (per your interest in professionals, restaurants, tourist businesses, retail, services) are tailored, reducing client edits.
+Enhance Photo Selection Logic:
+Add a rule to check photo resolution (e.g., prefer Google Maps photo if >800x600px, else use Facebook profile photo) to ensure high-quality visuals for Pro sites.
+Prioritize High-Engagement Businesses:
+Filter businesses with Facebook Page engagement (e.g., >50 likes or recent posts) to target active, high-conversion prospects.
+Add Fallback for Missing Data:
+If hours or about are unavailable, use defaults (e.g., “Horario: Llámenos para confirmar” or generic bio) to maintain consistency.
+These refinements keep the workflow simple, adding ~30 minutes to setup for new templates but no extra daily effort or cost.
+Visual Representation of Make Scenario
+To clarify the workflow’s simplicity, here’s a textual visualization of the Make scenario (Make’s interface is a drag-and-drop flowchart, but I’ll describe it as a linear process for clarity):
+[Trigger: Daily 6 AM or Manual]
+   ↓
+[Outscraper/Google Maps Search: “dentists in Chetumal” → 20 results]
+   ↓
+[Filter: No website (Google/Facebook)] → 5–10 businesses
+   ↓
+[Google Maps Places API: Get name, address, phone, rating, 1 photo]
+   ↓
+[Facebook Pages API: Match name/location, get category, about, hours, 1 photo]
+   ↓
+[Router: Apply bio rules]
+   - Dentist: “¡Bienvenidos a [name]! Con [years] de experiencia...”
+   - Restaurant: “¡Descubre [name]! Disfruta de [cuisine]...”
+   - Lawyer: “¡Bienvenidos a [name]! Con [years]...”
+   - Tourist: “¡Explora Chetumal con [name]!...”
+   - Fallback: “[name] ofrece servicios...”
+   - Photo: Google Maps (default) or Facebook if unavailable
+   - Add hours, rating, map embed
+   ↓
+[Merge: Create JSON {name, bio, address, phone, rating, photo_url, hours, category}]
+   ↓
+[HTTP: Send to websitiopro.com/pro-form] OR [Google Sheets: Export data, URLs]
+   ↓
+[Output: Spreadsheet with 30 businesses’ data for WhatsApp messaging]
+
+Each step uses a pre-built Make module, configured via dropdowns and text inputs, requiring no coding. Setup involves:
+Linking API keys (Google Maps, Facebook).
+
+Defining bio templates in text formatters.
+
+Mapping fields to websitiopro.com/pro-form or Google Sheets.
+Total setup: ~2–3 hours, with daily operation taking ~5–10 minutes (automated) plus 30–60 minutes (manual WhatsApp).
+
