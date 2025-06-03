@@ -180,8 +180,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         photo_url: makeData.photo_url,
         fb_likes: makeData.fb_likes || 0,
         location: location
-      };</missingFields>
-      }
+      };
 
       // Map Make.com data to our website config format
       const websiteConfig = {
