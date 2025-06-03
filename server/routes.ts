@@ -174,7 +174,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         backgroundColor: "#FFFFFF",
         defaultLanguage: "es",
         phone: makeData.phone,
-        email: `info@${makeData.name.toLowerCase().replace(/\s+/g, '')}.com`,
+        email: makeData.email || `info@${makeData.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`,
         address: makeData.address,
         whatsappNumber: makeData.phone?.replace(/[^\d]/g, ''),
         logo: makeData.name,
@@ -220,7 +220,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }] : [],
         
         // Include photos
-        photos: makeData.photo_url ? [makeData.photo_url] : [],
+        photos: makeData.photo_url ? [{
+          url: makeData.photo_url,
+          caption: { es: "Foto del negocio", en: "Business photo" }
+        }] : [],
         
         // Default settings
         showWhyWebsiteButton: true,
@@ -292,7 +295,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Helper function to generate Google Maps embed
   function generateMapEmbed(address: string): string {
     const encodedAddress = encodeURIComponent(address);
-    return `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodedAddress}`;
+    return `https://www.google.com/maps/embed/v1/place?q=${encodedAddress}`;
   }
 
   // Helper function to get default chatbot questions
