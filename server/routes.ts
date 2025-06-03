@@ -149,6 +149,194 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // API endpoint for Make.com to auto-create websites from scraped data
+  app.post("/api/make/auto-create", async (req: Request, res: Response) => {
+    try {
+      const makeData = req.body;
+      
+      // Validate required fields from Make.com
+      const requiredFields = ['name', 'bio', 'address', 'phone', 'category'];
+      const missingFields = requiredFields.filter(field => !makeData[field]);
+      
+      if (missingFields.length > 0) {
+        return res.status(400).json({ 
+          error: "Missing required fields", 
+          missingFields 
+        });
+      }
+
+      // Map Make.com data to our website config format
+      const websiteConfig = {
+        name: makeData.name,
+        templateType: determineTemplateType(makeData.category),
+        primaryColor: "#C8102E",
+        secondaryColor: "#00A859", 
+        backgroundColor: "#FFFFFF",
+        defaultLanguage: "es",
+        phone: makeData.phone,
+        email: `info@${makeData.name.toLowerCase().replace(/\s+/g, '')}.com`,
+        address: makeData.address,
+        whatsappNumber: makeData.phone?.replace(/[^\d]/g, ''),
+        logo: makeData.name,
+        
+        // Generate bilingual content
+        translations: {
+          es: {
+            tagline: makeData.bio,
+            subtitle: `Profesionales de confianza en Chetumal`,
+            intro: makeData.bio,
+            contactTitle: "Contáctanos",
+            scheduleTitle: "Horarios"
+          },
+          en: {
+            tagline: translateBioToEnglish(makeData.bio),
+            subtitle: `Trusted professionals in Chetumal`,
+            intro: translateBioToEnglish(makeData.bio),
+            contactTitle: "Contact Us", 
+            scheduleTitle: "Schedule"
+          }
+        },
+        
+        // Include scraped data
+        officeHours: makeData.hours ? {
+          mondayToFriday: makeData.hours,
+          saturday: "Por cita / By appointment"
+        } : {
+          mondayToFriday: "Lun-Vie 9:00 AM - 6:00 PM",
+          saturday: "Sáb 10:00 AM - 2:00 PM"
+        },
+        
+        // Add Google Maps and review data
+        googleMapsEmbed: generateMapEmbed(makeData.address),
+        reviews: makeData.rating ? [{
+          name: "Google Reviews",
+          initials: "⭐",
+          rating: parseFloat(makeData.rating),
+          date: { es: "Reseñas de Google", en: "Google Reviews" },
+          quote: { 
+            es: `${makeData.rating}/5 estrellas en Google`,
+            en: `${makeData.rating}/5 stars on Google`
+          }
+        }] : [],
+        
+        // Include photos
+        photos: makeData.photo_url ? [makeData.photo_url] : [],
+        
+        // Default settings
+        showWhyWebsiteButton: true,
+        showDomainButton: true,
+        showChatbot: true,
+        chatbotQuestions: getDefaultChatbotQuestions()
+      };
+
+      // Create the website configuration
+      const newConfig = await storage.createWebsiteConfig(websiteConfig);
+      
+      // Generate preview URL
+      const previewUrl = `${req.protocol}://${req.get('host')}/preview/${newConfig.id}`;
+      
+      // Return success with preview URL for Make.com
+      res.status(201).json({
+        success: true,
+        configId: newConfig.id,
+        previewUrl: previewUrl,
+        editUrl: `${req.protocol}://${req.get('host')}/editor/${newConfig.id}`,
+        message: "Website auto-created successfully from scraped data"
+      });
+      
+    } catch (error) {
+      console.error('Make.com auto-create error:', error);
+      res.status(500).json({ 
+        error: "Failed to auto-create website",
+        details: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
+  // Helper function to determine template type from category
+  function determineTemplateType(category: string): string {
+    const categoryLower = category.toLowerCase();
+    
+    if (categoryLower.includes('dentist') || categoryLower.includes('doctor') || categoryLower.includes('medical')) {
+      return 'professionals';
+    }
+    if (categoryLower.includes('restaurant') || categoryLower.includes('cafe') || categoryLower.includes('food')) {
+      return 'restaurants';
+    }
+    if (categoryLower.includes('lawyer') || categoryLower.includes('legal')) {
+      return 'professionals';
+    }
+    if (categoryLower.includes('travel') || categoryLower.includes('tour')) {
+      return 'tourism';
+    }
+    if (categoryLower.includes('retail') || categoryLower.includes('shop') || categoryLower.includes('store')) {
+      return 'retail';
+    }
+    
+    return 'services'; // Default fallback
+  }
+
+  // Helper function to translate bio to English (basic version)
+  function translateBioToEnglish(spanishBio: string): string {
+    return spanishBio
+      .replace(/¡Bienvenidos?/g, 'Welcome')
+      .replace(/años de experiencia/g, 'years of experience')
+      .replace(/ofrecemos/g, 'we offer')
+      .replace(/cuidado dental/g, 'dental care')
+      .replace(/servicios médicos/g, 'medical services')
+      .replace(/Contáctenos/g, 'Contact us')
+      .replace(/para su cita/g, 'for your appointment')
+      .replace(/en Chetumal/g, 'in Chetumal');
+  }
+
+  // Helper function to generate Google Maps embed
+  function generateMapEmbed(address: string): string {
+    const encodedAddress = encodeURIComponent(address);
+    return `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodedAddress}`;
+  }
+
+  // Helper function to get default chatbot questions
+  function getDefaultChatbotQuestions() {
+    return [
+      {
+        key: "hours",
+        question: { es: "¿Cuáles son sus horarios?", en: "What are your hours?" },
+        answer: { es: "Consulte nuestros horarios en la sección de contacto", en: "Check our hours in the contact section" }
+      },
+      {
+        key: "services", 
+        question: { es: "¿Qué servicios ofrecen?", en: "What services do you offer?" },
+        answer: { es: "Ofrecemos servicios profesionales de calidad", en: "We offer quality professional services" }
+      }
+    ];
+  }
+
+  // Preview endpoint for generated websites
+  app.get("/preview/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).send("Invalid ID format");
+      }
+
+      const config = await storage.getWebsiteConfig(id);
+      if (!config) {
+        return res.status(404).send("Website not found");
+      }
+
+      // Generate static files
+      const outputDir = await generateStaticFiles(config);
+      const htmlPath = path.join(outputDir, 'index.html');
+      const htmlContent = await fs.promises.readFile(htmlPath, { encoding: 'utf-8' });
+
+      res.setHeader('Content-Type', 'text/html');
+      res.send(htmlContent);
+    } catch (error) {
+      console.error('Preview error:', error);
+      res.status(500).send('Error generating preview');
+    }
+  });
+
   // Serve generated Professionals template
   app.get('/templates/professionals', async (req, res) => {
     try {

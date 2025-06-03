@@ -14,6 +14,7 @@ import RestaurantsDemo from "@/pages/RestaurantsDemo";
 import TourismDemo from "@/pages/TourismDemo";
 import RetailDemo from "@/pages/RetailDemo";
 import ServicesDemo from "@/pages/ServicesDemo";
+import ProFormPage from "@/pages/ProFormPage";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/editor/:clientId" component={EditorPage} />
       <Route path="/restaurant-editor/:clientId" component={RestaurantEditor} />
       <Route path="/editor/tools" component={TemplateTools} />
+      <Route path="/pro-form" component={ProFormPage} />
       <Route component={NotFound} />
     </Switch>
   );
