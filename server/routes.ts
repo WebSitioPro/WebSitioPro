@@ -165,15 +165,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Extract location from address or separate field
+      // Extract location from address or separate field with systematic priority
       const location = makeData.location || extractLocationFromAddress(makeData.address) || 'Chetumal';
+      
+      // Validate business category
+      const categoryValidation = validateBusinessCategory(makeData.category);
+      
+      // Validate and process phone number
+      const validatedPhone = validateWhatsAppPhone(makeData.phone, makeData.phone_verified);
       
       // Handle missing data with defaults
       const businessData = {
         name: makeData.name,
         category: makeData.category,
         address: makeData.address || `${location}, Quintana Roo`,
-        phone: makeData.phone || 'Llámenos para confirmar',
+        phone: validatedPhone.phone,
+        phone_verified: validatedPhone.verified,
+        phone_status: validatedPhone.status,
         bio: makeData.bio || generateDefaultBio(makeData.name, makeData.category, location),
         hours: makeData.hours || 'Llámenos para confirmar horarios',
         rating: makeData.rating || '5.0',
@@ -250,13 +258,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Generate preview URL
       const previewUrl = `${req.protocol}://${req.get('host')}/preview/${newConfig.id}`;
       
-      // Return success with preview URL for Make.com
+      // Return success with preview URL for Make.com and Google Sheets
       res.status(201).json({
         success: true,
         configId: newConfig.id,
         previewUrl: previewUrl,
         editUrl: `${req.protocol}://${req.get('host')}/editor/${newConfig.id}`,
-        message: "Website auto-created successfully from scraped data"
+        message: "Website auto-created successfully from scraped data",
+        // Google Sheets logging fields
+        Preview_URL: previewUrl,
+        Place_ID: makeData.place_id || `AUTO_${Date.now()}`,
+        // All fields for Sheets logging
+        Business_Name: businessData.name,
+        Category: businessData.category,
+        Address: businessData.address,
+        Phone: businessData.phone,
+        Bio: businessData.bio,
+        Hours: businessData.hours,
+        Rating: businessData.rating,
+        Photo_URL: businessData.photo_url,
+        Facebook_Likes: businessData.fb_likes,
+        Location: businessData.location,
+        Template_Type: determineTemplateType(businessData.category),
+        Created_Date: new Date().toISOString(),
+        // Validation results for Make.com workflow
+        Phone_Status: businessData.phone_status,
+        Phone_Verified: businessData.phone_verified,
+        Category_Group: categoryValidation.group,
+        Category_Valid: categoryValidation.valid,
+        Location_Priority: getLocationPriority(businessData.location)
       });
       
     } catch (error) {
@@ -268,17 +298,87 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Helper function to extract location from address
+  // Helper function to extract location from address with systematic priority
   function extractLocationFromAddress(address: string): string {
     if (!address) return 'Chetumal';
     
-    const locations = ['Cancun', 'Cancún', 'Chetumal', 'Merida', 'Mérida', 'Playa del Carmen', 'Cozumel', 'Bacalar'];
-    for (const location of locations) {
-      if (address.toLowerCase().includes(location.toLowerCase())) {
-        return location;
+    // Systematic location priority: Chetumal → Bacalar → Cancun → Quintana Roo → Yucatan
+    const locationPriority = [
+      { names: ['Chetumal'], priority: 1 },
+      { names: ['Bacalar'], priority: 2 },
+      { names: ['Cancun', 'Cancún'], priority: 3 },
+      { names: ['Playa del Carmen', 'Playa Carmen'], priority: 4 },
+      { names: ['Cozumel'], priority: 5 },
+      { names: ['Merida', 'Mérida'], priority: 6 },
+      { names: ['Quintana Roo'], priority: 7 },
+      { names: ['Yucatan', 'Yucatán'], priority: 8 }
+    ];
+    
+    const addressLower = address.toLowerCase();
+    let foundLocation = 'Chetumal';
+    let highestPriority = 999;
+    
+    for (const locationGroup of locationPriority) {
+      for (const locationName of locationGroup.names) {
+        if (addressLower.includes(locationName.toLowerCase()) && locationGroup.priority < highestPriority) {
+          foundLocation = locationName;
+          highestPriority = locationGroup.priority;
+        }
       }
     }
-    return 'Chetumal';
+    
+    return foundLocation;
+  }
+
+  // Helper function to get location priority for systematic scrubbing
+  function getLocationPriority(location: string): number {
+    const priorityMap: { [key: string]: number } = {
+      'Chetumal': 1,
+      'Bacalar': 2,
+      'Cancun': 3,
+      'Cancún': 3,
+      'Playa del Carmen': 4,
+      'Cozumel': 5,
+      'Merida': 6,
+      'Mérida': 6,
+      'Quintana Roo': 7,
+      'Yucatan': 8,
+      'Yucatán': 8
+    };
+    
+    return priorityMap[location] || 99;
+  }
+
+  // Helper function to validate business category
+  function validateBusinessCategory(category: string): { category: string; valid: boolean; group: string } {
+    if (!category) {
+      return { category: 'General Business', valid: false, group: 'services' };
+    }
+    
+    const categoryGroups = {
+      medical: ['Dentist', 'Dental', 'Doctor', 'Medical', 'Clinic', 'Hospital', 'Pharmacy'],
+      legal: ['Lawyer', 'Legal', 'Attorney', 'Law Firm', 'Notary'],
+      food: ['Restaurant', 'Cafe', 'Food', 'Bakery', 'Bar', 'Pizza', 'Tacos'],
+      tourism: ['Hotel', 'Travel', 'Tour', 'Resort', 'Tourism', 'Guide'],
+      retail: ['Shop', 'Store', 'Retail', 'Market', 'Boutique', 'Pharmacy'],
+      automotive: ['Mechanic', 'Auto', 'Car', 'Garage', 'Tire'],
+      beauty: ['Beauty', 'Salon', 'Barber', 'Spa', 'Nails'],
+      real_estate: ['Real Estate', 'Property', 'Realtor'],
+      education: ['School', 'Education', 'Teacher', 'Academy'],
+      professional: ['Accountant', 'Engineer', 'Architect', 'Consultant']
+    };
+    
+    const categoryLower = category.toLowerCase();
+    
+    for (const [group, keywords] of Object.entries(categoryGroups)) {
+      for (const keyword of keywords) {
+        if (categoryLower.includes(keyword.toLowerCase())) {
+          return { category: category, valid: true, group: group };
+        }
+      }
+    }
+    
+    return { category: category, valid: true, group: 'services' }; // Accept any category but classify as services
   }
 
   // Helper function to generate default bio based on business type and location
@@ -461,6 +561,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
   function generateMapEmbed(address: string): string {
     const encodedAddress = encodeURIComponent(address);
     return `https://www.google.com/maps/embed/v1/place?q=${encodedAddress}`;
+  }
+
+  // Helper function to validate WhatsApp phone numbers
+  function validateWhatsAppPhone(phone: string, phoneVerified?: boolean): { phone: string; verified: boolean; status: string } {
+    if (!phone) {
+      return {
+        phone: 'Llámenos para confirmar',
+        verified: false,
+        status: 'missing'
+      };
+    }
+    
+    // Clean the phone number
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Check if it's a Mexican mobile number (10 digits starting with 9, 8, 7, 6, 5, or 4)
+    const mexicanMobilePattern = /^52[9876543]\d{8}$/;
+    const isMexicanMobile = mexicanMobilePattern.test(cleanPhone);
+    
+    // Check if it's a verified WhatsApp number
+    const isVerified = phoneVerified === true;
+    
+    if (isMexicanMobile && isVerified) {
+      return {
+        phone: `+${cleanPhone}`,
+        verified: true,
+        status: 'verified_mobile'
+      };
+    } else if (isMexicanMobile && !isVerified) {
+      return {
+        phone: `+${cleanPhone}`,
+        verified: false,
+        status: 'unverified_mobile'
+      };
+    } else if (cleanPhone.length >= 10) {
+      // Might be landline or invalid mobile
+      return {
+        phone: phone, // Keep original format for landlines
+        verified: false,
+        status: 'possible_landline'
+      };
+    } else {
+      return {
+        phone: 'Llámenos para confirmar',
+        verified: false,
+        status: 'invalid'
+      };
+    }
   }
 
   // Helper function to get default chatbot questions
