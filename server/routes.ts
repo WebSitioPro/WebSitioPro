@@ -155,7 +155,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const makeData = req.body;
       
       // Validate required fields from Make.com
-      const requiredFields = ['name', 'bio', 'address', 'phone', 'category'];
+      const requiredFields = ['name', 'category'];
       const missingFields = requiredFields.filter(field => !makeData[field]);
       
       if (missingFields.length > 0) {
@@ -165,35 +165,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
+      // Extract location from address or separate field
+      const location = makeData.location || extractLocationFromAddress(makeData.address) || 'Chetumal';
+      
+      // Handle missing data with defaults
+      const businessData = {
+        name: makeData.name,
+        category: makeData.category,
+        address: makeData.address || `${location}, Quintana Roo`,
+        phone: makeData.phone || 'Llámenos para confirmar',
+        bio: makeData.bio || generateDefaultBio(makeData.name, makeData.category, location),
+        hours: makeData.hours || 'Llámenos para confirmar horarios',
+        rating: makeData.rating || '5.0',
+        photo_url: makeData.photo_url,
+        fb_likes: makeData.fb_likes || 0,
+        location: location
+      };</missingFields>
+      }
+
       // Map Make.com data to our website config format
       const websiteConfig = {
-        name: makeData.name,
-        templateType: determineTemplateType(makeData.category),
-        primaryColor: "#C8102E",
-        secondaryColor: "#00A859", 
+        name: businessData.name,
+        templateType: determineTemplateType(businessData.category),
+        primaryColor: getLocationColors(businessData.location).primary,
+        secondaryColor: getLocationColors(businessData.location).secondary, 
         backgroundColor: "#FFFFFF",
         defaultLanguage: "es",
-        phone: makeData.phone,
-        email: makeData.email || `info@${makeData.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`,
-        address: makeData.address,
-        whatsappNumber: makeData.phone?.replace(/[^\d]/g, ''),
-        logo: makeData.name,
+        phone: businessData.phone,
+        email: makeData.email || `info@${businessData.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`,
+        address: businessData.address,
+        whatsappNumber: businessData.phone?.replace(/[^\d]/g, ''),
+        logo: businessData.name,
         
-        // Generate bilingual content
+        // Generate bilingual content with location awareness
         translations: {
           es: {
-            tagline: makeData.bio,
-            subtitle: `Profesionales de confianza en Chetumal`,
-            intro: makeData.bio,
+            tagline: businessData.bio,
+            subtitle: getLocationSubtitle(businessData.location, businessData.category, 'es'),
+            intro: businessData.bio,
             contactTitle: "Contáctanos",
-            scheduleTitle: "Horarios"
+            scheduleTitle: "Horarios",
+            whyWebsite: "Por qué necesita un sitio web",
+            findDomain: "Encuentre su dominio"
           },
           en: {
-            tagline: translateBioToEnglish(makeData.bio),
-            subtitle: `Trusted professionals in Chetumal`,
-            intro: translateBioToEnglish(makeData.bio),
+            tagline: translateBioToEnglish(businessData.bio),
+            subtitle: getLocationSubtitle(businessData.location, businessData.category, 'en'),
+            intro: translateBioToEnglish(businessData.bio),
             contactTitle: "Contact Us", 
-            scheduleTitle: "Schedule"
+            scheduleTitle: "Schedule",
+            whyWebsite: "Why You Need a Website",
+            findDomain: "Find Your Domain Name"
           }
         },
         
@@ -206,18 +228,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           saturday: "Sáb 10:00 AM - 2:00 PM"
         },
         
-        // Add Google Maps and review data
-        googleMapsEmbed: generateMapEmbed(makeData.address),
-        reviews: makeData.rating ? [{
-          name: "Google Reviews",
-          initials: "⭐",
-          rating: parseFloat(makeData.rating),
-          date: { es: "Reseñas de Google", en: "Google Reviews" },
-          quote: { 
-            es: `${makeData.rating}/5 estrellas en Google`,
-            en: `${makeData.rating}/5 stars on Google`
-          }
-        }] : [],
+        // Add Google Maps and review data with engagement consideration
+        googleMapsEmbed: generateMapEmbed(businessData.address),
+        reviews: generateReviews(businessData.rating, businessData.fb_likes, businessData.location),
         
         // Include photos
         photos: makeData.photo_url ? [{
@@ -256,6 +269,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Helper function to extract location from address
+  function extractLocationFromAddress(address: string): string {
+    if (!address) return 'Chetumal';
+    
+    const locations = ['Cancun', 'Cancún', 'Chetumal', 'Merida', 'Mérida', 'Playa del Carmen', 'Cozumel', 'Bacalar'];
+    for (const location of locations) {
+      if (address.toLowerCase().includes(location.toLowerCase())) {
+        return location;
+      }
+    }
+    return 'Chetumal';
+  }
+
+  // Helper function to generate default bio based on business type and location
+  function generateDefaultBio(name: string, category: string, location: string): string {
+    const categoryLower = category.toLowerCase();
+    
+    if (categoryLower.includes('dentist') || categoryLower.includes('dental')) {
+      return location === 'Mérida' || location === 'Merida' 
+        ? `${name} ofrece servicios dentales de excelencia en ${location}. Profesionales especializados en cuidado dental integral.`
+        : `¡Bienvenidos a ${name}! Cuidado dental profesional en ${location}. Su sonrisa es nuestra prioridad.`;
+    }
+    
+    if (categoryLower.includes('restaurant') || categoryLower.includes('cafe')) {
+      return location === 'Cancún' || location === 'Cancun'
+        ? `¡Descubre ${name} en el corazón de ${location}! Sabores auténticos y experiencia gastronómica única.`
+        : `${name} - Sabores tradicionales en ${location}. Ven y disfruta de nuestra deliciosa comida.`;
+    }
+    
+    if (categoryLower.includes('lawyer') || categoryLower.includes('legal')) {
+      return `${name} - Servicios legales de excelencia en ${location}. Defendemos sus derechos con profesionalismo y dedicación.`;
+    }
+    
+    return `${name} - Servicios profesionales en ${location}. Calidad y confianza garantizada.`;
+  }
+
+  // Helper function to get location-specific colors
+  function getLocationColors(location: string): { primary: string; secondary: string } {
+    switch (location.toLowerCase()) {
+      case 'cancún':
+      case 'cancun':
+        return { primary: '#00A859', secondary: '#0080FF' }; // Tropical blue-green
+      case 'mérida':
+      case 'merida':
+        return { primary: '#8B4513', secondary: '#DAA520' }; // Colonial brown-gold
+      case 'playa del carmen':
+        return { primary: '#20B2AA', secondary: '#FF6347' }; // Coastal teal-coral
+      default:
+        return { primary: '#C8102E', secondary: '#00A859' }; // Default red-green
+    }
+  }
+
+  // Helper function to get location-specific subtitles
+  function getLocationSubtitle(location: string, category: string, language: 'es' | 'en'): string {
+    const isRestaurant = category.toLowerCase().includes('restaurant') || category.toLowerCase().includes('cafe');
+    
+    if (language === 'es') {
+      switch (location.toLowerCase()) {
+        case 'cancún':
+        case 'cancun':
+          return isRestaurant 
+            ? 'Experiencia gastronómica única en el Caribe Mexicano'
+            : 'Servicios profesionales en el paraíso del Caribe';
+        case 'mérida':
+        case 'merida':
+          return 'Tradición y excelencia en la Ciudad Blanca';
+        case 'playa del carmen':
+          return 'Profesionales de confianza en la Riviera Maya';
+        default:
+          return 'Profesionales de confianza en Quintana Roo';
+      }
+    } else {
+      switch (location.toLowerCase()) {
+        case 'cancún':
+        case 'cancun':
+          return isRestaurant 
+            ? 'Unique dining experience in the Mexican Caribbean'
+            : 'Professional services in Caribbean paradise';
+        case 'mérida':
+        case 'merida':
+          return 'Tradition and excellence in the White City';
+        case 'playa del carmen':
+          return 'Trusted professionals in the Riviera Maya';
+        default:
+          return 'Trusted professionals in Quintana Roo';
+      }
+    }
+  }
+
   // Helper function to determine template type from category
   function determineTemplateType(category: string): string {
     const categoryLower = category.toLowerCase();
@@ -290,6 +392,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
       .replace(/Contáctenos/g, 'Contact us')
       .replace(/para su cita/g, 'for your appointment')
       .replace(/en Chetumal/g, 'in Chetumal');
+  }
+
+  // Helper function to generate reviews based on engagement
+  function generateReviews(rating: string, fbLikes: number, location: string) {
+    const reviews = [];
+    
+    // Always add Google review if rating exists
+    if (rating) {
+      reviews.push({
+        name: "Google Reviews",
+        initials: "⭐",
+        rating: parseFloat(rating),
+        date: { es: "Reseñas de Google", en: "Google Reviews" },
+        quote: { 
+          es: `${rating}/5 estrellas en Google`,
+          en: `${rating}/5 stars on Google`
+        }
+      });
+    }
+    
+    // Add Facebook engagement if high engagement (>100 likes)
+    if (fbLikes > 100) {
+      reviews.push({
+        name: "Facebook",
+        initials: "👍",
+        rating: 5,
+        date: { es: "Facebook", en: "Facebook" },
+        quote: { 
+          es: `${fbLikes}+ personas siguen nuestra página`,
+          en: `${fbLikes}+ people follow our page`
+        }
+      });
+    }
+    
+    // Add location-specific community review for high-engagement businesses
+    if (fbLikes > 150) {
+      const locationReviews = {
+        'cancún': {
+          es: "Excelente servicio en el corazón de Cancún",
+          en: "Excellent service in the heart of Cancun"
+        },
+        'mérida': {
+          es: "Tradición y calidad en Mérida",
+          en: "Tradition and quality in Merida"
+        },
+        default: {
+          es: "Recomendado por la comunidad local",
+          en: "Recommended by the local community"
+        }
+      };
+      
+      const locationKey = location.toLowerCase();
+      const reviewText = locationReviews[locationKey] || locationReviews.default;
+      
+      reviews.push({
+        name: "Comunidad Local",
+        initials: "🏆",
+        rating: 5,
+        date: { es: "Comunidad", en: "Community" },
+        quote: reviewText
+      });
+    }
+    
+    return reviews;
   }
 
   // Helper function to generate Google Maps embed
