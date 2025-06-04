@@ -812,21 +812,36 @@ export default function HomePage() {
         >
           {/* Chat Header */}
           <div 
-            className="p-3 rounded-top text-white d-flex justify-content-between align-items-center"
+            className="p-2 rounded-top text-white d-flex justify-content-between align-items-center position-relative"
             style={{ backgroundColor: 'hsl(var(--primary))' }}
           >
-            <h6 className="mb-0">{t('chatbotTitle')}</h6>
+            <h6 className="mb-0 flex-grow-1 text-center">{t('chatbotTitle')}</h6>
             <button 
-              onClick={() => setChatOpen(false)}
-              className="btn btn-sm text-white px-2 py-1"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setChatOpen(false);
+              }}
+              className="btn text-white position-absolute"
               style={{ 
-                background: 'rgba(255,255,255,0.2)', 
-                border: '1px solid rgba(255,255,255,0.3)',
-                borderRadius: '4px'
+                background: 'rgba(255,255,255,0.3)', 
+                border: '2px solid white',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                right: '8px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px',
+                fontWeight: 'bold',
+                lineHeight: '1'
               }}
               title="Close chat"
             >
-              <X size={18} />
+              ×
             </button>
           </div>
 
