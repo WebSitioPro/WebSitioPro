@@ -566,27 +566,32 @@ export default function HomePage() {
       <section id="domain" className="py-5">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-lg-6">
+            <div className="col-lg-8 col-md-10">
               <h2 className="text-center fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
                 {t('domainTitle')}
               </h2>
-              <div className="input-group input-group-lg">
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  placeholder={t('domainPlaceholder')}
-                  value={domainInput}
-                  onChange={(e) => setDomainInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && checkDomain()}
-                />
-                <button 
-                  className="btn btn-success text-white px-4"
-                  style={{ backgroundColor: 'hsl(var(--secondary))' }}
-                  onClick={checkDomain}
-                  disabled={domainStatus === 'checking' || !domainInput.trim()}
-                >
-                  {domainStatus === 'checking' ? 'Verificando...' : t('checkDomain')}
-                </button>
+              <div className="row g-2">
+                <div className="col-8 col-md-9">
+                  <input 
+                    type="text" 
+                    className="form-control form-control-lg" 
+                    placeholder={t('domainPlaceholder')}
+                    value={domainInput}
+                    onChange={(e) => setDomainInput(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && checkDomain()}
+                    style={{ minWidth: '200px' }}
+                  />
+                </div>
+                <div className="col-4 col-md-3">
+                  <button 
+                    className="btn btn-success text-white w-100"
+                    style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                    onClick={checkDomain}
+                    disabled={domainStatus === 'checking' || !domainInput.trim()}
+                  >
+                    {domainStatus === 'checking' ? 'Verificando...' : t('checkDomain')}
+                  </button>
+                </div>
               </div>
               
               {/* Domain Status Display */}
