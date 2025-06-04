@@ -807,7 +807,7 @@ export default function HomePage() {
             height: 'min(500px, calc(100vh - 100px))', 
             maxWidth: '350px',
             maxHeight: '500px',
-            zIndex: 1001
+            zIndex: 999
           }}
         >
           {/* Chat Header */}
@@ -818,10 +818,15 @@ export default function HomePage() {
             <h6 className="mb-0">{t('chatbotTitle')}</h6>
             <button 
               onClick={() => setChatOpen(false)}
-              className="btn btn-sm text-white p-0"
-              style={{ background: 'none', border: 'none' }}
+              className="btn btn-sm text-white px-2 py-1"
+              style={{ 
+                background: 'rgba(255,255,255,0.2)', 
+                border: '1px solid rgba(255,255,255,0.3)',
+                borderRadius: '4px'
+              }}
+              title="Close chat"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
 
