@@ -799,13 +799,15 @@ export default function HomePage() {
       {/* Chat Window */}
       {chatOpen && (
         <div 
-          className="position-fixed bottom-0 end-0 m-4 bg-white rounded shadow-lg border"
+          className="position-fixed bg-white rounded shadow-lg border d-flex flex-column"
           style={{ 
-            width: '350px', 
-            height: '500px', 
-            zIndex: 1001,
-            display: 'flex',
-            flexDirection: 'column'
+            bottom: '20px',
+            right: '20px',
+            width: 'min(350px, calc(100vw - 40px))', 
+            height: 'min(500px, calc(100vh - 100px))', 
+            maxWidth: '350px',
+            maxHeight: '500px',
+            zIndex: 1001
           }}
         >
           {/* Chat Header */}
@@ -824,18 +826,19 @@ export default function HomePage() {
           </div>
 
           {/* Chat Messages */}
-          <div className="flex-grow-1 p-3 overflow-auto" style={{ maxHeight: '350px' }}>
+          <div className="flex-grow-1 p-2 p-md-3 overflow-auto" style={{ minHeight: '200px' }}>
             {messages.map((message, index) => (
-              <div key={index} className={`mb-3 ${message.isUser ? 'text-end' : 'text-start'}`}>
+              <div key={index} className={`mb-2 ${message.isUser ? 'text-end' : 'text-start'}`}>
                 <div 
-                  className={`d-inline-block p-2 rounded ${
+                  className={`d-inline-block p-2 rounded small ${
                     message.isUser 
                       ? 'text-white' 
                       : 'bg-light'
                   }`}
                   style={{ 
                     backgroundColor: message.isUser ? 'hsl(var(--primary))' : undefined,
-                    maxWidth: '80%'
+                    maxWidth: '85%',
+                    fontSize: '0.9rem'
                   }}
                 >
                   {message.text}
@@ -845,21 +848,23 @@ export default function HomePage() {
           </div>
 
           {/* Chat Input */}
-          <form onSubmit={handleChatSubmit} className="p-3 border-top">
-            <div className="input-group">
+          <form onSubmit={handleChatSubmit} className="p-2 border-top">
+            <div className="input-group input-group-sm">
               <input 
                 type="text"
                 className="form-control"
                 placeholder={t('chatbotPlaceholder')}
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}
+                style={{ fontSize: '0.9rem' }}
               />
               <button 
                 type="submit"
-                className="btn text-white"
+                className="btn text-white px-2"
                 style={{ backgroundColor: 'hsl(var(--primary))' }}
+                disabled={!currentMessage.trim()}
               >
-                <Send size={16} />
+                <Send size={14} />
               </button>
             </div>
           </form>
