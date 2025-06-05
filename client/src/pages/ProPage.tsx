@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, MessageCircle } from 'lucide-react';
+import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, MessageCircle, Menu } from 'lucide-react';
 
 export default function ProPage() {
   const [language, setLanguage] = useState('es');
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
@@ -228,8 +229,8 @@ export default function ProPage() {
               </div>
             </div>
             
-            {/* Language Toggle */}
-            <div className="col-auto">
+            {/* Desktop Language Toggle & WhatsApp CTA */}
+            <div className="col-auto d-none d-lg-flex">
               <div className="d-flex align-items-center gap-3">
                 <button 
                   className="btn text-dark fw-bold px-3"
@@ -239,30 +240,116 @@ export default function ProPage() {
                 >
                   {language === 'es' ? 'English' : 'Español'}
                 </button>
+                
+                <a 
+                  href="https://wa.me/529831234567?text=Interested in Pro sites!"
+                  className="btn btn-success text-white px-4"
+                  style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                >
+                  {t('contactWhatsApp')}
+                </a>
               </div>
             </div>
 
-            {/* Mobile Navigation */}
-            <div className="col-12 d-lg-none mt-3">
-              <div className="d-flex flex-wrap gap-3 justify-content-center">
-                <Link 
-                  className="text-decoration-none text-dark" 
-                  href="/"
-                  onClick={() => setTimeout(() => window.scrollTo(0, 0), 100)}
+            {/* Mobile Menu Button & Language Toggle */}
+            <div className="col-auto d-lg-none">
+              <div className="d-flex align-items-center gap-2">
+                <button 
+                  className="btn text-dark fw-bold px-2 py-1 small"
+                  onClick={toggleLanguage}
+                  style={{ backgroundColor: 'hsl(var(--accent))', borderColor: 'hsl(var(--accent))' }}
+                  aria-label="Language toggle"
                 >
-                  {t('home')}
-                </Link>
-                <a className="text-decoration-none text-dark" href="/#why">{t('why')}</a>
-                <a className="text-decoration-none text-dark" href="/#about">{t('about')}</a>
-                <a className="text-decoration-none text-dark" href="/#offerings">{t('offerings')}</a>
-                <a className="text-decoration-none text-dark" href="/#pricing">{t('pricing')}</a>
-                <a className="btn btn-success text-white px-2 py-1 small" href="/#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
-                  {t('domainChecker')}
-                </a>
-                <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
-                <Link className="text-decoration-none fw-bold" href="/pro" style={{ color: 'hsl(var(--primary))' }}>{t('proSites')}</Link>
+                  {language === 'es' ? 'EN' : 'ES'}
+                </button>
+                <button 
+                  className="btn btn-outline-dark d-lg-none"
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                  aria-label="Toggle navigation"
+                >
+                  <Menu size={20} />
+                </button>
               </div>
             </div>
+
+            {/* Mobile Navigation Dropdown */}
+            {showMobileMenu && (
+              <div className="col-12 d-lg-none">
+                <div className="border-top pt-3 mt-3">
+                  <div className="d-flex flex-column gap-2">
+                    <Link 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="/"
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        setTimeout(() => window.scrollTo(0, 0), 100);
+                      }}
+                    >
+                      {t('home')}
+                    </Link>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="/#why"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('why')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="/#about"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('about')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="/#offerings"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('offerings')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="/#pricing"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('pricing')}
+                    </a>
+                    <a 
+                      className="btn btn-success text-white mb-2" 
+                      href="/#domain" 
+                      style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('domainChecker')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="#contact"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('contact')}
+                    </a>
+                    <Link 
+                      className="text-decoration-none fw-bold py-2 px-3 rounded" 
+                      href="/pro" 
+                      style={{ color: 'hsl(var(--primary))' }}
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('proSites')}
+                    </Link>
+                    <a 
+                      href="https://wa.me/529831234567?text=Interested in Pro sites!"
+                      className="btn btn-success text-white mt-2"
+                      style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('contactWhatsApp')}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </header>
