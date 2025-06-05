@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send } from 'lucide-react';
+import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send, Menu } from 'lucide-react';
 
 export default function HomePage() {
   const [language, setLanguage] = useState('es');
@@ -11,6 +11,7 @@ export default function HomePage() {
   const [domainInput, setDomainInput] = useState('');
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
@@ -321,8 +322,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Language Toggle & CTA */}
-            <div className="col-auto">
+            {/* Desktop Language Toggle & CTA */}
+            <div className="col-auto d-none d-lg-flex">
               <div className="d-flex align-items-center gap-3">
                 <button 
                   className="btn text-dark fw-bold px-3"
@@ -344,24 +345,114 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Mobile Navigation */}
-            <div className="col-12 d-lg-none mt-3">
-              <div className="d-flex flex-wrap gap-3 justify-content-center">
-                <a className="text-decoration-none text-dark" href="#hero">{t('home')}</a>
-                <a className="text-decoration-none text-dark" href="#why">{t('why')}</a>
-                <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
-                <a className="text-decoration-none text-dark" href="#offerings">{t('offerings')}</a>
-                <a className="text-decoration-none text-dark" href="#pricing">{t('pricing')}</a>
-                <a className="btn btn-success text-white px-2 py-1 small" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
-                  {t('domainChecker')}
-                </a>
-                <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
-                <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
-                {import.meta.env.DEV && (
-                  <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Editor</Link>
-                )}
+            {/* Mobile Menu Button & Language Toggle */}
+            <div className="col-auto d-lg-none">
+              <div className="d-flex align-items-center gap-2">
+                <button 
+                  className="btn text-dark fw-bold px-2 py-1 small"
+                  onClick={toggleLanguage}
+                  style={{ backgroundColor: 'hsl(var(--accent))', borderColor: 'hsl(var(--accent))' }}
+                  aria-label="Language toggle"
+                >
+                  {language === 'es' ? 'EN' : 'ES'}
+                </button>
+                <button 
+                  className="btn btn-outline-dark d-lg-none"
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                  aria-label="Toggle navigation"
+                >
+                  <Menu size={20} />
+                </button>
               </div>
             </div>
+
+            {/* Mobile Navigation Dropdown */}
+            {showMobileMenu && (
+              <div className="col-12 d-lg-none">
+                <div className="border-top pt-3 mt-3">
+                  <div className="d-flex flex-column gap-2">
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="#hero"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('home')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="#why"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('why')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="#about"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('about')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="#offerings"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('offerings')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="#pricing"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('pricing')}
+                    </a>
+                    <a 
+                      className="btn btn-success text-white mb-2" 
+                      href="#domain" 
+                      style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('domainChecker')}
+                    </a>
+                    <a 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="#contact"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('contact')}
+                    </a>
+                    <Link 
+                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      href="/pro"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('proSites')}
+                    </Link>
+                    <a 
+                      href="/pro" 
+                      className="btn btn-primary text-white mt-2"
+                      style={{ backgroundColor: 'hsl(var(--primary))' }}
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {t('getStarted')}
+                    </a>
+                    {import.meta.env.DEV && (
+                      <Link 
+                        className="text-decoration-none fw-bold py-2 px-3 rounded" 
+                        href="/editor" 
+                        style={{ color: 'hsl(var(--info))' }}
+                        onClick={() => setShowMobileMenu(false)}
+                      >
+                        Editor
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </header>
