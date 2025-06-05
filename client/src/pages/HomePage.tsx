@@ -450,7 +450,7 @@ export default function HomePage() {
                 <div className="card-body text-center">
                   <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template1')}</h5>
                   <p className="card-text">{t('template1Desc')}</p>
-                  <Link href="/demo/professionals" className="btn btn-outline-primary">
+                  <Link href="/professionals-demo" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
@@ -461,7 +461,7 @@ export default function HomePage() {
                 <div className="card-body text-center">
                   <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template2')}</h5>
                   <p className="card-text">{t('template2Desc')}</p>
-                  <Link href="/demo/restaurants" className="btn btn-outline-primary">
+                  <Link href="/restaurants-demo" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
@@ -472,7 +472,7 @@ export default function HomePage() {
                 <div className="card-body text-center">
                   <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template3')}</h5>
                   <p className="card-text">{t('template3Desc')}</p>
-                  <Link href="/demo/tourism" className="btn btn-outline-primary">
+                  <Link href="/tourism-demo" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
@@ -483,7 +483,7 @@ export default function HomePage() {
                 <div className="card-body text-center">
                   <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template4')}</h5>
                   <p className="card-text">{t('template4Desc')}</p>
-                  <Link href="/demo/retail" className="btn btn-outline-primary">
+                  <Link href="/retail-demo" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
@@ -494,7 +494,7 @@ export default function HomePage() {
                 <div className="card-body text-center">
                   <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template5')}</h5>
                   <p className="card-text">{t('template5Desc')}</p>
-                  <Link href="/demo/services" className="btn btn-outline-primary">
+                  <Link href="/services-demo" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
