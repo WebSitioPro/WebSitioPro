@@ -322,24 +322,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="col d-none d-lg-flex">
-              <div className="d-flex align-items-center justify-content-center gap-4 w-100">
-                <a className="text-decoration-none text-dark" href="#hero">{t('home')}</a>
-                <a className="text-decoration-none text-dark" href="#why">{t('why')}</a>
-                <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
-                <a className="text-decoration-none text-dark" href="#offerings">{t('offerings')}</a>
-                <a className="text-decoration-none text-dark" href="#pricing">{t('pricing')}</a>
-                <a className="btn btn-success text-white px-3 py-1" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
-                  {t('domainChecker')}
-                </a>
-                <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
-                <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
-                {import.meta.env.DEV && (
-                  <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Editor</Link>
-                )}
-              </div>
-            </div>
+
 
             {/* Desktop Language Toggle & CTA */}
             <div className="col-auto d-none d-lg-flex">
