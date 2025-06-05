@@ -208,7 +208,7 @@ export default function ProPage() {
             </div>
 
             {/* Navigation Links */}
-            <div className="col d-none d-lg-block">
+            <div className="col d-none d-md-block">
               <div className="d-flex gap-4">
                 <Link 
                   className="text-decoration-none text-dark" 
@@ -232,7 +232,7 @@ export default function ProPage() {
 
 
             {/* Desktop Language Toggle & WhatsApp CTA */}
-            <div className="col-auto d-none d-lg-flex">
+            <div className="col-auto d-none d-md-flex">
               <div className="d-flex align-items-center gap-3">
                 <button 
                   className="btn text-dark fw-bold px-3"
@@ -254,7 +254,7 @@ export default function ProPage() {
             </div>
 
             {/* Mobile Menu Button & Language Toggle */}
-            <div className="col-auto d-lg-none">
+            <div className="col-auto d-md-none">
               <div className="d-flex align-items-center gap-2">
                 <button 
                   className="btn text-dark fw-bold px-2 py-1 small"
@@ -276,7 +276,7 @@ export default function ProPage() {
 
             {/* Mobile Navigation Dropdown */}
             {showMobileMenu && (
-              <div className="col-12 d-lg-none">
+              <div className="col-12 d-md-none">
                 <div className="border-top pt-3 mt-3">
                   <div className="d-flex flex-column gap-2" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
                     <Link 
