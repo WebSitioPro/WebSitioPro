@@ -740,7 +740,8 @@ export default function HomePage() {
               </h2>
               <div className="row g-4">
                 <div className="col-md-6">
-                  <div className="d-flex align-items-center mb-3                    <Phone size={24} style={{ color: 'hsl(var(--primary))' }} className="me-3" />
+                  <div className="d-flex align-items-center mb-3">
+                    <Phone size={24} style={{ color: 'hsl(var(--primary))' }} className="me-3" />
                     <div>
                       <strong>+52 983 123 4567</strong>
                     </div>
