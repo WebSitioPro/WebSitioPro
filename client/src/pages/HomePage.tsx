@@ -553,20 +553,9 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="row mt-4">
-              <div className="col-12 text-center">
-                <p className="text-muted mb-3">{t('offerings.viewAll')}</p>
-                <Link 
-                  href="/pro" 
-                  className="btn btn-lg text-white px-5"
-                  style={{ backgroundColor: 'hsl(var(--primary))' }}
-                >
-                  {t('getStarted')}
-                </Link>
-              </div>
-            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* Domain Checker */}
       <section id="domain" className="py-5">
