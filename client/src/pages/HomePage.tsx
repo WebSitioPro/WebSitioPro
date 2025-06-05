@@ -12,7 +12,7 @@ export default function HomePage() {
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
@@ -24,7 +24,7 @@ export default function HomePage() {
     document.documentElement.style.setProperty('--accent', '46 100% 52%'); // Yellow #FFC107
     document.documentElement.style.setProperty('--info', '211 100% 50%'); // Blue #007BFF
     document.documentElement.style.setProperty('--background', '0 0% 100%'); // White
-
+    
     // Add scroll offset for sticky header
     const style = document.createElement('style');
     style.textContent = `
@@ -50,17 +50,17 @@ export default function HomePage() {
 
   const checkDomain = async () => {
     if (!domainInput.trim()) return;
-
+    
     setDomainStatus('checking');
-
+    
     try {
       // Simulate domain checking - in a real application, this would call a domain checking API
       await new Promise(resolve => setTimeout(resolve, 1500));
-
+      
       // For demonstration, randomly determine availability
       const isAvailable = Math.random() > 0.5;
       setDomainStatus(isAvailable ? 'available' : 'taken');
-
+      
       // Reset status after 5 seconds
       setTimeout(() => setDomainStatus('idle'), 5000);
     } catch (error) {
@@ -77,39 +77,39 @@ export default function HomePage() {
   const handleChatSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentMessage.trim()) return;
-
+    
     // Add user message
     const newMessages = [...messages, { text: currentMessage, isUser: true }];
-
+    
     // Add bot response
     const botResponse = getBotResponse(currentMessage);
     newMessages.push({ text: botResponse, isUser: false });
-
+    
     setMessages(newMessages);
     setCurrentMessage('');
   };
 
   const getBotResponse = (message: string): string => {
     const lowerMessage = message.toLowerCase();
-
+    
     if (lowerMessage.includes('hola') || lowerMessage.includes('hello')) {
       return language === 'es' 
         ? '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte?'
         : 'Hello! I\'m the WebSitioPro assistant. How can I help you?';
     }
-
+    
     if (lowerMessage.includes('precio') || lowerMessage.includes('price')) {
       return language === 'es'
         ? 'Nuestros sitios web cuestan $2,000 pesos iniciales + $3,000 pesos/año de hosting. ¡Contáctanos por WhatsApp para más detalles!'
         : 'Our websites cost $2,000 pesos initial + $3,000 pesos/year hosting. Contact us via WhatsApp for more details!';
     }
-
+    
     if (lowerMessage.includes('horario') || lowerMessage.includes('hours')) {
       return language === 'es'
         ? 'Nuestros horarios son: Lunes-Viernes 9:00 AM - 6:00 PM, Sábado 10:00 AM - 2:00 PM'
         : 'Our hours are: Monday-Friday 9:00 AM - 6:00 PM, Saturday 10:00 AM - 2:00 PM';
     }
-
+    
     return language === 'es'
       ? 'Gracias por tu mensaje. Para obtener ayuda personalizada, contáctanos por WhatsApp o llámanos.'
       : 'Thanks for your message. For personalized help, contact us via WhatsApp or call us.';
@@ -128,22 +128,22 @@ export default function HomePage() {
         contact: 'Contacto',
         proSites: 'Sitios Pro',
         getStarted: 'Empezar',
-
+        
         // Hero
         heroHeadline: 'Sitios Web Profesionales para Chetumal',
         heroSubheadline: 'Creamos sitios web modernos y efectivos para negocios en Chetumal. Diseño profesional, hosting incluido, y soporte completo.',
-
+        
         // Why
         whyTitle: '¿Por Qué Elegir WebSitioPro?',
         whyPoint1: 'Diseño profesional adaptado a tu negocio',
         whyPoint2: 'Hosting confiable incluido por un año',
         whyPoint3: 'Soporte técnico en español',
         whyPoint4: 'Optimizado para móviles y desktop',
-
+        
         // About
         aboutTitle: 'Sobre WebSitioPro',
         aboutText: 'Somos especialistas en crear sitios web profesionales para negocios en Chetumal y Quintana Roo. Entendemos las necesidades locales y ofrecemos soluciones digitales que realmente funcionan.',
-
+        
         // Offerings/Templates
         offeringsTitle: 'Nuestras Plantillas',
         template1: 'Profesionales',
@@ -157,24 +157,24 @@ export default function HomePage() {
         template5: 'Servicios',
         template5Desc: 'Para plomeros, electricistas y servicios locales',
         viewTemplate: 'Ver Plantilla',
-
+        
         // Domain
         domainTitle: 'Verificar Disponibilidad de Dominio',
         domainPlaceholder: 'Ingresa el nombre de tu sitio',
         checkDomain: 'Verificar Dominio',
-
+        
         // Pricing
         pricingTitle: 'Precios Transparentes',
         pricingText: 'Sitio web completo por $2,000 pesos + $3,000 pesos/año de hosting. Dominio incluido hasta $12 USD.',
-
+        
         // Contact
         contactTitle: 'Contáctanos',
         whatsappText: '¡Hablemos!',
-
+        
         // Footer
         copyright: '© 2025 WebSitioPro',
         poweredBy: 'Powered by WebSitioPro',
-
+        
         // Chatbot
         chatbotTitle: 'Chat de Ayuda',
         chatbotPlaceholder: 'Escribe tu mensaje...',
@@ -191,22 +191,22 @@ export default function HomePage() {
         contact: 'Contact',
         proSites: 'Pro Sites',
         getStarted: 'Get Started',
-
+        
         // Hero
         heroHeadline: 'Professional Websites for Chetumal',
         heroSubheadline: 'We create modern and effective websites for businesses in Chetumal. Professional design, hosting included, and complete support.',
-
+        
         // Why
         whyTitle: 'Why Choose WebSitioPro?',
         whyPoint1: 'Professional design tailored to your business',
         whyPoint2: 'Reliable hosting included for one year',
         whyPoint3: 'Technical support in Spanish',
         whyPoint4: 'Optimized for mobile and desktop',
-
+        
         // About
         aboutTitle: 'About WebSitioPro',
         aboutText: 'We specialize in creating professional websites for businesses in Chetumal and Quintana Roo. We understand local needs and offer digital solutions that really work.',
-
+        
         // Offerings/Templates
         offeringsTitle: 'Our Templates',
         template1: 'Professionals',
@@ -220,31 +220,31 @@ export default function HomePage() {
         template5: 'Services',
         template5Desc: 'For plumbers, electricians, and local services',
         viewTemplate: 'View Template',
-
+        
         // Domain
         domainTitle: 'Check Domain Availability',
         domainPlaceholder: 'Enter your site name',
         checkDomain: 'Check Domain',
-
+        
         // Pricing
         pricingTitle: 'Transparent Pricing',
         pricingText: 'Complete website for $2,000 pesos + $3,000 pesos/year hosting. Domain included up to $12 USD.',
-
+        
         // Contact
         contactTitle: 'Contact Us',
         whatsappText: "Let's talk!",
-
+        
         // Footer
         copyright: '© 2025 WebSitioPro',
         poweredBy: 'Powered by WebSitioPro',
-
+        
         // Chatbot
         chatbotTitle: 'Help Chat',
         chatbotPlaceholder: 'Type your message...',
         chatWithUs: 'Chat with us'
       }
     };
-
+    
     return translations[language as keyof typeof translations]?.[key as keyof typeof translations['es']] || key;
   };
 
@@ -530,7 +530,7 @@ export default function HomePage() {
                   {domainStatus === 'checking' ? 'Verificando...' : t('checkDomain')}
                 </button>
               </div>
-
+              
               {/* Domain Status Display */}
               {domainStatus !== 'idle' && (
                 <div className="mt-3 text-center">
