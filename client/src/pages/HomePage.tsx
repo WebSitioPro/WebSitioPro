@@ -304,8 +304,8 @@ export default function HomePage() {
             </div>
 
             {/* Navigation Links */}
-            <div className="col d-none d-md-block">
-              <div className="d-flex gap-4">
+            <div className="col d-none d-md-flex">
+              <div className="d-flex align-items-center justify-content-center gap-4 w-100">
                 <a className="text-decoration-none text-dark" href="#hero">{t('home')}</a>
                 <a className="text-decoration-none text-dark" href="#why">{t('why')}</a>
                 <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
