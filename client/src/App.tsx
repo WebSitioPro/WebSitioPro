@@ -22,6 +22,13 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/pro" component={ProPage} />
       <Route path="/editor" component={EditorPage} />
+      <Route path="/demo/professionals" component={ProfessionalsDemo} />
+      <Route path="/demo/restaurants" component={RestaurantsDemo} />
+      <Route path="/demo/tourism" component={TourismDemo} />
+      <Route path="/demo/retail" component={RetailDemo} />
+      <Route path="/demo/services" component={ServicesDemo} />
+      
+      {/* Legacy routes for backward compatibility */}
       <Route path="/professionals-demo" component={ProfessionalsDemo} />
       <Route path="/restaurants-demo" component={RestaurantsDemo} />
       <Route path="/tourism-demo" component={TourismDemo} />

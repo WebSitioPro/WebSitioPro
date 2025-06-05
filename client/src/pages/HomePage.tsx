@@ -438,121 +438,68 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Template Showcase Section */}
-      <section id="offerings" className="py-5" style={{ backgroundColor: '#f8f9fa' }}>
+      {/* Templates Section */}
+      <section id="offerings" className="py-5">
         <div className="container">
-          <div className="row">
-            <div className="col-12 text-center mb-5">
-              <h2 className="display-5 fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                {t('offeringsTitle')}
-              </h2>
-              <p className="lead text-muted">
-                {t('offerings.subtitle')}
-              </p>
-            </div>
-          </div>
-
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('offeringsTitle')}
+          </h2>
           <div className="row g-4">
-            <div className="col-md-6 col-lg-3">
-              <div className="card h-100 shadow-sm border-0 position-relative overflow-hidden">
-                <div className="position-relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
-                    className="card-img-top" 
-                    alt="Professional Template"
-                    style={{ height: '200px', objectFit: 'cover' }}
-                  />
-                  <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ background: 'rgba(0,0,0,0.3)' }}>
-                    <div className="text-center text-white">
-                      <div className="mb-2" style={{ fontSize: '3rem' }}>🏥</div>
-                      <h6 className="fw-bold">{t('template1')}</h6>
-                    </div>
-                  </div>
-                </div>
+            <div className="col-md-6 col-lg-4">
+              <div className="card h-100 shadow-sm">
                 <div className="card-body text-center">
-                  <p className="card-text text-muted">{t('template1Desc')}</p>
-                  <Link href="/demo/professionals" className="btn btn-outline-primary btn-sm">
+                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template1')}</h5>
+                  <p className="card-text">{t('template1Desc')}</p>
+                  <Link href="/demo/professionals" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
               </div>
             </div>
-
-            <div className="col-md-6 col-lg-3">
-              <div className="card h-100 shadow-sm border-0 position-relative overflow-hidden">
-                <div className="position-relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
-                    className="card-img-top" 
-                    alt="Restaurant Template"
-                    style={{ height: '200px', objectFit: 'cover' }}
-                  />
-                  <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ background: 'rgba(0,0,0,0.3)' }}>
-                    <div className="text-center text-white">
-                      <div className="mb-2" style={{ fontSize: '3rem' }}>🍽️</div>
-                      <h6 className="fw-bold">{t('template2')}</h6>
-                    </div>
-                  </div>
-                </div>
+            <div className="col-md-6 col-lg-4">
+              <div className="card h-100 shadow-sm">
                 <div className="card-body text-center">
-                  <p className="card-text text-muted">{t('template2Desc')}</p>
-                  <Link href="/demo/restaurants" className="btn btn-outline-primary btn-sm">
+                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template2')}</h5>
+                  <p className="card-text">{t('template2Desc')}</p>
+                  <Link href="/demo/restaurants" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
               </div>
             </div>
-
-            <div className="col-md-6 col-lg-3">
-              <div className="card h-100 shadow-sm border-0 position-relative overflow-hidden">
-                <div className="position-relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
-                    className="card-img-top" 
-                    alt="Retail Template"
-                    style={{ height: '200px', objectFit: 'cover' }}
-                  />
-                  <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ background: 'rgba(0,0,0,0.3)' }}>
-                    <div className="text-center text-white">
-                      <div className="mb-2" style={{ fontSize: '3rem' }}>🛍️</div>
-                      <h6 className="fw-bold">{t('template4')}</h6>
-                    </div>
-                  </div>
-                </div>
+            <div className="col-md-6 col-lg-4">
+              <div className="card h-100 shadow-sm">
                 <div className="card-body text-center">
-                  <p className="card-text text-muted">{t('template4Desc')}</p>
-                  <Link href="/demo/retail" className="btn btn-outline-primary btn-sm">
+                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template3')}</h5>
+                  <p className="card-text">{t('template3Desc')}</p>
+                  <Link href="/demo/tourism" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
               </div>
             </div>
-
-            <div className="col-md-6 col-lg-3">
-              <div className="card h-100 shadow-sm border-0 position-relative overflow-hidden">
-                <div className="position-relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
-                    className="card-img-top" 
-                    alt="Services Template"
-                    style={{ height: '200px', objectFit: 'cover' }}
-                  />
-                  <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ background: 'rgba(0,0,0,0.3)' }}>
-                    <div className="text-center text-white">
-                      <div className="mb-2" style={{ fontSize: '3rem' }}>🔧</div>
-                      <h6 className="fw-bold">{t('template5')}</h6>
-                    </div>
-                  </div>
-                </div>
+            <div className="col-md-6 col-lg-4">
+              <div className="card h-100 shadow-sm">
                 <div className="card-body text-center">
-                  <p className="card-text text-muted">{t('template5Desc')}</p>
-                  <Link href="/demo/services" className="btn btn-outline-primary btn-sm">
+                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template4')}</h5>
+                  <p className="card-text">{t('template4Desc')}</p>
+                  <Link href="/demo/retail" className="btn btn-outline-primary">
                     {t('viewTemplate')}
                   </Link>
                 </div>
               </div>
             </div>
-
+            <div className="col-md-6 col-lg-4">
+              <div className="card h-100 shadow-sm">
+                <div className="card-body text-center">
+                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template5')}</h5>
+                  <p className="card-text">{t('template5Desc')}</p>
+                  <Link href="/demo/services" className="btn btn-outline-primary">
+                    {t('viewTemplate')}
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
