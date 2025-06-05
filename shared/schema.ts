@@ -39,31 +39,6 @@ export const websiteConfigs = pgTable("website_configs", {
     description: string;
   }>>(),
   menuImages: json("menu_images").$type<string[]>(),
-  // Restaurant menu items for Phase 3 Appsites
-  menuItems: json("menu_items").$type<Array<{
-    id: string;
-    category: string;
-    name: { es: string; en: string };
-    description: { es: string; en: string };
-    price: number;
-    image?: string;
-    available: boolean;
-    featured?: boolean;
-  }>>(),
-  menuCategories: json("menu_categories").$type<Array<{
-    id: string;
-    name: { es: string; en: string };
-    order: number;
-  }>>(),
-  // Appsite-specific features
-  isAppsite: boolean("is_appsite").default(false),
-  appThemeColor: text("app_theme_color").default("#00A859"),
-  orderingEnabled: boolean("ordering_enabled").default(false),
-  paymentMethods: json("payment_methods").$type<Array<'whatsapp' | 'oxxo' | 'transfer'>>(),
-  deliveryAreas: json("delivery_areas").$type<Array<{
-    name: string;
-    fee: number;
-  }>>(),
   tours: json("tours").$type<Array<{
     name: string;
     price: string;

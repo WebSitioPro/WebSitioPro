@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, MessageCircle, Menu, X } from 'lucide-react';
+import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, MessageCircle } from 'lucide-react';
 
 export default function ProPage() {
   const [language, setLanguage] = useState('es');
   const [savedConfig, setSavedConfig] = useState<any>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
@@ -229,8 +228,8 @@ export default function ProPage() {
               </div>
             </div>
             
-            {/* Desktop Language Toggle */}
-            <div className="col-auto d-none d-lg-flex">
+            {/* Language Toggle */}
+            <div className="col-auto">
               <div className="d-flex align-items-center gap-3">
                 <button 
                   className="btn text-dark fw-bold px-3"
@@ -243,55 +242,27 @@ export default function ProPage() {
               </div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="col-auto d-lg-none">
-              <div className="d-flex align-items-center gap-2">
-                <button 
-                  className="btn text-dark px-2"
-                  onClick={toggleLanguage}
-                  style={{ backgroundColor: 'hsl(var(--accent))', borderColor: 'hsl(var(--accent))' }}
-                  aria-label="Language toggle"
+            {/* Mobile Navigation */}
+            <div className="col-12 d-lg-none mt-3">
+              <div className="d-flex flex-wrap gap-3 justify-content-center">
+                <Link 
+                  className="text-decoration-none text-dark" 
+                  href="/"
+                  onClick={() => setTimeout(() => window.scrollTo(0, 0), 100)}
                 >
-                  {language === 'es' ? 'EN' : 'ES'}
-                </button>
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  aria-label="Toggle mobile menu"
-                >
-                  {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-                </button>
+                  {t('home')}
+                </Link>
+                <a className="text-decoration-none text-dark" href="/#why">{t('why')}</a>
+                <a className="text-decoration-none text-dark" href="/#about">{t('about')}</a>
+                <a className="text-decoration-none text-dark" href="/#offerings">{t('offerings')}</a>
+                <a className="text-decoration-none text-dark" href="/#pricing">{t('pricing')}</a>
+                <a className="btn btn-success text-white px-2 py-1 small" href="/#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                  {t('domainChecker')}
+                </a>
+                <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
+                <Link className="text-decoration-none fw-bold" href="/pro" style={{ color: 'hsl(var(--primary))' }}>{t('proSites')}</Link>
               </div>
             </div>
-
-            {/* Collapsible Mobile Navigation */}
-            {mobileMenuOpen && (
-              <div className="col-12 d-lg-none mt-3">
-                <div className="bg-light rounded p-3">
-                  <div className="d-grid gap-2">
-                    <Link 
-                      className="btn btn-outline-dark btn-sm text-start" 
-                      href="/"
-                      onClick={() => {setMobileMenuOpen(false); setTimeout(() => window.scrollTo(0, 0), 100);}}
-                    >
-                      {t('home')}
-                    </Link>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="/#why" onClick={() => setMobileMenuOpen(false)}>{t('why')}</a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="/#about" onClick={() => setMobileMenuOpen(false)}>{t('about')}</a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="/#offerings" onClick={() => setMobileMenuOpen(false)}>{t('offerings')}</a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="/#pricing" onClick={() => setMobileMenuOpen(false)}>{t('pricing')}</a>
-                    <a className="btn btn-success text-white btn-sm" href="/#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }} onClick={() => setMobileMenuOpen(false)}>
-                      {t('domainChecker')}
-                    </a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="#contact" onClick={() => setMobileMenuOpen(false)}>{t('contact')}</a>
-                    <Link className="btn btn-primary text-white btn-sm text-start" style={{ backgroundColor: 'hsl(var(--primary))' }} href="/pro" onClick={() => setMobileMenuOpen(false)}>{t('proSites')}</Link>
-                    {import.meta.env.DEV && (
-                      <Link className="btn btn-info btn-sm text-start text-white" href="/editor" onClick={() => setMobileMenuOpen(false)}>Editor</Link>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </header>

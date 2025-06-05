@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send, Menu } from 'lucide-react';
+import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send } from 'lucide-react';
 
 export default function HomePage() {
   const [language, setLanguage] = useState('es');
@@ -11,8 +11,6 @@ export default function HomePage() {
   const [domainInput, setDomainInput] = useState('');
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
   const [savedConfig, setSavedConfig] = useState<any>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
@@ -24,7 +22,7 @@ export default function HomePage() {
     document.documentElement.style.setProperty('--accent', '46 100% 52%'); // Yellow #FFC107
     document.documentElement.style.setProperty('--info', '211 100% 50%'); // Blue #007BFF
     document.documentElement.style.setProperty('--background', '0 0% 100%'); // White
-    
+
     // Add scroll offset for sticky header
     const style = document.createElement('style');
     style.textContent = `
@@ -69,50 +67,67 @@ export default function HomePage() {
     }
   };
 
-  const openChat = () => {
-    setChatOpen(true);
-    setChatbotIcon('💬'); // Change to chat icon when opened
+
+
+  // Chatbot Q&A data
+  const chatbotResponses = {
+    es: {
+      'hola': '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte hoy?',
+      'precios': 'Nuestros sitios Pro cuestan 2,000 pesos de construcción + 3,000 pesos/año de hosting. También ofrecemos planes de pago flexibles.',
+      'servicios': 'Ofrecemos sitios web para profesionales, restaurantes, negocios turísticos, retail y servicios. Todos completamente personalizados.',
+      'contacto': 'Puedes contactarnos por WhatsApp al +52 983 123 4567 o por email a info@websitiopro.com',
+      'tiempo': 'Típicamente creamos tu sitio web en 5-7 días hábiles después de recibir todo tu contenido.',
+      'dominio': 'Sí, incluimos un dominio gratis hasta $12 USD. Para dominios premium hay costo adicional.',
+      'default': 'Gracias por tu pregunta. Para una respuesta personalizada, por favor contáctanos por WhatsApp al +52 983 123 4567'
+    },
+    en: {
+      'hello': 'Hello! I\'m the WebSitioPro assistant. How can I help you today?',
+      'pricing': 'Our Pro sites cost 2,000 pesos for construction + 3,000 pesos/year for hosting. We also offer flexible payment plans.',
+      'services': 'We offer websites for professionals, restaurants, tourist businesses, retail, and services. All completely customized.',
+      'contact': 'You can contact us via WhatsApp at +52 983 123 4567 or email us at info@websitiopro.com',
+      'time': 'We typically create your website in 5-7 business days after receiving all your content.',
+      'domain': 'Yes, we include a free domain up to $12 USD. Premium domains have additional cost.',
+      'default': 'Thanks for your question. For a personalized answer, please contact us via WhatsApp at +52 983 123 4567'
+    }
   };
 
   const handleChatSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentMessage.trim()) return;
-    
+
     // Add user message
-    const newMessages = [...messages, { text: currentMessage, isUser: true }];
-    
-    // Add bot response
-    const botResponse = getBotResponse(currentMessage);
-    newMessages.push({ text: botResponse, isUser: false });
-    
-    setMessages(newMessages);
+    const userMessage = { text: currentMessage, isUser: true };
+    setMessages(prev => [...prev, userMessage]);
+
+    // Generate bot response
+    const responses = chatbotResponses[language as keyof typeof chatbotResponses];
+    const messageLower = currentMessage.toLowerCase();
+    let botResponse = responses.default;
+
+    // Simple keyword matching
+    for (const [keyword, response] of Object.entries(responses)) {
+      if (messageLower.includes(keyword)) {
+        botResponse = response;
+        break;
+      }
+    }
+
+    // Add bot response with delay
+    setTimeout(() => {
+      setMessages(prev => [...prev, { text: botResponse, isUser: false }]);
+    }, 500);
+
     setCurrentMessage('');
   };
 
-  const getBotResponse = (message: string): string => {
-    const lowerMessage = message.toLowerCase();
-    
-    if (lowerMessage.includes('hola') || lowerMessage.includes('hello')) {
-      return language === 'es' 
-        ? '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte?'
-        : 'Hello! I\'m the WebSitioPro assistant. How can I help you?';
+  const openChat = () => {
+    setChatOpen(true);
+    if (messages.length === 0) {
+      // Add welcome message
+      setTimeout(() => {
+        setMessages([{ text: t('chatbotWelcome'), isUser: false }]);
+      }, 300);
     }
-    
-    if (lowerMessage.includes('precio') || lowerMessage.includes('price')) {
-      return language === 'es'
-        ? 'Nuestros sitios web cuestan $2,000 pesos iniciales + $3,000 pesos/año de hosting. ¡Contáctanos por WhatsApp para más detalles!'
-        : 'Our websites cost $2,000 pesos initial + $3,000 pesos/year hosting. Contact us via WhatsApp for more details!';
-    }
-    
-    if (lowerMessage.includes('horario') || lowerMessage.includes('hours')) {
-      return language === 'es'
-        ? 'Nuestros horarios son: Lunes-Viernes 9:00 AM - 6:00 PM, Sábado 10:00 AM - 2:00 PM'
-        : 'Our hours are: Monday-Friday 9:00 AM - 6:00 PM, Saturday 10:00 AM - 2:00 PM';
-    }
-    
-    return language === 'es'
-      ? 'Gracias por tu mensaje. Para obtener ayuda personalizada, contáctanos por WhatsApp o llámanos.'
-      : 'Thanks for your message. For personalized help, contact us via WhatsApp or call us.';
   };
 
   const t = (key: string) => {
@@ -127,138 +142,164 @@ export default function HomePage() {
         domainChecker: 'Verificar Dominio',
         contact: 'Contacto',
         proSites: 'Sitios Pro',
-        getStarted: 'Empezar',
-        
+        getStarted: 'Comenzar',
+
         // Hero
-        heroHeadline: 'Sitios Web Profesionales para Chetumal',
-        heroSubheadline: 'Creamos sitios web modernos y efectivos para negocios en Chetumal. Diseño profesional, hosting incluido, y soporte completo.',
-        
-        // Why
-        whyTitle: '¿Por Qué Elegir WebSitioPro?',
-        whyPoint1: 'Diseño profesional adaptado a tu negocio',
-        whyPoint2: 'Hosting confiable incluido por un año',
-        whyPoint3: 'Soporte técnico en español',
-        whyPoint4: 'Optimizado para móviles y desktop',
-        
+        heroHeadline: 'Construye tu Negocio con WebSitioPro',
+        heroSubheadline: 'Sitios web accesibles y personalizados para México—desde 2,000 pesos',
+        exploreProPlans: 'Explorar Planes Pro',
+
+        // Why section
+        whyTitle: '¿Por qué Necesitas un Sitio Web?',
+        whyPoint1: '70% de los mexicanos buscan en línea',
+        whyPoint2: 'Aumenta las ventas en un 20%',
+        whyPoint3: 'Disponible 24/7 para tus clientes',
+
         // About
-        aboutTitle: 'Sobre WebSitioPro',
-        aboutText: 'Somos especialistas en crear sitios web profesionales para negocios en Chetumal y Quintana Roo. Entendemos las necesidades locales y ofrecemos soluciones digitales que realmente funcionan.',
-        
-        // Offerings/Templates
-        offeringsTitle: 'Nuestras Plantillas',
+        aboutTitle: 'Sobre Nosotros',
+        aboutText: 'Empoderando a los negocios de Chetumal con sitios web impresionantes',
+
+        // Offerings
+        offeringsTitle: 'Lo Que Ofrecemos',
         template1: 'Profesionales',
         template1Desc: 'Sitios elegantes para doctores, abogados y consultores',
         template2: 'Restaurantes',
         template2Desc: 'Menús atractivos y sistemas de reservas',
-        template3: 'Turismo',
-        template3Desc: 'Promociona tours locales con galerías y mapas',
+        template3: 'Negocios Turísticos',
+        template3Desc: 'Promociona tours y experiencias locales',
         template4: 'Retail',
-        template4Desc: 'Tiendas online completas con carrito de compras',
+        template4Desc: 'Tiendas en línea con carrito de compras',
         template5: 'Servicios',
-        template5Desc: 'Para plomeros, electricistas y servicios locales',
-        viewTemplate: 'Ver Plantilla',
-        
-        // Domain
-        domainTitle: 'Verificar Disponibilidad de Dominio',
-        domainPlaceholder: 'Ingresa el nombre de tu sitio',
-        checkDomain: 'Verificar Dominio',
-        
+        template5Desc: 'Plomeros, electricistas y más',
+        seeProPlans: 'Ver Planes Pro',
+
         // Pricing
-        pricingTitle: 'Precios Transparentes',
-        pricingText: 'Sitio web completo por $2,000 pesos + $3,000 pesos/año de hosting. Dominio incluido hasta $12 USD.',
-        
+        pricingTitle: 'Precios',
+        pricingText: 'Plan Pro: 2,000 pesos construcción + 3,000 pesos/año hosting (o 1,000 pesos inicial + 200 pesos/mes por 5 meses). Dominio incluido hasta $12 USD, extra por dominios premium.',
+
+        // Domain Checker
+        domainTitle: 'Verificador de Dominio',
+        domainPlaceholder: 'tudominio.com',
+        checkDomain: 'Verificar Dominio',
+
         // Contact
-        contactTitle: 'Contáctanos',
+        contactTitle: 'Contacto',
+        contactName: 'Nombre',
+        contactEmail: 'Correo',
+        contactMessage: 'Mensaje',
+        sendMessage: 'Enviar Mensaje',
         whatsappText: '¡Hablemos!',
-        
+        chatWithUs: 'Chatea con nosotros',
+
         // Footer
         copyright: '© 2025 WebSitioPro',
         poweredBy: 'Powered by WebSitioPro',
+
+        // Office hours
+        officeHours: 'Horarios de Oficina',
+        mondayFriday: 'Lun-Vie: 9:00 AM - 6:00 PM',
+        saturday: 'Sáb: 10:00 AM - 2:00 PM',
         
         // Chatbot
-        chatbotTitle: 'Chat de Ayuda',
-        chatbotPlaceholder: 'Escribe tu mensaje...',
-        chatWithUs: 'Chatea con nosotros'
+        chatbotTitle: 'Chat con WebSitioPro',
+        chatbotWelcome: '¡Hola! ¿En qué puedo ayudarte con tu sitio web?',
+        chatbotPlaceholder: 'Escribe tu pregunta...',
+        chatbotSend: 'Enviar',
+        chatbotClose: 'Cerrar'
       },
       en: {
         // Header
         home: 'Home',
         why: 'Why',
         about: 'About',
-        offerings: 'Templates',
+        offerings: 'Offerings',
         pricing: 'Pricing',
         domainChecker: 'Domain Checker',
         contact: 'Contact',
         proSites: 'Pro Sites',
         getStarted: 'Get Started',
-        
+
         // Hero
-        heroHeadline: 'Professional Websites for Chetumal',
-        heroSubheadline: 'We create modern and effective websites for businesses in Chetumal. Professional design, hosting included, and complete support.',
-        
-        // Why
-        whyTitle: 'Why Choose WebSitioPro?',
-        whyPoint1: 'Professional design tailored to your business',
-        whyPoint2: 'Reliable hosting included for one year',
-        whyPoint3: 'Technical support in Spanish',
-        whyPoint4: 'Optimized for mobile and desktop',
-        
+        heroHeadline: 'Build Your Business with WebSitioPro',
+        heroSubheadline: 'Affordable, custom sites for Mexico—starting at 2,000 pesos',
+        exploreProPlans: 'Explore Pro Plans',
+
+        // Why section
+        whyTitle: 'Why You Need a Website',
+        whyPoint1: '70% of Mexicans search online',
+        whyPoint2: 'Boost sales by 20%',
+        whyPoint3: 'Available 24/7 for your customers',
+
         // About
-        aboutTitle: 'About WebSitioPro',
-        aboutText: 'We specialize in creating professional websites for businesses in Chetumal and Quintana Roo. We understand local needs and offer digital solutions that really work.',
-        
-        // Offerings/Templates
-        offeringsTitle: 'Our Templates',
+        aboutTitle: 'About Us',
+        aboutText: 'Empowering Chetumal businesses with stunning websites',
+
+        // Offerings
+        offeringsTitle: 'What We Offer',
         template1: 'Professionals',
         template1Desc: 'Elegant sites for doctors, lawyers, and consultants',
         template2: 'Restaurants',
         template2Desc: 'Attractive menus and reservation systems',
-        template3: 'Tourism',
-        template3Desc: 'Promote local tours with galleries and maps',
+        template3: 'Tourist Businesses',
+        template3Desc: 'Promote local tours and experiences',
         template4: 'Retail',
-        template4Desc: 'Complete online stores with shopping carts',
+        template4Desc: 'Online stores with shopping carts',
         template5: 'Services',
-        template5Desc: 'For plumbers, electricians, and local services',
-        viewTemplate: 'View Template',
-        
-        // Domain
-        domainTitle: 'Check Domain Availability',
-        domainPlaceholder: 'Enter your site name',
-        checkDomain: 'Check Domain',
-        
+        template5Desc: 'Plumbers, electricians, and more',
+        seeProPlans: 'See Pro Plans',
+
         // Pricing
-        pricingTitle: 'Transparent Pricing',
-        pricingText: 'Complete website for $2,000 pesos + $3,000 pesos/year hosting. Domain included up to $12 USD.',
-        
+        pricingTitle: 'Pricing',
+        pricingText: 'Pro plan: 2,000 pesos build + 3,000 pesos/year hosting (or 1,000 pesos upfront + 200 pesos/month for 5 meses). Domain included up to $12 USD, extra for premium domains.',
+
+        // Domain Checker
+        domainTitle: 'Domain Checker',
+        domainPlaceholder: 'yourdomain.com',
+        checkDomain: 'Check Domain',
+
         // Contact
-        contactTitle: 'Contact Us',
+        contactTitle: 'Contact',
+        contactName: 'Name',
+        contactEmail: 'Email',
+        contactMessage: 'Message',
+        sendMessage: 'Send Message',
         whatsappText: "Let's talk!",
-        
+        chatWithUs: 'Chat with us',
+
         // Footer
         copyright: '© 2025 WebSitioPro',
         poweredBy: 'Powered by WebSitioPro',
+
+        // Office hours
+        officeHours: 'Office Hours',
+        mondayFriday: 'Mon-Fri: 9:00 AM - 6:00 PM',
+        saturday: 'Sat: 10:00 AM - 2:00 PM',
         
         // Chatbot
-        chatbotTitle: 'Help Chat',
-        chatbotPlaceholder: 'Type your message...',
-        chatWithUs: 'Chat with us'
+        chatbotTitle: 'Chat with WebSitioPro',
+        chatbotWelcome: 'Hello! How can I help you with your website?',
+        chatbotPlaceholder: 'Type your question...',
+        chatbotSend: 'Send',
+        chatbotClose: 'Close'
       }
     };
-    
+
     return translations[language as keyof typeof translations]?.[key as keyof typeof translations['es']] || key;
   };
 
+
+
   return (
-    <div className="min-vh-100">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="sticky-top bg-white shadow-sm">
         <div className="container-fluid">
           <div className="row align-items-center py-3">
             {/* Logo */}
             <div className="col-auto">
-              <Link className="fw-bold text-decoration-none fs-4" href="/" style={{ color: 'hsl(var(--primary))' }}>
+              <a className="fw-bold text-decoration-none fs-4" href="#" style={{ color: 'hsl(var(--primary))' }}>
                 WebSitioPro
-              </Link>
+              </a>
             </div>
 
             {/* Navigation Links */}
@@ -280,8 +321,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Desktop Language Toggle & CTA */}
-            <div className="col-auto d-none d-lg-flex">
+            {/* Language Toggle & CTA */}
+            <div className="col-auto">
               <div className="d-flex align-items-center gap-3">
                 <button 
                   className="btn text-dark fw-bold px-3"
@@ -303,57 +344,24 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="col-auto d-lg-none">
-              <div className="d-flex align-items-center gap-2">
-                <button 
-                  className="btn text-dark px-2"
-                  onClick={toggleLanguage}
-                  style={{ backgroundColor: 'hsl(var(--accent))', borderColor: 'hsl(var(--accent))' }}
-                  aria-label="Language toggle"
-                >
-                  {language === 'es' ? 'EN' : 'ES'}
-                </button>
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  aria-label="Toggle mobile menu"
-                >
-                  {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-                </button>
+            {/* Mobile Navigation */}
+            <div className="col-12 d-lg-none mt-3">
+              <div className="d-flex flex-wrap gap-3 justify-content-center">
+                <a className="text-decoration-none text-dark" href="#hero">{t('home')}</a>
+                <a className="text-decoration-none text-dark" href="#why">{t('why')}</a>
+                <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
+                <a className="text-decoration-none text-dark" href="#offerings">{t('offerings')}</a>
+                <a className="text-decoration-none text-dark" href="#pricing">{t('pricing')}</a>
+                <a className="btn btn-success text-white px-2 py-1 small" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                  {t('domainChecker')}
+                </a>
+                <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
+                <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
+                {import.meta.env.DEV && (
+                  <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Editor</Link>
+                )}
               </div>
             </div>
-
-            {/* Collapsible Mobile Navigation */}
-            {mobileMenuOpen && (
-              <div className="col-12 d-lg-none mt-3">
-                <div className="bg-light rounded p-3">
-                  <div className="d-grid gap-2">
-                    <a className="btn btn-outline-dark btn-sm text-start" href="#hero" onClick={() => setMobileMenuOpen(false)}>{t('home')}</a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="#why" onClick={() => setMobileMenuOpen(false)}>{t('why')}</a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="#about" onClick={() => setMobileMenuOpen(false)}>{t('about')}</a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="#offerings" onClick={() => setMobileMenuOpen(false)}>{t('offerings')}</a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="#pricing" onClick={() => setMobileMenuOpen(false)}>{t('pricing')}</a>
-                    <a className="btn btn-success text-white btn-sm" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }} onClick={() => setMobileMenuOpen(false)}>
-                      {t('domainChecker')}
-                    </a>
-                    <a className="btn btn-outline-dark btn-sm text-start" href="#contact" onClick={() => setMobileMenuOpen(false)}>{t('contact')}</a>
-                    <Link className="btn btn-outline-dark btn-sm text-start" href="/pro" onClick={() => setMobileMenuOpen(false)}>{t('proSites')}</Link>
-                    {import.meta.env.DEV && (
-                      <Link className="btn btn-info btn-sm text-start text-white" href="/editor" onClick={() => setMobileMenuOpen(false)}>Editor</Link>
-                    )}
-                    <a 
-                      href="/pro" 
-                      className="btn btn-primary text-white btn-sm mt-2"
-                      style={{ backgroundColor: 'hsl(var(--primary))' }}
-                      onClick={() => {setMobileMenuOpen(false); window.scrollTo(0, 0);}}
-                    >
-                      {t('getStarted')}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </header>
@@ -370,59 +378,55 @@ export default function HomePage() {
                 {t('heroSubheadline')}
               </p>
               <Link 
-                href="/pro" 
+                href="/pro"
                 className="btn btn-primary btn-lg text-white px-5"
                 style={{ backgroundColor: 'hsl(var(--primary))' }}
-                onClick={() => window.scrollTo(0, 0)}
               >
-                {t('getStarted')}
+                {t('exploreProPlans')}
               </Link>
             </div>
             <div className="col-lg-6">
               <div className="text-center">
-                <Globe size={200} style={{ color: 'hsl(var(--primary))' }} />
+                <div className="bg-secondary rounded p-5" style={{ backgroundColor: 'hsl(var(--secondary) / 0.1)' }}>
+                  <Globe size={120} className="text-primary mb-3" style={{ color: 'hsl(var(--primary))' }} />
+                  <p className="text-muted">Website Mockup Placeholder</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why Section */}
+      {/* Why You Need a Website */}
       <section id="why" className="py-5">
         <div className="container">
-          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+          <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
             {t('whyTitle')}
           </h2>
           <div className="row g-4">
-            <div className="col-md-6 col-lg-3">
-              <div className="text-center">
-                <Star size={48} style={{ color: 'hsl(var(--accent))' }} className="mb-3" />
-                <h5>{t('whyPoint1')}</h5>
+            <div className="col-md-4 text-center">
+              <div className="mb-3">
+                <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />
               </div>
+              <h5>{t('whyPoint1')}</h5>
             </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="text-center">
-                <Shield size={48} style={{ color: 'hsl(var(--secondary))' }} className="mb-3" />
-                <h5>{t('whyPoint2')}</h5>
+            <div className="col-md-4 text-center">
+              <div className="mb-3">
+                <Shield size={48} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
               </div>
+              <h5>{t('whyPoint2')}</h5>
             </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="text-center">
-                <MessageCircle size={48} style={{ color: 'hsl(var(--info))' }} className="mb-3" />
-                <h5>{t('whyPoint3')}</h5>
+            <div className="col-md-4 text-center">
+              <div className="mb-3">
+                <Clock size={48} className="text-info" style={{ color: 'hsl(var(--info))' }} />
               </div>
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <div className="text-center">
-                <Globe size={48} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />
-                <h5>{t('whyPoint4')}</h5>
-              </div>
+              <h5>{t('whyPoint3')}</h5>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About */}
       <section id="about" className="py-5 bg-light">
         <div className="container">
           <div className="row justify-content-center">
@@ -430,7 +434,7 @@ export default function HomePage() {
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
                 {t('aboutTitle')}
               </h2>
-              <p className="lead">
+              <p className="lead text-muted">
                 {t('aboutText')}
               </p>
             </div>
@@ -438,67 +442,87 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Templates Section */}
+      {/* What We Offer */}
       <section id="offerings" className="py-5">
         <div className="container">
-          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+          <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
             {t('offeringsTitle')}
           </h2>
           <div className="row g-4">
-            <div className="col-md-6 col-lg-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body text-center">
-                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template1')}</h5>
-                  <p className="card-text">{t('template1Desc')}</p>
-                  <Link href="/professionals-demo" className="btn btn-outline-primary">
-                    {t('viewTemplate')}
-                  </Link>
-                </div>
+            {[1, 2, 3, 4, 5].map((num) => (
+              <div key={num} className="col-lg-6">
+                {/* Professionals Template - Make it clickable */}
+                {(() => {
+                  const templateLinks = [
+                    '/professionals-demo',
+                    '/restaurants-demo', 
+                    '/tourism-demo',
+                    '/retail-demo',
+                    '/services-demo'
+                  ];
+                  
+                  return (
+                    <div className="card h-100 border-0 shadow-sm">
+                      <div className="card-body p-4">
+                        <div className="row g-3">
+                          <div className="col-4">
+                            <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
+                              <Globe size={48} className="text-muted" />
+                            </div>
+                            <div className="mt-2">
+                              <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
+                              <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
+                              <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                            </div>
+                          </div>
+                          <div className="col-8">
+                            <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                              {t(`template${num}` as any)}
+                            </h5>
+                            <p className="text-muted mb-3 small">
+                              {t(`template${num}Desc` as any)}
+                            </p>
+                            <a 
+                              href={templateLinks[num - 1]}
+                              className="btn btn-sm text-decoration-none text-white"
+                              style={{ backgroundColor: '#C8102E' }}
+                              onClick={() => window.scrollTo(0, 0)}
+                            >
+                              View Template
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
-            </div>
-            <div className="col-md-6 col-lg-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body text-center">
-                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template2')}</h5>
-                  <p className="card-text">{t('template2Desc')}</p>
-                  <Link href="/restaurants-demo" className="btn btn-outline-primary">
-                    {t('viewTemplate')}
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body text-center">
-                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template3')}</h5>
-                  <p className="card-text">{t('template3Desc')}</p>
-                  <Link href="/tourism-demo" className="btn btn-outline-primary">
-                    {t('viewTemplate')}
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body text-center">
-                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template4')}</h5>
-                  <p className="card-text">{t('template4Desc')}</p>
-                  <Link href="/retail-demo" className="btn btn-outline-primary">
-                    {t('viewTemplate')}
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body text-center">
-                  <h5 className="card-title" style={{ color: 'hsl(var(--primary))' }}>{t('template5')}</h5>
-                  <p className="card-text">{t('template5Desc')}</p>
-                  <Link href="/services-demo" className="btn btn-outline-primary">
-                    {t('viewTemplate')}
-                  </Link>
-                </div>
-              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-5">
+            <Link 
+              href="/pro"
+              className="btn btn-primary btn-lg text-white px-5"
+              style={{ backgroundColor: 'hsl(var(--primary))' }}
+            >
+              {t('seeProPlans')}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="py-5 bg-light">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 text-center">
+              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {t('pricingTitle')}
+              </h2>
+              <p className="lead text-muted">
+                {t('pricingText')}
+              </p>
             </div>
           </div>
         </div>
@@ -508,21 +532,21 @@ export default function HomePage() {
       <section id="domain" className="py-5">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-lg-8 col-md-10">
+            <div className="col-lg-6">
               <h2 className="text-center fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
                 {t('domainTitle')}
               </h2>
-              <div className="d-grid gap-3">
+              <div className="input-group input-group-lg">
                 <input 
                   type="text" 
-                  className="form-control form-control-lg" 
+                  className="form-control" 
                   placeholder={t('domainPlaceholder')}
                   value={domainInput}
                   onChange={(e) => setDomainInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && checkDomain()}
                 />
                 <button 
-                  className="btn btn-success text-white btn-lg"
+                  className="btn btn-success text-white px-4"
                   style={{ backgroundColor: 'hsl(var(--secondary))' }}
                   onClick={checkDomain}
                   disabled={domainStatus === 'checking' || !domainInput.trim()}
@@ -642,72 +666,53 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-5 bg-light">
+      {/* Contact */}
+      <section id="contact" className="py-5 bg-light">
         <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8 text-center">
-              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('pricingTitle')}
-              </h2>
-              <p className="lead mb-4">
-                {t('pricingText')}
-              </p>
-              <Link 
-                href="/pro" 
-                className="btn btn-primary btn-lg text-white px-5"
-                style={{ backgroundColor: 'hsl(var(--primary))' }}
-                onClick={() => window.scrollTo(0, 0)}
-              >
-                {t('getStarted')}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('contactTitle')}
+          </h2>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-5">
-        <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8">
-              <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
-                {t('contactTitle')}
-              </h2>
               <div className="row g-4">
                 <div className="col-md-6">
-                  <div className="d-flex align-items-center mb-3">
-                    <Phone size={24} style={{ color: 'hsl(var(--primary))' }} className="me-3" />
+                  <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
+                    <Phone className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                     <div>
-                      <strong>+52 983 123 4567</strong>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-3">
-                    <Mail size={24} style={{ color: 'hsl(var(--primary))' }} className="me-3" />
-                    <div>
-                      <strong>hola@websitiopro.com</strong>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-3">
-                    <MapPin size={24} style={{ color: 'hsl(var(--primary))' }} className="me-3" />
-                    <div>
-                      <strong>Chetumal, Quintana Roo</strong>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <Clock size={24} style={{ color: 'hsl(var(--primary))' }} className="me-3" />
-                    <div>
-                      <strong>Lun-Vie: 9:00-18:00</strong><br />
-                      <small>Sáb: 10:00-14:00</small>
+                      <h6 className="mb-0">+52 983 123 4567</h6>
+                      <small className="text-muted">{t('officeHours')}</small>
                     </div>
                   </div>
                 </div>
+
                 <div className="col-md-6">
-                  <div className="text-center">
-                    <div className="mb-3">
+                  <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
+                    <Mail className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
+                    <div>
+                      <h6 className="mb-0">info@websitiopro.com</h6>
+                      <small className="text-muted">{t('emailUs')}</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
+                    <MapPin className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
+                    <div>
+                      <h6 className="mb-0">Chetumal, Quintana Roo</h6>
+                      <small className="text-muted">México</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
+                    <MessageCircle className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
+                    <div>
                       <a 
-                        href="https://wa.me/529831234567" 
-                        className="btn btn-success btn-lg text-white d-flex align-items-center justify-content-center gap-2"
+                        href="https://wa.me/529831234567?text=Hola! Me interesa conocer más sobre WebSitioPro."
+                        className="text-decoration-none"
                         style={{ color: 'hsl(var(--secondary))' }}
                       >
                         <h6 className="mb-0">WhatsApp</h6>
@@ -757,22 +762,19 @@ export default function HomePage() {
         </button>
       )}
 
-      {/* Chat Window - Mobile Optimized */}
+      {/* Chat Window */}
       {chatOpen && (
         <div 
-          className="position-fixed bg-white shadow-lg border d-flex flex-column"
+          className="position-fixed bottom-0 end-0 m-4 bg-white rounded shadow-lg border"
           style={{ 
-            bottom: '20px',
-            right: '20px',
-            left: window.innerWidth < 768 ? '20px' : 'auto',
-            width: window.innerWidth < 768 ? 'calc(100vw - 40px)' : '350px',
-            height: 'min(450px, calc(100vh - 140px))', 
-            maxHeight: '450px',
-            zIndex: 1050,
-            borderRadius: '12px'
+            width: '350px', 
+            height: '500px', 
+            zIndex: 1001,
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
-          {/* Chat Header with Prominent Close Button */}
+          {/* Chat Header */}
           <div 
             className="p-3 rounded-top text-white d-flex justify-content-between align-items-center"
             style={{ backgroundColor: 'hsl(var(--primary))' }}
@@ -780,27 +782,15 @@ export default function HomePage() {
             <h6 className="mb-0">{t('chatbotTitle')}</h6>
             <button 
               onClick={() => setChatOpen(false)}
-              className="btn btn-sm text-white fw-bold"
-              style={{ 
-                background: 'rgba(255,255,255,0.3)', 
-                border: '2px solid white',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '20px',
-                lineHeight: '1'
-              }}
-              title="Close chat"
+              className="btn btn-sm text-white p-0"
+              style={{ background: 'none', border: 'none' }}
             >
-              ×
+              <X size={20} />
             </button>
           </div>
 
           {/* Chat Messages */}
-          <div className="flex-grow-1 p-3 overflow-auto" style={{ minHeight: '200px' }}>
+          <div className="flex-grow-1 p-3 overflow-auto" style={{ maxHeight: '350px' }}>
             {messages.map((message, index) => (
               <div key={index} className={`mb-3 ${message.isUser ? 'text-end' : 'text-start'}`}>
                 <div 
@@ -811,8 +801,7 @@ export default function HomePage() {
                   }`}
                   style={{ 
                     backgroundColor: message.isUser ? 'hsl(var(--primary))' : undefined,
-                    maxWidth: '85%',
-                    fontSize: '0.9rem'
+                    maxWidth: '80%'
                   }}
                 >
                   {message.text}
@@ -835,7 +824,6 @@ export default function HomePage() {
                 type="submit"
                 className="btn text-white"
                 style={{ backgroundColor: 'hsl(var(--primary))' }}
-                disabled={!currentMessage.trim()}
               >
                 <Send size={16} />
               </button>
