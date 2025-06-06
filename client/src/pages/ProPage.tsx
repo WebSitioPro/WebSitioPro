@@ -1,14 +1,25 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, MessageCircle, Menu } from 'lucide-react';
 
 export default function ProPage() {
   const [language, setLanguage] = useState('es');
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [, setLocation] = useLocation();
   
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
+  };
+
+  const navigateToHomeSection = (sectionId: string) => {
+    setLocation('/');
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   useEffect(() => {
@@ -210,20 +221,20 @@ export default function ProPage() {
             {/* Navigation Links */}
             <div className="col d-none d-md-flex">
               <div className="d-flex align-items-center justify-content-center gap-4 w-100">
-                <a 
-                  className="text-decoration-none text-dark" 
-                  href="/#hero"
+                <button 
+                  className="btn btn-link text-decoration-none text-dark p-0" 
+                  onClick={() => navigateToHomeSection('hero')}
                 >
                   {t('home')}
-                </a>
-                <a className="text-decoration-none text-dark" href="/#why">{t('why')}</a>
-                <a className="text-decoration-none text-dark" href="/#about">{t('about')}</a>
-                <a className="text-decoration-none text-dark" href="/#offerings">{t('offerings')}</a>
-                <a className="text-decoration-none text-dark" href="/#pricing">{t('pricing')}</a>
-                <a className="btn btn-success text-white px-3 py-1" href="/#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                </button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('why')}>{t('why')}</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('about')}>{t('about')}</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('offerings')}>{t('offerings')}</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('pricing')}>{t('pricing')}</button>
+                <button className="btn btn-success text-white px-3 py-1" style={{ backgroundColor: 'hsl(var(--secondary))' }} onClick={() => navigateToHomeSection('domain')}>
                   {t('domainChecker')}
-                </a>
-                <a className="text-decoration-none text-dark" href="/#contact">{t('contact')}</a>
+                </button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('contact')}>{t('contact')}</button>
                 <Link className="text-decoration-none fw-bold" href="/pro" style={{ color: 'hsl(var(--primary))' }}>{t('proSites')}</Link>
               </div>
             </div>
@@ -278,56 +289,70 @@ export default function ProPage() {
               <div className="col-12 d-md-none">
                 <div className="border-top pt-3 mt-3">
                   <div className="d-flex flex-column gap-2" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-                    <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="/#hero"
-                      onClick={() => setShowMobileMenu(false)}
+                    <button 
+                      className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        navigateToHomeSection('hero');
+                      }}
                     >
                       {t('home')}
-                    </a>
-                    <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="/#why"
-                      onClick={() => setShowMobileMenu(false)}
+                    </button>
+                    <button 
+                      className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        navigateToHomeSection('why');
+                      }}
                     >
                       {t('why')}
-                    </a>
-                    <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="/#about"
-                      onClick={() => setShowMobileMenu(false)}
+                    </button>
+                    <button 
+                      className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        navigateToHomeSection('about');
+                      }}
                     >
                       {t('about')}
-                    </a>
-                    <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="/#offerings"
-                      onClick={() => setShowMobileMenu(false)}
+                    </button>
+                    <button 
+                      className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        navigateToHomeSection('offerings');
+                      }}
                     >
                       {t('offerings')}
-                    </a>
-                    <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="/#pricing"
-                      onClick={() => setShowMobileMenu(false)}
+                    </button>
+                    <button 
+                      className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        navigateToHomeSection('pricing');
+                      }}
                     >
                       {t('pricing')}
-                    </a>
-                    <a 
+                    </button>
+                    <button 
                       className="btn btn-success text-white mb-2" 
-                      href="/#domain" 
                       style={{ backgroundColor: 'hsl(var(--secondary))' }}
-                      onClick={() => setShowMobileMenu(false)}
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        navigateToHomeSection('domain');
+                      }}
                     >
                       {t('domainChecker')}
-                    </a>
-                    <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="/#contact"
-                      onClick={() => setShowMobileMenu(false)}
+                    </button>
+                    <button 
+                      className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        navigateToHomeSection('contact');
+                      }}
                     >
                       {t('contact')}
-                    </a>
+                    </button>
                     <Link 
                       className="text-decoration-none fw-bold py-2 px-3 rounded" 
                       href="/pro" 
