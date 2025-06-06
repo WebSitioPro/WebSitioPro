@@ -736,7 +736,24 @@ export default function EditorPage() {
                         className="form-control"
                         value={websiteData.heroImage}
                         onChange={(e) => handleInputChange('heroImage', e.target.value)}
+                        placeholder="https://example.com/image.jpg or https://i.ibb.co/..."
                       />
+                      {websiteData.heroImage && (
+                        <div className="mt-3">
+                          <img 
+                            src={websiteData.heroImage} 
+                            alt="Hero preview" 
+                            className="img-thumbnail"
+                            style={{ maxHeight: '200px', maxWidth: '100%' }}
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                            onLoad={(e) => {
+                              e.currentTarget.style.display = 'block';
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -910,7 +927,24 @@ export default function EditorPage() {
                             className="form-control"
                             value={template.image}
                             onChange={(e) => handleTemplateChange(index, 'image', e.target.value)}
+                            placeholder="https://example.com/image.jpg or https://i.ibb.co/..."
                           />
+                          {template.image && (
+                            <div className="mt-3">
+                              <img 
+                                src={template.image} 
+                                alt={`Template ${index + 1} preview`} 
+                                className="img-thumbnail"
+                                style={{ maxHeight: '150px', maxWidth: '100%' }}
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                                onLoad={(e) => {
+                                  e.currentTarget.style.display = 'block';
+                                }}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
