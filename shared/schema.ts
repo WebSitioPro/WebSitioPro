@@ -8,6 +8,7 @@ export const websiteConfigs = pgTable("website_configs", {
   name: text("name").notNull(),
   templateType: text("template_type").default("professionals").notNull(),
   logo: text("logo"),
+  heroImage: text("hero_image"),
   defaultLanguage: text("default_language").default("es").notNull(),
   showWhyWebsiteButton: boolean("show_why_website_button").default(true),
   showDomainButton: boolean("show_domain_button").default(true),

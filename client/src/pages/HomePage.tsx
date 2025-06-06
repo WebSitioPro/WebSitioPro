@@ -480,10 +480,30 @@ export default function HomePage() {
             </div>
             <div className="col-lg-6">
               <div className="text-center">
-                <div className="bg-secondary rounded p-5" style={{ backgroundColor: 'hsl(var(--secondary) / 0.1)' }}>
-                  <Globe size={120} className="text-primary mb-3" style={{ color: 'hsl(var(--primary))' }} />
-                  <p className="text-muted">Website Mockup Placeholder</p>
-                </div>
+                {savedConfig?.heroImage ? (
+                  <div className="rounded overflow-hidden shadow-sm">
+                    <img 
+                      src={savedConfig.heroImage}
+                      alt="Hero mockup"
+                      className="img-fluid rounded"
+                      style={{ maxHeight: '400px', width: '100%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        // Fallback to placeholder if image fails to load
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.style.setProperty('display', 'block');
+                      }}
+                    />
+                    <div className="bg-secondary rounded p-5" style={{ backgroundColor: 'hsl(var(--secondary) / 0.1)', display: 'none' }}>
+                      <Globe size={120} className="text-primary mb-3" style={{ color: 'hsl(var(--primary))' }} />
+                      <p className="text-muted">Website Mockup Placeholder</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-secondary rounded p-5" style={{ backgroundColor: 'hsl(var(--secondary) / 0.1)' }}>
+                    <Globe size={120} className="text-primary mb-3" style={{ color: 'hsl(var(--primary))' }} />
+                    <p className="text-muted">Website Mockup Placeholder</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -298,6 +298,7 @@ export default function EditorPage() {
           saturday: websiteData.officeHours.en
         },
         logo: websiteData.logo,
+        heroImage: websiteData.heroImage,
         translations: {
           es: {
             heroHeadline: websiteData.heroHeadline.es,
