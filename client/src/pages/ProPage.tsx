@@ -210,13 +210,12 @@ export default function ProPage() {
             {/* Navigation Links */}
             <div className="col d-none d-md-flex">
               <div className="d-flex align-items-center justify-content-center gap-4 w-100">
-                <Link 
+                <a 
                   className="text-decoration-none text-dark" 
-                  href="/"
-                  onClick={() => setTimeout(() => window.scrollTo(0, 0), 100)}
+                  href="/#hero"
                 >
                   {t('home')}
-                </Link>
+                </a>
                 <a className="text-decoration-none text-dark" href="/#why">{t('why')}</a>
                 <a className="text-decoration-none text-dark" href="/#about">{t('about')}</a>
                 <a className="text-decoration-none text-dark" href="/#offerings">{t('offerings')}</a>
@@ -224,7 +223,7 @@ export default function ProPage() {
                 <a className="btn btn-success text-white px-3 py-1" href="/#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
                   {t('domainChecker')}
                 </a>
-                <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
+                <a className="text-decoration-none text-dark" href="/#contact">{t('contact')}</a>
                 <Link className="text-decoration-none fw-bold" href="/pro" style={{ color: 'hsl(var(--primary))' }}>{t('proSites')}</Link>
               </div>
             </div>
@@ -279,16 +278,13 @@ export default function ProPage() {
               <div className="col-12 d-md-none">
                 <div className="border-top pt-3 mt-3">
                   <div className="d-flex flex-column gap-2" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-                    <Link 
+                    <a 
                       className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="/"
-                      onClick={() => {
-                        setShowMobileMenu(false);
-                        setTimeout(() => window.scrollTo(0, 0), 100);
-                      }}
+                      href="/#hero"
+                      onClick={() => setShowMobileMenu(false)}
                     >
                       {t('home')}
-                    </Link>
+                    </a>
                     <a 
                       className="text-decoration-none text-dark py-2 px-3 rounded" 
                       href="/#why"
@@ -327,7 +323,7 @@ export default function ProPage() {
                     </a>
                     <a 
                       className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="#contact"
+                      href="/#contact"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('contact')}
