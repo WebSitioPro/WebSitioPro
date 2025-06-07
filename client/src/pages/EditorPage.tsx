@@ -511,7 +511,7 @@ export default function EditorPage() {
                 </button>
                 <hr className="my-2" />
                 <Link 
-                  href="/clients"
+                  href="/editor/clients"
                   className="nav-link text-start border-0 bg-transparent text-white mb-2"
                   style={{ backgroundColor: '#00A859' }}
                 >
