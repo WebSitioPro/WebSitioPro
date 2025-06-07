@@ -172,6 +172,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // API route for getting all templates (for client list)
+  app.get("/api/templates", async (req: Request, res: Response) => {
+    try {
+      const templatesDir = path.resolve(process.cwd(), 'templates');
+      
+      // Create templates directory if it doesn't exist
+      try {
+        await fs.mkdir(templatesDir, { recursive: true });
+      } catch (error) {
+        // Directory might already exist, continue
+      }
+
+      const files = await fs.readdir(templatesDir);
+      const jsonFiles = files.filter(file => file.endsWith('.json'));
+      
+      const templates = [];
+      for (const file of jsonFiles) {
+        try {
+          const templatePath = path.join(templatesDir, file);
+          const templateData = JSON.parse(await fs.readFile(templatePath, { encoding: 'utf-8' }));
+          const stats = await fs.stat(templatePath);
+          
+          templates.push({
+            templateId: file.replace('.json', ''),
+            ...templateData,
+            lastModified: stats.mtime.toISOString()
+          });
+        } catch (error) {
+          console.error(`Error reading template ${file}:`, error);
+        }
+      }
+      
+      // Sort by creation date (newest first)
+      templates.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+      
+      res.json(templates);
+    } catch (error) {
+      console.error('Error loading templates:', error);
+      res.status(500).json({ error: 'Failed to load templates' });
+    }
+  });
+
   // API route for getting template data
   app.get("/api/templates/:id", async (req: Request, res: Response) => {
     try {
@@ -184,6 +226,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error loading template:', error);
       res.status(500).json({ error: 'Template not found' });
+    }
+  });
+
+  // API route for deleting a template
+  app.delete("/api/templates/:id", async (req: Request, res: Response) => {
+    try {
+      const templateId = req.params.id;
+      const templatesDir = path.resolve(process.cwd(), 'templates');
+      const templatePath = path.join(templatesDir, `${templateId}.json`);
+      
+      await fs.unlink(templatePath);
+      res.json({ success: true, message: 'Template deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting template:', error);
+      res.status(500).json({ error: 'Failed to delete template' });
     }
   });
 

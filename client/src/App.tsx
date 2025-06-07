@@ -13,6 +13,7 @@ import TourismDemo from "@/pages/TourismDemo";
 import RetailDemo from "@/pages/RetailDemo";
 import ServicesDemo from "@/pages/ServicesDemo";
 import TemplateTools from "@/pages/TemplateTools";
+import ClientSelectorPage from "@/pages/ClientSelectorPage";
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/pro" component={ProPage} />
       <Route path="/editor" component={EditorPage} />
+      <Route path="/clients" component={ClientSelectorPage} />
       <Route path="/professionals-demo" component={ProfessionalsDemo} />
       <Route path="/restaurants-demo" component={RestaurantsDemo} />
       <Route path="/tourism-demo" component={TourismDemo} />

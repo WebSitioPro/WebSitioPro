@@ -64,6 +64,38 @@ export default function TemplateTools() {
   const [clientName, setClientName] = useState('');
   const [isPreviewMode, setIsPreviewMode] = useState(false);
 
+  // Load client data from URL parameters or template ID
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientParam = urlParams.get('client');
+    const templateParam = urlParams.get('template');
+
+    if (clientParam) {
+      // New client from client name
+      setClientName(decodeURIComponent(clientParam));
+    } else if (templateParam) {
+      // Load existing template
+      loadExistingTemplate(templateParam);
+    }
+  }, []);
+
+  const loadExistingTemplate = async (templateId: string) => {
+    try {
+      const response = await fetch(`/api/templates/${templateId}`);
+      if (response.ok) {
+        const template = await response.json();
+        setTemplateData(template);
+        setClientName(template.clientName || template.businessName || '');
+        setCurrentTemplateId(templateId);
+      } else {
+        alert('Template not found');
+      }
+    } catch (error) {
+      console.error('Error loading template:', error);
+      alert('Error loading template');
+    }
+  };
+
   const templateOptions = [
     { value: 'professionals', label: 'Professionals', description: 'Doctors, lawyers, consultants' },
     { value: 'restaurants', label: 'Restaurants', description: 'Restaurants, cafes, food services' },
