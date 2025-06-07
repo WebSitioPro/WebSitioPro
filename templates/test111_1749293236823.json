@@ -1,0 +1,52 @@
+{
+  "templateId": "test111_1749293236823",
+  "clientName": "Tours Aventura Maya",
+  "businessName": "Tours Aventura Maya",
+  "templateType": "tourism",
+  "createdAt": "2025-06-07T10:47:16.823Z",
+  "specialty": {
+    "es": "Local Tour Guides",
+    "en": "Local Tour Guides"
+  },
+  "description": {
+    "es": "Guías turísticos especializados en cenotes y ruinas mayas en Quintana Roo. Experiencias auténticas y seguras para toda la familia.",
+    "en": "Guías turísticos especializados en cenotes y ruinas mayas en Quintana Roo. Experiencias auténticas y seguras para toda la familia."
+  },
+  "profileImage": "tours.jpg",
+  "phone": "+529844445555",
+  "email": "info@toursaventuramaya.com",
+  "address": {
+    "es": "Av. Tulum 567, Playa del Carmen",
+    "en": "Av. Tulum 567, Playa del Carmen"
+  },
+  "whatsappNumber": "+529844445555",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Tours Aventura Maya",
+    "en": "Hello! I'm interested in learning more about Tours Aventura Maya"
+  },
+  "location": "Quintana Roo",
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Lun-Dom 7-19",
+      "en": "Lun-Dom 7-19"
+    },
+    "saturday": {
+      "es": "10:00 AM - 2:00 PM",
+      "en": "10:00 AM - 2:00 PM"
+    }
+  },
+  "rating": "4.9",
+  "fbLikes": "512",
+  "placeId": "test111",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFD700",
+  "metaTitle": {
+    "es": "Tours Aventura Maya - Local Tour Guides en Quintana Roo",
+    "en": "Tours Aventura Maya - Local Tour Guides in Quintana Roo"
+  },
+  "metaDescription": {
+    "es": "Guías turísticos especializados en cenotes y ruinas mayas en Quintana Roo. Experiencias auténticas y seguras para toda la familia....",
+    "en": "Guías turísticos especializados en cenotes y ruinas mayas en Quintana Roo. Experiencias auténticas y seguras para toda la familia...."
+  }
+}

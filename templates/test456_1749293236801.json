@@ -1,0 +1,52 @@
+{
+  "templateId": "test456_1749293236801",
+  "clientName": "Banquetes Maya",
+  "businessName": "Banquetes Maya",
+  "templateType": "services",
+  "createdAt": "2025-06-07T10:47:16.801Z",
+  "specialty": {
+    "es": "Caterers",
+    "en": "Caterers"
+  },
+  "description": {
+    "es": "Servicio de catering profesional en Mérida. Especialistas en eventos sociales y corporativos con auténtica comida yucateca.",
+    "en": "Servicio de catering profesional en Mérida. Especialistas en eventos sociales y corporativos con auténtica comida yucateca."
+  },
+  "profileImage": "catering.jpg",
+  "phone": "+529999876543",
+  "email": "info@banquetesmaya.com",
+  "address": {
+    "es": "Calle 60 No. 489, Mérida",
+    "en": "Calle 60 No. 489, Mérida"
+  },
+  "whatsappNumber": "+529999876543",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Banquetes Maya",
+    "en": "Hello! I'm interested in learning more about Banquetes Maya"
+  },
+  "location": "Yucatan",
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Lun-Dom 7-22",
+      "en": "Lun-Dom 7-22"
+    },
+    "saturday": {
+      "es": "10:00 AM - 2:00 PM",
+      "en": "10:00 AM - 2:00 PM"
+    }
+  },
+  "rating": "4.6",
+  "fbLikes": "342",
+  "placeId": "test456",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFD700",
+  "metaTitle": {
+    "es": "Banquetes Maya - Caterers en Yucatan",
+    "en": "Banquetes Maya - Caterers in Yucatan"
+  },
+  "metaDescription": {
+    "es": "Servicio de catering profesional en Mérida. Especialistas en eventos sociales y corporativos con auténtica comida yucateca....",
+    "en": "Servicio de catering profesional en Mérida. Especialistas en eventos sociales y corporativos con auténtica comida yucateca...."
+  }
+}
