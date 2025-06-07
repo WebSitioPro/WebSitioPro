@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
 import { insertWebsiteConfigSchema } from "@shared/schema";
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import { generateStaticFiles } from "./templateGenerator";
 
