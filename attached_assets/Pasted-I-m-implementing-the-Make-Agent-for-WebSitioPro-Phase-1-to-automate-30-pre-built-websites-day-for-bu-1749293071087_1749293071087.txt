@@ -1,0 +1,39 @@
+I’m implementing the Make Agent for WebSitioPro Phase 1 to automate 30 pre-built websites/day for businesses without websites in Chetumal, Bacalar, Cancun, Quintana Roo, and Yucatan, targeting five template categories: Professionals (e.g., Dentists, Veterinarians), Services (e.g., Caterers, Massage Therapists), Restaurants (e.g., Cafes), Tourist Businesses (e.g., Local Tour Guides), and Retail (e.g., Specialty Shops). The goal is to test the integration in Replit using mock data (no Google Maps/Twilio yet to save costs) by June 9–10, 2025, with live API integration later. The Make Agent will process mock data, generate templates, send to /pro-form via /api/make/auto-create, log to Google Sheets, and prepare mock WhatsApp outreach messages. Below are the requirements based on my current codebase and goals.
+Requirements:
+Agent API Endpoint (server/agent-routes.ts):
+Create /api/agent/create-template to accept mock JSON data (e.g., { "name": "Clínica Vet Paws", "bio": "¡Confíe en Clínica Vet Paws para el cuidado de sus mascotas en Chetumal!...", "address": "Av. Benito Juárez 456, Chetumal", "phone": "+529831234567", "rating": "4.7", "photo_url": "vet.jpg", "hours": "Lun-Sab 9-6", "category": "Professionals", "subcategory": "Veterinarians", "location": "Chetumal", "fb_likes": "55", "place_id": "test789" }).
+
+Auto-select template type based on category (Professionals, Services, Restaurants, Tourist Businesses, Retail).
+
+Populate TemplateData fields (name, bio, address, phone, rating, photo_url, hours, category, subcategory, location, fb_likes, place_id).
+
+Send to /api/templates for storage and /api/make/auto-create for Make integration.
+
+Handle errors (e.g., missing phone, low fb_likes <50).
+Webhook Integration (server/routes.ts):
+Ensure /api/make/auto-create sends JSON to Make’s webhook URL (to be provided) and integrates with /pro-form for mobile-friendly previews (e.g., websitiopro.com/preview/test789).
+
+Confirm JSON matches: { "name": "", "bio": "", "address": "", "phone": "", "rating": "", "photo_url": "", "hours": "", "category": "", "subcategory": "", "location": "", "fb_likes": "", "place_id": "" }.
+Editor Testing Support:
+Verify the editor (EditorPage.tsx) supports editing all fields (text box, image upload, hours) for all five template categories, with mobile/desktop rendering and special character support (e.g., “Café Olé”).
+
+Test /pro-form submission with mock data to ensure data reaches /api/make/auto-create.
+
+Confirm error handling for edge cases (e.g., oversized images >5MB, empty fields).
+Mock Data Testing:
+Provide a sample script to test /api/agent/create-template with 10 mock businesses (2 per category, including 2 invalid cases: no phone, fb_likes <50).
+
+Ensure templates render correctly at /pro-form with MXN pricing ($1,995 MXN + $195/mes).
+Future API Readiness:
+Design /api/agent/create-template to be extensible for live Google Maps (Places API) and Twilio (Lookup API) integration, replacing mock data with real scraped data (name, address, phone, etc.) later.
+Deliverables:
+Updated server/agent-routes.ts and server/routes.ts with /api/agent/create-template and webhook logic.
+
+Test script for 10 mock businesses, including JSON samples and expected outputs.
+
+Confirmation that /pro-form, /api/make/auto-create, and editor are tested for all template categories and edge cases.
+
+Any issues or limitations with the current setup (e.g., webhook errors, editor bugs).
+Timeline: Testing starts June 9, 2025, so please confirm readiness of /api/make/auto-create and /pro-form by June 8. Provide sample JSON responses, test results, and any setup instructions. Skip the /agent interface (AgentInterface.tsx) and EditorPage sidebar link, as they’re not needed for Phase 1 automation. Let me know if you need mock data examples or Make webhook details to complete the setup.
+Thanks for your help!
+

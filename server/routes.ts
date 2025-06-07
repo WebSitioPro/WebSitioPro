@@ -6,6 +6,7 @@ import { insertWebsiteConfigSchema } from "@shared/schema";
 import fs from "fs/promises";
 import path from "path";
 import { generateStaticFiles } from "./templateGenerator";
+import { registerAgentRoutes } from "./agent-routes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API route for getting the default website configuration
@@ -369,6 +370,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Removed custom catch-all route
+
+  // Register agent routes for Make automation
+  registerAgentRoutes(app);
+  
+  // Add Make webhook endpoint
+  app.post("/api/make/auto-create", async (req: Request, res: Response) => {
+    try {
+      console.log("Make webhook received data:", req.body);
+      
+      // Forward to agent endpoint for processing
+      const agentResponse = await fetch(`http://localhost:5000/api/agent/create-template`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(req.body)
+      });
+      
+      const agentResult = await agentResponse.json();
+      
+      if (agentResponse.ok) {
+        res.json({
+          success: true,
+          message: "Template created via Make automation",
+          ...agentResult
+        });
+      } else {
+        res.status(agentResponse.status).json(agentResult);
+      }
+      
+    } catch (error) {
+      console.error("Make webhook error:", error);
+      res.status(500).json({ 
+        error: "Make webhook processing failed",
+        details: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;
