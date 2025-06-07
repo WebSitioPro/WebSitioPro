@@ -398,6 +398,10 @@ export default function EditorPage() {
                 <Link href="/pro" className="btn btn-outline-primary">
                   View Pro Page
                 </Link>
+                <Link href="/editor/clients" className="btn text-white" style={{ backgroundColor: '#00A859' }}>
+                  <Settings size={16} className="me-1" />
+                  Client Manager
+                </Link>
                 <Link href="/editor/tools" className="btn text-white" style={{ backgroundColor: '#C8102E' }}>
                   <Settings size={16} className="me-1" />
                   Template Editor
