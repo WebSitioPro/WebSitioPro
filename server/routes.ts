@@ -149,7 +149,147 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Serve generated Professionals template
+  // API route for saving template data
+  app.post("/api/templates", async (req: Request, res: Response) => {
+    try {
+      const templateData = req.body;
+      
+      // Save template data to storage (for now, we'll store in memory/file)
+      // In production, this would go to a database
+      const templateId = Date.now().toString();
+      
+      // Store template data in a simple JSON file for testing
+      const templatesDir = path.resolve(process.cwd(), 'templates');
+      await fs.mkdir(templatesDir, { recursive: true });
+      
+      const templatePath = path.join(templatesDir, `${templateId}.json`);
+      await fs.writeFile(templatePath, JSON.stringify(templateData, null, 2));
+      
+      res.json({ success: true, templateId, message: 'Template saved successfully' });
+    } catch (error) {
+      console.error('Error saving template:', error);
+      res.status(500).json({ error: 'Failed to save template' });
+    }
+  });
+
+  // API route for getting template data
+  app.get("/api/templates/:id", async (req: Request, res: Response) => {
+    try {
+      const templateId = req.params.id;
+      const templatesDir = path.resolve(process.cwd(), 'templates');
+      const templatePath = path.join(templatesDir, `${templateId}.json`);
+      
+      const templateData = await fs.readFile(templatePath, { encoding: 'utf-8' });
+      res.json(JSON.parse(templateData));
+    } catch (error) {
+      console.error('Error loading template:', error);
+      res.status(500).json({ error: 'Template not found' });
+    }
+  });
+
+  // API route for generating static files from template data
+  app.post("/api/templates/:id/generate", async (req: Request, res: Response) => {
+    try {
+      const templateId = req.params.id;
+      const templatesDir = path.resolve(process.cwd(), 'templates');
+      const templatePath = path.join(templatesDir, `${templateId}.json`);
+      
+      // Load template data
+      const templateData = JSON.parse(await fs.readFile(templatePath, { encoding: 'utf-8' }));
+      
+      // Convert template data to website config format
+      const config = {
+        id: parseInt(templateId),
+        name: templateData.businessName || 'Template Business',
+        logo: templateData.logoUrl || '',
+        defaultLanguage: templateData.languageDefault || 'es',
+        showWhyWebsiteButton: true,
+        showDomainButton: true,
+        showChatbot: templateData.chatbotEnabled || false,
+        whatsappNumber: templateData.whatsappNumber || '',
+        whatsappMessage: 'Hello!',
+        facebookUrl: templateData.socialLink || '',
+        googleMapsEmbed: '',
+        address: templateData.address || '',
+        phone: templateData.phone || '',
+        email: templateData.email || '',
+        officeHours: {
+          mondayToFriday: '9:00 AM - 6:00 PM',
+          saturday: '10:00 AM - 2:00 PM'
+        },
+        analyticsCode: '',
+        primaryColor: '#00A859',
+        secondaryColor: '#C8102E',
+        backgroundColor: '#FFFFFF',
+        translations: {
+          en: {
+            tagline: templateData.intro?.en || templateData.businessName || 'Welcome',
+            subtitle: 'Professional services you can trust',
+            aboutText: templateData.intro?.en || 'About our business'
+          },
+          es: {
+            tagline: templateData.intro?.es || templateData.businessName || 'Bienvenidos',
+            subtitle: 'Servicios profesionales en los que puedes confiar',
+            aboutText: templateData.intro?.es || 'Acerca de nuestro negocio'
+          }
+        },
+        heroImage: '',
+        templates: templateData.services?.map((service: any, index: number) => ({
+          title: {
+            es: service.name || `Servicio ${index + 1}`,
+            en: service.name || `Service ${index + 1}`
+          },
+          description: {
+            es: service.description || 'Descripción del servicio',
+            en: service.description || 'Service description'
+          },
+          image: templateData.photos?.[index] || ''
+        })) || [],
+        chatbotQuestions: []
+      };
+
+      // Generate static files
+      const outputDir = await generateStaticFiles(config);
+      
+      res.json({ 
+        success: true, 
+        message: 'Static files generated successfully', 
+        outputPath: outputDir,
+        templateId
+      });
+    } catch (error) {
+      console.error('Error generating template:', error);
+      res.status(500).json({ error: 'Failed to generate template' });
+    }
+  });
+
+  // Serve generated template preview
+  app.get('/templates/:id/preview', async (req, res) => {
+    try {
+      const templateId = req.params.id;
+      const outputDir = path.resolve(process.cwd(), 'dist/static');
+      const htmlPath = path.join(outputDir, 'index.html');
+      
+      // Check if generated files exist
+      try {
+        const htmlContent = await fs.readFile(htmlPath, { encoding: 'utf-8' });
+        res.setHeader('Content-Type', 'text/html');
+        res.send(htmlContent);
+      } catch {
+        // If no generated files, show demo template
+        const config = await storage.getDefaultWebsiteConfig();
+        const newOutputDir = await generateStaticFiles(config);
+        const htmlContent = await fs.readFile(path.join(newOutputDir, 'index.html'), { encoding: 'utf-8' });
+        res.setHeader('Content-Type', 'text/html');
+        res.send(htmlContent);
+      }
+    } catch (error) {
+      console.error('Error serving template preview:', error);
+      res.status(500).send('Error loading template preview');
+    }
+  });
+
+  // Serve generated Professionals template (keeping for backward compatibility)
   app.get('/templates/professionals', async (req, res) => {
     try {
       // Get default config or create a sample professionals config
@@ -160,7 +300,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Read the generated HTML file
       const htmlPath = path.join(outputDir, 'index.html');
-      const htmlContent = await fs.promises.readFile(htmlPath, { encoding: 'utf-8' });
+      const htmlContent = await fs.readFile(htmlPath, { encoding: 'utf-8' });
 
       // Serve the HTML content
       res.setHeader('Content-Type', 'text/html');

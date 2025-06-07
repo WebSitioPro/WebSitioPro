@@ -212,10 +212,71 @@ export default function TemplateEditor() {
     });
   };
 
-  const handleSave = () => {
-    // Here you would save the template data
-    console.log('Saving template data:', templateData);
-    alert('Template saved successfully!');
+  const [currentTemplateId, setCurrentTemplateId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/templates', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(templateData),
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        setCurrentTemplateId(result.templateId);
+        alert(`Template saved successfully! Template ID: ${result.templateId}`);
+      } else {
+        alert('Failed to save template');
+      }
+    } catch (error) {
+      console.error('Error saving template:', error);
+      alert('Error saving template');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePreview = () => {
+    if (!currentTemplateId) {
+      alert('Please save the template first to preview it.');
+      return;
+    }
+    
+    // Open preview in new window
+    window.open(`/templates/${currentTemplateId}/preview`, '_blank');
+  };
+
+  const handleGenerate = async () => {
+    if (!currentTemplateId) {
+      alert('Please save the template first to generate static files.');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/templates/${currentTemplateId}/generate`, {
+        method: 'POST',
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        alert(`Static files generated successfully! Output path: ${result.outputPath}`);
+      } else {
+        alert('Failed to generate static files');
+      }
+    } catch (error) {
+      console.error('Error generating static files:', error);
+      alert('Error generating static files');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -231,13 +292,29 @@ export default function TemplateEditor() {
             <h5 className="mb-0">Professional Template Editor</h5>
           </div>
           <div className="d-flex gap-2">
-            <Link href="/professionals-demo" className="btn btn-outline-primary">
+            <button 
+              onClick={handlePreview} 
+              className="btn btn-outline-primary"
+              disabled={isLoading}
+            >
               <Eye size={16} className="me-2" />
               Preview
-            </Link>
-            <button onClick={handleSave} className="btn btn-success">
+            </button>
+            <button 
+              onClick={handleGenerate} 
+              className="btn btn-outline-info"
+              disabled={isLoading || !currentTemplateId}
+            >
+              <Upload size={16} className="me-2" />
+              Generate
+            </button>
+            <button 
+              onClick={handleSave} 
+              className="btn btn-success"
+              disabled={isLoading}
+            >
               <Save size={16} className="me-2" />
-              Save Template
+              {isLoading ? 'Saving...' : 'Save Template'}
             </button>
           </div>
         </div>

@@ -185,43 +185,76 @@ export default function TemplateTools() {
     });
   };
 
-  const saveTemplate = () => {
+  const [currentTemplateId, setCurrentTemplateId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const saveTemplate = async () => {
     const dataToSave = {
       ...templateData,
       clientName,
       createdAt: new Date().toISOString()
     };
     
-    // In a real implementation, this would save to the backend
-    const dataStr = JSON.stringify(dataToSave, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${clientName || 'template'}_${templateData.templateType}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    
-    alert('Template configuration saved!');
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/templates', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSave),
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        setCurrentTemplateId(result.templateId);
+        alert(`Template saved successfully! Template ID: ${result.templateId}`);
+      } else {
+        alert('Failed to save template');
+      }
+    } catch (error) {
+      console.error('Error saving template:', error);
+      alert('Error saving template');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const generateStaticSite = () => {
-    // This would typically call the backend to generate static files
-    alert(`Static site generation started for ${templateData.templateType} template. Files will be ready for Vercel deployment.`);
+  const generateStaticSite = async () => {
+    if (!currentTemplateId) {
+      alert('Please save the template first to generate static files.');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/templates/${currentTemplateId}/generate`, {
+        method: 'POST',
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        alert(`Static files generated successfully! Files are ready for deployment. Output path: ${result.outputPath}`);
+      } else {
+        alert('Failed to generate static files');
+      }
+    } catch (error) {
+      console.error('Error generating static files:', error);
+      alert('Error generating static files');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const previewTemplate = () => {
-    const previewUrls = {
-      professionals: '/professionals-demo',
-      restaurants: '/restaurants-demo',
-      tourism: '/tourism-demo',
-      retail: '/retail-demo',
-      services: '/services-demo'
-    };
+    if (!currentTemplateId) {
+      alert('Please save the template first to preview it.');
+      return;
+    }
     
-    window.open(previewUrls[templateData.templateType], '_blank');
+    window.open(`/templates/${currentTemplateId}/preview`, '_blank');
   };
 
   return (
@@ -244,6 +277,7 @@ export default function TemplateTools() {
                     <button 
                       className="btn btn-outline-primary btn-sm"
                       onClick={previewTemplate}
+                      disabled={isLoading}
                     >
                       <Eye size={16} className="me-1" />
                       Preview
@@ -251,6 +285,7 @@ export default function TemplateTools() {
                     <button 
                       className="btn btn-outline-success btn-sm"
                       onClick={generateStaticSite}
+                      disabled={isLoading || !currentTemplateId}
                     >
                       <Download size={16} className="me-1" />
                       Generate
@@ -259,9 +294,10 @@ export default function TemplateTools() {
                       className="btn text-white btn-sm"
                       style={{ backgroundColor: '#C8102E' }}
                       onClick={saveTemplate}
+                      disabled={isLoading}
                     >
                       <Save size={16} className="me-1" />
-                      Save
+                      {isLoading ? 'Saving...' : 'Save'}
                     </button>
                   </div>
                 </div>
