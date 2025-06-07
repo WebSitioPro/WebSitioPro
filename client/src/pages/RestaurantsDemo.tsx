@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Clock, Star, Menu, X } from 'lucide-react';
 
 // Mock data for restaurant template
@@ -96,6 +96,18 @@ export default function RestaurantsDemo() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+  const [savedConfig, setSavedConfig] = useState<any>(null);
+
+  // Load saved configuration
+  useEffect(() => {
+    fetch('/api/config/default')
+      .then(res => res.json())
+      .then(data => {
+        setSavedConfig(data);
+        console.log('Restaurant demo loaded config:', data);
+      })
+      .catch(err => console.log('Config not loaded:', err));
+  }, []);
 
   const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
   const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
@@ -214,7 +226,7 @@ export default function RestaurantsDemo() {
             </div>
             <div className="col-lg-4 text-center">
               <img 
-                src="https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Restaurant+Logo" 
+                src={savedConfig?.heroImage || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Restaurant+Logo"} 
                 alt="Restaurant" 
                 className="img-fluid rounded shadow"
               />
@@ -230,23 +242,27 @@ export default function RestaurantsDemo() {
             {t('menuTitle')}
           </h2>
           <div className="row g-4">
-            {mockRestaurantData.menuImages.slice(0, 9).map((image, index) => (
-              <div key={index} className="col-md-4 col-sm-6">
-                <div className="card border-0 shadow-sm">
-                  <img 
-                    src={image} 
-                    alt={`Menu page ${index + 1}`} 
-                    className="card-img-top menu-image"
-                    style={{ 
-                      height: '400px', 
-                      objectFit: 'contain',
-                      border: '2px solid #00A859',
-                      backgroundColor: '#f8f9fa'
-                    }}
-                  />
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => {
+              const menuImage = savedConfig?.menuImages?.[index] || mockRestaurantData.menuImages[index] || `https://via.placeholder.com/400x600/00A859/FFFFFF?text=Menu+Page+${index + 1}`;
+              
+              return (
+                <div key={index} className="col-md-4 col-sm-6">
+                  <div className="card border-0 shadow-sm">
+                    <img 
+                      src={menuImage} 
+                      alt={`Menu page ${index + 1}`} 
+                      className="card-img-top menu-image"
+                      style={{ 
+                        height: '400px', 
+                        objectFit: 'contain',
+                        border: '2px solid #00A859',
+                        backgroundColor: '#f8f9fa'
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -290,20 +306,24 @@ export default function RestaurantsDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-3">
-            {mockRestaurantData.photos.slice(0, 12).map((photo, index) => (
-              <div key={index} className="col-md-4 col-sm-6">
-                <img 
-                  src={photo} 
-                  alt={`Restaurant photo ${index + 1}`} 
-                  className="img-fluid rounded shadow-sm"
-                  style={{ 
-                    width: '100%',
-                    height: '200px', 
-                    objectFit: 'cover' 
-                  }}
-                />
-              </div>
-            ))}
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((index) => {
+              const photoUrl = savedConfig?.photos?.[index] || mockRestaurantData.photos[index] || `https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Restaurant+Photo+${index + 1}`;
+              
+              return (
+                <div key={index} className="col-md-4 col-sm-6">
+                  <img 
+                    src={photoUrl} 
+                    alt={`Restaurant photo ${index + 1}`} 
+                    className="img-fluid rounded shadow-sm"
+                    style={{ 
+                      width: '100%',
+                      height: '200px', 
+                      objectFit: 'cover' 
+                    }}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

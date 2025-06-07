@@ -39,7 +39,7 @@ export const websiteConfigs = pgTable("website_configs", {
     name: string;
     description: string;
   }>>(),
-  menuImages: json("menu_images").$type<string[]>(),
+  menuImages: json("menu_images").$type<string[]>().default([]),
   tours: json("tours").$type<Array<{
     name: string;
     price: string;

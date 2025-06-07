@@ -13,7 +13,10 @@ export default function ProfessionalsDemo() {
     // Load saved configuration to demonstrate Editor functionality
     fetch('/api/config/default')
       .then(res => res.json())
-      .then(data => setSavedConfig(data))
+      .then(data => {
+        setSavedConfig(data);
+        console.log('Loaded saved config:', data);
+      })
       .catch(err => console.log('Config not loaded:', err));
   }, []);
 
@@ -264,7 +267,7 @@ export default function ProfessionalsDemo() {
                   }}
                 >
                   <img 
-                    src="https://via.placeholder.com/300x300/00A859/FFFFFF?text=Dr.+María+González"
+                    src={savedConfig?.heroImage || "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Dr.+María+González"}
                     alt="Dr. María González"
                     className="w-100 h-100"
                     style={{ objectFit: 'cover' }}
@@ -358,26 +361,31 @@ export default function ProfessionalsDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-4">
-            {[1, 2, 3, 4, 5, 6].map((num) => (
-              <div key={num} className="col-lg-4 col-md-6">
-                <div className="card border-0 shadow-sm h-100">
-                  <div 
-                    className="card-img-top bg-light d-flex align-items-center justify-content-center"
-                    style={{ height: '200px' }}
-                  >
-                    <img 
-                      src={`https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+${num}`}
-                      alt={`Consultorio ${num}`}
-                      className="w-100 h-100"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                  <div className="card-body text-center">
-                    <p className="text-muted mb-0">Consultorio {num}</p>
+            {[1, 2, 3, 4, 5, 6].map((num) => {
+              const photoIndex = num - 1;
+              const photoUrl = savedConfig?.photos?.[photoIndex] || `https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+${num}`;
+              
+              return (
+                <div key={num} className="col-lg-4 col-md-6">
+                  <div className="card border-0 shadow-sm h-100">
+                    <div 
+                      className="card-img-top bg-light d-flex align-items-center justify-content-center"
+                      style={{ height: '200px' }}
+                    >
+                      <img 
+                        src={photoUrl}
+                        alt={`Consultorio ${num}`}
+                        className="w-100 h-100"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div className="card-body text-center">
+                      <p className="text-muted mb-0">Consultorio {num}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

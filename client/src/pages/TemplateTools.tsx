@@ -158,7 +158,9 @@ export default function TemplateTools() {
           arrayField.push('');
         }
       } else if (field === 'menuImages') {
-        if (arrayField.length < 9) {
+        if (!arrayField) {
+          (newData as any)[field] = [''];
+        } else if (arrayField.length < 9) {
           arrayField.push('');
         }
       } else if (field === 'services' || field === 'serviceAreas') {
