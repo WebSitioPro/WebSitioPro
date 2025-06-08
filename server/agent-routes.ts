@@ -303,7 +303,22 @@ export function registerAgentRoutes(app: Express) {
           templateType: templateData.templateType,
           previewUrl: `websitiopro.com/preview/${businessData.place_id}`,
           webhookSent: webhookSuccess,
-          message: "Template created and webhook sent successfully"
+          message: "Template created and webhook sent successfully",
+          // Enhanced data for Make logging
+          businessData: {
+            name: businessData.name,
+            location: businessData.location,
+            category: businessData.category,
+            phone: businessData.phone,
+            fbLikes: businessData.fb_likes,
+            rating: businessData.rating
+          },
+          timestamp: new Date().toISOString(),
+          makeIntegration: {
+            readyForWhatsAppLogging: true,
+            googleSheetsCompatible: true,
+            automationStatus: "ready"
+          }
         });
         
       } catch (webhookError) {
@@ -336,6 +351,44 @@ export function registerAgentRoutes(app: Express) {
       version: "1.0.0",
       timestamp: new Date().toISOString()
     });
+  });
+  
+  // Template validation endpoint for edge case testing
+  app.post("/api/agent/validate", async (req: Request, res: Response) => {
+    try {
+      const businessData = req.body;
+      const validation = mockBusinessSchema.safeParse(businessData);
+      
+      const edgeCaseChecks = {
+        phoneFormat: /^\+52\d{10}$/.test(businessData.phone || ''),
+        specialCharacters: /[áéíóúñü]|[ÁÉÍÓÚÑÜ]|[¡¿]/.test(businessData.name || businessData.bio || ''),
+        imageUrlValid: businessData.photo_url && businessData.photo_url.length > 0,
+        fbLikesValid: parseInt(businessData.fb_likes || '0') >= 50,
+        bioLength: (businessData.bio || '').length >= 10,
+        categorySupported: ['Professionals', 'Services', 'Restaurants', 'Tourist Businesses', 'Retail'].includes(businessData.category),
+        locationSupported: ['Chetumal', 'Bacalar', 'Cancun', 'Quintana Roo', 'Yucatan'].includes(businessData.location)
+      };
+      
+      const passedChecks = Object.values(edgeCaseChecks).filter(Boolean).length;
+      const totalChecks = Object.keys(edgeCaseChecks).length;
+      
+      res.json({
+        valid: validation.success,
+        edgeCaseResults: edgeCaseChecks,
+        score: `${passedChecks}/${totalChecks}`,
+        readyForGeneration: validation.success && passedChecks === totalChecks,
+        errors: validation.success ? [] : validation.error.issues,
+        recommendations: !edgeCaseChecks.specialCharacters ? 
+          ["Test with special characters (áéíóú, ñ, ¡¿)"] : 
+          ["All edge cases handled correctly"]
+      });
+      
+    } catch (error) {
+      res.status(500).json({ 
+        error: "Validation failed",
+        details: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
   });
   
   // Get agent statistics
@@ -415,6 +468,125 @@ export function registerAgentRoutes(app: Express) {
     } catch (error) {
       console.error("Agent: Stats failed:", error);
       res.status(500).json({ error: "Failed to get agent statistics" });
+    }
+  });
+  
+  // WhatsApp logging endpoint for Make automation
+  app.post("/api/agent/log-whatsapp", async (req: Request, res: Response) => {
+    try {
+      const logData = req.body;
+      
+      // Validate WhatsApp log data
+      const whatsappLogSchema = z.object({
+        templateId: z.string(),
+        businessName: z.string(),
+        phone: z.string(),
+        message: z.string(),
+        scheduledTime: z.string(),
+        campaign: z.enum(["weekday_evening", "weekend_morning"]),
+        location: z.string()
+      });
+      
+      const validation = whatsappLogSchema.safeParse(logData);
+      if (!validation.success) {
+        return res.status(400).json({ 
+          error: "Invalid WhatsApp log data", 
+          details: validation.error.issues 
+        });
+      }
+      
+      const logEntry = {
+        ...validation.data,
+        loggedAt: new Date().toISOString(),
+        status: "pending",
+        googleSheetsReady: true
+      };
+      
+      // Store WhatsApp log (for Google Sheets integration)
+      const logsDir = path.resolve(process.cwd(), 'whatsapp-logs');
+      await fs.mkdir(logsDir, { recursive: true });
+      
+      const logPath = path.join(logsDir, `${logEntry.templateId}_whatsapp.json`);
+      await fs.writeFile(logPath, JSON.stringify(logEntry, null, 2));
+      
+      console.log("WhatsApp message logged:", logEntry);
+      
+      res.json({
+        success: true,
+        logId: `${logEntry.templateId}_whatsapp`,
+        message: "WhatsApp message logged for automation",
+        scheduleDetails: {
+          campaign: logEntry.campaign,
+          scheduledTime: logEntry.scheduledTime,
+          phone: logEntry.phone
+        },
+        googleSheetsReady: true
+      });
+      
+    } catch (error) {
+      console.error("WhatsApp logging failed:", error);
+      res.status(500).json({ 
+        error: "Failed to log WhatsApp message",
+        details: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+  
+  // Get WhatsApp logs for verification
+  app.get("/api/agent/whatsapp-logs", async (_req: Request, res: Response) => {
+    try {
+      const logsDir = path.resolve(process.cwd(), 'whatsapp-logs');
+      
+      try {
+        const files = await fs.readdir(logsDir);
+        const jsonFiles = files.filter(file => file.endsWith('_whatsapp.json'));
+        
+        const logs = [];
+        for (const file of jsonFiles) {
+          try {
+            const logPath = path.join(logsDir, file);
+            const logData = JSON.parse(await fs.readFile(logPath, 'utf-8'));
+            logs.push(logData);
+          } catch (fileError) {
+            console.error(`Error reading log ${file}:`, fileError);
+          }
+        }
+        
+        // Group by campaign type
+        const weekdayLogs = logs.filter(log => log.campaign === "weekday_evening");
+        const weekendLogs = logs.filter(log => log.campaign === "weekend_morning");
+        
+        res.json({
+          totalLogs: logs.length,
+          weekdayEvening: weekdayLogs.length,
+          weekendMorning: weekendLogs.length,
+          logs: logs.sort((a, b) => new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime()),
+          campaignProgress: {
+            weekdayTarget: 15,
+            weekdayCompleted: weekdayLogs.length,
+            weekendTarget: 15, 
+            weekendCompleted: weekendLogs.length
+          }
+        });
+        
+      } catch (dirError) {
+        res.json({
+          totalLogs: 0,
+          weekdayEvening: 0,
+          weekendMorning: 0,
+          logs: [],
+          campaignProgress: {
+            weekdayTarget: 15,
+            weekdayCompleted: 0,
+            weekendTarget: 15,
+            weekendCompleted: 0
+          }
+        });
+      }
+      
+    } catch (error) {
+      console.error("WhatsApp logs retrieval failed:", error);
+      res.status(500).json({ error: "Failed to get WhatsApp logs" });
     }
   });
 }
