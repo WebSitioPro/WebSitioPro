@@ -62,6 +62,101 @@ interface TemplateData {
   metaDescription: { es: string; en: string };
 }
 
+// Convert Make Agent template format to TemplateEditor format
+const convertMakeAgentToEditorFormat = (makeTemplate: any): TemplateData => {
+  // If it's already in the correct format, return as is
+  if (makeTemplate.aboutTitle && makeTemplate.services && Array.isArray(makeTemplate.services)) {
+    return makeTemplate;
+  }
+
+  // Convert Make Agent format to Editor format
+  return {
+    doctorName: makeTemplate.doctorName || makeTemplate.businessName || makeTemplate.clientName || 'Business Name',
+    specialty: makeTemplate.specialty || {
+      es: makeTemplate.subcategory || 'Especialista',
+      en: makeTemplate.subcategory || 'Specialist'
+    },
+    description: makeTemplate.description || {
+      es: makeTemplate.bio || 'Descripción del negocio',
+      en: makeTemplate.bio || 'Business description'
+    },
+    profileImage: makeTemplate.profileImage || makeTemplate.photo_url || 'https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business',
+    
+    aboutTitle: {
+      es: 'Acerca del Negocio',
+      en: 'About the Business'
+    },
+    aboutText: makeTemplate.description || {
+      es: makeTemplate.bio || 'Información sobre el negocio',
+      en: makeTemplate.bio || 'Business information'
+    },
+    experience: makeTemplate.experience || '5+',
+    patientsServed: makeTemplate.patientsServed || '100+',
+    availability: makeTemplate.availability || '24/7',
+    
+    services: makeTemplate.services || [
+      {
+        title: { es: 'Servicio Principal', en: 'Main Service' },
+        description: { es: 'Descripción del servicio', en: 'Service description' },
+        icon: 'shield'
+      }
+    ],
+    
+    photos: makeTemplate.photos || [
+      { url: makeTemplate.profileImage || makeTemplate.photo_url || 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Photo+1', caption: { es: 'Foto 1', en: 'Photo 1' } }
+    ],
+    
+    reviews: makeTemplate.reviews || [
+      {
+        name: 'Cliente Satisfecho',
+        rating: parseInt(makeTemplate.rating) || 5,
+        text: {
+          es: 'Excelente servicio, muy recomendado.',
+          en: 'Excellent service, highly recommended.'
+        }
+      }
+    ],
+    
+    phone: makeTemplate.phone || makeTemplate.whatsappNumber || '+52 983 123 4567',
+    email: makeTemplate.email || 'info@business.com',
+    address: makeTemplate.address || {
+      es: makeTemplate.address || 'Dirección del negocio',
+      en: makeTemplate.address || 'Business address'
+    },
+    whatsappNumber: makeTemplate.whatsappNumber || makeTemplate.phone || '+52 983 123 4567',
+    whatsappMessage: makeTemplate.whatsappMessage || {
+      es: 'Hola, me interesa conocer más sobre sus servicios',
+      en: 'Hello, I\'m interested in learning more about your services'
+    },
+    
+    officeHours: makeTemplate.officeHours || {
+      mondayFriday: { 
+        es: makeTemplate.hours || 'Lun-Vie: 9:00 AM - 6:00 PM', 
+        en: makeTemplate.hours || 'Mon-Fri: 9:00 AM - 6:00 PM' 
+      },
+      saturday: { 
+        es: 'Sáb: 10:00 AM - 2:00 PM', 
+        en: 'Sat: 10:00 AM - 2:00 PM' 
+      }
+    },
+    
+    googleMapsEmbed: makeTemplate.googleMapsEmbed || `https://maps.google.com/?q=${encodeURIComponent(makeTemplate.address || 'Chetumal, Quintana Roo')}`,
+    
+    primaryColor: makeTemplate.primaryColor || '#00A859',
+    secondaryColor: makeTemplate.secondaryColor || '#C8102E',
+    accentColor: makeTemplate.accentColor || '#FFC107',
+    
+    metaTitle: makeTemplate.metaTitle || {
+      es: `${makeTemplate.doctorName || makeTemplate.businessName || 'Negocio'} - ${makeTemplate.location || 'Quintana Roo'}`,
+      en: `${makeTemplate.doctorName || makeTemplate.businessName || 'Business'} - ${makeTemplate.location || 'Quintana Roo'}`
+    },
+    metaDescription: makeTemplate.metaDescription || {
+      es: (makeTemplate.bio || 'Descripción del negocio').substring(0, 150),
+      en: (makeTemplate.bio || 'Business description').substring(0, 150)
+    }
+  };
+};
+
 export default function TemplateEditor() {
   const params = useParams();
   const templateId = params.templateId;
@@ -227,7 +322,10 @@ export default function TemplateEditor() {
           const response = await fetch(`/api/templates/${templateId}`);
           if (response.ok) {
             const existingTemplate = await response.json();
-            setTemplateData(existingTemplate);
+            
+            // Convert Make Agent template format to TemplateEditor format
+            const convertedTemplate = convertMakeAgentToEditorFormat(existingTemplate);
+            setTemplateData(convertedTemplate);
             setCurrentTemplateId(templateId);
           } else {
             console.error('Failed to load template');

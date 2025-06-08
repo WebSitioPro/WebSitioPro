@@ -122,17 +122,41 @@ export default function ClientSelectorPage() {
 
   const generatePreview = async (templateId: string) => {
     try {
-      const response = await fetch(`/api/templates/${templateId}/generate`, {
-        method: 'POST',
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        alert('Preview generated successfully! Check the static files output.');
-        console.log('Generated files at:', result.outputPath);
-      } else {
-        alert('Failed to generate preview');
+      // First get the template data
+      const templateResponse = await fetch(`/api/templates/${templateId}`);
+      if (!templateResponse.ok) {
+        alert('Failed to load template data');
+        return;
       }
+      
+      const templateData = await templateResponse.json();
+      
+      // Determine which demo page to show based on template type
+      let demoRoute = '/professionals-demo';
+      switch (templateData.templateType) {
+        case 'professionals':
+          demoRoute = '/professionals-demo';
+          break;
+        case 'restaurants':
+          demoRoute = '/restaurants-demo';
+          break;
+        case 'tourism':
+          demoRoute = '/tourism-demo';
+          break;
+        case 'retail':
+          demoRoute = '/retail-demo';
+          break;
+        case 'services':
+          demoRoute = '/services-demo';
+          break;
+        default:
+          demoRoute = '/professionals-demo';
+      }
+      
+      // Open the appropriate demo page with the template data
+      const previewUrl = `${demoRoute}?preview=${templateId}`;
+      window.open(previewUrl, '_blank');
+      
     } catch (error) {
       console.error('Error generating preview:', error);
       alert('Error generating preview');

@@ -8,16 +8,31 @@ export default function ProfessionalsDemo() {
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [previewData, setPreviewData] = useState<any>(null);
 
   useEffect(() => {
-    // Load saved configuration to demonstrate Editor functionality
-    fetch('/api/config/default')
-      .then(res => res.json())
-      .then(data => {
-        setSavedConfig(data);
-        console.log('Loaded saved config:', data);
-      })
-      .catch(err => console.log('Config not loaded:', err));
+    const urlParams = new URLSearchParams(window.location.search);
+    const previewId = urlParams.get('preview');
+    
+    if (previewId) {
+      // Load specific template data for preview
+      fetch(`/api/templates/${previewId}`)
+        .then(res => res.json())
+        .then(data => {
+          setPreviewData(data);
+          console.log('Loaded preview data:', data);
+        })
+        .catch(err => console.log('Preview data not loaded:', err));
+    } else {
+      // Load default configuration
+      fetch('/api/config/default')
+        .then(res => res.json())
+        .then(data => {
+          setSavedConfig(data);
+          console.log('Loaded saved config:', data);
+        })
+        .catch(err => console.log('Config not loaded:', err));
+    }
   }, []);
 
   const toggleLanguage = () => {
@@ -236,13 +251,13 @@ export default function ProfessionalsDemo() {
           <div className="row align-items-center">
             <div className="col-lg-6">
               <h1 className="display-4 fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                {t('heroTitle')}
+                {previewData?.doctorName || previewData?.businessName || t('heroTitle')}
               </h1>
               <h2 className="h3 mb-4" style={{ color: 'hsl(var(--secondary))' }}>
-                {t('heroSubtitle')}
+                {previewData?.specialty?.es || previewData?.subcategory || t('heroSubtitle')}
               </h2>
               <p className="lead mb-4 text-muted">
-                {t('heroDescription')}
+                {previewData?.description?.es || previewData?.bio || t('heroDescription')}
               </p>
               <a 
                 href="https://wa.me/529831234567?text=Hola, me gustaría agendar una cita médica"
