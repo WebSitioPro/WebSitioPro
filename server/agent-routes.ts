@@ -35,37 +35,69 @@ interface TemplateData {
   templateType: string;
   createdAt: string;
   
-  // Business specific data
-  doctorName?: string;
-  specialty?: { es: string; en: string };
-  description?: { es: string; en: string };
-  profileImage?: string;
+  // Core business info
+  doctorName: string;
+  specialty: { es: string; en: string };
+  description: { es: string; en: string };
+  profileImage: string;
+  
+  // About section
+  aboutTitle: { es: string; en: string };
+  aboutText: { es: string; en: string };
+  experience: string;
+  patientsServed: string;
+  availability: string;
+  
+  // Services
+  services: Array<{
+    title: { es: string; en: string };
+    description: { es: string; en: string };
+    icon: string;
+  }>;
+  
+  // Photos
+  photos: Array<{
+    url: string;
+    caption: { es: string; en: string };
+  }>;
+  
+  // Reviews
+  reviews: Array<{
+    name: string;
+    rating: number;
+    text: { es: string; en: string };
+  }>;
   
   // Contact information
   phone: string;
-  email?: string;
+  email: string;
   address: { es: string; en: string };
   whatsappNumber: string;
-  whatsappMessage?: { es: string; en: string };
+  whatsappMessage: { es: string; en: string };
   
-  // Location and hours
-  location: string;
-  officeHours?: {
+  // Office hours
+  officeHours: {
     mondayFriday: { es: string; en: string };
     saturday: { es: string; en: string };
   };
   
-  // Business metrics
+  // Google Maps
+  googleMapsEmbed: string;
+  
+  // Location and metrics
+  location: string;
   rating: string;
   fbLikes: string;
   placeId: string;
   
-  // SEO and styling
-  primaryColor?: string;
-  secondaryColor?: string;
-  accentColor?: string;
-  metaTitle?: { es: string; en: string };
-  metaDescription?: { es: string; en: string };
+  // Styling
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  
+  // SEO
+  metaTitle: { es: string; en: string };
+  metaDescription: { es: string; en: string };
 }
 
 function generateTemplateFromBusiness(businessData: any): TemplateData {
@@ -83,8 +115,8 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
     templateType: templateType,
     createdAt: new Date().toISOString(),
     
-    // For Professionals template
-    doctorName: businessData.category === "Professionals" ? businessName : undefined,
+    // Core business info that works with our template designs
+    doctorName: businessName, // Works for all business types
     specialty: {
       es: businessData.subcategory,
       en: businessData.subcategory
@@ -95,9 +127,71 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
     },
     profileImage: businessData.photo_url,
     
+    // About section for template compatibility
+    aboutTitle: {
+      es: businessData.category === "Professionals" ? "Acerca del Profesional" : "Acerca del Negocio",
+      en: businessData.category === "Professionals" ? "About the Professional" : "About the Business"
+    },
+    aboutText: {
+      es: bio,
+      en: bio
+    },
+    experience: "5+",
+    patientsServed: "100+",
+    availability: "24/7",
+    
+    // Services for template compatibility
+    services: [
+      {
+        title: { 
+          es: "Servicio Principal", 
+          en: "Main Service" 
+        },
+        description: { 
+          es: "Servicio de calidad profesional",
+          en: "Professional quality service" 
+        },
+        icon: "shield"
+      },
+      {
+        title: { 
+          es: "Atención Personalizada", 
+          en: "Personalized Attention" 
+        },
+        description: { 
+          es: "Atención dedicada a cada cliente",
+          en: "Dedicated attention to each client" 
+        },
+        icon: "heart"
+      }
+    ],
+    
+    // Photos for template compatibility
+    photos: [
+      { 
+        url: businessData.photo_url, 
+        caption: { 
+          es: `${businessName} - Foto Principal`, 
+          en: `${businessName} - Main Photo` 
+        } 
+      }
+    ],
+    
+    // Reviews for template compatibility
+    reviews: [
+      {
+        name: "Cliente Satisfecho",
+        rating: parseInt(businessData.rating) || 5,
+        text: {
+          es: "Excelente servicio, muy recomendado.",
+          en: "Excellent service, highly recommended."
+        }
+      }
+    ],
+    
     // Contact details
     phone: businessData.phone,
-    email: `info@${businessName.toLowerCase().replace(/\s+/g, '')}.com`,
+    email: `info@${businessName.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '')}.com`,
     address: {
       es: businessData.address,
       en: businessData.address
@@ -108,18 +202,20 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
       en: `Hello! I'm interested in learning more about ${businessName}`
     },
     
-    // Location and schedule
-    location: businessData.location,
+    // Office hours for template compatibility
     officeHours: {
       mondayFriday: {
         es: businessData.hours,
         en: businessData.hours
       },
       saturday: {
-        es: "10:00 AM - 2:00 PM",
-        en: "10:00 AM - 2:00 PM"
+        es: "Sáb: 10:00 AM - 2:00 PM",
+        en: "Sat: 10:00 AM - 2:00 PM"
       }
     },
+    
+    // Google Maps for template compatibility
+    googleMapsEmbed: `https://maps.google.com/?q=${encodeURIComponent(businessData.address)}`,
     
     // Business metrics
     rating: businessData.rating,
@@ -129,7 +225,7 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
     // Styling
     primaryColor: "#00A859",
     secondaryColor: "#C8102E", 
-    accentColor: "#FFD700",
+    accentColor: "#FFC107",
     
     // SEO
     metaTitle: {

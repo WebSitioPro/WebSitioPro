@@ -3,6 +3,13 @@ import { Link, useParams } from 'wouter';
 import { Save, Eye, ArrowLeft, Upload, Palette, Type, Image, MapPin, Phone, Star } from 'lucide-react';
 
 interface TemplateData {
+  // Template metadata
+  templateId?: string;
+  templateType?: string;
+  clientName?: string;
+  businessName?: string;
+  createdAt?: string;
+  
   // Header & Basic Info
   doctorName: string;
   specialty: { es: string; en: string };
@@ -60,6 +67,16 @@ interface TemplateData {
   // SEO & Meta
   metaTitle: { es: string; en: string };
   metaDescription: { es: string; en: string };
+  
+  // Make Agent compatibility fields
+  location?: string;
+  rating?: string;
+  fbLikes?: string;
+  placeId?: string;
+  bio?: string;
+  subcategory?: string;
+  hours?: string;
+  photo_url?: string;
 }
 
 // Convert Make Agent template format to TemplateEditor format
@@ -376,8 +393,36 @@ export default function TemplateEditor() {
       return;
     }
     
-    // Open preview in new window
-    window.open(`/templates/${currentTemplateId}/preview`, '_blank');
+    // Determine which template demo to show based on template type
+    let demoRoute = '/professionals-demo';
+    
+    // Get template type from data or infer from current template
+    const templateType = (templateData as any).templateType || 
+                        (templateData.doctorName ? 'professionals' : 'professionals');
+    
+    switch (templateType) {
+      case 'professionals':
+        demoRoute = '/professionals-demo';
+        break;
+      case 'restaurants':
+        demoRoute = '/restaurants-demo';
+        break;
+      case 'tourism':
+        demoRoute = '/tourism-demo';
+        break;
+      case 'retail':
+        demoRoute = '/retail-demo';
+        break;
+      case 'services':
+        demoRoute = '/services-demo';
+        break;
+      default:
+        demoRoute = '/professionals-demo';
+    }
+    
+    // Open our beautiful template demo with the current data
+    const previewUrl = `${demoRoute}?preview=${currentTemplateId}`;
+    window.open(previewUrl, '_blank');
   };
 
   const handleGenerate = async () => {

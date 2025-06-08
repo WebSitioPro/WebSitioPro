@@ -1,0 +1,107 @@
+{
+  "templateId": "test222_1749378241497",
+  "clientName": "Eco Tours Bacalar",
+  "businessName": "Eco Tours Bacalar",
+  "templateType": "tourism",
+  "createdAt": "2025-06-08T10:24:01.497Z",
+  "doctorName": "Eco Tours Bacalar",
+  "specialty": {
+    "es": "Eco Tours",
+    "en": "Eco Tours"
+  },
+  "description": {
+    "es": "Tours ecológicos en la Laguna de Bacalar. Kayaks, snorkel y experiencias culturales con comunidades locales.",
+    "en": "Tours ecológicos en la Laguna de Bacalar. Kayaks, snorkel y experiencias culturales con comunidades locales."
+  },
+  "profileImage": "ecotours.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Negocio",
+    "en": "About the Business"
+  },
+  "aboutText": {
+    "es": "Tours ecológicos en la Laguna de Bacalar. Kayaks, snorkel y experiencias culturales con comunidades locales.",
+    "en": "Tours ecológicos en la Laguna de Bacalar. Kayaks, snorkel y experiencias culturales con comunidades locales."
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "ecotours.jpg",
+      "caption": {
+        "es": "Eco Tours Bacalar - Foto Principal",
+        "en": "Eco Tours Bacalar - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+529836667777",
+  "email": "info@ecotoursbacalar.com",
+  "address": {
+    "es": "Muelle Municipal, Bacalar",
+    "en": "Muelle Municipal, Bacalar"
+  },
+  "whatsappNumber": "+529836667777",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Eco Tours Bacalar",
+    "en": "Hello! I'm interested in learning more about Eco Tours Bacalar"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Lun-Dom 8-17",
+      "en": "Lun-Dom 8-17"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Muelle%20Municipal%2C%20Bacalar",
+  "rating": "4.7",
+  "fbLikes": "289",
+  "placeId": "test222",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Eco Tours Bacalar - Eco Tours en Bacalar",
+    "en": "Eco Tours Bacalar - Eco Tours in Bacalar"
+  },
+  "metaDescription": {
+    "es": "Tours ecológicos en la Laguna de Bacalar. Kayaks, snorkel y experiencias culturales con comunidades locales....",
+    "en": "Tours ecológicos en la Laguna de Bacalar. Kayaks, snorkel y experiencias culturales con comunidades locales...."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "templateId": "test654_1749378241481",
+  "clientName": "Café Olé",
+  "businessName": "Café Olé",
+  "templateType": "restaurants",
+  "createdAt": "2025-06-08T10:24:01.481Z",
+  "doctorName": "Café Olé",
+  "specialty": {
+    "es": "Cafes",
+    "en": "Cafes"
+  },
+  "description": {
+    "es": "Café artesanal en el corazón de Chetumal. Especialidad en café de la región y repostería casera. Ambiente acogedor para trabajar o relajarse.",
+    "en": "Café artesanal en el corazón de Chetumal. Especialidad en café de la región y repostería casera. Ambiente acogedor para trabajar o relajarse."
+  },
+  "profileImage": "cafe.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Negocio",
+    "en": "About the Business"
+  },
+  "aboutText": {
+    "es": "Café artesanal en el corazón de Chetumal. Especialidad en café de la región y repostería casera. Ambiente acogedor para trabajar o relajarse.",
+    "en": "Café artesanal en el corazón de Chetumal. Especialidad en café de la región y repostería casera. Ambiente acogedor para trabajar o relajarse."
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "cafe.jpg",
+      "caption": {
+        "es": "Café Olé - Foto Principal",
+        "en": "Café Olé - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+529831111222",
+  "email": "info@cafol.com",
+  "address": {
+    "es": "Av. Heroes 234, Chetumal",
+    "en": "Av. Heroes 234, Chetumal"
+  },
+  "whatsappNumber": "+529831111222",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Café Olé",
+    "en": "Hello! I'm interested in learning more about Café Olé"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Lun-Sab 6-22, Dom 8-20",
+      "en": "Lun-Sab 6-22, Dom 8-20"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Av.%20Heroes%20234%2C%20Chetumal",
+  "rating": "4.5",
+  "fbLikes": "164",
+  "placeId": "test654",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Café Olé - Cafes en Chetumal",
+    "en": "Café Olé - Cafes in Chetumal"
+  },
+  "metaDescription": {
+    "es": "Café artesanal en el corazón de Chetumal. Especialidad en café de la región y repostería casera. Ambiente acogedor para trabajar o relajarse....",
+    "en": "Café artesanal en el corazón de Chetumal. Especialidad en café de la región y repostería casera. Ambiente acogedor para trabajar o relajarse...."
+  }
+}
