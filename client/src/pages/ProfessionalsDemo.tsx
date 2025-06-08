@@ -260,7 +260,7 @@ export default function ProfessionalsDemo() {
                 {previewData?.description?.es || previewData?.bio || t('heroDescription')}
               </p>
               <a 
-                href="https://wa.me/529831234567?text=Hola, me gustaría agendar una cita médica"
+                href={`https://wa.me/${(previewData?.whatsappNumber || previewData?.phone || '529831234567').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(previewData?.whatsappMessage?.es || 'Hola, me gustaría agendar una cita')}`}
                 className="btn btn-primary btn-lg text-white"
                 style={{ backgroundColor: '#25D366' }}
                 target="_blank"
@@ -282,13 +282,13 @@ export default function ProfessionalsDemo() {
                   }}
                 >
                   <img 
-                    src={savedConfig?.heroImage || "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Dr.+María+González"}
-                    alt="Dr. María González"
+                    src={previewData?.profileImage || previewData?.photo_url || savedConfig?.heroImage || "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business"}
+                    alt={previewData?.doctorName || previewData?.businessName || "Business"}
                     className="w-100 h-100"
                     style={{ objectFit: 'cover' }}
                   />
                 </div>
-                <p className="text-muted">Especialista en Medicina Familiar</p>
+                <p className="text-muted">{previewData?.specialty?.es || previewData?.subcategory || "Especialista en Medicina Familiar"}</p>
               </div>
             </div>
           </div>
