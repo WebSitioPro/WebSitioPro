@@ -120,48 +120,7 @@ export default function ClientSelectorPage() {
     }
   };
 
-  const generatePreview = async (templateId: string) => {
-    try {
-      // First get the template data
-      const templateResponse = await fetch(`/api/templates/${templateId}`);
-      if (!templateResponse.ok) {
-        alert('Failed to load template data');
-        return;
-      }
-      
-      const templateData = await templateResponse.json();
-      
-      // Determine which demo page to show based on template type
-      let demoRoute = '/professionals-demo';
-      switch (templateData.templateType) {
-        case 'professionals':
-          demoRoute = '/professionals-demo';
-          break;
-        case 'restaurants':
-          demoRoute = '/restaurants-demo';
-          break;
-        case 'tourism':
-          demoRoute = '/tourism-demo';
-          break;
-        case 'retail':
-          demoRoute = '/retail-demo';
-          break;
-        case 'services':
-          demoRoute = '/services-demo';
-          break;
-        default:
-          demoRoute = '/professionals-demo';
-      }
-      
-      // Open the appropriate demo page with the template data
-      const previewUrl = `${demoRoute}?preview=${templateId}`;
-      window.open(previewUrl, '_blank');
-      
-    } catch (error) {
-      console.error('Error generating preview:', error);
-      alert('Error generating preview');
-    }
-  };
+
 
   const formatDate = (dateString: string) => {
     try {
@@ -374,7 +333,7 @@ export default function ClientSelectorPage() {
                           {formatDate(client.lastModified)}
                         </p>
 
-                        <div className="d-grid gap-2">
+                        <div className="d-grid">
                           <Link 
                             href={`/editor/template/${client.templateId}`}
                             className="btn btn-primary btn-sm"
@@ -382,12 +341,6 @@ export default function ClientSelectorPage() {
                             <Edit size={16} className="me-1" />
                             Edit Website
                           </Link>
-                          <button 
-                            className="btn btn-outline-secondary btn-sm"
-                            onClick={() => generatePreview(client.templateId)}
-                          >
-                            View Preview
-                          </button>
                         </div>
                       </div>
                     </div>
