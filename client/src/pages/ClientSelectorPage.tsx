@@ -10,6 +10,7 @@ interface ClientInfo {
   lastModified: string;
   businessName: string;
   createdAt: string;
+  templateId: string;
 }
 
 interface TemplateData {
@@ -51,7 +52,8 @@ export default function ClientSelectorPage() {
           templateType: template.templateType || 'professionals',
           businessName: template.businessName || '',
           lastModified: template.lastModified || template.createdAt,
-          createdAt: template.createdAt
+          createdAt: template.createdAt,
+          templateId: template.templateId
         }));
 
         setClients(clientList);
@@ -115,6 +117,25 @@ export default function ClientSelectorPage() {
     } catch (error) {
       console.error('Error deleting client:', error);
       alert('Error deleting client');
+    }
+  };
+
+  const generatePreview = async (templateId: string) => {
+    try {
+      const response = await fetch(`/api/templates/${templateId}/generate`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert('Preview generated successfully! Check the static files output.');
+        console.log('Generated files at:', result.outputPath);
+      } else {
+        alert('Failed to generate preview');
+      }
+    } catch (error) {
+      console.error('Error generating preview:', error);
+      alert('Error generating preview');
     }
   };
 
@@ -331,19 +352,18 @@ export default function ClientSelectorPage() {
 
                         <div className="d-grid gap-2">
                           <Link 
-                            href={`/editor/tools?template=${client.id}`}
+                            href={`/editor/template/${client.templateId}`}
                             className="btn btn-primary btn-sm"
                           >
                             <Edit size={16} className="me-1" />
                             Edit Website
                           </Link>
-                          <Link 
-                            href={`/templates/${client.id}/preview`}
+                          <button 
                             className="btn btn-outline-secondary btn-sm"
-                            target="_blank"
+                            onClick={() => generatePreview(client.templateId)}
                           >
                             View Preview
-                          </Link>
+                          </button>
                         </div>
                       </div>
                     </div>
