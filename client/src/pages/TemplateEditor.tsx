@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'wouter';
+import { useState, useEffect } from 'react';
+import { Link, useParams } from 'wouter';
 import { Save, Eye, ArrowLeft, Upload, Palette, Type, Image, MapPin, Phone, Star } from 'lucide-react';
 
 interface TemplateData {
@@ -63,7 +63,10 @@ interface TemplateData {
 }
 
 export default function TemplateEditor() {
+  const params = useParams();
+  const templateId = params.templateId;
   const [activeTab, setActiveTab] = useState('basic');
+  const [isLoadingTemplate, setIsLoadingTemplate] = useState(true);
   const [templateData, setTemplateData] = useState<TemplateData>({
     // Default data matching our current template
     doctorName: 'Dr. María González',
@@ -212,8 +215,35 @@ export default function TemplateEditor() {
     });
   };
 
-  const [currentTemplateId, setCurrentTemplateId] = useState<string | null>(null);
+  const [currentTemplateId, setCurrentTemplateId] = useState<string | null>(templateId || null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Load existing template data if templateId is provided
+  useEffect(() => {
+    const loadTemplate = async () => {
+      if (templateId) {
+        setIsLoadingTemplate(true);
+        try {
+          const response = await fetch(`/api/templates/${templateId}`);
+          if (response.ok) {
+            const existingTemplate = await response.json();
+            setTemplateData(existingTemplate);
+            setCurrentTemplateId(templateId);
+          } else {
+            console.error('Failed to load template');
+          }
+        } catch (error) {
+          console.error('Error loading template:', error);
+        } finally {
+          setIsLoadingTemplate(false);
+        }
+      } else {
+        setIsLoadingTemplate(false);
+      }
+    };
+
+    loadTemplate();
+  }, [templateId]);
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -278,6 +308,20 @@ export default function TemplateEditor() {
       setIsLoading(false);
     }
   };
+
+  // Show loading state while loading template
+  if (isLoadingTemplate) {
+    return (
+      <div className="min-vh-100 bg-light d-flex align-items-center justify-content-center">
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-2">Loading template...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-vh-100 bg-light">
