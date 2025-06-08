@@ -56,6 +56,9 @@ export default function ProfessionalsDemo() {
   };
 
   const t = (key: string) => {
+    // Use preview data if available, otherwise use default translations
+    const usePreviewData = previewData && Object.keys(previewData).length > 0;
+    
     const translations = {
       es: {
         // Header
@@ -66,15 +69,15 @@ export default function ProfessionalsDemo() {
         contact: 'Contacto',
         language: 'English',
         
-        // Hero
-        heroTitle: 'Dr. María González',
-        heroSubtitle: 'Especialista en Medicina Familiar',
-        heroDescription: 'Más de 15 años de experiencia brindando atención médica integral a familias en Chetumal',
+        // Hero - Use preview data if available
+        heroTitle: usePreviewData ? previewData.doctorName : 'Dr. María González',
+        heroSubtitle: usePreviewData ? previewData.specialty?.es : 'Especialista en Medicina Familiar',
+        heroDescription: usePreviewData ? previewData.description?.es : 'Más de 15 años de experiencia brindando atención médica integral a familias en Chetumal',
         scheduleAppointment: 'Contactar por WhatsApp',
         
-        // About
-        aboutTitle: 'Acerca de la Doctora',
-        aboutText: 'La Dra. María González es una médica especialista en medicina familiar con más de 15 años de experiencia. Se graduó de la Universidad Nacional Autónoma de México y ha estado sirviendo a la comunidad de Chetumal desde 2008.',
+        // About - Use preview data if available
+        aboutTitle: usePreviewData ? previewData.aboutTitle?.es : 'Acerca de la Doctora',
+        aboutText: usePreviewData ? previewData.aboutText?.es : 'La Dra. María González es una médica especialista en medicina familiar con más de 15 años de experiencia. Se graduó de la Universidad Nacional Autónoma de México y ha estado sirviendo a la comunidad de Chetumal desde 2008.',
         
         // Services
         servicesTitle: 'Servicios Médicos',
@@ -99,14 +102,14 @@ export default function ProfessionalsDemo() {
         review3Name: 'María Fernández',
         review3Text: 'Muy recomendada. Explica todo claramente y tiene mucha paciencia con los niños.',
         
-        // Contact
+        // Contact - Use preview data if available
         contactTitle: 'Información de Contacto',
-        phone: '+52 983 123 4567',
-        email: 'dra.gonzalez@email.com',
-        address: 'Av. Héroes 123, Centro, Chetumal, Q.R.',
+        phone: usePreviewData ? previewData.phone : '+52 983 123 4567',
+        email: usePreviewData ? previewData.email : 'dra.gonzalez@email.com',
+        address: usePreviewData ? previewData.address?.es : 'Av. Héroes 123, Centro, Chetumal, Q.R.',
         hours: 'Horarios de Atención',
-        mondayFriday: 'Lun-Vie: 8:00 AM - 6:00 PM',
-        saturday: 'Sáb: 9:00 AM - 2:00 PM',
+        mondayFriday: usePreviewData ? previewData.officeHours?.mondayFriday?.es : 'Lun-Vie: 8:00 AM - 6:00 PM',
+        saturday: usePreviewData ? previewData.officeHours?.saturday?.es : 'Sáb: 9:00 AM - 2:00 PM',
         whatsappButton: 'WhatsApp',
         viewOnMaps: 'Ver en Google Maps',
         

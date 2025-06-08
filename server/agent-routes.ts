@@ -217,7 +217,8 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
     // Google Maps for template compatibility
     googleMapsEmbed: `https://maps.google.com/?q=${encodeURIComponent(businessData.address)}`,
     
-    // Business metrics
+    // Location and business metrics
+    location: businessData.location,
     rating: businessData.rating,
     fbLikes: businessData.fb_likes,
     placeId: businessData.place_id,
