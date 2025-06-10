@@ -1,0 +1,108 @@
+{
+  "templateId": "test987_1749380699458",
+  "clientName": "Mariscos El Pescador",
+  "businessName": "Mariscos El Pescador",
+  "templateType": "restaurants",
+  "createdAt": "2025-06-08T11:04:59.458Z",
+  "doctorName": "Mariscos El Pescador",
+  "specialty": {
+    "es": "Seafood",
+    "en": "Seafood"
+  },
+  "description": {
+    "es": "Restaurante de mariscos frescos en Cancún. Especialidad en pescado a la veracruzana y ceviche. Vista al mar y ambiente familiar.",
+    "en": "Restaurante de mariscos frescos en Cancún. Especialidad en pescado a la veracruzana y ceviche. Vista al mar y ambiente familiar."
+  },
+  "profileImage": "seafood.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Negocio",
+    "en": "About the Business"
+  },
+  "aboutText": {
+    "es": "Restaurante de mariscos frescos en Cancún. Especialidad en pescado a la veracruzana y ceviche. Vista al mar y ambiente familiar.",
+    "en": "Restaurante de mariscos frescos en Cancún. Especialidad en pescado a la veracruzana y ceviche. Vista al mar y ambiente familiar."
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "seafood.jpg",
+      "caption": {
+        "es": "Mariscos El Pescador - Foto Principal",
+        "en": "Mariscos El Pescador - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+529982345678",
+  "email": "info@mariscoselpescador.com",
+  "address": {
+    "es": "Zona Hotelera Km 12, Cancún",
+    "en": "Zona Hotelera Km 12, Cancún"
+  },
+  "whatsappNumber": "+529982345678",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Mariscos El Pescador",
+    "en": "Hello! I'm interested in learning more about Mariscos El Pescador"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Lun-Dom 12-23",
+      "en": "Lun-Dom 12-23"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Zona%20Hotelera%20Km%2012%2C%20Canc%C3%BAn",
+  "location": "Cancun",
+  "rating": "4.4",
+  "fbLikes": "421",
+  "placeId": "test987",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Mariscos El Pescador - Seafood en Cancun",
+    "en": "Mariscos El Pescador - Seafood in Cancun"
+  },
+  "metaDescription": {
+    "es": "Restaurante de mariscos frescos en Cancún. Especialidad en pescado a la veracruzana y ceviche. Vista al mar y ambiente familiar....",
+    "en": "Restaurante de mariscos frescos en Cancún. Especialidad en pescado a la veracruzana y ceviche. Vista al mar y ambiente familiar...."
+  }
+}

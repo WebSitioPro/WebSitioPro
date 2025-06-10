@@ -1,0 +1,119 @@
+Instructions to Replit for Make Agent Updates
+Subject: Update WebSitioPro Make Agent for Sheet Alignment and Testing
+Good morning, Replit Assistant! Thanks for confirming the Make Agent’s readiness for testing. We’ve updated the Google Sheet to a single tab, WebSitioPro Master Contact List (https://docs.google.com/spreadsheets/d/1VEsUMnp_i4X9GzS8nKDLj3hXeQ5Y48C6GWMufU0oG2M/edit?usp=sharing), with 10 columns: Place_ID, Name, Phone, Address, Date_Created, Facebook_URL, Preview_URL, Template_Type, Sunset_Date, Agent_Notes. We need the agent to populate the website editor (/api/agent/create-template) with all required data (using placeholders for missing fields) but only log these 10 columns to the Sheet. Below are updates to resolve JSON and validation conflicts for testing today (June 10) and the live phase.
+Update JSON Format Handling:
+Current Issue: The agent expects 12 JSON fields: name, bio, address, phone, rating, photo_url, hours, category, subcategory, location, fb_likes, place_id. Our workflow omits bio, rating, photo_url, hours, subcategory, fb_likes, location.
+
+Instruction: Modify /api/agent/create-template and /api/make/auto-create to handle JSONs with only:
+Required: name, address, phone, category (maps to Template_Type: Professionals, Services, Restaurants, Retail, Tourism), place_id.
+
+Optional: facebook_url (if available).
+Placeholders for Missing Fields:
+bio: Generate a generic bio (e.g., “[Name]: ¡Tu negocio líder en Chetumal!”) if not provided.
+
+photo_url: Use a stock image (e.g., https://websitiopro.com/placeholder/business.jpg) if none.
+
+rating, hours, reviews: Omit or use placeholders (e.g., “Contáctanos para horarios”).
+
+subcategory, fb_likes: Ignore (not used).
+
+location: Default to “Chetumal”.
+Example JSON:
+json
+{
+  "name": "Clínica Vet Paws",
+  "address": "Av. Benito Juárez 456, Chetumal",
+  "phone": "+529831234567",
+  "category": "Professionals",
+  "place_id": "chetumal_vet_001",
+  "facebook_url": "https://facebook.com/clinicavetpaws"
+}
+Impact: Ensures templates generate with minimal input, aligning with our Sheet.
+Remove Subcategory Requirement:
+Current Issue: JSON requires subcategory (e.g., “Veterinarians”).
+
+Instruction: Update /api/agent/create-template to ignore subcategory, using category (Template_Type) to select templates (Professionals, Services, Restaurants, Retail, Tourism).
+
+Impact: Matches our workflow (no subcategories, 6:34 AM, June 9).
+Remove Facebook Likes Validation:
+Current Issue: JSON requires fb_likes (min 50).
+
+Instruction: Disable fb_likes validation in /api/agent/create-template. Use facebook_url (if available) for website footer links, no Likes check.
+
+Impact: Aligns with our decision to drop FB Likes (6:34 AM).
+Default Location to Chetumal:
+Current Issue: JSON requires location (Chetumal, Bacalar, etc.).
+
+Instruction: Hardcode location as “Chetumal” in /api/agent/create-template if not provided, as all clients are Chetumal-based (10:47 PM, June 9).
+
+Impact: Eliminates need for Location in JSON or Sheet.
+Google Sheets Output Mapping:
+Current Issue: Agent’s response (templateId, templateType, previewUrl, etc.) may include fields not in our Sheet (e.g., bio, rating).
+
+Instruction: Ensure /api/make/auto-create response supports logging to our Sheet with:
+place_id → Place_ID
+
+name → Name
+
+phone → Phone
+
+address → Address
+
+facebook_url → Facebook_URL
+
+previewUrl → Preview_URL
+
+templateType → Template_Type
+
+Current date → Date_Created
+
+Date_Created + 10 days → Sunset_Date
+
+Custom notes (e.g., “Placeholder photo used”) → Agent_Notes
+Ignore other fields (e.g., bio, rating).
+
+Example Response:
+json
+{
+  "success": true,
+  "place_id": "chetumal_vet_001",
+  "name": "Clínica Vet Paws",
+  "phone": "+529831234567",
+  "address": "Av. Benito Juárez 456, Chetumal",
+  "facebook_url": "https://facebook.com/clinicavetpaws",
+  "previewUrl": "websitiopro.com/preview/chetumal_vet_001",
+  "templateType": "Professionals",
+  "dateCreated": "6/10/2025",
+  "sunsetDate": "6/20/2025",
+  "agentNotes": "Placeholder photo used",
+  "makeIntegration": {
+    "googleSheetsCompatible": true
+  }
+}
+Impact: Make Scenario 2 maps these to Sheet headers (A1:J1).
+Testing Data for Phase 1:
+Current Issue: Replit’s tests used 10 clients with all 12 JSON fields. Our mock data omits bio, rating, photo_url, hours, subcategory, fb_likes, location.
+
+Instruction: Provide 30 mock JSONs for testing (June 10) matching the updated JSON format above (6 fields: name, address, phone, category, place_id, facebook_url). Example:
+json
+[
+  {
+    "name": "Clínica Vet Paws",
+    "address": "Av. Benito Juárez 456, Chetumal",
+    "phone": "+529831234567",
+    "category": "Professionals",
+    "place_id": "chetumal_vet_001",
+    "facebook_url": "https://facebook.com/clinicavetpaws"
+  },
+  // 29 more...
+]
+Use placeholders in /api/agent/create-template for missing fields (e.g., generic bio). Ensure 9/10 templates succeed, as in prior tests.
+
+Impact: Aligns mock data with our workflow for 30 sites/day testing.
+Action Requested:
+Implement these updates to /api/agent/create-template and /api/make/auto-create by 9:00 AM EDT, June 10, 2025.
+
+Confirm changes and provide updated mock JSONs for testing.
+
+Reply: “Updates complete, mock data ready” or “Issues with [specify].”
+
