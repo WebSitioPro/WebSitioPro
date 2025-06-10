@@ -3,20 +3,22 @@ import { z } from "zod";
 import fs from "fs/promises";
 import path from "path";
 
-// Mock business data schema for validation
+// Simplified business data schema for Make integration
 const mockBusinessSchema = z.object({
   name: z.string().min(1, "Business name is required"),
-  bio: z.string().min(10, "Bio must be at least 10 characters"),
   address: z.string().min(5, "Address is required"),
   phone: z.string().regex(/^\+52\d{10}$/, "Phone must be valid Mexican format (+52XXXXXXXXXX)"),
-  rating: z.string().regex(/^\d\.\d$/, "Rating must be in format X.X"),
-  photo_url: z.string().min(1, "Photo URL is required"),
-  hours: z.string().min(3, "Hours are required"),
-  category: z.enum(["Professionals", "Services", "Restaurants", "Tourist Businesses", "Retail"]),
-  subcategory: z.string().min(1, "Subcategory is required"),
-  location: z.enum(["Chetumal", "Bacalar", "Cancun", "Quintana Roo", "Yucatan"]),
-  fb_likes: z.string().refine(val => parseInt(val) >= 50, "Facebook likes must be at least 50"),
-  place_id: z.string().min(1, "Place ID is required")
+  category: z.enum(["Professionals", "Services", "Restaurants", "Retail", "Tourism"]),
+  place_id: z.string().min(1, "Place ID is required"),
+  facebook_url: z.string().optional(),
+  // Optional fields for backward compatibility
+  bio: z.string().optional(),
+  rating: z.string().optional(),
+  photo_url: z.string().optional(),
+  hours: z.string().optional(),
+  subcategory: z.string().optional(),
+  location: z.string().optional(),
+  fb_likes: z.string().optional()
 });
 
 // Template mapping based on category
@@ -104,9 +106,13 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
   const templateType = categoryTemplateMap[businessData.category as keyof typeof categoryTemplateMap];
   const templateId = `${businessData.place_id}_${Date.now()}`;
   
-  // Generate bilingual content
+  // Generate content with placeholders for missing fields
   const businessName = businessData.name;
-  const bio = businessData.bio;
+  const bio = businessData.bio || `${businessName}: ¡Tu negocio líder en Chetumal!`;
+  const photoUrl = businessData.photo_url || 'https://websitiopro.com/placeholder/business.jpg';
+  const rating = businessData.rating || '4.5';
+  const hours = businessData.hours || 'Contáctanos para horarios';
+  const location = businessData.location || 'Chetumal';
   
   const templateData: TemplateData = {
     templateId,
@@ -125,7 +131,7 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
       es: bio,
       en: bio
     },
-    profileImage: businessData.photo_url,
+    profileImage: photoUrl,
     
     // About section for template compatibility
     aboutTitle: {
@@ -169,7 +175,7 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
     // Photos for template compatibility
     photos: [
       { 
-        url: businessData.photo_url, 
+        url: photoUrl, 
         caption: { 
           es: `${businessName} - Foto Principal`, 
           en: `${businessName} - Main Photo` 
@@ -181,7 +187,7 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
     reviews: [
       {
         name: "Cliente Satisfecho",
-        rating: parseInt(businessData.rating) || 5,
+        rating: parseFloat(rating) || 4.5,
         text: {
           es: "Excelente servicio, muy recomendado.",
           en: "Excellent service, highly recommended."
@@ -205,8 +211,8 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
     // Office hours for template compatibility
     officeHours: {
       mondayFriday: {
-        es: businessData.hours,
-        en: businessData.hours
+        es: hours,
+        en: hours
       },
       saturday: {
         es: "Sáb: 10:00 AM - 2:00 PM",
@@ -218,9 +224,9 @@ function generateTemplateFromBusiness(businessData: any): TemplateData {
     googleMapsEmbed: `https://maps.google.com/?q=${encodeURIComponent(businessData.address)}`,
     
     // Location and business metrics
-    location: businessData.location,
-    rating: businessData.rating,
-    fbLikes: businessData.fb_likes,
+    location: location,
+    rating: rating,
+    fbLikes: businessData.fb_likes || "50+",
     placeId: businessData.place_id,
     
     // Styling
@@ -297,25 +303,33 @@ export function registerAgentRoutes(app: Express) {
         // For now, simulate webhook success
         const webhookSuccess = true;
         
+        // Generate agent notes
+        const agentNotes = [];
+        if (!businessData.photo_url) agentNotes.push("Placeholder photo used");
+        if (!businessData.bio) agentNotes.push("Generic bio generated");
+        if (!businessData.hours) agentNotes.push("Generic hours used");
+        
+        const currentDate = new Date();
+        const sunsetDate = new Date(currentDate);
+        sunsetDate.setDate(currentDate.getDate() + 10);
+        
         res.json({
           success: true,
-          templateId: templateData.templateId,
-          templateType: templateData.templateType,
+          // Google Sheets compatible format
+          place_id: businessData.place_id,
+          name: businessData.name,
+          phone: businessData.phone,
+          address: businessData.address,
+          facebook_url: businessData.facebook_url || "",
           previewUrl: `websitiopro.com/preview/${businessData.place_id}`,
+          templateType: businessData.category,
+          dateCreated: currentDate.toLocaleDateString('en-US'),
+          sunsetDate: sunsetDate.toLocaleDateString('en-US'),
+          agentNotes: agentNotes.join(", ") || "Template generated successfully",
+          // Legacy fields for backward compatibility
+          templateId: templateData.templateId,
           webhookSent: webhookSuccess,
-          message: "Template created and webhook sent successfully",
-          // Enhanced data for Make logging
-          businessData: {
-            name: businessData.name,
-            location: businessData.location,
-            category: businessData.category,
-            phone: businessData.phone,
-            fbLikes: businessData.fb_likes,
-            rating: businessData.rating
-          },
-          timestamp: new Date().toISOString(),
           makeIntegration: {
-            readyForWhatsAppLogging: true,
             googleSheetsCompatible: true,
             automationStatus: "ready"
           }
