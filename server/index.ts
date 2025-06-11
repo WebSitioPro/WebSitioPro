@@ -56,12 +56,15 @@ app.use((req, res, next) => {
 (async () => {
   // Add explicit health endpoint BEFORE other routes
   app.get('/health', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 'no-cache');
     res.json({
       status: 'healthy',
       service: 'WebSitioPro',
       timestamp: new Date().toISOString(),
       port: 5000,
-      external_url: 'https://websitiopro.bluerockchris.replit.dev'
+      external_url: 'https://websitiopro.bluerockchris.replit.dev',
+      deployment_status: 'development'
     });
   });
 
@@ -75,9 +78,7 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
+  // Setup based on environment
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
