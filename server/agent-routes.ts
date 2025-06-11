@@ -26,7 +26,7 @@ const categoryTemplateMap = {
   "Professionals": "professionals",
   "Services": "services", 
   "Restaurants": "restaurants",
-  "Tourist Businesses": "tourism",
+  "Tourism": "tourism",
   "Retail": "retail"
 };
 
@@ -254,8 +254,27 @@ export function registerAgentRoutes(app: Express) {
     try {
       console.log("Agent: Received business data:", req.body);
       
-      // Validate incoming business data
-      const validation = mockBusinessSchema.safeParse(req.body);
+      // Transform Google Sheets format to expected format
+      const rawData = req.body;
+      const transformedData = {
+        name: rawData.Name || rawData.name,
+        address: rawData.Address || rawData.address,
+        phone: rawData.Phone || rawData.phone,
+        category: rawData.Template_Type || rawData.category,
+        place_id: rawData.Place_ID || rawData.place_id,
+        bio: rawData.bio || `Professional business in ${rawData.Address || rawData.address}`,
+        photo_url: rawData.photo_url || 'https://websitiopro.com/placeholder/business.jpg',
+        rating: rawData.rating || '4.5',
+        hours: rawData.hours || 'Contact for hours',
+        subcategory: rawData.subcategory || 'Professional Services',
+        location: rawData.location || 'Mexico',
+        fb_likes: rawData.fb_likes || '100'
+      };
+      
+      console.log("Agent: Transformed data:", transformedData);
+      
+      // Validate transformed business data
+      const validation = mockBusinessSchema.safeParse(transformedData);
       if (!validation.success) {
         console.error("Agent: Validation failed:", validation.error.issues);
         return res.status(400).json({ 
