@@ -1,0 +1,108 @@
+{
+  "templateId": "place_invalid_2_1749611537295",
+  "clientName": "Negocio Pocos Likes",
+  "businessName": "Negocio Pocos Likes",
+  "templateType": "retail",
+  "createdAt": "2025-06-11T03:12:17.295Z",
+  "doctorName": "Negocio Pocos Likes",
+  "specialty": {
+    "es": "Professional Services",
+    "en": "Professional Services"
+  },
+  "description": {
+    "es": "Negocio con pocos seguidores",
+    "en": "Negocio con pocos seguidores"
+  },
+  "profileImage": "https://websitiopro.com/placeholder/business.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Negocio",
+    "en": "About the Business"
+  },
+  "aboutText": {
+    "es": "Negocio con pocos seguidores",
+    "en": "Negocio con pocos seguidores"
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "https://websitiopro.com/placeholder/business.jpg",
+      "caption": {
+        "es": "Negocio Pocos Likes - Foto Principal",
+        "en": "Negocio Pocos Likes - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 3.8,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+52-222-111-2233",
+  "email": "info@negociopocoslikes.com",
+  "address": {
+    "es": "Centro, Puebla",
+    "en": "Centro, Puebla"
+  },
+  "whatsappNumber": "+52-222-111-2233",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Negocio Pocos Likes",
+    "en": "Hello! I'm interested in learning more about Negocio Pocos Likes"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Contact for hours",
+      "en": "Contact for hours"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Centro%2C%20Puebla",
+  "location": "Mexico",
+  "rating": "3.8",
+  "fbLikes": "25",
+  "placeId": "place_invalid_2",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Negocio Pocos Likes - Professional Services en Mexico",
+    "en": "Negocio Pocos Likes - Professional Services in Mexico"
+  },
+  "metaDescription": {
+    "es": "Negocio con pocos seguidores...",
+    "en": "Negocio con pocos seguidores..."
+  }
+}

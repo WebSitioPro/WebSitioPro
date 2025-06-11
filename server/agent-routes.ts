@@ -7,7 +7,7 @@ import path from "path";
 const mockBusinessSchema = z.object({
   name: z.string().min(1, "Business name is required"),
   address: z.string().min(5, "Address is required"),
-  phone: z.string().regex(/^\+52\d{10}$/, "Phone must be valid Mexican format (+52XXXXXXXXXX)"),
+  phone: z.string().regex(/^\+52[-\s]?\d{2,3}[-\s]?\d{3}[-\s]?\d{4}$/, "Phone must be valid Mexican format"),
   category: z.enum(["Professionals", "Services", "Restaurants", "Retail", "Tourism"]),
   place_id: z.string().min(1, "Place ID is required"),
   facebook_url: z.string().optional(),

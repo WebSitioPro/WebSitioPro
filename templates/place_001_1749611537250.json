@@ -1,0 +1,108 @@
+{
+  "templateId": "place_001_1749611537250",
+  "clientName": "Dr. María González",
+  "businessName": "Dr. María González",
+  "templateType": "professionals",
+  "createdAt": "2025-06-11T03:12:17.250Z",
+  "doctorName": "Dr. María González",
+  "specialty": {
+    "es": "Professional Services",
+    "en": "Professional Services"
+  },
+  "description": {
+    "es": "Dermatóloga especializada en tratamientos faciales",
+    "en": "Dermatóloga especializada en tratamientos faciales"
+  },
+  "profileImage": "https://websitiopro.com/placeholder/business.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Profesional",
+    "en": "About the Professional"
+  },
+  "aboutText": {
+    "es": "Dermatóloga especializada en tratamientos faciales",
+    "en": "Dermatóloga especializada en tratamientos faciales"
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "https://websitiopro.com/placeholder/business.jpg",
+      "caption": {
+        "es": "Dr. María González - Foto Principal",
+        "en": "Dr. María González - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4.8,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+52-555-123-4567",
+  "email": "info@drmaragonzlez.com",
+  "address": {
+    "es": "Av. Reforma 123, CDMX",
+    "en": "Av. Reforma 123, CDMX"
+  },
+  "whatsappNumber": "+52-555-123-4567",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Dr. María González",
+    "en": "Hello! I'm interested in learning more about Dr. María González"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Contact for hours",
+      "en": "Contact for hours"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Av.%20Reforma%20123%2C%20CDMX",
+  "location": "Mexico",
+  "rating": "4.8",
+  "fbLikes": "150",
+  "placeId": "place_001",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Dr. María González - Professional Services en Mexico",
+    "en": "Dr. María González - Professional Services in Mexico"
+  },
+  "metaDescription": {
+    "es": "Dermatóloga especializada en tratamientos faciales...",
+    "en": "Dermatóloga especializada en tratamientos faciales..."
+  }
+}

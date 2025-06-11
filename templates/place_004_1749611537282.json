@@ -1,0 +1,108 @@
+{
+  "templateId": "place_004_1749611537282",
+  "clientName": "Boutique Frida",
+  "businessName": "Boutique Frida",
+  "templateType": "retail",
+  "createdAt": "2025-06-11T03:12:17.282Z",
+  "doctorName": "Boutique Frida",
+  "specialty": {
+    "es": "Professional Services",
+    "en": "Professional Services"
+  },
+  "description": {
+    "es": "Ropa mexicana contemporánea",
+    "en": "Ropa mexicana contemporánea"
+  },
+  "profileImage": "https://websitiopro.com/placeholder/business.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Negocio",
+    "en": "About the Business"
+  },
+  "aboutText": {
+    "es": "Ropa mexicana contemporánea",
+    "en": "Ropa mexicana contemporánea"
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "https://websitiopro.com/placeholder/business.jpg",
+      "caption": {
+        "es": "Boutique Frida - Foto Principal",
+        "en": "Boutique Frida - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4.5,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+52-55-234-5678",
+  "email": "info@boutiquefrida.com",
+  "address": {
+    "es": "Roma Norte, CDMX",
+    "en": "Roma Norte, CDMX"
+  },
+  "whatsappNumber": "+52-55-234-5678",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Boutique Frida",
+    "en": "Hello! I'm interested in learning more about Boutique Frida"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Contact for hours",
+      "en": "Contact for hours"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Roma%20Norte%2C%20CDMX",
+  "location": "Mexico",
+  "rating": "4.5",
+  "fbLikes": "120",
+  "placeId": "place_004",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Boutique Frida - Professional Services en Mexico",
+    "en": "Boutique Frida - Professional Services in Mexico"
+  },
+  "metaDescription": {
+    "es": "Ropa mexicana contemporánea...",
+    "en": "Ropa mexicana contemporánea..."
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "templateId": "place_002_1749611537269",
+  "clientName": "Restaurante El Corazón",
+  "businessName": "Restaurante El Corazón",
+  "templateType": "restaurants",
+  "createdAt": "2025-06-11T03:12:17.269Z",
+  "doctorName": "Restaurante El Corazón",
+  "specialty": {
+    "es": "Professional Services",
+    "en": "Professional Services"
+  },
+  "description": {
+    "es": "Comida mexicana tradicional desde 1950",
+    "en": "Comida mexicana tradicional desde 1950"
+  },
+  "profileImage": "https://websitiopro.com/placeholder/business.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Negocio",
+    "en": "About the Business"
+  },
+  "aboutText": {
+    "es": "Comida mexicana tradicional desde 1950",
+    "en": "Comida mexicana tradicional desde 1950"
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "https://websitiopro.com/placeholder/business.jpg",
+      "caption": {
+        "es": "Restaurante El Corazón - Foto Principal",
+        "en": "Restaurante El Corazón - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4.6,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+52-33-987-6543",
+  "email": "info@restauranteelcorazn.com",
+  "address": {
+    "es": "Calle Juárez 45, Guadalajara",
+    "en": "Calle Juárez 45, Guadalajara"
+  },
+  "whatsappNumber": "+52-33-987-6543",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Restaurante El Corazón",
+    "en": "Hello! I'm interested in learning more about Restaurante El Corazón"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Contact for hours",
+      "en": "Contact for hours"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Calle%20Ju%C3%A1rez%2045%2C%20Guadalajara",
+  "location": "Mexico",
+  "rating": "4.6",
+  "fbLikes": "300",
+  "placeId": "place_002",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Restaurante El Corazón - Professional Services en Mexico",
+    "en": "Restaurante El Corazón - Professional Services in Mexico"
+  },
+  "metaDescription": {
+    "es": "Comida mexicana tradicional desde 1950...",
+    "en": "Comida mexicana tradicional desde 1950..."
+  }
+}

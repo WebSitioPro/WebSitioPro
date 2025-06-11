@@ -87,7 +87,7 @@ app.use((req, res, next) => {
 
   // Force explicit external binding for Replit
   const port = parseInt(process.env.PORT || '5000');
-  const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : '0.0.0.0';
+  const host = '0.0.0.0';
   
   server.listen(port, host, () => {
     log(`serving on ${host}:${port}`);

@@ -1,0 +1,108 @@
+{
+  "templateId": "place_003_1749611537275",
+  "clientName": "Hotel Playa Maya",
+  "businessName": "Hotel Playa Maya",
+  "templateType": "tourism",
+  "createdAt": "2025-06-11T03:12:17.275Z",
+  "doctorName": "Hotel Playa Maya",
+  "specialty": {
+    "es": "Professional Services",
+    "en": "Professional Services"
+  },
+  "description": {
+    "es": "Hotel boutique frente al mar",
+    "en": "Hotel boutique frente al mar"
+  },
+  "profileImage": "https://websitiopro.com/placeholder/business.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Negocio",
+    "en": "About the Business"
+  },
+  "aboutText": {
+    "es": "Hotel boutique frente al mar",
+    "en": "Hotel boutique frente al mar"
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "https://websitiopro.com/placeholder/business.jpg",
+      "caption": {
+        "es": "Hotel Playa Maya - Foto Principal",
+        "en": "Hotel Playa Maya - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4.7,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+52-998-123-4567",
+  "email": "info@hotelplayamaya.com",
+  "address": {
+    "es": "Zona Hotelera, Cancún",
+    "en": "Zona Hotelera, Cancún"
+  },
+  "whatsappNumber": "+52-998-123-4567",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Hotel Playa Maya",
+    "en": "Hello! I'm interested in learning more about Hotel Playa Maya"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Contact for hours",
+      "en": "Contact for hours"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Zona%20Hotelera%2C%20Canc%C3%BAn",
+  "location": "Mexico",
+  "rating": "4.7",
+  "fbLikes": "250",
+  "placeId": "place_003",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Hotel Playa Maya - Professional Services en Mexico",
+    "en": "Hotel Playa Maya - Professional Services in Mexico"
+  },
+  "metaDescription": {
+    "es": "Hotel boutique frente al mar...",
+    "en": "Hotel boutique frente al mar..."
+  }
+}
