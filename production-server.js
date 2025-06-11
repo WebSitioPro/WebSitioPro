@@ -12,18 +12,10 @@ let registerRoutes;
 
 async function startServer() {
   try {
-    // Check if compiled build exists, otherwise use development routes
-    let routesModule;
-    try {
-      // Try compiled build first
-      routesModule = await import('./dist/index.js');
-      console.log('Using compiled production build');
-    } catch (buildError) {
-      // Fallback to development routes
-      routesModule = await import('./server/routes.js');
-      console.log('Using development routes');
-    }
-    registerRoutes = routesModule.registerRoutes || routesModule.default;
+    // Use the working JavaScript routes file
+    const routesModule = await import('./server/routes.js');
+    registerRoutes = routesModule.registerRoutes;
+    console.log('API routes imported successfully');
   } catch (error) {
     console.error('Error importing routes:', error);
     process.exit(1);
