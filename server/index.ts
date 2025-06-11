@@ -54,6 +54,17 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Add explicit health endpoint BEFORE other routes
+  app.get('/health', (req, res) => {
+    res.json({
+      status: 'healthy',
+      service: 'WebSitioPro',
+      timestamp: new Date().toISOString(),
+      port: 5000,
+      external_url: 'https://websitiopro.bluerockchris.replit.dev'
+    });
+  });
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -80,6 +91,7 @@ app.use((req, res, next) => {
   server.listen(port, "0.0.0.0", () => {
     log(`serving on port ${port}`);
     log(`WebSitioPro Make Agent ready at: https://websitiopro.bluerockchris.replit.dev`);
-    log(`External health check: https://websitiopro.bluerockchris.replit.dev/api/agent/health`);
+    log(`External health check: https://websitiopro.bluerockchris.replit.dev/health`);
+    log(`Make webhook: https://websitiopro.bluerockchris.replit.dev/api/make/auto-create`);
   });
 })();
