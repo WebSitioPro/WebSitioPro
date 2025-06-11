@@ -470,4 +470,4 @@ async function registerRoutes(app) {
   return httpServer;
 }
 
-module.exports = { registerRoutes };
+export { registerRoutes };
