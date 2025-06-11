@@ -63,7 +63,7 @@ app.use((req, res, next) => {
       service: 'WebSitioPro',
       timestamp: new Date().toISOString(),
       port: 5000,
-      external_url: 'https://workspace.bluerockchris.replit.dev',
+      external_url: 'https://websitiopro.bluerockchris.replit.dev',
       deployment_status: 'development'
     });
   });
@@ -91,9 +91,9 @@ app.use((req, res, next) => {
   
   server.listen(port, host, () => {
     log(`serving on ${host}:${port}`);
-    log(`WebSitioPro Make Agent ready at: https://workspace.bluerockchris.replit.dev`);
-    log(`External health check: https://workspace.bluerockchris.replit.dev/health`);
-    log(`Make webhook: https://workspace.bluerockchris.replit.dev/api/make/auto-create`);
+    log(`WebSitioPro Make Agent ready at: https://websitiopro.bluerockchris.replit.dev`);
+    log(`External health check: https://websitiopro.bluerockchris.replit.dev/health`);
+    log(`Make webhook: https://websitiopro.bluerockchris.replit.dev/api/make/auto-create`);
     
     // Log server binding details for debugging
     const address = server.address();
