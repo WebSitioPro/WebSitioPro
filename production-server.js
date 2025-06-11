@@ -103,9 +103,9 @@ async function startServer() {
   const PORT = process.env.PORT || 5000;
   const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 WebSitioPro Production Server running on 0.0.0.0:${PORT}`);
-    console.log(`📡 External URL: https://websitiopro.bluerockchris.replit.dev`);
-    console.log(`🏥 Health check: https://websitiopro.bluerockchris.replit.dev/health`);
-    console.log(`🎯 Make webhook: https://websitiopro.bluerockchris.replit.dev/api/make/auto-create`);
+    console.log(`📡 External URL: https://workspace.bluerockchris.replit.dev`);
+    console.log(`🏥 Health check: https://workspace.bluerockchris.replit.dev/health`);
+    console.log(`🎯 Make webhook: https://workspace.bluerockchris.replit.dev/api/make/auto-create`);
   });
 
   // Graceful shutdown
