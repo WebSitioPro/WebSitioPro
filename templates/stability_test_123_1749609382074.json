@@ -1,0 +1,108 @@
+{
+  "templateId": "stability_test_123_1749609382074",
+  "clientName": "Dr. Carlos Mendoza",
+  "businessName": "Dr. Carlos Mendoza",
+  "templateType": "professionals",
+  "createdAt": "2025-06-11T02:36:22.074Z",
+  "doctorName": "Dr. Carlos Mendoza",
+  "specialty": {
+    "es": "General Medicine",
+    "en": "General Medicine"
+  },
+  "description": {
+    "es": "Médico general con 10 años de experiencia atendiendo familias en Cancún.",
+    "en": "Médico general con 10 años de experiencia atendiendo familias en Cancún."
+  },
+  "profileImage": "doctor-carlos.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Profesional",
+    "en": "About the Professional"
+  },
+  "aboutText": {
+    "es": "Médico general con 10 años de experiencia atendiendo familias en Cancún.",
+    "en": "Médico general con 10 años de experiencia atendiendo familias en Cancún."
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "doctor-carlos.jpg",
+      "caption": {
+        "es": "Dr. Carlos Mendoza - Foto Principal",
+        "en": "Dr. Carlos Mendoza - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4.8,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "+529981234567",
+  "email": "info@drcarlosmendoza.com",
+  "address": {
+    "es": "Av. Tulum 245, Centro, Cancún, Q.R.",
+    "en": "Av. Tulum 245, Centro, Cancún, Q.R."
+  },
+  "whatsappNumber": "+529981234567",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Dr. Carlos Mendoza",
+    "en": "Hello! I'm interested in learning more about Dr. Carlos Mendoza"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Lun-Vie 8-18, Sab 9-14",
+      "en": "Lun-Vie 8-18, Sab 9-14"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Av.%20Tulum%20245%2C%20Centro%2C%20Canc%C3%BAn%2C%20Q.R.",
+  "location": "Cancun",
+  "rating": "4.8",
+  "fbLikes": "245",
+  "placeId": "stability_test_123",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Dr. Carlos Mendoza - General Medicine en Cancun",
+    "en": "Dr. Carlos Mendoza - General Medicine in Cancun"
+  },
+  "metaDescription": {
+    "es": "Médico general con 10 años de experiencia atendiendo familias en Cancún....",
+    "en": "Médico general con 10 años de experiencia atendiendo familias en Cancún...."
+  }
+}
