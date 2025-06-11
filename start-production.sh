@@ -1,11 +1,15 @@
 #!/bin/bash
 
 echo "Starting WebSitioPro Production Server..."
-echo "Configuring for external access..."
 
-# Set production environment
-export NODE_ENV=production
-export PORT=5000
+# Kill any existing node processes
+pkill -f "node.*server" 2>/dev/null || true
+pkill -f "tsx.*server" 2>/dev/null || true
 
-# Start the production server
-node production-server.js
+# Wait a moment for processes to stop
+sleep 2
+
+# Start production server
+NODE_ENV=production node production-server.js
+
+echo "Production server started on port 5000"
