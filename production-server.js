@@ -12,9 +12,18 @@ let registerRoutes;
 
 async function startServer() {
   try {
-    // Dynamic import for ES modules
-    const routesModule = await import('./server/routes.js');
-    registerRoutes = routesModule.registerRoutes;
+    // Check if compiled build exists, otherwise use development routes
+    let routesModule;
+    try {
+      // Try compiled build first
+      routesModule = await import('./dist/index.js');
+      console.log('Using compiled production build');
+    } catch (buildError) {
+      // Fallback to development routes
+      routesModule = await import('./server/routes.js');
+      console.log('Using development routes');
+    }
+    registerRoutes = routesModule.registerRoutes || routesModule.default;
   } catch (error) {
     console.error('Error importing routes:', error);
     process.exit(1);
