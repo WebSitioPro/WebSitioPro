@@ -2,110 +2,103 @@
  * Production server for WebSitioPro
  * Simplified configuration for external accessibility
  */
-
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import cors from 'cors';
+import { registerRoutes } from './server/routes.js';
 
 const app = express();
 
-// Enable trust proxy for Replit
-app.set('trust proxy', true);
+// Production middleware
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// CORS headers for external access
+// CORS configuration for external access
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: false
+}));
+
+// Additional headers for browser compatibility
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
+  res.header('X-Content-Type-Options', 'nosniff');
+  res.header('X-Frame-Options', 'DENY');
+  res.header('X-XSS-Protection', '1; mode=block');
+  res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.header('Pragma', 'no-cache');
+  res.header('Expires', '0');
+  next();
 });
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({
+  res.status(200).json({
     status: 'healthy',
     service: 'WebSitioPro Production',
     timestamp: new Date().toISOString(),
-    port: 5000,
-    external_url: 'https://websitiopro.bluerockchris.replit.dev'
-  });
-});
-
-// Agent health check
-app.get('/api/agent/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    service: 'WebSitioPro Agent API',
     version: '1.0.0',
-    timestamp: new Date().toISOString()
+    environment: 'production',
+    uptime: process.uptime()
   });
 });
 
-// Mock Make webhook for testing
-app.post('/api/make/auto-create', (req, res) => {
-  const businessData = req.body;
-  
-  // Basic validation
-  if (!businessData.name || !businessData.phone || !businessData.category) {
-    return res.status(400).json({
-      error: 'Invalid business data',
-      details: 'Missing required fields: name, phone, category'
-    });
-  }
-  
-  const templateId = `${businessData.place_id || 'test'}_${Date.now()}`;
-  
-  res.json({
-    success: true,
-    message: 'Template created via Make automation',
-    templateId: templateId,
-    name: businessData.name,
-    phone: businessData.phone,
-    category: businessData.category,
-    previewUrl: `websitiopro.com/preview/${businessData.place_id || 'test'}`,
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Default route
+// Root endpoint
 app.get('/', (req, res) => {
-  res.json({
+  res.status(200).json({
     service: 'WebSitioPro',
     status: 'online',
-    message: 'WebSitioPro Make Agent API is running',
-    timestamp: new Date().toISOString(),
+    message: 'WebSitioPro API is running',
     endpoints: {
       health: '/health',
-      agent_health: '/api/agent/health',
-      webhook: '/api/make/auto-create'
-    }
+      makeWebhook: '/api/make/auto-create',
+      agentCreate: '/api/agent/create-template'
+    },
+    timestamp: new Date().toISOString()
   });
 });
+
+// Register all API routes
+try {
+  await registerRoutes(app);
+  console.log('API routes registered successfully');
+} catch (error) {
+  console.error('Error registering routes:', error);
+}
 
 // Error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal server error' });
+  console.error('Server error:', err);
+  res.status(500).json({
+    error: 'Internal server error',
+    message: err.message,
+    timestamp: new Date().toISOString()
+  });
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port, '0.0.0.0', () => {
-  console.log(`WebSitioPro Production Server running on port ${port}`);
-  console.log(`External URL: https://websitiopro.bluerockchris.replit.dev`);
-  console.log(`Health check: https://websitiopro.bluerockchris.replit.dev/health`);
-  console.log(`Make webhook: https://websitiopro.bluerockchris.replit.dev/api/make/auto-create`);
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({
+    error: 'Endpoint not found',
+    path: req.originalUrl,
+    timestamp: new Date().toISOString()
+  });
 });
+
+const PORT = process.env.PORT || 5000;
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 WebSitioPro Production Server running on 0.0.0.0:${PORT}`);
+  console.log(`📡 External URL: https://websitiopro.bluerockchris.replit.dev`);
+  console.log(`🏥 Health check: https://websitiopro.bluerockchris.replit.dev/health`);
+  console.log(`🎯 Make webhook: https://websitiopro.bluerockchris.replit.dev/api/make/auto-create`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('Process terminated');
+  });
+});
+
+export default app;
