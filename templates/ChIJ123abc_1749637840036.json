@@ -1,0 +1,108 @@
+{
+  "templateId": "ChIJ123abc_1749637840036",
+  "clientName": "Dr. Maria Rodriguez",
+  "businessName": "Dr. Maria Rodriguez",
+  "templateType": "professionals",
+  "createdAt": "2025-06-11T10:30:40.036Z",
+  "doctorName": "Dr. Maria Rodriguez",
+  "specialty": {
+    "es": "Professional Services",
+    "en": "Professional Services"
+  },
+  "description": {
+    "es": "Professional business in Av. Insurgentes 123, CDMX",
+    "en": "Professional business in Av. Insurgentes 123, CDMX"
+  },
+  "profileImage": "https://websitiopro.com/placeholder/business.jpg",
+  "aboutTitle": {
+    "es": "Acerca del Profesional",
+    "en": "About the Professional"
+  },
+  "aboutText": {
+    "es": "Professional business in Av. Insurgentes 123, CDMX",
+    "en": "Professional business in Av. Insurgentes 123, CDMX"
+  },
+  "experience": "5+",
+  "patientsServed": "100+",
+  "availability": "24/7",
+  "services": [
+    {
+      "title": {
+        "es": "Servicio Principal",
+        "en": "Main Service"
+      },
+      "description": {
+        "es": "Servicio de calidad profesional",
+        "en": "Professional quality service"
+      },
+      "icon": "shield"
+    },
+    {
+      "title": {
+        "es": "Atención Personalizada",
+        "en": "Personalized Attention"
+      },
+      "description": {
+        "es": "Atención dedicada a cada cliente",
+        "en": "Dedicated attention to each client"
+      },
+      "icon": "heart"
+    }
+  ],
+  "photos": [
+    {
+      "url": "https://websitiopro.com/placeholder/business.jpg",
+      "caption": {
+        "es": "Dr. Maria Rodriguez - Foto Principal",
+        "en": "Dr. Maria Rodriguez - Main Photo"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Cliente Satisfecho",
+      "rating": 4.5,
+      "text": {
+        "es": "Excelente servicio, muy recomendado.",
+        "en": "Excellent service, highly recommended."
+      }
+    }
+  ],
+  "phone": "55-1234-5678",
+  "email": "info@drmariarodriguez.com",
+  "address": {
+    "es": "Av. Insurgentes 123, CDMX",
+    "en": "Av. Insurgentes 123, CDMX"
+  },
+  "whatsappNumber": "55-1234-5678",
+  "whatsappMessage": {
+    "es": "¡Hola! Me interesa conocer más sobre Dr. Maria Rodriguez",
+    "en": "Hello! I'm interested in learning more about Dr. Maria Rodriguez"
+  },
+  "officeHours": {
+    "mondayFriday": {
+      "es": "Contact for hours",
+      "en": "Contact for hours"
+    },
+    "saturday": {
+      "es": "Sáb: 10:00 AM - 2:00 PM",
+      "en": "Sat: 10:00 AM - 2:00 PM"
+    }
+  },
+  "googleMapsEmbed": "https://maps.google.com/?q=Av.%20Insurgentes%20123%2C%20CDMX",
+  "location": "Mexico",
+  "rating": "4.5",
+  "fbLikes": "150",
+  "placeId": "ChIJ123abc",
+  "primaryColor": "#00A859",
+  "secondaryColor": "#C8102E",
+  "accentColor": "#FFC107",
+  "metaTitle": {
+    "es": "Dr. Maria Rodriguez - Professional Services en Mexico",
+    "en": "Dr. Maria Rodriguez - Professional Services in Mexico"
+  },
+  "metaDescription": {
+    "es": "Professional business in Av. Insurgentes 123, CDMX...",
+    "en": "Professional business in Av. Insurgentes 123, CDMX..."
+  }
+}
