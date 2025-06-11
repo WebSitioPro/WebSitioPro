@@ -3,9 +3,9 @@
  * Production server for WebSitioPro
  * Compatible with Node.js deployment
  */
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
 
 // Import routes using dynamic import for ES modules compatibility
 let registerRoutes;
