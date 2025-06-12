@@ -371,6 +371,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Removed custom catch-all route
 
+  // Test endpoint for webhook payload validation
+  app.post("/api/test", async (req: Request, res: Response) => {
+    try {
+      console.log("Test endpoint received payload:", req.body);
+      
+      // Log headers for debugging
+      console.log("Test endpoint headers:", req.headers);
+      
+      // Return simple success response
+      res.status(200).json({ status: "received" });
+    } catch (error) {
+      console.error("Test endpoint error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
   // Register agent routes for Make automation
   registerAgentRoutes(app);
   
