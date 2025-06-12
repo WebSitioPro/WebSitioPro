@@ -374,7 +374,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register agent routes for Make automation
   registerAgentRoutes(app);
   
-  // Add Make webhook endpoint
+  // Add Make webhook endpoint - handle both GET and POST
+  app.get("/api/make/auto-create", (req: Request, res: Response) => {
+    res.json({
+      message: "WebSitioPro Make Agent endpoint is active",
+      method: "This endpoint accepts POST requests with business data",
+      required_fields: ["name", "phone", "address"],
+      optional_fields: ["category", "place_id", "facebook_url"],
+      example_payload: {
+        name: "Business Name",
+        phone: "1234567890", 
+        address: "Business Address",
+        category: "Professionals",
+        place_id: "unique_id",
+        facebook_url: "https://facebook.com/business"
+      },
+      status: "ready"
+    });
+  });
+
   app.post("/api/make/auto-create", async (req: Request, res: Response) => {
     try {
       console.log("Make webhook received data:", req.body);
