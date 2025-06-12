@@ -1,0 +1,16 @@
+{
+  "templateId": "test_001_1749726107478",
+  "clientName": "Test",
+  "businessName": "Test",
+  "templateType": "Professionals",
+  "createdAt": "2025-06-12T11:01:47.478Z",
+  "phone": "1234567890",
+  "address": "123 St",
+  "category": "Professionals",
+  "place_id": "test_001",
+  "facebook_url": "https://facebook.com/test",
+  "previewUrl": "websitiopro.com/preview/test_001",
+  "dateCreated": "6/12/2025",
+  "sunsetDate": "6/22/2025",
+  "agentNotes": "Template generated successfully"
+}
