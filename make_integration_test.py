@@ -10,7 +10,7 @@ import time
 
 def test_tulum_bakery():
     """Test with Tulum Bakery payload as specified"""
-    webhook_url = "https://hook.us2.make.com/6mcqk72uclcv86i1rtkao3bm2hhq3vh6"
+    webhook_url = "https://hook.us2.make.com/vlcril6b6o88s994ov4uqytoi22a61h8"
     headers = {"Content-Type": "application/json"}
     
     # Test payload as specified in instructions
