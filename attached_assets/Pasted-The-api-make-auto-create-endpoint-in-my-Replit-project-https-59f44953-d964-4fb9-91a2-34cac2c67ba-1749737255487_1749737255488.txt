@@ -1,0 +1,30 @@
+The /api/make/auto-create endpoint in my Replit project (https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev) is confirmed production-ready for WebSitioPro’s Make.com integration. It accepts POST requests with JSON payloads (e.g., {"name": "Cancun Cafe", "address": "Av. Tulum 456", "phone": "+529832345678", "category": "Professionals", "place_id": "cancun_cafe_001", "facebook_url": "https://facebook.com/cancuncafe"}), generates template files (e.g., cancun_cafe_001_*.json), and returns responses like {"success": true, "message": "Template created via Make automation", "templateId": "cancun_cafe_001"}. The websitio_test.py script is set up to send payloads to the Make webhook (https://hook.us2.make.com/6mcqk72uclcv86i1rtkao3bm2hhq3vh6).
+Please provide detailed, step-by-step instructions to configure my Make.com scenario (“WebSitioPro Integration Test”) to:
+Use the existing Custom Webhook to receive the JSON payload from websitio_test.py.
+
+Parse the payload fields (e.g., name, address, phone, category, place_id, facebook_url).
+
+Configure the HTTP > Make a request module to:
+Send a POST request to https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev/api/make/auto-create.
+
+Use the parsed fields in the request body.
+
+Enable response parsing to capture fields like success, templateId, and message.
+Test the scenario using a new payload:
+json
+{
+  "name": "Tulum Bakery",
+  "address": "Calle Saturno 789",
+  "phone": "+529834567890",
+  "category": "Professionals",
+  "place_id": "tulum_bakery_001",
+  "facebook_url": "https://facebook.com/tulumbakery"
+}
+Verify the scenario:
+Webhook receives the payload (Status Code: 200).
+
+HTTP module sends the request and receives a response (Status Code: 200) with templateId, etc.
+
+Check Make.com’s History tab for execution details.
+Include screenshots or descriptions of where to find settings (e.g., History tab, module configurations). Flag potential issues (e.g., JSON formatting, response parsing errors) and how to fix them. This is for my WebSitioPro project to trigger mock website generation via Make.com.
+
