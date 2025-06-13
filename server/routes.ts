@@ -387,6 +387,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Notify endpoint for Make.com integration status updates
+  app.post("/api/notify", async (req: Request, res: Response) => {
+    try {
+      console.log("Notify endpoint received payload:", req.body);
+      
+      const { place_id, status } = req.body;
+      
+      if (!place_id || !status) {
+        return res.status(400).json({
+          error: "Missing required fields",
+          required: ["place_id", "status"],
+          received: Object.keys(req.body)
+        });
+      }
+      
+      // Log the notification for tracking
+      console.log(`Notification: ${place_id} - ${status}`);
+      
+      // Return expected response format
+      res.status(200).json({
+        status: "notified",
+        place_id: place_id
+      });
+    } catch (error) {
+      console.error("Notify endpoint error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
   // Register agent routes for Make automation
   registerAgentRoutes(app);
   
