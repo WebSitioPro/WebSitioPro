@@ -259,7 +259,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const config = {
         id: parseInt(templateId),
         name: templateData.businessName || 'Template Business',
-        logo: templateData.logoUrl || '',
+        logo: templateData.logoUrl || templateData.profileImage || '',
         defaultLanguage: templateData.languageDefault || 'es',
         showWhyWebsiteButton: true,
         showDomainButton: true,
@@ -271,6 +271,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         address: templateData.address || '',
         phone: templateData.phone || '',
         email: templateData.email || '',
+        profileImage: templateData.profileImage || '',
+        coverImage: templateData.coverImage || '',
         officeHours: {
           mondayToFriday: '9:00 AM - 6:00 PM',
           saturday: '10:00 AM - 2:00 PM'
@@ -325,19 +327,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/templates/:id/preview', async (req, res) => {
     try {
       const templateId = req.params.id;
-      const outputDir = path.resolve(process.cwd(), 'dist/static');
-      const htmlPath = path.join(outputDir, 'index.html');
       
-      // Check if generated files exist
+      // Try to load template data first
       try {
-        const htmlContent = await fs.readFile(htmlPath, { encoding: 'utf-8' });
+        const templatesDir = path.resolve(process.cwd(), 'templates');
+        const templatePath = path.join(templatesDir, `${templateId}.json`);
+        const templateData = JSON.parse(await fs.readFile(templatePath, { encoding: 'utf-8' }));
+        
+        // Convert template data to config and generate fresh HTML
+        const config = {
+          id: parseInt(templateId.split('_')[0]) || 1,
+          name: templateData.businessName || templateData.clientName || 'Template Business',
+          logo: templateData.profileImage || '',
+          defaultLanguage: 'es',
+          showWhyWebsiteButton: true,
+          showDomainButton: true,
+          showChatbot: false,
+          whatsappNumber: templateData.phone || '',
+          whatsappMessage: 'Hello!',
+          facebookUrl: templateData.facebook_url || '',
+          googleMapsEmbed: '',
+          address: templateData.address || '',
+          phone: templateData.phone || '',
+          email: templateData.email || '',
+          profileImage: templateData.profileImage || '',
+          coverImage: templateData.coverImage || '',
+          officeHours: {
+            mondayToFriday: '9:00 AM - 6:00 PM',
+            saturday: '10:00 AM - 2:00 PM'
+          },
+          analyticsCode: '',
+          primaryColor: '#00A859',
+          secondaryColor: '#C8102E',
+          backgroundColor: '#FFFFFF',
+          translations: {
+            en: {
+              tagline: templateData.businessName || 'Welcome',
+              subtitle: 'Professional services you can trust',
+              aboutText: 'About our business'
+            },
+            es: {
+              tagline: templateData.businessName || 'Bienvenidos',
+              subtitle: 'Servicios profesionales en los que puedes confiar',
+              aboutText: 'Acerca de nuestro negocio'
+            }
+          },
+          heroImage: templateData.coverImage || '',
+          templates: [],
+          chatbotQuestions: []
+        };
+        
+        // Generate fresh static files with template data
+        const outputDir = await generateStaticFiles(config);
+        const htmlContent = await fs.readFile(path.join(outputDir, 'index.html'), { encoding: 'utf-8' });
         res.setHeader('Content-Type', 'text/html');
         res.send(htmlContent);
+        
       } catch {
-        // If no generated files, show demo template
+        // Fallback to default config if template not found
         const config = await storage.getDefaultWebsiteConfig();
-        const newOutputDir = await generateStaticFiles(config);
-        const htmlContent = await fs.readFile(path.join(newOutputDir, 'index.html'), { encoding: 'utf-8' });
+        const outputDir = await generateStaticFiles(config);
+        const htmlContent = await fs.readFile(path.join(outputDir, 'index.html'), { encoding: 'utf-8' });
         res.setHeader('Content-Type', 'text/html');
         res.send(htmlContent);
       }
@@ -443,7 +493,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Make webhook received data:", req.body);
       
       // Validate required fields
-      const { name, address, phone, category, place_id, facebook_url } = req.body;
+      const { name, address, phone, category, place_id, facebook_url, profileImage, coverImage } = req.body;
       
       if (!name || !phone || !address) {
         return res.status(400).json({
@@ -466,6 +516,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         category: category || "Professionals",
         place_id: place_id || `auto_${Date.now()}`,
         facebook_url: facebook_url || "",
+        profileImage: profileImage || "",
+        coverImage: coverImage || "",
         previewUrl: `websitiopro.com/preview/${place_id || templateId}`,
         dateCreated: new Date().toLocaleDateString(),
         sunsetDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString(),
@@ -491,6 +543,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         phone,
         address,
         facebook_url: facebook_url || "",
+        profileImage: profileImage || "",
+        coverImage: coverImage || "",
         previewUrl: `websitiopro.com/preview/${place_id || templateId}`,
         templateType: category || "Professionals",
         dateCreated: new Date().toLocaleDateString(),

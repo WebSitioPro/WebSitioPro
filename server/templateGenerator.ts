@@ -32,6 +32,10 @@ export async function generateStaticFiles(config: WebsiteConfig): Promise<string
  */
 function generateHTML(config: WebsiteConfig): string {
   const { primaryColor, secondaryColor, defaultLanguage } = config;
+  
+  // Extract image URLs from config (for Make Agent integration)
+  const profileImageUrl = (config as any).profileImage || config.logo || '';
+  const coverImageUrl = (config as any).coverImage || 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000';
 
   // Simplified HTML generation - in a real implementation, this would use EJS templates
   return `<!DOCTYPE html>
@@ -58,7 +62,7 @@ function generateHTML(config: WebsiteConfig): string {
   <nav id="navbar" class="navbar navbar-expand-lg navbar-light navbar-custom fixed-top py-3">
     <div class="container">
       <a class="navbar-brand" href="#">
-        ${config.logo ? `<img src="${config.logo}" alt="${config.name}" height="40">` : ''}
+        ${profileImageUrl ? `<img src="${profileImageUrl}" alt="${config.name}" height="40" style="border-radius: 50%; object-fit: cover; width: 40px; height: 40px;">` : ''}
         <span class="ms-2 fw-bold">${config.name}</span>
       </a>
       
@@ -97,7 +101,7 @@ function generateHTML(config: WebsiteConfig): string {
   </nav>
 
   <!-- Header -->
-  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000');">
+  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}');">
     <div class="header-overlay"></div>
     <div class="container header-content text-center text-white">
       <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
