@@ -1,0 +1,167 @@
+The /api/make/auto-create endpoint in server/routes.ts receives a JSON body with valid profileImage and coverImage URLs from Facebook (e.g., https://scontent-iad3-2.xx.fbcdn.net/...). The API returns "success: true" and generates a website at https://websitiopro.com/preview/ChIJI0Jqhp0rTI8RydmtO71J-k4, but the images don’t display, and the URLs may return a "bad URL hash" error in the browser.
+
+Current code:
+- server/routes.ts (webhook handler):
+app.post("/api/make/auto-create", async (req: Request, res: Response) => {
+  try {
+    console.log("Make webhook received data:", req.body);
+    const { name, address, phone, category, place_id, facebook_url, profileImage, coverImage } = req.body;
+    if (!name || !phone || !address) {
+      return res.status(400).json({
+        error: "Missing required fields",
+        required: ["name", "phone", "address"],
+        received: Object.keys(req.body)
+      });
+    }
+    const templateId = `${place_id || 'auto'}_${Date.now()}`;
+    const templateData = {
+      templateId,
+      clientName: name,
+      businessName: name,
+      templateType: category || "Professionals",
+      createdAt: new Date().toISOString(),
+      phone,
+      address,
+      category: category || "Professionals",
+      place_id: place_id || `auto_${Date.now()}`,
+      facebook_url: facebook_url || "",
+      profileImage: profileImage || "",
+      coverImage: coverImage || "",
+      previewUrl: `websitiopro.com/preview/${place_id || templateId}`,
+      dateCreated: new Date().toLocaleDateString(),
+      sunsetDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+      agentNotes: "Template generated successfully"
+    };
+    const templatesDir = path.resolve(process.cwd(), 'templates');
+    await fs.mkdir(templatesDir, { recursive: true });
+    const templatePath = path.join(templatesDir, `${templateId}.json`);
+    await fs.writeFile(templatePath, JSON.stringify(templateData, null, 2));
+    res.json({
+      success: true,
+      message: "Template created via Make automation",
+      place_id: place_id || templateId,
+      name,
+      phone,
+      address,
+      facebook_url: facebook_url || "",
+      profileImage: profileImage || "",
+      coverImage: coverImage || "",
+      previewUrl: `websitiopro.com/preview/${place_id || templateId}`,
+      templateType: category || "Professionals",
+      dateCreated: new Date().toLocaleDateString(),
+      sunsetDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+      agentNotes: "Template generated successfully",
+      templateId,
+      webhookSent: true,
+      makeIntegration: {
+        googleSheetsCompatible: true,
+        automationStatus: "ready"
+      }
+    });
+  } catch (error) {
+    console.error("Make webhook error:", error);
+    res.status(500).json({ 
+      error: "Make webhook processing failed",
+      details: error instanceof Error ? error.message : "Unknown error"
+    });
+  }
+});
+- server/templateGenerator.ts (generateHTML):
+function generateHTML(config: WebsiteConfig): string {
+  const { primaryColor, secondaryColor, defaultLanguage } = config;
+  const profileImageUrl = (config as any).profileImage || config.logo || '';
+  const coverImageUrl = (config as any).coverImage || 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000';
+  return `<!DOCTYPE html>
+<html lang="${defaultLanguage}">
+<head>
+  <!-- Head content -->
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="100">
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-light navbar-custom fixed-top py-3">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        ${profileImageUrl ? `<img src="${profileImageUrl}" alt="${config.name}" height="40" style="border-radius: 50%; object-fit: cover; width: 40px; height: 40px;">` : ''}
+        <span class="ms-2 fw-bold">${config.name}</span>
+      </a>
+      <!-- Rest of navbar -->
+    </div>
+  </nav>
+  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}');">
+    <div class="header-overlay"></div>
+    <div class="container header-content text-center text-white">
+      <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
+      <p class="lead mb-5" data-i18n="subtitle">${config.translations[defaultLanguage].subtitle || ''}</p>
+      <!-- Rest of header content -->
+    </div>
+  </header>
+  <!-- Rest of HTML -->
+</body>
+</html>`;
+}
+- Preview route (/templates/:id/preview):
+app.get('/templates/:id/preview', async (req, res) => {
+  try {
+    const templateId = req.params.id;
+    const templatesDir = path.resolve(process.cwd(), 'templates');
+    const templatePath = path.join(templatesDir, `${templateId}.json`);
+    const templateData = JSON.parse(await fs.readFile(templatePath, { encoding: 'utf-8' }));
+    const config = {
+      id: parseInt(templateId.split('_')[0]) || 1,
+      name: templateData.businessName || templateData.clientName || 'Template Business',
+      logo: templateData.profileImage || '',
+      defaultLanguage: 'es',
+      showWhyWebsiteButton: true,
+      showDomainButton: true,
+      showChatbot: false,
+      whatsappNumber: templateData.phone || '',
+      whatsappMessage: 'Hello!',
+      facebookUrl: templateData.facebook_url || '',
+      googleMapsEmbed: '',
+      address: templateData.address || '',
+      phone: templateData.phone || '',
+      email: templateData.email || '',
+      profileImage: templateData.profileImage || '',
+      coverImage: templateData.coverImage || '',
+      officeHours: {
+        mondayToFriday: '9:00 AM - 6:00 PM',
+        saturday: '10:00 AM - 2:00 PM'
+      },
+      analyticsCode: '',
+      primaryColor: '#00A859',
+      secondaryColor: '#C8102E',
+      backgroundColor: '#FFFFFF',
+      translations: {
+        en: {
+          tagline: templateData.businessName || 'Welcome',
+          subtitle: 'Professional services you can trust',
+          aboutText: 'About our business'
+        },
+        es: {
+          tagline: templateData.businessName || 'Bienvenidos',
+          subtitle: 'Servicios profesionales en los que puedes confiar',
+          aboutText: 'Acerca de nuestro negocio'
+        }
+      },
+      heroImage: templateData.coverImage || '',
+      templates: [],
+      chatbotQuestions: []
+    };
+    const outputDir = await generateStaticFiles(config);
+    const htmlContent = await fs.readFile(path.join(outputDir, 'index.html'), { encoding: 'utf-8' });
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlContent);
+  } catch {
+    const config = await storage.getDefaultWebsiteConfig();
+    const outputDir = await generateStaticFiles(config);
+    const htmlContent = await fs.readFile(path.join(outputDir, 'index.html'), { encoding: 'utf-8' });
+    res.setHeader('Content-Type', 'text/html');
+    res.send(htmlContent);
+  }
+});
+
+Please:
+1. Confirm server/routes.ts correctly stores profileImage and coverImage in templateData and the response.
+2. Confirm server/templateGenerator.ts uses profileImage as the navbar logo (circular, 40x40px) and coverImage as the hero background.
+3. Confirm the preview route passes profileImage and coverImage to generateHTML.
+4. Suggest fixes for "bad URL hash" errors (e.g., URL validation, sanitization, or fallback handling).
+5. Provide exact code snippets for any required changes.
