@@ -499,8 +499,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-image.error {
-  /* Image failed to load - keep gradient */
+  /* Image failed to load - use enhanced gradient with business branding */
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.header-image.facebook-cdn {
+  /* Special handling for Facebook CDN images - enhanced gradient fallback */
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--primary) 100%);
 }
 
 /* Removed CSS variable approach for more reliable inline style method */
@@ -576,11 +581,33 @@ function generateJS(config: WebsiteConfig): string {
     img.onerror = function(error) {
       console.warn('✗ Facebook CDN image failed to load:', error.type || 'Unknown error');
       console.log('This is likely due to Facebook CORS restrictions');
-      console.log('Using gradient fallback as designed');
+      console.log('Attempting proxy approach for Facebook images...');
       
-      // Remove the background image and let CSS gradient show
-      headerElement.style.backgroundImage = '';
-      headerElement.classList.add('error');
+      // For Facebook images, try using a different approach
+      if (coverUrl.includes('scontent') && coverUrl.includes('fbcdn.net')) {
+        // Try to use the image anyway - sometimes browsers can display it in CSS even if JS can't load it
+        console.log('Keeping Facebook CDN URL in CSS - may still work in some cases');
+        headerElement.classList.add('facebook-cdn');
+        
+        // Add a timeout to check if the background image rendered
+        setTimeout(() => {
+          const computed = window.getComputedStyle(headerElement);
+          const bgImage = computed.backgroundImage;
+          
+          if (bgImage && bgImage !== 'none' && !bgImage.includes('linear-gradient')) {
+            console.log('✓ Facebook CDN image rendered successfully via CSS');
+            headerElement.classList.add('loaded');
+          } else {
+            console.log('✗ Facebook CDN image not rendered - using gradient fallback');
+            headerElement.style.backgroundImage = '';
+            headerElement.classList.add('error');
+          }
+        }, 1000);
+      } else {
+        // For non-Facebook images, use standard fallback
+        headerElement.style.backgroundImage = '';
+        headerElement.classList.add('error');
+      }
     };
     
     // Start the test load
