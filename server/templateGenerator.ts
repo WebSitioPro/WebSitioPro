@@ -465,10 +465,22 @@ h1, h2, h3, h4, h5, h6 {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  /* Fallback gradient if image fails to load */
+  /* Always show gradient as base, image will layer on top */
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   /* Transition for smooth image loading */
   transition: background-image 0.5s ease-in-out;
+}
+
+/* Ensure gradient shows when image fails */
+.header-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  z-index: -1;
 }
 
 /* Facebook CDN image loading states */
