@@ -24,7 +24,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const idParam = req.params.id;
       let id: number;
-      
+
       if (idParam === "default") {
         id = 1; // Use ID 1 for default configuration
       } else {
@@ -69,7 +69,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const idParam = req.params.id;
       let id: number;
-      
+
       if (idParam === "default") {
         id = 1; // Use ID 1 for default configuration
       } else {
@@ -154,18 +154,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/templates", async (req: Request, res: Response) => {
     try {
       const templateData = req.body;
-      
+
       // Save template data to storage (for now, we'll store in memory/file)
       // In production, this would go to a database
       const templateId = Date.now().toString();
-      
+
       // Store template data in a simple JSON file for testing
       const templatesDir = path.resolve(process.cwd(), 'templates');
       await fs.mkdir(templatesDir, { recursive: true });
-      
+
       const templatePath = path.join(templatesDir, `${templateId}.json`);
       await fs.writeFile(templatePath, JSON.stringify(templateData, null, 2));
-      
+
       res.json({ success: true, templateId, message: 'Template saved successfully' });
     } catch (error) {
       console.error('Error saving template:', error);
@@ -177,7 +177,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/templates", async (req: Request, res: Response) => {
     try {
       const templatesDir = path.resolve(process.cwd(), 'templates');
-      
+
       // Create templates directory if it doesn't exist
       try {
         await fs.mkdir(templatesDir, { recursive: true });
@@ -187,14 +187,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const files = await fs.readdir(templatesDir);
       const jsonFiles = files.filter(file => file.endsWith('.json'));
-      
+
       const templates = [];
       for (const file of jsonFiles) {
         try {
           const templatePath = path.join(templatesDir, file);
           const templateData = JSON.parse(await fs.readFile(templatePath, { encoding: 'utf-8' }));
           const stats = await fs.stat(templatePath);
-          
+
           templates.push({
             templateId: file.replace('.json', ''),
             ...templateData,
@@ -204,10 +204,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error(`Error reading template ${file}:`, error);
         }
       }
-      
+
       // Sort by creation date (newest first)
       templates.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-      
+
       res.json(templates);
     } catch (error) {
       console.error('Error loading templates:', error);
@@ -221,7 +221,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const templateId = req.params.id;
       const templatesDir = path.resolve(process.cwd(), 'templates');
       const templatePath = path.join(templatesDir, `${templateId}.json`);
-      
+
       const templateData = await fs.readFile(templatePath, { encoding: 'utf-8' });
       res.json(JSON.parse(templateData));
     } catch (error) {
@@ -236,7 +236,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const templateId = req.params.id;
       const templatesDir = path.resolve(process.cwd(), 'templates');
       const templatePath = path.join(templatesDir, `${templateId}.json`);
-      
+
       await fs.unlink(templatePath);
       res.json({ success: true, message: 'Template deleted successfully' });
     } catch (error) {
@@ -251,10 +251,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const templateId = req.params.id;
       const templatesDir = path.resolve(process.cwd(), 'templates');
       const templatePath = path.join(templatesDir, `${templateId}.json`);
-      
+
       // Load template data
       const templateData = JSON.parse(await fs.readFile(templatePath, { encoding: 'utf-8' }));
-      
+
       // Convert template data to website config format
       const config = {
         id: parseInt(templateId),
@@ -310,7 +310,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Generate static files
       const outputDir = await generateStaticFiles(config);
-      
+
       res.json({ 
         success: true, 
         message: 'Static files generated successfully', 
@@ -327,13 +327,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/templates/:id/preview', async (req, res) => {
     try {
       const templateId = req.params.id;
-      
+
       // Try to load template data first
       try {
         const templatesDir = path.resolve(process.cwd(), 'templates');
         const templatePath = path.join(templatesDir, `${templateId}.json`);
         const templateData = JSON.parse(await fs.readFile(templatePath, { encoding: 'utf-8' }));
-        
+
         // Convert template data to config and generate fresh HTML
         const config = {
           id: parseInt(templateId.split('_')[0]) || 1,
@@ -376,13 +376,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           templates: [],
           chatbotQuestions: []
         };
-        
+
         // Generate fresh static files with template data
         const outputDir = await generateStaticFiles(config);
         const htmlContent = await fs.readFile(path.join(outputDir, 'index.html'), { encoding: 'utf-8' });
         res.setHeader('Content-Type', 'text/html');
         res.send(htmlContent);
-        
+
       } catch {
         // Fallback to default config if template not found
         const config = await storage.getDefaultWebsiteConfig();
@@ -405,7 +405,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Generate the template files
       const outputDir = await generateStaticFiles(config);
-      
+
       // Read the generated HTML file
       const htmlPath = path.join(outputDir, 'index.html');
       const htmlContent = await fs.readFile(htmlPath, { encoding: 'utf-8' });
@@ -425,10 +425,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/test", async (req: Request, res: Response) => {
     try {
       console.log("Test endpoint received payload:", req.body);
-      
+
       // Log headers for debugging
       console.log("Test endpoint headers:", req.headers);
-      
+
       // Return simple success response
       res.status(200).json({ status: "received" });
     } catch (error) {
@@ -441,9 +441,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/notify", async (req: Request, res: Response) => {
     try {
       console.log("Notify endpoint received payload:", req.body);
-      
+
       const { place_id, status } = req.body;
-      
+
       if (!place_id || !status) {
         return res.status(400).json({
           error: "Missing required fields",
@@ -451,10 +451,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           received: Object.keys(req.body)
         });
       }
-      
+
       // Log the notification for tracking
       console.log(`Notification: ${place_id} - ${status}`);
-      
+
       // Return expected response format
       res.status(200).json({
         status: "notified",
@@ -468,7 +468,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register agent routes for Make automation
   registerAgentRoutes(app);
-  
+
   // Add Make webhook endpoint - handle both GET and POST
   app.get("/api/make/auto-create", (req: Request, res: Response) => {
     res.json({
@@ -491,10 +491,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/make/auto-create", async (req: Request, res: Response) => {
     try {
       console.log("Make webhook received data:", req.body);
-      
+
       // Validate required fields
       const { name, address, phone, category, place_id, facebook_url, profileImage, coverImage } = req.body;
-      
+
       if (!name || !phone || !address) {
         return res.status(400).json({
           error: "Missing required fields",
@@ -502,7 +502,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           received: Object.keys(req.body)
         });
       }
-      
+
       // Generate template ID and data
       const templateId = `${place_id || 'auto'}_${Date.now()}`;
       const templateData = {
@@ -523,7 +523,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         sunsetDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString(),
         agentNotes: "Template generated successfully"
       };
-      
+
       // Save template to file system
       try {
         const templatesDir = path.resolve(process.cwd(), 'templates');
@@ -533,7 +533,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } catch (saveError) {
         console.warn('Template save warning:', saveError);
       }
-      
+
       // Return Make-compatible response
       res.json({
         success: true,
@@ -557,7 +557,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           automationStatus: "ready"
         }
       });
-      
+
     } catch (error) {
       console.error("Make webhook error:", error);
       res.status(500).json({ 
