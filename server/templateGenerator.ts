@@ -85,9 +85,9 @@ function generateHTML(config: WebsiteConfig): string {
     ''
   );
   
-  // For Make webhook data, prioritize coverImage field, then check heroImage
+  // For Make webhook data, prioritize heroImage field (which contains the mapped cover image), then fallback to coverImage
   const coverImageUrl = validateImageUrl(
-    configData.coverImage || configData.heroImage || config.heroImage || '', 
+    configData.heroImage || configData.coverImage || config.heroImage || '', 
     'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000'
   );
   
