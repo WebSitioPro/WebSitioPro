@@ -806,6 +806,70 @@ function generateJS(config: WebsiteConfig): string {
     });
   });
   
+  // Facebook CDN Image Fallback Detection
+  function handleImageFallback() {
+    const headerElement = document.querySelector('.header-image');
+    if (!headerElement) return;
+    
+    const backgroundImageUrl = headerElement.style.backgroundImage;
+    if (!backgroundImageUrl || !backgroundImageUrl.includes('scontent')) return;
+    
+    // Extract URL from background-image style
+    const urlMatch = backgroundImageUrl.match(/url\\(['"]?([^'"\\)]+)['"]?\\)/);
+    if (!urlMatch) return;
+    
+    const imageUrl = urlMatch[1];
+    
+    // Test if image can be loaded
+    const testImg = new Image();
+    testImg.onload = function() {
+      console.log('✓ Facebook CDN image loaded successfully');
+      headerElement.classList.add('loaded');
+    };
+    
+    testImg.onerror = function() {
+      console.log('✗ Facebook CDN image blocked - using gradient fallback');
+      // Remove inline background-image style to show CSS gradient
+      headerElement.style.backgroundImage = '';
+      headerElement.classList.add('loading');
+      
+      // Show gradient fallback message
+      setTimeout(() => {
+        console.log('✓ Gradient fallback displayed');
+      }, 100);
+    };
+    
+    // Set a timeout in case the image hangs
+    setTimeout(() => {
+      if (!headerElement.classList.contains('loaded')) {
+        console.log('⚠ Facebook CDN image timeout - using gradient fallback');
+        headerElement.style.backgroundImage = '';
+        headerElement.classList.add('loading');
+      }
+    }, 3000);
+    
+    testImg.src = imageUrl;
+  }
+  
+  // Handle profile image fallback
+  function handleProfileImageFallback() {
+    const profileImages = document.querySelectorAll('img[src*="scontent"]');
+    profileImages.forEach(img => {
+      img.onerror = function() {
+        console.log('✗ Profile image blocked - hiding element');
+        this.style.display = 'none';
+      };
+      
+      img.onload = function() {
+        console.log('✓ Profile image loaded successfully');
+      };
+    });
+  }
+  
+  // Initialize image fallback handlers
+  handleImageFallback();
+  handleProfileImageFallback();
+  
   // Initialize the page with the default language
   updateLanguage(currentLanguage);
 })();`;

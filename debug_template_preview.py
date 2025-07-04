@@ -10,12 +10,12 @@ def debug_template_preview():
     """Debug the specific template that was just created"""
     
     base_url = "https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev"
-    template_id = "ChIJI0Jqhp0rTI8RydmtO71J-k4_1751626655994"
+    template_id = "gradient_test_1751627592_1751627592830"
     
     print(f"=== Debugging Template Preview ===")
     print(f"Template ID: {template_id}")
+    print(f"URL: {base_url}/templates/{template_id}/preview")
     
-    # Get the template preview
     try:
         response = requests.get(f"{base_url}/templates/{template_id}/preview", timeout=30)
         
@@ -24,49 +24,97 @@ def debug_template_preview():
             return False
             
         html_content = response.text
-        print(f"✓ Template preview loaded ({len(html_content)} characters)")
+        print(f"✓ Template loaded ({len(html_content)} characters)")
         
-        # Search for header element
-        header_match = re.search(r'<header[^>]*>', html_content)
+        # Extract and analyze the header CSS
+        print("\n=== CSS Analysis ===")
+        
+        # Find the CSS section
+        css_match = re.search(r'<style>(.*?)</style>', html_content, re.DOTALL)
+        if css_match:
+            css_content = css_match.group(1)
+            
+            # Look for header-image class
+            header_css_match = re.search(r'\.header-image\s*{[^}]+}', css_content)
+            if header_css_match:
+                print("Header CSS found:")
+                print(header_css_match.group(0))
+            else:
+                print("✗ No .header-image CSS found")
+                
+            # Look for ::before pseudo-element
+            before_css_match = re.search(r'\.header-image::before\s*{[^}]+}', css_content)
+            if before_css_match:
+                print("\n::before CSS found:")
+                print(before_css_match.group(0))
+            else:
+                print("✗ No .header-image::before CSS found")
+                
+            # Look for CSS variables
+            if '--primary' in css_content:
+                primary_match = re.search(r'--primary:\s*([^;]+);', css_content)
+                if primary_match:
+                    print(f"\nPrimary color: {primary_match.group(1)}")
+            
+            if '--secondary' in css_content:
+                secondary_match = re.search(r'--secondary:\s*([^;]+);', css_content)
+                if secondary_match:
+                    print(f"Secondary color: {secondary_match.group(1)}")
+        else:
+            print("✗ No CSS <style> section found")
+            
+        # Extract and analyze the header HTML
+        print("\n=== HTML Analysis ===")
+        
+        header_match = re.search(r'<header[^>]*id="home"[^>]*>.*?</header>', html_content, re.DOTALL)
         if header_match:
-            print(f"Header element: {header_match.group(0)}")
+            header_html = header_match.group(0)
+            print("Header HTML structure:")
+            
+            # Extract header opening tag
+            header_tag_match = re.search(r'<header[^>]*>', header_html)
+            if header_tag_match:
+                header_tag = header_tag_match.group(0)
+                print(f"Header tag: {header_tag}")
+                
+                # Check for class
+                if 'class="' in header_tag:
+                    class_match = re.search(r'class="([^"]*)"', header_tag)
+                    if class_match:
+                        classes = class_match.group(1)
+                        print(f"Classes: {classes}")
+                        if 'header-image' in classes:
+                            print("✓ header-image class present")
+                        else:
+                            print("✗ header-image class missing")
+                else:
+                    print("✗ No class attribute")
+                    
+                # Check for style
+                if 'style="' in header_tag:
+                    style_match = re.search(r'style="([^"]*)"', header_tag)
+                    if style_match:
+                        style_content = style_match.group(1)
+                        print(f"Inline style: {style_content[:100]}...")
+                        if 'background-image' in style_content:
+                            print("✓ background-image in inline style")
+                        else:
+                            print("✗ No background-image in inline style")
+                else:
+                    print("✗ No inline style")
         else:
             print("✗ No header element found")
             
-        # Search for data-cover-url
-        data_cover_match = re.search(r'data-cover-url="([^"]*)"', html_content)
-        if data_cover_match:
-            print(f"✓ data-cover-url found: {data_cover_match.group(1)[:80]}...")
-        else:
-            print("✗ data-cover-url attribute missing")
-            
-        # Search for style attribute with background-image
-        style_match = re.search(r'style="[^"]*background-image[^"]*"', html_content)
-        if style_match:
-            print(f"Style with background-image: {style_match.group(0)[:100]}...")
-        else:
-            print("✗ No inline style with background-image found")
-            
-        # Search for Facebook CDN URLs anywhere in the HTML
-        fb_cdn_matches = re.findall(r'https://scontent[^"\s]*', html_content)
-        if fb_cdn_matches:
-            print(f"✓ Found {len(fb_cdn_matches)} Facebook CDN URLs in HTML:")
-            for i, url in enumerate(fb_cdn_matches[:3]):  # Show first 3
-                print(f"  {i+1}. {url[:80]}...")
-        else:
-            print("✗ No Facebook CDN URLs found in HTML")
-            
-        # Search for JavaScript image loading code
-        if 'loadCoverImage' in html_content:
-            print("✓ JavaScript image loading function found")
-        else:
-            print("✗ JavaScript image loading function missing")
-            
-        # Search for CSS classes
-        if 'header-image.loading' in html_content:
-            print("✓ CSS fallback classes found")
-        else:
-            print("✗ CSS fallback classes missing")
+        # Check for profile image
+        print("\n=== Profile Image Analysis ===")
+        profile_img_matches = re.findall(r'<img[^>]*src="([^"]*)"[^>]*>', html_content)
+        print(f"Total img tags found: {len(profile_img_matches)}")
+        
+        facebook_images = [img for img in profile_img_matches if 'scontent' in img]
+        print(f"Facebook CDN images: {len(facebook_images)}")
+        
+        for i, img_url in enumerate(facebook_images):
+            print(f"  {i+1}. {img_url[:60]}...")
             
         return True
         
