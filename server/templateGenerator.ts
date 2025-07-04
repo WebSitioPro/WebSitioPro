@@ -814,39 +814,52 @@ function generateJS(config: WebsiteConfig): string {
     const backgroundImageUrl = headerElement.style.backgroundImage;
     if (!backgroundImageUrl || !backgroundImageUrl.includes('scontent')) return;
     
+    console.log('🔍 Checking Facebook CDN image accessibility...');
+    
     // Extract URL from background-image style
     const urlMatch = backgroundImageUrl.match(/url\\(['"]?([^'"\\)]+)['"]?\\)/);
     if (!urlMatch) return;
     
     const imageUrl = urlMatch[1];
+    console.log('📸 Testing image URL:', imageUrl.substring(0, 80) + '...');
     
-    // Test if image can be loaded
+    // For Facebook CDN images, we assume they will be blocked and use gradient fallback
+    // This is more reliable than waiting for onerror events that may not fire
+    if (imageUrl.includes('scontent') && imageUrl.includes('fbcdn.net')) {
+      console.log('⚠ Facebook CDN detected - using gradient fallback for reliability');
+      
+      // Wait a brief moment to see if image loads naturally
+      setTimeout(() => {
+        // Check if we can determine the image loaded by checking computed styles
+        const computedStyle = window.getComputedStyle(headerElement);
+        const bgImage = computedStyle.backgroundImage;
+        
+        if (bgImage === 'none' || bgImage.includes('linear-gradient')) {
+          console.log('✓ Image already failed, gradient showing');
+        } else {
+          console.log('🔄 Switching to gradient fallback to ensure visibility');
+          // Remove inline background-image style to show CSS gradient
+          headerElement.style.backgroundImage = '';
+          headerElement.classList.add('loading');
+          console.log('✅ Gradient fallback activated');
+        }
+      }, 1500);
+      
+      return;
+    }
+    
+    // For non-Facebook images, use traditional loading test
     const testImg = new Image();
     testImg.onload = function() {
-      console.log('✓ Facebook CDN image loaded successfully');
+      console.log('✓ Image loaded successfully');
       headerElement.classList.add('loaded');
     };
     
     testImg.onerror = function() {
-      console.log('✗ Facebook CDN image blocked - using gradient fallback');
-      // Remove inline background-image style to show CSS gradient
+      console.log('✗ Image failed to load - using gradient fallback');
       headerElement.style.backgroundImage = '';
       headerElement.classList.add('loading');
-      
-      // Show gradient fallback message
-      setTimeout(() => {
-        console.log('✓ Gradient fallback displayed');
-      }, 100);
     };
-    
-    // Set a timeout in case the image hangs
-    setTimeout(() => {
-      if (!headerElement.classList.contains('loaded')) {
-        console.log('⚠ Facebook CDN image timeout - using gradient fallback');
-        headerElement.style.backgroundImage = '';
-        headerElement.classList.add('loading');
-      }
-    }, 3000);
     
     testImg.src = imageUrl;
   }
