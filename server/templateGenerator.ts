@@ -38,9 +38,16 @@ function generateHTML(config: WebsiteConfig): string {
     if (!url || typeof url !== 'string') return fallback;
     
     // Remove any URL hash fragments that might cause issues
-    const cleanUrl = url.split('#')[0];
+    const cleanUrl = url.split('#')[0].split('&')[0];
     
-    // Basic URL validation
+    // Handle Facebook CDN URLs specifically - remove problematic parameters
+    if (cleanUrl.includes('scontent')) {
+      // Keep only essential parameters for Facebook CDN URLs
+      const fbUrl = cleanUrl.split('?')[0];
+      return fbUrl;
+    }
+    
+    // Basic URL validation for other URLs
     try {
       new URL(cleanUrl);
       return cleanUrl;
@@ -57,7 +64,7 @@ function generateHTML(config: WebsiteConfig): string {
   );
   
   const coverImageUrl = validateImageUrl(
-    (config as any).coverImage || '', 
+    (config as any).coverImage || (config as any).heroImage || '', 
     'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000'
   );
 
@@ -125,7 +132,7 @@ function generateHTML(config: WebsiteConfig): string {
   </nav>
 
   <!-- Header -->
-  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+  <header id="home" class="header-image d-flex align-items-center" data-cover-image="${coverImageUrl}">
     <div class="header-overlay"></div>
     <div class="container header-content text-center text-white">
       <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
@@ -418,9 +425,14 @@ h1, h2, h3, h4, h5, h6 {
   height: 90vh;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   /* Fallback gradient if image fails to load */
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.header-image[data-cover-image]:not([data-cover-image=""]) {
+  background-image: var(--cover-bg);
 }
 
 .navbar-brand img {
@@ -666,5 +678,24 @@ function generateJS(config: WebsiteConfig): string {
   
   // Initialize the page with the default language
   updateLanguage(currentLanguage);
+  
+  // Handle cover image loading with fallback
+  const headerElement = document.querySelector('.header-image[data-cover-image]');
+  if (headerElement) {
+    const coverImageUrl = headerElement.getAttribute('data-cover-image');
+    if (coverImageUrl && coverImageUrl !== '') {
+      // Test if image loads successfully
+      const testImage = new Image();
+      testImage.onload = function() {
+        // Image loaded successfully, apply it as CSS variable
+        headerElement.style.setProperty('--cover-bg', \`url('\${coverImageUrl}')\`);
+      };
+      testImage.onerror = function() {
+        console.warn('Cover image failed to load, using gradient fallback');
+        // Keep the default gradient background (already applied in CSS)
+      };
+      testImage.src = coverImageUrl;
+    }
+  }
 })();`;
 }
