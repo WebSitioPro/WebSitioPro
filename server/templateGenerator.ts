@@ -97,6 +97,10 @@ function generateHTML(config: WebsiteConfig): string {
     hasCoverImage: !!coverImageUrl,
     isValidCoverImage: coverImageUrl !== 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000'
   });
+  
+  // Debug cover image URL for HTML injection
+  console.log('Cover Image URL for HTML:', coverImageUrl.length > 0 ? 'Present' : 'Empty');
+  console.log('First 100 chars of cover URL:', coverImageUrl.substring(0, 100));
 
   // Simplified HTML generation - in a real implementation, this would use EJS templates
   return `<!DOCTYPE html>
@@ -163,8 +167,8 @@ ${generateCSS(config)}
     </div>
   </nav>
 
-  <!-- Header with robust Facebook CDN image loading -->
-  <header id="home" class="header-image d-flex align-items-center" data-cover-url="${encodeCssUrl(coverImageUrl)}">
+  <!-- Header with Facebook CDN image loading -->
+  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}');" data-cover-url="${encodeCssUrl(coverImageUrl)}">
     <div class="header-overlay"></div>
     <div class="container header-content text-center text-white">
       <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
@@ -513,52 +517,63 @@ h1, h2, h3, h4, h5, h6 {
  */
 function generateJS(config: WebsiteConfig): string {
   return `(function() {
-  // Robust Facebook CDN Image Loading
+  // Facebook CDN Image Loading with enhanced debugging
   function loadCoverImage() {
     const headerElement = document.getElementById('home');
     const coverUrl = headerElement?.getAttribute('data-cover-url');
     
+    console.log('=== Facebook CDN Image Loading Debug ===');
+    console.log('Header element found:', !!headerElement);
+    console.log('Cover URL found:', !!coverUrl);
+    
     if (!coverUrl || !headerElement) {
-      console.log('No cover image URL found, using gradient fallback');
+      console.log('No cover image URL or header element found, using current styling');
       return;
     }
     
-    console.log('Loading cover image:', coverUrl.substring(0, 100) + '...');
+    console.log('Attempting to load cover image:', coverUrl.substring(0, 80) + '...');
     
-    // Add loading state
-    headerElement.classList.add('loading');
+    // Check if the image is already set as background
+    const currentBg = headerElement.style.backgroundImage;
+    console.log('Current background image:', currentBg ? 'Set' : 'None');
     
-    // Create an image element to test loading
-    const img = new Image();
-    img.crossOrigin = 'anonymous'; // Handle CORS
-    
-    // Set up load event handler
-    img.onload = function() {
-      console.log('Cover image loaded successfully');
+    // If no background image is set, try to set it directly
+    if (!currentBg || currentBg === 'none') {
+      console.log('Setting background image directly');
       headerElement.style.backgroundImage = \`url("\${coverUrl}")\`;
-      headerElement.classList.remove('loading');
+      headerElement.style.backgroundSize = 'cover';
+      headerElement.style.backgroundPosition = 'center';
+      headerElement.style.backgroundRepeat = 'no-repeat';
+    }
+    
+    // Test image loading separately for debugging
+    const img = new Image();
+    
+    img.onload = function() {
+      console.log('✓ Facebook CDN image loaded successfully');
+      console.log('Image dimensions:', img.width + 'x' + img.height);
       headerElement.classList.add('loaded');
     };
     
-    // Set up error event handler
     img.onerror = function(error) {
-      console.warn('Cover image failed to load:', error);
-      console.log('Using gradient fallback');
-      headerElement.classList.remove('loading');
+      console.warn('✗ Facebook CDN image failed to load:', error.type || 'Unknown error');
+      console.log('This is likely due to Facebook CORS restrictions');
+      console.log('Using gradient fallback as designed');
+      
+      // Remove the background image and let CSS gradient show
+      headerElement.style.backgroundImage = '';
       headerElement.classList.add('error');
-      // Keep the gradient background (already set in CSS)
     };
     
-    // Start loading the image
+    // Start the test load
     img.src = coverUrl;
     
-    // Timeout fallback - if image doesn't load within 10 seconds, use gradient
+    // Log final state after a delay
     setTimeout(() => {
-      if (headerElement.classList.contains('loading')) {
-        console.warn('Cover image loading timeout, using gradient fallback');
-        img.onerror(new Error('Timeout'));
-      }
-    }, 10000);
+      const finalBg = headerElement.style.backgroundImage;
+      console.log('Final background state:', finalBg ? 'Image set' : 'Using CSS gradient');
+      console.log('=== End Facebook CDN Debug ===');
+    }, 2000);
   }
   
   // Load cover image when DOM is ready
