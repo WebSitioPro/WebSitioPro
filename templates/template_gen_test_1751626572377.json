@@ -1,0 +1,18 @@
+{
+  "templateId": "template_gen_test_1751626572377",
+  "clientName": "Template Generator Test",
+  "businessName": "Template Generator Test",
+  "templateType": "Restaurant",
+  "createdAt": "2025-07-04T10:56:12.377Z",
+  "phone": "+529999999999",
+  "address": "Test Address",
+  "category": "Restaurant",
+  "place_id": "template_gen_test",
+  "facebook_url": "https://www.facebook.com/test",
+  "profileImage": "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-1/test_profile.jpg?_nc_cat=105&ccb=1-7",
+  "coverImage": "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/test_cover.jpg?_nc_cat=105&ccb=1-7",
+  "previewUrl": "websitiopro.com/preview/template_gen_test",
+  "dateCreated": "7/4/2025",
+  "sunsetDate": "7/14/2025",
+  "agentNotes": "Template generated successfully"
+}

@@ -33,33 +33,30 @@ export async function generateStaticFiles(config: WebsiteConfig): Promise<string
 function generateHTML(config: WebsiteConfig): string {
   const { primaryColor, secondaryColor, defaultLanguage } = config;
   
-  // Helper function to validate and sanitize image URLs
+  // Helper function to validate and sanitize image URLs with robust Facebook CDN support
   function validateImageUrl(url: string, fallback: string = ''): string {
     if (!url || typeof url !== 'string') return fallback;
     
-    // Remove any URL hash fragments that might cause issues
-    const cleanUrl = url.split('#')[0].split('&')[0];
-    
-    // Handle Facebook CDN URLs specifically - keep essential parameters only
-    if (cleanUrl.includes('scontent')) {
-      // For Facebook CDN URLs, keep the base URL and essential parameters
-      const baseUrl = cleanUrl.split('?')[0];
-      const urlParams = new URLSearchParams(cleanUrl.split('?')[1] || '');
-      
-      // Keep only essential Facebook CDN parameters
-      const essentialParams = new URLSearchParams();
-      if (urlParams.has('_nc_cat')) essentialParams.set('_nc_cat', urlParams.get('_nc_cat')!);
-      if (urlParams.has('ccb')) essentialParams.set('ccb', urlParams.get('ccb')!);
-      if (urlParams.has('_nc_sid')) essentialParams.set('_nc_sid', urlParams.get('_nc_sid')!);
-      if (urlParams.has('_nc_ohc')) essentialParams.set('_nc_ohc', urlParams.get('_nc_ohc')!);
-      if (urlParams.has('_nc_ht')) essentialParams.set('_nc_ht', urlParams.get('_nc_ht')!);
-      
-      const paramString = essentialParams.toString();
-      return paramString ? `${baseUrl}?${paramString}` : baseUrl;
+    // Handle Facebook CDN URLs specifically - preserve ALL parameters
+    if (url.includes('scontent') || url.includes('fbcdn.net')) {
+      try {
+        // Facebook CDN URLs need ALL parameters preserved for proper access
+        // Don't clean or modify Facebook CDN URLs - they require exact parameter sets
+        const testUrl = new URL(url);
+        
+        // Log Facebook CDN URL for debugging
+        console.log(`Processing Facebook CDN URL: ${url.substring(0, 100)}...`);
+        
+        return url; // Return the complete URL with all parameters intact
+      } catch (error) {
+        console.warn(`Invalid Facebook CDN URL: ${url.substring(0, 100)}..., using fallback`);
+        return fallback;
+      }
     }
     
     // Basic URL validation for other URLs
     try {
+      const cleanUrl = url.split('#')[0]; // Only remove hash fragments for non-Facebook URLs
       new URL(cleanUrl);
       return cleanUrl;
     } catch {
@@ -67,17 +64,39 @@ function generateHTML(config: WebsiteConfig): string {
       return fallback;
     }
   }
+
+  // Enhanced CSS-safe URL encoding for background-image usage
+  function encodeCssUrl(url: string): string {
+    if (!url) return '';
+    
+    // Escape special characters that can break CSS
+    return url
+      .replace(/\\/g, '\\\\')  // Escape backslashes
+      .replace(/'/g, "\\'")    // Escape single quotes
+      .replace(/"/g, '\\"')    // Escape double quotes
+      .replace(/\n/g, '\\A')   // Escape newlines
+      .replace(/\r/g, '\\D');  // Escape carriage returns
+  }
   
   // Extract and validate image URLs from config (for Make Agent integration)
+  const configData = config as any;
   const profileImageUrl = validateImageUrl(
-    (config as any).profileImage || config.logo || '', 
+    configData.profileImage || config.logo || '', 
     ''
   );
   
   const coverImageUrl = validateImageUrl(
-    (config as any).coverImage || (config as any).heroImage || '', 
+    configData.coverImage || configData.heroImage || config.heroImage || '', 
     'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000'
   );
+  
+  // Debug logging
+  console.log('Template Generator Image URLs:', {
+    profileImageUrl: profileImageUrl.substring(0, 80),
+    coverImageUrl: coverImageUrl.substring(0, 80),
+    hasCoverImage: !!coverImageUrl,
+    isValidCoverImage: coverImageUrl !== 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000'
+  });
 
   // Simplified HTML generation - in a real implementation, this would use EJS templates
   return `<!DOCTYPE html>
@@ -142,8 +161,8 @@ function generateHTML(config: WebsiteConfig): string {
     </div>
   </nav>
 
-  <!-- Header -->
-  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}');">
+  <!-- Header with robust Facebook CDN image loading -->
+  <header id="home" class="header-image d-flex align-items-center" data-cover-url="${encodeCssUrl(coverImageUrl)}">
     <div class="header-overlay"></div>
     <div class="container header-content text-center text-white">
       <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
@@ -440,6 +459,22 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   /* Fallback gradient if image fails to load */
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  /* Transition for smooth image loading */
+  transition: background-image 0.5s ease-in-out;
+}
+
+/* Facebook CDN image loading states */
+.header-image.loading {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.header-image.loaded {
+  /* Image successfully loaded */
+}
+
+.header-image.error {
+  /* Image failed to load - keep gradient */
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 }
 
 /* Removed CSS variable approach for more reliable inline style method */
@@ -474,8 +509,63 @@ h1, h2, h3, h4, h5, h6 {
  */
 function generateJS(config: WebsiteConfig): string {
   return `(function() {
+  // Robust Facebook CDN Image Loading
+  function loadCoverImage() {
+    const headerElement = document.getElementById('home');
+    const coverUrl = headerElement?.getAttribute('data-cover-url');
+    
+    if (!coverUrl || !headerElement) {
+      console.log('No cover image URL found, using gradient fallback');
+      return;
+    }
+    
+    console.log('Loading cover image:', coverUrl.substring(0, 100) + '...');
+    
+    // Add loading state
+    headerElement.classList.add('loading');
+    
+    // Create an image element to test loading
+    const img = new Image();
+    img.crossOrigin = 'anonymous'; // Handle CORS
+    
+    // Set up load event handler
+    img.onload = function() {
+      console.log('Cover image loaded successfully');
+      headerElement.style.backgroundImage = \`url("\${coverUrl}")\`;
+      headerElement.classList.remove('loading');
+      headerElement.classList.add('loaded');
+    };
+    
+    // Set up error event handler
+    img.onerror = function(error) {
+      console.warn('Cover image failed to load:', error);
+      console.log('Using gradient fallback');
+      headerElement.classList.remove('loading');
+      headerElement.classList.add('error');
+      // Keep the gradient background (already set in CSS)
+    };
+    
+    // Start loading the image
+    img.src = coverUrl;
+    
+    // Timeout fallback - if image doesn't load within 10 seconds, use gradient
+    setTimeout(() => {
+      if (headerElement.classList.contains('loading')) {
+        console.warn('Cover image loading timeout, using gradient fallback');
+        img.onerror(new Error('Timeout'));
+      }
+    }, 10000);
+  }
+  
+  // Load cover image when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadCoverImage);
+  } else {
+    loadCoverImage();
+  }
+
   // Translations data from configuration
-  const translations = ${JSON.stringify(config.translations)};
+  const translations = ${JSON.stringify(config.translations || { en: {}, es: {} })};
 
   // Initialize current language
   let currentLanguage = '${config.defaultLanguage}';

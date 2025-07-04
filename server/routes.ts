@@ -268,6 +268,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         whatsappMessage: 'Hello!',
         facebookUrl: templateData.socialLink || '',
         googleMapsEmbed: '',
+        // Add Facebook CDN image fields for proper template generation
+        profileImage: templateData.profileImage || '',
+        coverImage: templateData.coverImage || '',
+        heroImage: templateData.coverImage || '',
         address: templateData.address || '',
         phone: templateData.phone || '',
         email: templateData.email || '',
