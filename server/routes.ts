@@ -522,6 +522,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         facebook_url: facebook_url || "",
         profileImage: profileImage || "",
         coverImage: coverImage || "",
+        heroImage: coverImage || "", // Map cover image to hero image for proper header display
         previewUrl: `websitiopro.com/preview/${place_id || templateId}`,
         dateCreated: new Date().toLocaleDateString(),
         sunsetDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString(),
@@ -549,6 +550,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         facebook_url: facebook_url || "",
         profileImage: profileImage || "",
         coverImage: coverImage || "",
+        heroImage: coverImage || "", // Include hero image mapping in response
         previewUrl: `websitiopro.com/preview/${place_id || templateId}`,
         templateType: category || "Professionals",
         dateCreated: new Date().toLocaleDateString(),
