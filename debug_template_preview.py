@@ -4,123 +4,136 @@ Debug the exact template preview to see what's happening with the cover image
 """
 
 import requests
+import json
 import re
 
 def debug_template_preview():
     """Debug the specific template that was just created"""
     
     base_url = "https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev"
-    template_id = "gradient_test_1751627592_1751627592830"
+    
+    # Get the template ID from the latest creation
+    template_id = "ChIJI0Jqhp0rTI8RydmtO71J-k4_1751628287644"
     
     print(f"=== Debugging Template Preview ===")
     print(f"Template ID: {template_id}")
-    print(f"URL: {base_url}/templates/{template_id}/preview")
     
+    # 1. Get the template data
+    print("\n1. Getting template data...")
     try:
-        response = requests.get(f"{base_url}/templates/{template_id}/preview", timeout=30)
-        
-        if response.status_code != 200:
-            print(f"✗ Preview failed: {response.status_code}")
+        response = requests.get(f"{base_url}/api/templates/{template_id}", timeout=30)
+        if response.status_code == 200:
+            template_data = response.json()
+            print(f"✓ Template data loaded")
+            
+            # Check image URLs in template data
+            print(f"\n--- Template Data Analysis ---")
+            print(f"Profile Image URL: {template_data.get('profileImage', 'NOT FOUND')}")
+            print(f"Hero Image URL: {template_data.get('heroImage', 'NOT FOUND')}")
+            print(f"Cover Image URL: {template_data.get('coverImage', 'NOT FOUND')}")
+            
+            # Check photos array
+            photos = template_data.get('photos', [])
+            print(f"Number of photos: {len(photos)}")
+            
+            if photos:
+                for i, photo in enumerate(photos):
+                    print(f"Photo {i+1}: {photo.get('url', 'NO URL')[:80]}...")
+            
+            # Check if cover image is in photos instead of heroImage
+            cover_url = "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/475653267_122093636456756139_2141971188755740555_n.jpg"
+            
+            hero_image = template_data.get('heroImage', '')
+            if cover_url in hero_image:
+                print("✓ Cover image found in heroImage field")
+            else:
+                print("✗ Cover image NOT found in heroImage field")
+                
+            # Check if it's in photos
+            cover_in_photos = any(cover_url in photo.get('url', '') for photo in photos)
+            if cover_in_photos:
+                print("⚠ Cover image found in photos array instead of heroImage")
+            else:
+                print("✗ Cover image not found in photos array either")
+                
+        else:
+            print(f"✗ Failed to get template data: {response.status_code}")
             return False
             
-        html_content = response.text
-        print(f"✓ Template loaded ({len(html_content)} characters)")
-        
-        # Extract and analyze the header CSS
-        print("\n=== CSS Analysis ===")
-        
-        # Find the CSS section
-        css_match = re.search(r'<style>(.*?)</style>', html_content, re.DOTALL)
-        if css_match:
-            css_content = css_match.group(1)
-            
-            # Look for header-image class
-            header_css_match = re.search(r'\.header-image\s*{[^}]+}', css_content)
-            if header_css_match:
-                print("Header CSS found:")
-                print(header_css_match.group(0))
-            else:
-                print("✗ No .header-image CSS found")
-                
-            # Look for ::before pseudo-element
-            before_css_match = re.search(r'\.header-image::before\s*{[^}]+}', css_content)
-            if before_css_match:
-                print("\n::before CSS found:")
-                print(before_css_match.group(0))
-            else:
-                print("✗ No .header-image::before CSS found")
-                
-            # Look for CSS variables
-            if '--primary' in css_content:
-                primary_match = re.search(r'--primary:\s*([^;]+);', css_content)
-                if primary_match:
-                    print(f"\nPrimary color: {primary_match.group(1)}")
-            
-            if '--secondary' in css_content:
-                secondary_match = re.search(r'--secondary:\s*([^;]+);', css_content)
-                if secondary_match:
-                    print(f"Secondary color: {secondary_match.group(1)}")
-        else:
-            print("✗ No CSS <style> section found")
-            
-        # Extract and analyze the header HTML
-        print("\n=== HTML Analysis ===")
-        
-        header_match = re.search(r'<header[^>]*id="home"[^>]*>.*?</header>', html_content, re.DOTALL)
-        if header_match:
-            header_html = header_match.group(0)
-            print("Header HTML structure:")
-            
-            # Extract header opening tag
-            header_tag_match = re.search(r'<header[^>]*>', header_html)
-            if header_tag_match:
-                header_tag = header_tag_match.group(0)
-                print(f"Header tag: {header_tag}")
-                
-                # Check for class
-                if 'class="' in header_tag:
-                    class_match = re.search(r'class="([^"]*)"', header_tag)
-                    if class_match:
-                        classes = class_match.group(1)
-                        print(f"Classes: {classes}")
-                        if 'header-image' in classes:
-                            print("✓ header-image class present")
-                        else:
-                            print("✗ header-image class missing")
-                else:
-                    print("✗ No class attribute")
-                    
-                # Check for style
-                if 'style="' in header_tag:
-                    style_match = re.search(r'style="([^"]*)"', header_tag)
-                    if style_match:
-                        style_content = style_match.group(1)
-                        print(f"Inline style: {style_content[:100]}...")
-                        if 'background-image' in style_content:
-                            print("✓ background-image in inline style")
-                        else:
-                            print("✗ No background-image in inline style")
-                else:
-                    print("✗ No inline style")
-        else:
-            print("✗ No header element found")
-            
-        # Check for profile image
-        print("\n=== Profile Image Analysis ===")
-        profile_img_matches = re.findall(r'<img[^>]*src="([^"]*)"[^>]*>', html_content)
-        print(f"Total img tags found: {len(profile_img_matches)}")
-        
-        facebook_images = [img for img in profile_img_matches if 'scontent' in img]
-        print(f"Facebook CDN images: {len(facebook_images)}")
-        
-        for i, img_url in enumerate(facebook_images):
-            print(f"  {i+1}. {img_url[:60]}...")
-            
-        return True
-        
     except Exception as e:
-        print(f"✗ Error debugging template: {e}")
+        print(f"✗ Error getting template data: {e}")
         return False
+    
+    # 2. Get the preview HTML
+    print("\n2. Getting preview HTML...")
+    try:
+        response = requests.get(f"{base_url}/templates/{template_id}/preview", timeout=30)
+        if response.status_code == 200:
+            html_content = response.text
+            print(f"✓ Preview HTML loaded ({len(html_content)} characters)")
+            
+            # Check header section
+            header_match = re.search(r'<header[^>]*id="home"[^>]*>.*?</header>', html_content, re.DOTALL)
+            if header_match:
+                header_content = header_match.group(0)
+                print(f"\n--- Header Section Analysis ---")
+                print(f"Header length: {len(header_content)} characters")
+                
+                # Check for background-image in header
+                style_match = re.search(r'style="([^"]*)"', header_content)
+                if style_match:
+                    style_content = style_match.group(1)
+                    print(f"Header style: {style_content[:100]}...")
+                    
+                    if 'background-image' in style_content:
+                        print("✓ background-image found in header")
+                        
+                        # Check what URL is being used
+                        if '475653267_122093636456756139' in style_content:
+                            print("✓ Correct cover image URL found in header background")
+                        else:
+                            print("✗ Wrong image URL in header background")
+                    else:
+                        print("✗ No background-image in header style")
+                else:
+                    print("✗ No style attribute in header")
+            else:
+                print("✗ Header section not found")
+                
+            # Check photos section
+            photos_match = re.search(r'<section[^>]*class="[^"]*photos[^"]*"[^>]*>.*?</section>', html_content, re.DOTALL)
+            if photos_match:
+                photos_content = photos_match.group(0)
+                print(f"\n--- Photos Section Analysis ---")
+                print(f"Photos section length: {len(photos_content)} characters")
+                
+                # Count images in photos section
+                img_matches = re.findall(r'<img[^>]*src="([^"]*)"[^>]*>', photos_content)
+                print(f"Images in photos section: {len(img_matches)}")
+                
+                for i, img_url in enumerate(img_matches):
+                    print(f"  Photo {i+1}: {img_url[:60]}...")
+                    
+                    if '475653267_122093636456756139' in img_url:
+                        print("  ⚠ Cover image found in photos section (should be in header)")
+            else:
+                print("✗ Photos section not found")
+                
+        else:
+            print(f"✗ Failed to get preview HTML: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"✗ Error getting preview HTML: {e}")
+        return False
+    
+    return True
 
 if __name__ == "__main__":
-    debug_template_preview()
+    success = debug_template_preview()
+    
+    if success:
+        print(f"\n✓ Template preview debugging completed")
+        print(f"Check the analysis above to identify the data mapping issue")
+    else:
+        print(f"\n✗ Template preview debugging failed")
