@@ -77,6 +77,14 @@ function generateHTML(config: WebsiteConfig): string {
       .replace(/\n/g, '\\A')   // Escape newlines
       .replace(/\r/g, '\\D');  // Escape carriage returns
   }
+
+  // Image proxy URL generator for Facebook CDN images
+  function getProxyImageUrl(imageUrl: string): string {
+    if (imageUrl && imageUrl.includes('scontent') && imageUrl.includes('fbcdn.net')) {
+      return `/proxy/image?url=${encodeURIComponent(imageUrl)}`;
+    }
+    return imageUrl;
+  }
   
   // Extract and validate image URLs from config (for Make Agent integration)
   const configData = config as any;
@@ -174,7 +182,7 @@ ${generateCSS(config)}
   </nav>
 
   <!-- Header with Facebook CDN image loading -->
-  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}');" data-cover-url="${encodeCssUrl(coverImageUrl)}">
+  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl && coverImageUrl.includes('scontent') && coverImageUrl.includes('fbcdn.net') ? `/proxy/image?url=${encodeURIComponent(coverImageUrl)}` : coverImageUrl}');" data-cover-url="${encodeCssUrl(coverImageUrl)}">
     <div class="header-overlay"></div>
     <div class="container header-content text-center text-white">
       <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
