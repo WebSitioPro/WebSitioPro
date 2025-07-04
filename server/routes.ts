@@ -425,48 +425,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Removed custom catch-all route
 
-  // Image proxy endpoint to bypass CORS restrictions
-  app.get("/proxy/image", async (req: Request, res: Response) => {
+  // Stock image generator endpoint for templates
+  app.get("/api/stock-image", async (req: Request, res: Response) => {
     try {
-      const imageUrl = req.query.url as string;
+      const { category = 'business', width = 800, height = 600 } = req.query;
       
-      if (!imageUrl) {
-        return res.status(400).json({ error: "Missing image URL" });
-      }
-
-      // Only proxy Facebook CDN images for security
-      if (!imageUrl.includes('scontent') || !imageUrl.includes('fbcdn.net')) {
-        return res.status(403).json({ error: "Only Facebook CDN images are supported" });
-      }
-
-      console.log(`Proxying Facebook CDN image: ${imageUrl.substring(0, 100)}...`);
-
-      // Fetch the image from Facebook CDN
-      const response = await fetch(imageUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
+      // Generate Unsplash URL for stock images
+      const unsplashUrl = `https://source.unsplash.com/${width}x${height}/?${category}`;
+      
+      res.json({ 
+        imageUrl: unsplashUrl,
+        category,
+        dimensions: `${width}x${height}`,
+        source: 'Unsplash'
       });
-
-      if (!response.ok) {
-        console.log(`Failed to fetch image: ${response.status}`);
-        return res.status(404).json({ error: "Image not found" });
-      }
-
-      // Set appropriate headers
-      res.set({
-        'Content-Type': response.headers.get('Content-Type') || 'image/jpeg',
-        'Cache-Control': 'public, max-age=3600',
-        'Access-Control-Allow-Origin': '*'
-      });
-
-      // Stream the image data
-      const imageBuffer = await response.arrayBuffer();
-      res.send(Buffer.from(imageBuffer));
       
     } catch (error) {
-      console.error('Image proxy error:', error);
-      res.status(500).json({ error: "Failed to proxy image" });
+      console.error('Stock image generator error:', error);
+      res.status(500).json({ error: "Failed to generate stock image URL" });
     }
   });
 

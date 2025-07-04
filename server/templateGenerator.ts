@@ -78,25 +78,46 @@ function generateHTML(config: WebsiteConfig): string {
       .replace(/\r/g, '\\D');  // Escape carriage returns
   }
 
-  // Image proxy URL generator for Facebook CDN images
-  function getProxyImageUrl(imageUrl: string): string {
-    if (imageUrl && imageUrl.includes('scontent') && imageUrl.includes('fbcdn.net')) {
-      return `/proxy/image?url=${encodeURIComponent(imageUrl)}`;
+  // Stock image URL generator for templates
+  function generateStockImageUrl(category: string, width: number = 800, height: number = 600): string {
+    return `https://source.unsplash.com/${width}x${height}/?${category}`;
+  }
+
+  // Generate fallback images when no image is provided
+  function getImageWithFallback(imageUrl: string, fallbackCategory: string, width: number = 800, height: number = 600): string {
+    if (imageUrl && imageUrl.trim() && !imageUrl.includes('scontent')) {
+      return imageUrl;
     }
-    return imageUrl;
+    // Use stock image for missing or Facebook CDN images
+    return generateStockImageUrl(fallbackCategory, width, height);
   }
   
   // Extract and validate image URLs from config (for Make Agent integration)
   const configData = config as any;
-  const profileImageUrl = validateImageUrl(
+  // Determine business category for stock images
+  const businessCategory = config.templateType?.toLowerCase() || 'business';
+  const stockCategories = {
+    'professionals': 'professional',
+    'restaurant': 'food',
+    'tourism': 'travel',
+    'retail': 'shopping',
+    'services': 'business'
+  };
+  const imageCategory = stockCategories[businessCategory] || 'business';
+
+  const profileImageUrl = getImageWithFallback(
     configData.profileImage || config.logo || '', 
-    ''
+    'portrait',
+    400,
+    400
   );
   
-  // For Make webhook data, prioritize heroImage field (which contains the mapped cover image), then fallback to coverImage
-  const coverImageUrl = validateImageUrl(
+  // For Make webhook data, prioritize heroImage field, then fallback to coverImage
+  const coverImageUrl = getImageWithFallback(
     configData.heroImage || configData.coverImage || config.heroImage || '', 
-    'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&h=1000'
+    imageCategory,
+    1200,
+    600
   );
   
   // For Make webhook integration, also set heroImage if coverImage is present
@@ -182,7 +203,7 @@ ${generateCSS(config)}
   </nav>
 
   <!-- Header with Facebook CDN image loading -->
-  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl && coverImageUrl.includes('scontent') && coverImageUrl.includes('fbcdn.net') ? `/proxy/image?url=${encodeURIComponent(coverImageUrl)}` : coverImageUrl}');" data-cover-url="${encodeCssUrl(coverImageUrl)}">
+  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}');" data-cover-url="${encodeCssUrl(coverImageUrl)}">
     <div class="header-overlay"></div>
     <div class="container header-content text-center text-white">
       <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
@@ -220,7 +241,46 @@ ${generateCSS(config)}
 
   <!-- Photos Section -->
   <section id="photos" class="section-padding">
-    <!-- Photos content would be here -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center mb-5">
+          <h2 class="section-title" data-i18n="photos.title">Galería de Fotos</h2>
+          <p class="lead" data-i18n="photos.subtitle">Descubre nuestras instalaciones y servicios</p>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="photo-item">
+            <img src="${generateStockImageUrl(imageCategory, 400, 300)}" alt="Gallery 1" class="img-fluid rounded shadow-sm">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="photo-item">
+            <img src="${generateStockImageUrl(imageCategory, 400, 300)}" alt="Gallery 2" class="img-fluid rounded shadow-sm">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="photo-item">
+            <img src="${generateStockImageUrl(imageCategory, 400, 300)}" alt="Gallery 3" class="img-fluid rounded shadow-sm">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="photo-item">
+            <img src="${generateStockImageUrl('office', 400, 300)}" alt="Gallery 4" class="img-fluid rounded shadow-sm">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="photo-item">
+            <img src="${generateStockImageUrl('teamwork', 400, 300)}" alt="Gallery 5" class="img-fluid rounded shadow-sm">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="photo-item">
+            <img src="${generateStockImageUrl('workspace', 400, 300)}" alt="Gallery 6" class="img-fluid rounded shadow-sm">
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Awards Section -->
