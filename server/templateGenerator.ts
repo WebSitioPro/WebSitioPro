@@ -40,11 +40,22 @@ function generateHTML(config: WebsiteConfig): string {
     // Remove any URL hash fragments that might cause issues
     const cleanUrl = url.split('#')[0].split('&')[0];
     
-    // Handle Facebook CDN URLs specifically - remove problematic parameters
+    // Handle Facebook CDN URLs specifically - keep essential parameters only
     if (cleanUrl.includes('scontent')) {
-      // Keep only essential parameters for Facebook CDN URLs
-      const fbUrl = cleanUrl.split('?')[0];
-      return fbUrl;
+      // For Facebook CDN URLs, keep the base URL and essential parameters
+      const baseUrl = cleanUrl.split('?')[0];
+      const urlParams = new URLSearchParams(cleanUrl.split('?')[1] || '');
+      
+      // Keep only essential Facebook CDN parameters
+      const essentialParams = new URLSearchParams();
+      if (urlParams.has('_nc_cat')) essentialParams.set('_nc_cat', urlParams.get('_nc_cat')!);
+      if (urlParams.has('ccb')) essentialParams.set('ccb', urlParams.get('ccb')!);
+      if (urlParams.has('_nc_sid')) essentialParams.set('_nc_sid', urlParams.get('_nc_sid')!);
+      if (urlParams.has('_nc_ohc')) essentialParams.set('_nc_ohc', urlParams.get('_nc_ohc')!);
+      if (urlParams.has('_nc_ht')) essentialParams.set('_nc_ht', urlParams.get('_nc_ht')!);
+      
+      const paramString = essentialParams.toString();
+      return paramString ? `${baseUrl}?${paramString}` : baseUrl;
     }
     
     // Basic URL validation for other URLs
@@ -132,7 +143,7 @@ function generateHTML(config: WebsiteConfig): string {
   </nav>
 
   <!-- Header -->
-  <header id="home" class="header-image d-flex align-items-center" data-cover-image="${coverImageUrl}">
+  <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}');">
     <div class="header-overlay"></div>
     <div class="container header-content text-center text-white">
       <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
@@ -431,9 +442,7 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 }
 
-.header-image[data-cover-image]:not([data-cover-image=""]) {
-  background-image: var(--cover-bg);
-}
+/* Removed CSS variable approach for more reliable inline style method */
 
 .navbar-brand img {
   /* Ensure profile images load gracefully */
@@ -678,24 +687,5 @@ function generateJS(config: WebsiteConfig): string {
   
   // Initialize the page with the default language
   updateLanguage(currentLanguage);
-  
-  // Handle cover image loading with fallback
-  const headerElement = document.querySelector('.header-image[data-cover-image]');
-  if (headerElement) {
-    const coverImageUrl = headerElement.getAttribute('data-cover-image');
-    if (coverImageUrl && coverImageUrl !== '') {
-      // Test if image loads successfully
-      const testImage = new Image();
-      testImage.onload = function() {
-        // Image loaded successfully, apply it as CSS variable
-        headerElement.style.setProperty('--cover-bg', \`url('\${coverImageUrl}')\`);
-      };
-      testImage.onerror = function() {
-        console.warn('Cover image failed to load, using gradient fallback');
-        // Keep the default gradient background (already applied in CSS)
-      };
-      testImage.src = coverImageUrl;
-    }
-  }
 })();`;
 }
