@@ -15,6 +15,7 @@ interface TemplateData {
   specialty: { es: string; en: string };
   description: { es: string; en: string };
   profileImage: string;
+  heroImage?: string;
   
   // About Section
   aboutTitle: { es: string; en: string };
@@ -98,6 +99,7 @@ const convertMakeAgentToEditorFormat = (makeTemplate: any): TemplateData => {
       en: makeTemplate.bio || 'Business description'
     },
     profileImage: makeTemplate.profileImage || makeTemplate.photo_url || 'https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business',
+    heroImage: makeTemplate.heroImage || makeTemplate.coverImage || '',
     
     aboutTitle: {
       es: 'Acerca del Negocio',
@@ -596,6 +598,16 @@ export default function TemplateEditor() {
                           className="form-control"
                           value={templateData.profileImage}
                           onChange={(e) => handleInputChange('profileImage', e.target.value)}
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Hero Image URL</label>
+                        <input 
+                          type="url" 
+                          className="form-control"
+                          value={templateData.heroImage || ''}
+                          onChange={(e) => handleInputChange('heroImage', e.target.value)}
+                          placeholder="https://example.com/hero-image.jpg"
                         />
                       </div>
                       
