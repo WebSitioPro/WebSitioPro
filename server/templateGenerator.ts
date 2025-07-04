@@ -116,7 +116,9 @@ function generateHTML(config: WebsiteConfig): string {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
+  <style>
+${generateCSS(config)}
+  </style>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="100">
   <!-- Navbar -->
@@ -272,7 +274,9 @@ function generateHTML(config: WebsiteConfig): string {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   
   <!-- Custom JS -->
-  <script src="script.js"></script>
+  <script>
+${generateJS(config)}
+  </script>
   
   ${config.analyticsCode ? config.analyticsCode : '<!-- Analytics code would go here -->'}
 </body>
@@ -614,7 +618,7 @@ function generateJS(config: WebsiteConfig): string {
   const chatbotSend = document.getElementById('chatbotSend');
   
   // Chatbot responses
-  const chatbotResponses = ${JSON.stringify(config.chatbotQuestions.reduce((acc, q) => {
+  const chatbotResponses = ${JSON.stringify((config.chatbotQuestions || []).reduce((acc, q) => {
     acc[q.key] = {
       en: q.answer.en,
       es: q.answer.es
