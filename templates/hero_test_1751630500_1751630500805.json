@@ -1,0 +1,19 @@
+{
+  "templateId": "hero_test_1751630500_1751630500805",
+  "clientName": "Hero Mapping Test 1751630500",
+  "businessName": "Hero Mapping Test 1751630500",
+  "templateType": "Restaurant",
+  "createdAt": "2025-07-04T12:01:40.805Z",
+  "phone": "+529999999999",
+  "address": "Test Address, Mexico",
+  "category": "Restaurant",
+  "place_id": "hero_test_1751630500",
+  "facebook_url": "https://www.facebook.com/test",
+  "profileImage": "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-1/hero_test_profile.jpg?_nc_cat=105&ccb=1-7",
+  "coverImage": "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/hero_test_cover.jpg?_nc_cat=105&ccb=1-7",
+  "heroImage": "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/hero_test_cover.jpg?_nc_cat=105&ccb=1-7",
+  "previewUrl": "websitiopro.com/preview/hero_test_1751630500",
+  "dateCreated": "7/4/2025",
+  "sunsetDate": "7/14/2025",
+  "agentNotes": "Template generated successfully"
+}

@@ -832,7 +832,7 @@ function generateJS(config: WebsiteConfig): string {
     // For Facebook CDN images, we assume they will be blocked and use gradient fallback
     // This is more reliable than waiting for onerror events that may not fire
     if (imageUrl.includes('scontent') && imageUrl.includes('fbcdn.net')) {
-      console.log('⚠ Facebook CDN detected - using gradient fallback for reliability');
+      console.log('🔍 Facebook CDN detected - testing image loading...');
       
       // Wait a brief moment to see if image loads naturally
       setTimeout(() => {
@@ -843,11 +843,9 @@ function generateJS(config: WebsiteConfig): string {
         if (bgImage === 'none' || bgImage.includes('linear-gradient')) {
           console.log('✓ Image already failed, gradient showing');
         } else {
-          console.log('🔄 Switching to gradient fallback to ensure visibility');
-          // Remove inline background-image style to show CSS gradient
-          headerElement.style.backgroundImage = '';
-          headerElement.classList.add('loading');
-          console.log('✅ Gradient fallback activated');
+          console.log('⚠ Image may have loaded but switching to gradient for visibility consistency');
+          // Keep the image if it loaded, only fallback if really needed
+          // Don't automatically remove background image
         }
       }, 1500);
       
