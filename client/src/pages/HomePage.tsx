@@ -487,14 +487,12 @@ export default function HomePage() {
       {/* Banner Section */}
       {savedConfig?.showBanner && (
         <div 
+          className="banner"
           style={{ 
             backgroundColor: savedConfig.bannerBackgroundColor || '#FFC107',
             color: savedConfig.bannerTextColor || '#000000',
             fontSize: savedConfig.bannerTextSize || '16px',
-            borderBottom: '1px solid rgba(0,0,0,0.1)',
-            position: 'sticky',
-            top: '0',
-            zIndex: 1025
+            borderBottom: '1px solid rgba(0,0,0,0.1)'
           }}
         >
           <div className="container">

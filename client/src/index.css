@@ -152,6 +152,40 @@
   transform: scale(1.1);
 }
 
+/* Header and banner positioning fixes */
+.navbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1050 !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Banner should stick below the navbar */
+.banner {
+  position: sticky;
+  top: 56px; /* Height of standard Bootstrap navbar */
+  z-index: 1040;
+}
+
+/* Ensure hero section doesn't get overlapped */
+.hero-section {
+  margin-top: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Fix for Bootstrap navbar-toggler */
+.navbar-toggler {
+  z-index: 1051;
+}
+
+/* Additional fixes for content layering */
+.content-section {
+  position: relative;
+  z-index: 1;
+}
+
 .chatbot-panel {
   position: fixed;
   bottom: 100px;
