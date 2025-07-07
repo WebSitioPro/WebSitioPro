@@ -82,6 +82,20 @@ export const websiteConfigs = pgTable("website_configs", {
     question: { en: string; es: string };
     answer: { en: string; es: string };
   }>>(),
+  // Additional editor fields
+  whyPoints: json("why_points").$type<Array<{
+    es: string;
+    en: string;
+  }>>().default([]),
+  serviceSteps: json("service_steps").$type<Array<{
+    es: string;
+    en: string;
+  }>>().default([]),
+  templates: json("templates").$type<Array<{
+    title: { es: string; en: string };
+    description: { es: string; en: string };
+    image: string;
+  }>>().default([]),
 });
 
 // Define insert schema
