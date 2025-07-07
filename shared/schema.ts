@@ -36,6 +36,11 @@ export const websiteConfigs = pgTable("website_configs", {
   bannerTextColor: text("banner_text_color").default("#000000"),
   bannerTextSize: text("banner_text_size").default("16px"),
   showBanner: boolean("show_banner").default(false),
+  // Pricing banner fields
+  pricingBannerBgColor: text("pricing_banner_bg_color").default("#17A2B8"),
+  pricingBannerTextColor: text("pricing_banner_text_color").default("#FFFFFF"),
+  paymentBannerBgColor: text("payment_banner_bg_color").default("#FFFFFF"),
+  paymentBannerTextColor: text("payment_banner_text_color").default("#333333"),
   // Hero customization fields
   heroImageOpacity: text("hero_image_opacity").default("0.5"),
   heroImagePosition: text("hero_image_position").default("center"),
