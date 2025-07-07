@@ -529,10 +529,7 @@ export default function HomePage() {
         className={`hero-section position-relative d-flex`}
         style={{
           height: savedConfig?.heroSectionHeight || '70vh',
-          backgroundImage: `url(${savedConfig?.heroImage || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80"})`,
-          backgroundSize: 'cover',
-          backgroundPosition: savedConfig?.heroImagePosition || 'center',
-          backgroundRepeat: 'no-repeat',
+          backgroundColor: '#f8f9fa', // Light background for when image is transparent
           alignItems: savedConfig?.heroVerticalAlignment === 'start' ? 'flex-start' : 
                      savedConfig?.heroVerticalAlignment === 'end' ? 'flex-end' : 'center'
         }}
@@ -540,7 +537,11 @@ export default function HomePage() {
         <div 
           className="position-absolute w-100 h-100"
           style={{
-            backgroundColor: `rgba(0, 0, 0, ${Math.max(0, Math.min(1, parseFloat(savedConfig?.heroImageOpacity || '0.5')))})`,
+            backgroundImage: `url(${savedConfig?.heroImage || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80"})`,
+            backgroundSize: 'cover',
+            backgroundPosition: savedConfig?.heroImagePosition || 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: Math.max(0, Math.min(1, parseFloat(savedConfig?.heroImageOpacity || '1.0'))),
             top: 0,
             left: 0,
             zIndex: 1
