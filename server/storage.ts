@@ -140,19 +140,31 @@ export class DatabaseStorage implements IStorage {
         ],
         templates: [],
         whyPoints: [
-          { title: "15+ Years Experience", description: "Extensive experience in all aspects of dentistry" },
-          { title: "Modern Equipment", description: "State-of-the-art technology for better outcomes" },
-          { title: "Comfortable Environment", description: "Relaxing atmosphere for stress-free visits" }
+          { es: "15+ Años de Experiencia", en: "15+ Years Experience" },
+          { es: "Equipo Moderno", en: "Modern Equipment" },
+          { es: "Ambiente Cómodo", en: "Comfortable Environment" }
         ],
         serviceSteps: [
-          { title: "Initial Consultation", description: "Comprehensive examination and treatment planning" },
-          { title: "Treatment Options", description: "Detailed explanation of recommended procedures" },
-          { title: "Professional Care", description: "Expert treatment with follow-up care" }
+          { es: "Consulta Inicial", en: "Initial Consultation" },
+          { es: "Opciones de Tratamiento", en: "Treatment Options" },
+          { es: "Cuidado Profesional", en: "Professional Care" }
         ],
         chatbotQuestions: [
-          { question: "What are your office hours?", answer: "We're open Monday to Friday 9:00 AM - 6:00 PM, and Saturday 10:00 AM - 2:00 PM" },
-          { question: "Do you accept insurance?", answer: "Yes, we accept most dental insurance plans. Please call to verify your coverage." },
-          { question: "How do I schedule an appointment?", answer: "You can call us at +52 987 654 321 or send us a WhatsApp message." }
+          { 
+            key: "office_hours",
+            question: { es: "¿Cuáles son sus horarios de oficina?", en: "What are your office hours?" },
+            answer: { es: "Estamos abiertos de lunes a viernes de 9:00 AM - 6:00 PM, y sábados de 10:00 AM - 2:00 PM", en: "We're open Monday to Friday 9:00 AM - 6:00 PM, and Saturday 10:00 AM - 2:00 PM" }
+          },
+          { 
+            key: "insurance",
+            question: { es: "¿Aceptan seguro?", en: "Do you accept insurance?" },
+            answer: { es: "Sí, aceptamos la mayoría de los planes de seguro dental. Por favor llame para verificar su cobertura.", en: "Yes, we accept most dental insurance plans. Please call to verify your coverage." }
+          },
+          { 
+            key: "appointment",
+            question: { es: "¿Cómo programo una cita?", en: "How do I schedule an appointment?" },
+            answer: { es: "Puede llamarnos al +52 987 654 321 o enviarnos un mensaje de WhatsApp.", en: "You can call us at +52 987 654 321 or send us a WhatsApp message." }
+          }
         ]
       };
       
