@@ -773,11 +773,36 @@ export default function HomePage() {
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('pricingTitle')}
+                {savedConfig?.translations?.[language]?.pricingTitle || t('pricingTitle')}
               </h2>
               <p className="lead text-muted">
-                {t('pricingText')}
+                {savedConfig?.translations?.[language]?.pricingText || t('pricingText')}
               </p>
+              
+              {/* Display saved pricing information if available */}
+              {savedConfig?.translations?.[language]?.bannerText && (
+                <div className="alert alert-info mt-4">
+                  <div className="fs-5 fw-bold mb-2">
+                    {savedConfig.translations[language].bannerText.split('\n\n')[0]}
+                  </div>
+                  {savedConfig.translations[language].bannerText.split('\n\n')[1] && (
+                    <div className="text-muted">
+                      {savedConfig.translations[language].bannerText.split('\n\n')[1]}
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {savedConfig?.translations?.[language]?.paymentText && (
+                <div className="mt-4 p-3 bg-white rounded shadow-sm">
+                  <h5 className="mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                    {language === 'es' ? 'Métodos de Pago' : 'Payment Methods'}
+                  </h5>
+                  <p className="text-muted mb-0">
+                    {savedConfig.translations[language].paymentText}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -935,8 +960,10 @@ export default function HomePage() {
                   <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
                     <Phone className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                     <div>
-                      <h6 className="mb-0">+52 983 123 4567</h6>
-                      <small className="text-muted">{t('officeHours')}</small>
+                      <h6 className="mb-0">{savedConfig?.phone || '+52 983 123 4567'}</h6>
+                      <small className="text-muted">
+                        {savedConfig?.translations?.[language]?.officeHours || t('officeHours')}
+                      </small>
                     </div>
                   </div>
                 </div>
@@ -945,7 +972,7 @@ export default function HomePage() {
                   <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
                     <Mail className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                     <div>
-                      <h6 className="mb-0">info@websitiopro.com</h6>
+                      <h6 className="mb-0">{savedConfig?.email || 'info@websitiopro.com'}</h6>
                       <small className="text-muted">{t('emailUs')}</small>
                     </div>
                   </div>
@@ -955,7 +982,9 @@ export default function HomePage() {
                   <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
                     <MapPin className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                     <div>
-                      <h6 className="mb-0">Chetumal, Quintana Roo</h6>
+                      <h6 className="mb-0">
+                        {savedConfig?.translations?.[language]?.address || 'Chetumal, Quintana Roo'}
+                      </h6>
                       <small className="text-muted">México</small>
                     </div>
                   </div>
@@ -966,12 +995,16 @@ export default function HomePage() {
                     <MessageCircle className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
                     <div>
                       <a 
-                        href="https://wa.me/529831234567?text=Hola! Me interesa conocer más sobre WebSitioPro."
+                        href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent(savedConfig?.translations?.[language]?.whatsappMessage || 'Hola! Me interesa conocer más sobre WebSitioPro.')}`}
                         className="text-decoration-none"
                         style={{ color: 'hsl(var(--secondary))' }}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         <h6 className="mb-0">WhatsApp</h6>
-                        <small className="text-muted">{t('whatsappText')}</small>
+                        <small className="text-muted">
+                          {savedConfig?.translations?.[language]?.whatsappText || t('whatsappText')}
+                        </small>
                       </a>
                     </div>
                   </div>
