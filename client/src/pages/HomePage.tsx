@@ -687,21 +687,37 @@ export default function HomePage() {
                     <div className="card border-0 shadow-sm">
                       <div className="row g-0">
                         <div className="col-md-5">
-                          <div className="bg-light h-100 d-flex align-items-center justify-content-center overflow-hidden rounded-start" style={{ minHeight: '300px' }}>
+                          <div className="bg-light h-100 d-flex align-items-center justify-content-center overflow-hidden rounded-start position-relative" style={{ minHeight: '300px' }}>
                             {template.image ? (
-                              <img 
-                                src={template.image} 
-                                alt={template.title[language] || template.title.es}
-                                className="w-100 h-100"
-                                style={{ 
-                                  objectFit: 'cover',
-                                  display: 'block'
-                                }}
-                                onError={(e) => {
-                                  console.log('Image failed to load:', template.image);
-                                  e.currentTarget.style.display = 'none';
-                                }}
-                              />
+                              <>
+                                <img 
+                                  src={template.image} 
+                                  alt={template.title[language] || template.title.es}
+                                  className="w-100 h-100"
+                                  style={{ 
+                                    objectFit: 'cover',
+                                    display: 'block'
+                                  }}
+                                  onLoad={(e) => {
+                                    console.log('Image loaded successfully in preview:', template.image);
+                                    e.currentTarget.style.display = 'block';
+                                  }}
+                                  onError={(e) => {
+                                    console.log('Image failed to load in preview:', template.image);
+                                    e.currentTarget.style.display = 'none';
+                                    const fallback = e.currentTarget.parentElement?.querySelector('.fallback-preview') as HTMLElement;
+                                    if (fallback) fallback.style.display = 'flex';
+                                  }}
+                                />
+                                <div className="fallback-preview text-center text-muted position-absolute w-100 h-100 d-none align-items-center justify-content-center" style={{ top: 0, left: 0 }}>
+                                  <div>
+                                    <div className="mb-2">
+                                      <Globe size={48} />
+                                    </div>
+                                    <small>Website Preview</small>
+                                  </div>
+                                </div>
+                              </>
                             ) : (
                               <div className="text-center text-muted">
                                 <div className="mb-2">
