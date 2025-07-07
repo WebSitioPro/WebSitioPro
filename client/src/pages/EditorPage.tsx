@@ -262,6 +262,27 @@ export default function EditorPage() {
     }));
   };
 
+  const handleAddTemplate = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      templates: [
+        ...prev.templates,
+        {
+          title: { es: 'Nuevo Servicio', en: 'New Service' },
+          description: { es: 'Descripción del servicio', en: 'Service description' },
+          image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=New+Service'
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveTemplate = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      templates: prev.templates.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleWhyPointChange = (index: number, value: string, language: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
@@ -1466,9 +1487,29 @@ export default function EditorPage() {
                     </div>
                   </div>
 
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5 className="mb-0">Service Templates</h5>
+                    <button 
+                      type="button" 
+                      className="btn btn-primary btn-sm"
+                      onClick={handleAddTemplate}
+                    >
+                      Add Template
+                    </button>
+                  </div>
+                  
                   {websiteData.templates.map((template, index) => (
-                    <div key={index} className="border rounded p-3 mb-3">
-                      <h5 className="mb-3">Template {index + 1}</h5>
+                    <div key={index} className="border rounded p-3 mb-3 bg-light">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="mb-0">Template {index + 1}</h6>
+                        <button 
+                          type="button" 
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleRemoveTemplate(index)}
+                        >
+                          Remove
+                        </button>
+                      </div>
                       <div className="row g-3">
                         <div className="col-md-6">
                           <label className="form-label">Title (Spanish)</label>
@@ -1507,28 +1548,40 @@ export default function EditorPage() {
                           />
                         </div>
                         <div className="col-12">
-                          <label className="form-label">Image URL</label>
+                          <label className="form-label">Service Image URL</label>
                           <input 
                             type="url" 
                             className="form-control"
                             value={template.image}
                             onChange={(e) => handleTemplateChange(index, 'image', e.target.value)}
-                            placeholder="https://example.com/image.jpg or https://i.ibb.co/..."
+                            placeholder="https://example.com/service-image.jpg or https://i.ibb.co/..."
                           />
+                          <small className="form-text text-muted">
+                            Upload to <a href="https://imgbb.com" target="_blank" rel="noopener noreferrer">ImgBB</a> or 
+                            use any direct image URL. Best size: 300x200 pixels.
+                          </small>
+                          
                           {template.image && (
                             <div className="mt-3">
                               <img 
                                 src={template.image} 
                                 alt={`Template ${index + 1} preview`} 
                                 className="img-thumbnail"
-                                style={{ maxHeight: '150px', maxWidth: '100%' }}
+                                style={{ maxHeight: '200px', maxWidth: '100%' }}
                                 onError={(e) => {
                                   e.currentTarget.style.display = 'none';
+                                  const errorDiv = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (errorDiv) errorDiv.style.display = 'block';
                                 }}
                                 onLoad={(e) => {
                                   e.currentTarget.style.display = 'block';
+                                  const errorDiv = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (errorDiv) errorDiv.style.display = 'none';
                                 }}
                               />
+                              <div className="alert alert-warning mt-2" style={{ display: 'none' }}>
+                                <small>Image failed to load. Please check the URL or try a different image.</small>
+                              </div>
                             </div>
                           )}
                         </div>
