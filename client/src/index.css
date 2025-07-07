@@ -49,30 +49,25 @@
 }
 
 /* Header and Banner Z-Index Fix */
-.navbar-fixed-top, 
-.navbar {
-  z-index: 1030 !important;
+header.sticky-top {
+  z-index: 1050 !important;
+  position: sticky !important;
 }
 
 .banner {
-  z-index: 1020 !important;
+  z-index: 1010 !important;
   position: relative;
 }
 
 /* Ensure language toggle and CTA buttons are above banner */
-.btn {
-  z-index: 1035 !important;
+header .btn {
+  z-index: 1055 !important;
   position: relative;
 }
 
 /* Mobile menu should be above everything */
 .mobile-menu {
-  z-index: 1040 !important;
-}
-
-/* Hero section should be below header */
-.hero-section {
-  z-index: 1000 !important;
+  z-index: 1060 !important;
 }
 
 @layer base {
