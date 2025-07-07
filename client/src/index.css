@@ -197,6 +197,18 @@ header .btn {
   z-index: 1;
 }
 
+/* Mobile responsive hero image adjustments */
+@media (max-width: 768px) {
+  .hero-section .position-absolute {
+    background-size: contain !important;
+    background-position: center top !important;
+  }
+  
+  .hero-section {
+    min-height: 50vh !important;
+  }
+}
+
 /* Fix for Bootstrap navbar-toggler */
 .navbar-toggler {
   z-index: 1051;
