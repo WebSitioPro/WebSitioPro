@@ -48,6 +48,33 @@
   --ring: 142 100% 33%;
 }
 
+/* Header and Banner Z-Index Fix */
+.navbar-fixed-top, 
+.navbar {
+  z-index: 1030 !important;
+}
+
+.banner {
+  z-index: 1020 !important;
+  position: relative;
+}
+
+/* Ensure language toggle and CTA buttons are above banner */
+.btn {
+  z-index: 1035 !important;
+  position: relative;
+}
+
+/* Mobile menu should be above everything */
+.mobile-menu {
+  z-index: 1040 !important;
+}
+
+/* Hero section should be below header */
+.hero-section {
+  z-index: 1000 !important;
+}
+
 @layer base {
   * {
     @apply border-border;
