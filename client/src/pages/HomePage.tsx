@@ -484,6 +484,47 @@ export default function HomePage() {
         </div>
       </header>
 
+      {/* Banner Section */}
+      {savedConfig?.showBanner && (
+        <div 
+          style={{ 
+            backgroundColor: savedConfig.bannerBackgroundColor || '#FFC107',
+            color: savedConfig.bannerTextColor || '#000000',
+            fontSize: savedConfig.bannerTextSize || '16px',
+            borderBottom: '1px solid rgba(0,0,0,0.1)',
+            position: 'sticky',
+            top: '0',
+            zIndex: 1025
+          }}
+        >
+          <div className="container">
+            <div className="row">
+              <div className="col-12 text-center py-2">
+                <span>
+                  {(() => {
+                    if (savedConfig.bannerText) {
+                      const bannerData = typeof savedConfig.bannerText === 'string' ? 
+                        (() => {
+                          try {
+                            return JSON.parse(savedConfig.bannerText);
+                          } catch (e) {
+                            return { es: savedConfig.bannerText, en: savedConfig.bannerText };
+                          }
+                        })() : 
+                        savedConfig.bannerText;
+                      return bannerData[language] || bannerData.es || bannerData.en;
+                    }
+                    return savedConfig.translations?.[language]?.bannerText || 
+                           (language === 'es' ? '¡Oferta especial! Descuento del 20% en sitios web nuevos' : 
+                            'Special offer! 20% discount on new websites');
+                  })()}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section id="hero" className="py-5 bg-light">
         <div className="container">

@@ -13,6 +13,13 @@ interface WebsiteData {
   // Header
   logo: string;
   
+  // Banner Section
+  bannerText: { es: string; en: string };
+  bannerBackgroundColor: string;
+  bannerTextColor: string;
+  bannerTextSize: string;
+  showBanner: boolean;
+  
   // Hero Section
   heroHeadline: { es: string; en: string };
   heroSubheadline: { es: string; en: string };
@@ -70,6 +77,16 @@ export default function EditorPage() {
     
     // Header
     logo: 'WebSitioPro',
+    
+    // Banner Section
+    bannerText: {
+      es: '¡Oferta especial! Descuento del 20% en sitios web nuevos',
+      en: 'Special offer! 20% discount on new websites'
+    },
+    bannerBackgroundColor: '#FFC107',
+    bannerTextColor: '#000000',
+    bannerTextSize: '16px',
+    showBanner: false,
     
     // Hero Section
     heroHeadline: {
@@ -351,7 +368,26 @@ export default function EditorPage() {
               },
               templates: config.templates || prev.templates,
               whyPoints: config.whyPoints || prev.whyPoints,
-              serviceSteps: config.serviceSteps || prev.serviceSteps
+              serviceSteps: config.serviceSteps || prev.serviceSteps,
+              // Banner fields
+              bannerText: config.bannerText ? 
+                (typeof config.bannerText === 'string' ? 
+                  (() => {
+                    try {
+                      return JSON.parse(config.bannerText);
+                    } catch (e) {
+                      return { es: config.bannerText, en: config.bannerText };
+                    }
+                  })() : 
+                  config.bannerText
+                ) : {
+                  es: config.translations?.es?.bannerText || prev.bannerText.es,
+                  en: config.translations?.en?.bannerText || prev.bannerText.en
+                },
+              bannerBackgroundColor: config.bannerBackgroundColor || prev.bannerBackgroundColor,
+              bannerTextColor: config.bannerTextColor || prev.bannerTextColor,
+              bannerTextSize: config.bannerTextSize || prev.bannerTextSize,
+              showBanner: config.showBanner !== undefined ? config.showBanner : prev.showBanner
             }));
           }
         }
@@ -394,6 +430,12 @@ export default function EditorPage() {
         },
         logo: websiteData.logo,
         heroImage: websiteData.heroImage,
+        // Banner fields
+        bannerText: JSON.stringify(websiteData.bannerText),
+        bannerBackgroundColor: websiteData.bannerBackgroundColor,
+        bannerTextColor: websiteData.bannerTextColor,
+        bannerTextSize: websiteData.bannerTextSize,
+        showBanner: websiteData.showBanner,
         translations: {
           es: {
             heroHeadline: websiteData.heroHeadline.es,
@@ -407,7 +449,8 @@ export default function EditorPage() {
             proHeroHeadline: websiteData.proHeroHeadline.es,
             proHeroSubheadline: websiteData.proHeroSubheadline.es,
             demoNote: websiteData.demoNote.es,
-            paymentText: websiteData.paymentText.es
+            paymentText: websiteData.paymentText.es,
+            bannerText: websiteData.bannerText.es
           },
           en: {
             heroHeadline: websiteData.heroHeadline.en,
@@ -421,7 +464,8 @@ export default function EditorPage() {
             proHeroHeadline: websiteData.proHeroHeadline.en,
             proHeroSubheadline: websiteData.proHeroSubheadline.en,
             demoNote: websiteData.demoNote.en,
-            paymentText: websiteData.paymentText.en
+            paymentText: websiteData.paymentText.en,
+            bannerText: websiteData.bannerText.en
           }
         },
         // Store templates data as well
@@ -555,6 +599,13 @@ export default function EditorPage() {
                 >
                   <Settings size={16} className="me-2" />
                   Header & Navigation
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'banner' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('banner')}
+                >
+                  <Type size={16} className="me-2" />
+                  Banner
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'hero' ? 'active fw-bold' : ''}`}
@@ -743,6 +794,131 @@ export default function EditorPage() {
                       </select>
                     </div>
                   </div>
+                </div>
+              )}
+
+              {/* Banner Tab */}
+              {activeTab === 'banner' && (
+                <div>
+                  <h4 className="mb-4">Banner Settings</h4>
+                  
+                  {/* Banner Toggle */}
+                  <div className="row g-3">
+                    <div className="col-12">
+                      <div className="form-check form-switch">
+                        <input 
+                          className="form-check-input" 
+                          type="checkbox" 
+                          checked={websiteData.showBanner}
+                          onChange={(e) => handleInputChange('showBanner', e.target.checked)}
+                        />
+                        <label className="form-check-label">
+                          Show Banner
+                        </label>
+                      </div>
+                      <small className="text-muted">Display a banner below the header</small>
+                    </div>
+                  </div>
+
+                  {websiteData.showBanner && (
+                    <>
+                      {/* Banner Text */}
+                      <div className="row g-3 mt-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Banner Text (Spanish)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={2}
+                            value={websiteData.bannerText.es}
+                            onChange={(e) => handleInputChange('bannerText.es', e.target.value)}
+                            placeholder="¡Oferta especial! Descuento del 20%"
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Banner Text (English)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={2}
+                            value={websiteData.bannerText.en}
+                            onChange={(e) => handleInputChange('bannerText.en', e.target.value)}
+                            placeholder="Special offer! 20% discount"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Banner Colors */}
+                      <div className="row g-3 mt-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Background Color</label>
+                          <div className="d-flex gap-2">
+                            <input 
+                              type="color" 
+                              className="form-control form-control-color"
+                              value={websiteData.bannerBackgroundColor}
+                              onChange={(e) => handleInputChange('bannerBackgroundColor', e.target.value)}
+                            />
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={websiteData.bannerBackgroundColor}
+                              onChange={(e) => handleInputChange('bannerBackgroundColor', e.target.value)}
+                              placeholder="#FFC107"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Text Color</label>
+                          <div className="d-flex gap-2">
+                            <input 
+                              type="color" 
+                              className="form-control form-control-color"
+                              value={websiteData.bannerTextColor}
+                              onChange={(e) => handleInputChange('bannerTextColor', e.target.value)}
+                            />
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={websiteData.bannerTextColor}
+                              onChange={(e) => handleInputChange('bannerTextColor', e.target.value)}
+                              placeholder="#000000"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Banner Text Size */}
+                      <div className="row g-3 mt-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Text Size</label>
+                          <select 
+                            className="form-control"
+                            value={websiteData.bannerTextSize}
+                            onChange={(e) => handleInputChange('bannerTextSize', e.target.value)}
+                          >
+                            <option value="12px">Small (12px)</option>
+                            <option value="14px">Medium (14px)</option>
+                            <option value="16px">Normal (16px)</option>
+                            <option value="18px">Large (18px)</option>
+                            <option value="20px">Extra Large (20px)</option>
+                            <option value="24px">Huge (24px)</option>
+                          </select>
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Preview</label>
+                          <div 
+                            className="border rounded p-3 text-center"
+                            style={{
+                              backgroundColor: websiteData.bannerBackgroundColor,
+                              color: websiteData.bannerTextColor,
+                              fontSize: websiteData.bannerTextSize
+                            }}
+                          >
+                            {websiteData.bannerText.es || 'Preview text will appear here'}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
 

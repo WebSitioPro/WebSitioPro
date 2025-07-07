@@ -30,6 +30,12 @@ export const websiteConfigs = pgTable("website_configs", {
   secondaryColor: text("secondary_color").default("#00A859"),
   backgroundColor: text("background_color").default("#FFFFFF"),
   aiOptimizedNote: text("ai_optimized_note").default("AI-optimized for speed and search"),
+  // Banner fields
+  bannerText: text("banner_text"),
+  bannerBackgroundColor: text("banner_background_color").default("#FFC107"),
+  bannerTextColor: text("banner_text_color").default("#000000"),
+  bannerTextSize: text("banner_text_size").default("16px"),
+  showBanner: boolean("show_banner").default(false),
   translations: json("translations").$type<{
     en: Record<string, string>;
     es: Record<string, string>;
