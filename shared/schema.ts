@@ -45,6 +45,7 @@ export const websiteConfigs = pgTable("website_configs", {
   heroSubtextColor: text("hero_subtext_color").default("#ffffff"),
   heroTitleSize: text("hero_title_size").default("3.5rem"),
   heroSubtitleSize: text("hero_subtitle_size").default("1.25rem"),
+  heroVerticalAlignment: text("hero_vertical_alignment").default("center"),
   translations: json("translations").$type<{
     en: Record<string, string>;
     es: Record<string, string>;

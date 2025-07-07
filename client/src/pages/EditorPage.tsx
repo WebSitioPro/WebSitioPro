@@ -88,7 +88,7 @@ export default function EditorPage() {
     bannerTextSize: '16px',
     showBanner: false,
     
-    // Hero Section
+    // Hero Section - will be populated from database
     heroHeadline: {
       es: 'Construye tu Negocio con WebSitioPro',
       en: 'Build Your Business with WebSitioPro'
@@ -98,6 +98,17 @@ export default function EditorPage() {
       en: 'Affordable, custom sites for Mexico—starting at 2,000 pesos'
     },
     heroImage: 'https://via.placeholder.com/600x400/C8102E/FFFFFF?text=Website+Mockup',
+    
+    // Hero customization - will be populated from database
+    heroImageOpacity: '0.5',
+    heroImagePosition: 'center',
+    heroSectionHeight: '70vh',
+    heroTextAlignment: 'text-center',
+    heroTextColor: '#ffffff',
+    heroSubtextColor: '#ffffff',
+    heroTitleSize: '3.5rem',
+    heroSubtitleSize: '1.25rem',
+    heroVerticalAlignment: 'center',
     
     // Why Section
     whyTitle: {
@@ -301,6 +312,16 @@ export default function EditorPage() {
               email: config.email || prev.email,
               whatsappNumber: config.whatsappNumber || prev.whatsappNumber,
               heroImage: config.heroImage || prev.heroImage,
+              // Hero customization fields
+              heroImageOpacity: config.heroImageOpacity || prev.heroImageOpacity,
+              heroImagePosition: config.heroImagePosition || prev.heroImagePosition,
+              heroSectionHeight: config.heroSectionHeight || prev.heroSectionHeight,
+              heroTextAlignment: config.heroTextAlignment || prev.heroTextAlignment,
+              heroTextColor: config.heroTextColor || prev.heroTextColor,
+              heroSubtextColor: config.heroSubtextColor || prev.heroSubtextColor,
+              heroTitleSize: config.heroTitleSize || prev.heroTitleSize,
+              heroSubtitleSize: config.heroSubtitleSize || prev.heroSubtitleSize,
+              heroVerticalAlignment: config.heroVerticalAlignment || prev.heroVerticalAlignment,
               heroHeadline: {
                 es: config.translations?.es?.heroHeadline || prev.heroHeadline.es,
                 en: config.translations?.en?.heroHeadline || prev.heroHeadline.en
@@ -1058,7 +1079,7 @@ export default function EditorPage() {
                     </div>
                     
                     <div className="col-md-6">
-                      <label className="form-label">Background Opacity</label>
+                      <label className="form-label">Image Visibility</label>
                       <input 
                         type="range"
                         min="0"
@@ -1068,7 +1089,7 @@ export default function EditorPage() {
                         value={websiteData.heroImageOpacity || '0.5'}
                         onChange={(e) => handleInputChange('heroImageOpacity', e.target.value)}
                       />
-                      <small className="text-muted">Current: {websiteData.heroImageOpacity || '0.5'}</small>
+                      <small className="text-muted">Visibility: {Math.round((parseFloat(websiteData.heroImageOpacity || '0.5')) * 100)}%</small>
                     </div>
                     
                     <div className="col-md-6">
@@ -1101,15 +1122,28 @@ export default function EditorPage() {
                     </div>
                     
                     <div className="col-md-6">
-                      <label className="form-label">Text Alignment</label>
+                      <label className="form-label">Horizontal Text Alignment</label>
                       <select 
                         className="form-control"
                         value={websiteData.heroTextAlignment || 'text-center'}
                         onChange={(e) => handleInputChange('heroTextAlignment', e.target.value)}
                       >
-                        <option value="text-left">Left</option>
+                        <option value="text-start">Left</option>
                         <option value="text-center">Center</option>
-                        <option value="text-right">Right</option>
+                        <option value="text-end">Right</option>
+                      </select>
+                    </div>
+                    
+                    <div className="col-md-6">
+                      <label className="form-label">Vertical Text Position</label>
+                      <select 
+                        className="form-control"
+                        value={websiteData.heroVerticalAlignment || 'center'}
+                        onChange={(e) => handleInputChange('heroVerticalAlignment', e.target.value)}
+                      >
+                        <option value="start">Top</option>
+                        <option value="center">Center</option>
+                        <option value="end">Bottom</option>
                       </select>
                     </div>
                     

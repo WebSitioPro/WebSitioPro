@@ -526,7 +526,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section 
         id="hero" 
-        className="hero-section position-relative d-flex align-items-center"
+        className={`hero-section position-relative d-flex align-items-${savedConfig?.heroVerticalAlignment || 'center'}`}
         style={{
           minHeight: savedConfig?.heroSectionHeight || '70vh',
           backgroundImage: `url(${savedConfig?.heroImage || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80"})`,
@@ -538,7 +538,7 @@ export default function HomePage() {
         <div 
           className="position-absolute w-100 h-100"
           style={{
-            backgroundColor: `rgba(0, 0, 0, ${savedConfig?.heroImageOpacity || 0.5})`,
+            backgroundColor: `rgba(0, 0, 0, ${1 - (parseFloat(savedConfig?.heroImageOpacity || '0.5'))})`,
             top: 0,
             left: 0
           }}
