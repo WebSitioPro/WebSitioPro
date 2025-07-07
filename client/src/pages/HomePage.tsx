@@ -661,56 +661,69 @@ export default function HomePage() {
       <section id="offerings" className="py-5">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {t('offeringsTitle')}
+            {savedConfig?.translations?.[language]?.offeringsTitle || t('offeringsTitle')}
           </h2>
           <div className="row g-4">
-            {[1, 2, 3, 4, 5].map((num) => (
-              <div key={num} className="col-lg-6">
-                {/* Professionals Template - Make it clickable */}
-                {(() => {
-                  const templateLinks = [
-                    '/professionals-demo',
-                    '/restaurants-demo', 
-                    '/tourism-demo',
-                    '/retail-demo',
-                    '/services-demo'
-                  ];
-                  
-                  return (
-                    <div className="card h-100 border-0 shadow-sm">
-                      <div className="card-body p-4">
-                        <div className="row g-3">
-                          <div className="col-4">
-                            <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
-                              <Globe size={48} className="text-muted" />
-                            </div>
-                            <div className="mt-2">
-                              <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
-                              <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
-                              <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
-                            </div>
-                          </div>
-                          <div className="col-8">
-                            <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                              {t(`template${num}` as any)}
-                            </h5>
-                            <p className="text-muted mb-3 small">
-                              {t(`template${num}Desc` as any)}
-                            </p>
-                            <a 
-                              href={templateLinks[num - 1]}
-                              className="btn btn-sm text-decoration-none text-white"
-                              style={{ backgroundColor: '#C8102E' }}
-                              onClick={() => window.scrollTo(0, 0)}
-                            >
-                              View Template
-                            </a>
+            {(savedConfig?.templates || [
+              { 
+                title: { es: 'Profesionales', en: 'Professionals' },
+                description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
+                image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professionals'
+              },
+              { 
+                title: { es: 'Restaurantes', en: 'Restaurants' },
+                description: { es: 'Menús atractivos y sistemas de reservas', en: 'Attractive menus and reservation systems' },
+                image: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Restaurants'
+              },
+              { 
+                title: { es: 'Turismo', en: 'Tourism' },
+                description: { es: 'Promociona tu negocio turístico con sitios web atractivos', en: 'Promote your tourism business with attractive websites' },
+                image: 'https://via.placeholder.com/300x200/007ACC/FFFFFF?text=Tourism'
+              }
+            ]).map((template, index) => (
+              <div key={index} className="col-lg-6">
+                <div className="card h-100 border-0 shadow-sm">
+                  <div className="card-body p-4">
+                    <div className="row g-3">
+                      <div className="col-4">
+                        <div className="bg-light rounded overflow-hidden d-flex align-items-center justify-content-center position-relative" style={{ height: '120px' }}>
+                          {template.image ? (
+                            <img 
+                              src={template.image} 
+                              alt={template.title[language] || template.title.es}
+                              className="img-fluid w-100 h-100"
+                              style={{ objectFit: 'cover' }}
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                const fallback = e.currentTarget.parentElement?.querySelector('.fallback-icon') as HTMLElement;
+                                if (fallback) fallback.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <div className="fallback-icon position-absolute d-none align-items-center justify-content-center w-100 h-100">
+                            <Globe size={48} className="text-muted" />
                           </div>
                         </div>
+                        <div className="mt-2">
+                          <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
+                          <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
+                          <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                        </div>
+                      </div>
+                      <div className="col-8">
+                        <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                          {template.title[language] || template.title.es}
+                        </h5>
+                        <p className="text-muted mb-3 small">
+                          {template.description[language] || template.description.es}
+                        </p>
+                        <button className="btn btn-sm text-decoration-none text-white" style={{ backgroundColor: '#C8102E' }}>
+                          Ver Template
+                        </button>
                       </div>
                     </div>
-                  );
-                })()}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -718,10 +731,11 @@ export default function HomePage() {
           <div className="text-center mt-5">
             <Link 
               href="/pro"
-              className="btn btn-primary btn-lg text-white px-5"
+              className="btn btn-lg text-white px-5"
               style={{ backgroundColor: 'hsl(var(--primary))' }}
+              onClick={() => window.scrollTo(0, 0)}
             >
-              {t('seeProPlans')}
+              Get Your Pro Site
             </Link>
           </div>
         </div>
