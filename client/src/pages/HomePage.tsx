@@ -39,7 +39,9 @@ export default function HomePage() {
     // Load saved configuration to demonstrate Editor functionality
     const loadConfig = async () => {
       try {
-        const response = await fetch('/api/config/default');
+        // Add cache-busting timestamp
+        const timestamp = Date.now();
+        const response = await fetch(`/api/config/default?_t=${timestamp}`);
         if (response.ok) {
           const data = await response.json();
           setSavedConfig(data);

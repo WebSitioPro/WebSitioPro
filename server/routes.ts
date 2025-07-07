@@ -84,19 +84,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validationResult = partialSchema.safeParse(req.body);
 
       if (!validationResult.success) {
+        console.error("Validation failed:", validationResult.error);
         return res.status(400).json({ 
           error: "Invalid configuration data", 
           details: validationResult.error.format() 
         });
       }
 
+      console.log(`Updating config ${id} with data:`, JSON.stringify(validationResult.data, null, 2));
+
       const updatedConfig = await storage.updateWebsiteConfig(id, validationResult.data);
       if (!updatedConfig) {
+        console.error(`Configuration with ID ${id} not found`);
         return res.status(404).json({ error: "Configuration not found" });
       }
 
+      console.log(`Successfully updated config ${id}:`, JSON.stringify(updatedConfig, null, 2));
       res.json(updatedConfig);
     } catch (error) {
+      console.error("Error updating configuration:", error);
       res.status(500).json({ error: "Failed to update website configuration" });
     }
   });

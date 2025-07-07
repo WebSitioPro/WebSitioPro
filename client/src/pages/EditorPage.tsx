@@ -261,11 +261,13 @@ export default function EditorPage() {
     }));
   };
 
-  // Load client-specific config on mount
+  // Load client-specific config on mount and when returning to page
   useEffect(() => {
     const loadClientConfig = async () => {
       try {
-        const response = await fetch(`/api/config/${clientId}`);
+        // Add cache-busting timestamp to ensure fresh data
+        const timestamp = Date.now();
+        const response = await fetch(`/api/config/${clientId}?_t=${timestamp}`);
         if (response.ok) {
           const config = await response.json();
           console.log('Loaded config for client:', clientId, config);
@@ -297,7 +299,59 @@ export default function EditorPage() {
               aboutText: {
                 es: config.translations?.es?.aboutText || prev.aboutText.es,
                 en: config.translations?.en?.aboutText || prev.aboutText.en
-              }
+              },
+              whyTitle: {
+                es: config.translations?.es?.whyTitle || prev.whyTitle.es,
+                en: config.translations?.en?.whyTitle || prev.whyTitle.en
+              },
+              offeringsTitle: {
+                es: config.translations?.es?.offeringsTitle || prev.offeringsTitle.es,
+                en: config.translations?.en?.offeringsTitle || prev.offeringsTitle.en
+              },
+              pricingTitle: {
+                es: config.translations?.es?.pricingTitle || prev.pricingTitle.es,
+                en: config.translations?.en?.pricingTitle || prev.pricingTitle.en
+              },
+              pricingText: {
+                es: config.translations?.es?.pricingText || prev.pricingText.es,
+                en: config.translations?.en?.pricingText || prev.pricingText.en
+              },
+              proHeroHeadline: {
+                es: config.translations?.es?.proHeroHeadline || prev.proHeroHeadline.es,
+                en: config.translations?.en?.proHeroHeadline || prev.proHeroHeadline.en
+              },
+              proHeroSubheadline: {
+                es: config.translations?.es?.proHeroSubheadline || prev.proHeroSubheadline.es,
+                en: config.translations?.en?.proHeroSubheadline || prev.proHeroSubheadline.en
+              },
+              demoNote: {
+                es: config.translations?.es?.demoNote || prev.demoNote.es,
+                en: config.translations?.en?.demoNote || prev.demoNote.en
+              },
+              paymentText: {
+                es: config.translations?.es?.paymentText || prev.paymentText.es,
+                en: config.translations?.en?.paymentText || prev.paymentText.en
+              },
+              // Parse address safely
+              address: typeof config.address === 'string' ? 
+                (config.address.startsWith('{') ? 
+                  (() => {
+                    try {
+                      return JSON.parse(config.address);
+                    } catch (e) {
+                      return { es: config.address, en: config.address };
+                    }
+                  })() : 
+                  { es: config.address, en: config.address }
+                ) : 
+                config.address || prev.address,
+              officeHours: {
+                es: config.officeHours?.mondayToFriday || prev.officeHours.es,
+                en: config.officeHours?.saturday || prev.officeHours.en
+              },
+              templates: config.templates || prev.templates,
+              whyPoints: config.whyPoints || prev.whyPoints,
+              serviceSteps: config.serviceSteps || prev.serviceSteps
             }));
           }
         }
@@ -307,6 +361,19 @@ export default function EditorPage() {
     };
     
     loadClientConfig();
+    
+    // Reload data when user returns to the page
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadClientConfig();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [clientId]);
 
   const saveData = async () => {
@@ -322,8 +389,8 @@ export default function EditorPage() {
         whatsappNumber: websiteData.whatsappNumber,
         address: JSON.stringify(websiteData.address),
         officeHours: {
-          mondayToFriday: websiteData.officeHours.es,
-          saturday: websiteData.officeHours.en
+          mondayToFriday: websiteData.officeHours.es || 'Lunes - Viernes: 9:00 AM - 6:00 PM',
+          saturday: websiteData.officeHours.en || 'Sábado: 10:00 AM - 2:00 PM'
         },
         logo: websiteData.logo,
         heroImage: websiteData.heroImage,
@@ -372,8 +439,14 @@ export default function EditorPage() {
       });
       
       if (response.ok) {
+        const savedData = await response.json();
         alert('Configuration saved successfully! Return to the homepage to see your changes.');
-        console.log('Saved successfully');
+        console.log('Saved successfully:', savedData);
+        
+        // Clear any cached data to force refresh
+        if ('caches' in window) {
+          caches.delete('api-cache');
+        }
       } else {
         const errorData = await response.json();
         console.error('Save failed:', errorData);
@@ -381,7 +454,7 @@ export default function EditorPage() {
       }
     } catch (error) {
       console.error('Save error:', error);
-      alert('Error saving configuration');
+      alert('Network error: Unable to save configuration. Please check your connection and try again.');
     }
   };
 

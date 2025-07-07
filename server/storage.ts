@@ -449,10 +449,20 @@ export class MemStorage implements IStorage {
 
   async updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined> {
     const existingConfig = this.websiteConfigs.get(id);
-    if (!existingConfig) return undefined;
+    if (!existingConfig) {
+      console.log(`No existing config found for ID ${id}`);
+      return undefined;
+    }
+
+    console.log(`Updating config ${id}:`, {
+      existing: Object.keys(existingConfig),
+      update: Object.keys(config)
+    });
 
     const updatedConfig: WebsiteConfig = { ...existingConfig, ...config };
     this.websiteConfigs.set(id, updatedConfig);
+    
+    console.log(`Config ${id} updated successfully, new keys:`, Object.keys(updatedConfig));
     return updatedConfig;
   }
 
