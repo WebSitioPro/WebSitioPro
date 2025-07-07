@@ -44,6 +44,7 @@ interface WebsiteData {
   // Pricing
   pricingTitle: { es: string; en: string };
   pricingText: { es: string; en: string };
+  bannerText: { es: string; en: string };
   
   // Contact Info
   phone: string;
@@ -80,8 +81,8 @@ export default function EditorPage() {
     
     // Banner Section
     bannerText: {
-      es: '¡Oferta especial! Descuento del 20% en sitios web nuevos',
-      en: 'Special offer! 20% discount on new websites'
+      es: 'Construimos Tu Sitio Web ANTES de que Pagues!\n\nOferta especial disponible',
+      en: 'We Build Your Website BEFORE You Pay!\n\nSpecial offer available'
     },
     bannerBackgroundColor: '#FFC107',
     bannerTextColor: '#000000',
@@ -1631,6 +1632,32 @@ export default function EditorPage() {
                         value={websiteData.pricingText.en}
                         onChange={(e) => handleInputChange('pricingText', e.target.value, 'en')}
                       />
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <h5 className="mb-3">Pricing Banner</h5>
+                    <div className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label">Banner Text (Spanish)</label>
+                        <textarea 
+                          className="form-control"
+                          rows={3}
+                          value={websiteData.bannerText.es}
+                          onChange={(e) => handleInputChange('bannerText', e.target.value, 'es')}
+                          placeholder="We Build Your Website BEFORE You Pay!\n\nSpecial offer details..."
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Banner Text (English)</label>
+                        <textarea 
+                          className="form-control"
+                          rows={3}
+                          value={websiteData.bannerText.en}
+                          onChange={(e) => handleInputChange('bannerText', e.target.value, 'en')}
+                          placeholder="We Build Your Website BEFORE You Pay!\n\nSpecial offer details..."
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
