@@ -663,68 +663,79 @@ export default function HomePage() {
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
             {savedConfig?.translations?.[language]?.offeringsTitle || t('offeringsTitle')}
           </h2>
-          <div className="row g-4">
-            {(savedConfig?.templates || [
-              { 
-                title: { es: 'Profesionales', en: 'Professionals' },
-                description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
-                image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professionals'
-              },
-              { 
-                title: { es: 'Restaurantes', en: 'Restaurants' },
-                description: { es: 'Menús atractivos y sistemas de reservas', en: 'Attractive menus and reservation systems' },
-                image: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Restaurants'
-              },
-              { 
-                title: { es: 'Turismo', en: 'Tourism' },
-                description: { es: 'Promociona tu negocio turístico con sitios web atractivos', en: 'Promote your tourism business with attractive websites' },
-                image: 'https://via.placeholder.com/300x200/007ACC/FFFFFF?text=Tourism'
-              }
-            ]).map((template, index) => (
-              <div key={index} className="col-lg-6">
-                <div className="card h-100 border-0 shadow-sm">
-                  <div className="card-body p-4">
-                    <div className="row g-3">
-                      <div className="col-4">
-                        <div className="bg-light rounded overflow-hidden" style={{ height: '120px' }}>
-                          {template.image && (
-                            <img 
-                              src={template.image} 
-                              alt={template.title[language] || template.title.es}
-                              className="w-100 h-100"
-                              style={{ 
-                                objectFit: 'cover',
-                                display: 'block'
-                              }}
-                              onError={(e) => {
-                                console.log('Image failed to load:', template.image);
-                                e.currentTarget.style.display = 'none';
-                              }}
-                            />
-                          )}
+          <div className="row justify-content-center">
+            <div className="col-lg-10">
+              <div className="row g-4">
+                {(savedConfig?.templates || [
+                  { 
+                    title: { es: 'Profesionales', en: 'Professionals' },
+                    description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
+                    image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professionals'
+                  },
+                  { 
+                    title: { es: 'Restaurantes', en: 'Restaurants' },
+                    description: { es: 'Menús atractivos y sistemas de reservas', en: 'Attractive menus and reservation systems' },
+                    image: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Restaurants'
+                  },
+                  { 
+                    title: { es: 'Turismo', en: 'Tourism' },
+                    description: { es: 'Promociona tu negocio turístico con sitios web atractivos', en: 'Promote your tourism business with attractive websites' },
+                    image: 'https://via.placeholder.com/300x200/007ACC/FFFFFF?text=Tourism'
+                  }
+                ]).map((template, index) => (
+                  <div key={index} className="col-12 mb-4">
+                    <div className="card border-0 shadow-sm">
+                      <div className="row g-0">
+                        <div className="col-md-5">
+                          <div className="bg-light h-100 d-flex align-items-center justify-content-center overflow-hidden rounded-start" style={{ minHeight: '300px' }}>
+                            {template.image ? (
+                              <img 
+                                src={template.image} 
+                                alt={template.title[language] || template.title.es}
+                                className="w-100 h-100"
+                                style={{ 
+                                  objectFit: 'cover',
+                                  display: 'block'
+                                }}
+                                onError={(e) => {
+                                  console.log('Image failed to load:', template.image);
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <div className="text-center text-muted">
+                                <div className="mb-2">
+                                  <Globe size={48} />
+                                </div>
+                                <small>Website Preview</small>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div className="mt-2">
-                          <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
-                          <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
-                          <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                        <div className="col-md-7">
+                          <div className="card-body p-4 d-flex flex-column justify-content-center h-100">
+                            <h4 className="card-title fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                              {template.title[language] || template.title.es}
+                            </h4>
+                            <p className="card-text text-muted mb-4">
+                              {template.description[language] || template.description.es}
+                            </p>
+                            <div className="d-flex gap-2">
+                              <button className="btn btn-outline-primary btn-sm">
+                                {language === 'es' ? 'Ver Demo' : 'View Demo'}
+                              </button>
+                              <button className="btn btn-primary btn-sm">
+                                {language === 'es' ? 'Comenzar' : 'Get Started'}
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-8">
-                        <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                          {template.title[language] || template.title.es}
-                        </h5>
-                        <p className="text-muted mb-3 small">
-                          {template.description[language] || template.description.es}
-                        </p>
-                        <button className="btn btn-sm text-decoration-none text-white" style={{ backgroundColor: '#C8102E' }}>
-                          Ver Template
-                        </button>
                       </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
 
           <div className="text-center mt-5">
