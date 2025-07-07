@@ -37,10 +37,33 @@ export default function HomePage() {
     document.head.appendChild(style);
 
     // Load saved configuration to demonstrate Editor functionality
-    fetch('/api/config/default')
-      .then(res => res.json())
-      .then(data => setSavedConfig(data))
-      .catch(err => console.log('Config not loaded:', err));
+    const loadConfig = async () => {
+      try {
+        const response = await fetch('/api/config/default');
+        if (response.ok) {
+          const data = await response.json();
+          setSavedConfig(data);
+          console.log('Loaded saved config:', data);
+        }
+      } catch (err) {
+        console.log('Config not loaded:', err);
+      }
+    };
+    
+    loadConfig();
+    
+    // Reload config when returning to homepage
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadConfig();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
 
     return () => {
       document.head.removeChild(style);
@@ -465,10 +488,10 @@ export default function HomePage() {
           <div className="row align-items-center min-vh-50">
             <div className="col-lg-6">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('heroHeadline')}
+                {savedConfig?.translations?.[language]?.heroHeadline || t('heroHeadline')}
               </h1>
               <p className="lead text-muted mb-4">
-                {t('heroSubheadline')}
+                {savedConfig?.translations?.[language]?.heroSubheadline || t('heroSubheadline')}
               </p>
               <Link 
                 href="/pro"
@@ -545,10 +568,10 @@ export default function HomePage() {
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('aboutTitle')}
+                {savedConfig?.translations?.[language]?.aboutTitle || t('aboutTitle')}
               </h2>
               <p className="lead text-muted">
-                {t('aboutText')}
+                {savedConfig?.translations?.[language]?.aboutText || t('aboutText')}
               </p>
             </div>
           </div>

@@ -268,17 +268,45 @@ export default function EditorPage() {
         const response = await fetch(`/api/config/${clientId}`);
         if (response.ok) {
           const config = await response.json();
-          // Map the config to your websiteData format
           console.log('Loaded config for client:', clientId, config);
+          
+          // Map the loaded config to websiteData format
+          if (config) {
+            setWebsiteData(prev => ({
+              ...prev,
+              primaryColor: config.primaryColor || prev.primaryColor,
+              secondaryColor: config.secondaryColor || prev.secondaryColor,
+              backgroundColor: config.backgroundColor || prev.backgroundColor,
+              logo: config.logo || prev.logo,
+              phone: config.phone || prev.phone,
+              email: config.email || prev.email,
+              whatsappNumber: config.whatsappNumber || prev.whatsappNumber,
+              heroImage: config.heroImage || prev.heroImage,
+              heroHeadline: {
+                es: config.translations?.es?.heroHeadline || prev.heroHeadline.es,
+                en: config.translations?.en?.heroHeadline || prev.heroHeadline.en
+              },
+              heroSubheadline: {
+                es: config.translations?.es?.heroSubheadline || prev.heroSubheadline.es,
+                en: config.translations?.en?.heroSubheadline || prev.heroSubheadline.en
+              },
+              aboutTitle: {
+                es: config.translations?.es?.aboutTitle || prev.aboutTitle.es,
+                en: config.translations?.en?.aboutTitle || prev.aboutTitle.en
+              },
+              aboutText: {
+                es: config.translations?.es?.aboutText || prev.aboutText.es,
+                en: config.translations?.en?.aboutText || prev.aboutText.en
+              }
+            }));
+          }
         }
       } catch (error) {
         console.log('Using default config for new client:', clientId);
       }
     };
     
-    if (clientId !== 'default') {
-      loadClientConfig();
-    }
+    loadClientConfig();
   }, [clientId]);
 
   const saveData = async () => {
@@ -328,7 +356,11 @@ export default function EditorPage() {
             demoNote: websiteData.demoNote.en,
             paymentText: websiteData.paymentText.en
           }
-        }
+        },
+        // Store templates data as well
+        templates: websiteData.templates,
+        whyPoints: websiteData.whyPoints,
+        serviceSteps: websiteData.serviceSteps
       };
 
       const response = await fetch(`/api/config/${clientId}`, {
@@ -340,7 +372,8 @@ export default function EditorPage() {
       });
       
       if (response.ok) {
-        alert('Configuration saved successfully!');
+        alert('Configuration saved successfully! Return to the homepage to see your changes.');
+        console.log('Saved successfully');
       } else {
         const errorData = await response.json();
         console.error('Save failed:', errorData);
