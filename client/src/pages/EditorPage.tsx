@@ -451,6 +451,16 @@ export default function EditorPage() {
         },
         logo: websiteData.logo,
         heroImage: websiteData.heroImage,
+        // Hero customization fields
+        heroImageOpacity: websiteData.heroImageOpacity,
+        heroImagePosition: websiteData.heroImagePosition,
+        heroSectionHeight: websiteData.heroSectionHeight,
+        heroTextAlignment: websiteData.heroTextAlignment,
+        heroTextColor: websiteData.heroTextColor,
+        heroSubtextColor: websiteData.heroSubtextColor,
+        heroTitleSize: websiteData.heroTitleSize,
+        heroSubtitleSize: websiteData.heroSubtitleSize,
+        heroVerticalAlignment: websiteData.heroVerticalAlignment,
         // Banner fields
         bannerText: JSON.stringify(websiteData.bannerText),
         bannerBackgroundColor: websiteData.bannerBackgroundColor,
