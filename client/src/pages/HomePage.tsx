@@ -594,27 +594,29 @@ export default function HomePage() {
       <section id="why" className="py-5">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {t('whyTitle')}
+            {savedConfig?.translations?.[language]?.whyTitle || t('whyTitle')}
           </h2>
           <div className="row g-4">
-            <div className="col-md-4 text-center">
-              <div className="mb-3">
-                <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />
-              </div>
-              <h5>{t('whyPoint1')}</h5>
-            </div>
-            <div className="col-md-4 text-center">
-              <div className="mb-3">
-                <Shield size={48} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
-              </div>
-              <h5>{t('whyPoint2')}</h5>
-            </div>
-            <div className="col-md-4 text-center">
-              <div className="mb-3">
+            {(savedConfig?.whyPoints || [
+              { es: '70% de los mexicanos buscan en línea', en: '70% of Mexicans search online' },
+              { es: 'Aumenta las ventas en un 20%', en: 'Boost sales by 20%' },
+              { es: 'Disponible 24/7 para tus clientes', en: 'Available 24/7 for your customers' }
+            ]).map((point, index) => {
+              const icons = [
+                <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />,
+                <Shield size={48} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />,
                 <Clock size={48} className="text-info" style={{ color: 'hsl(var(--info))' }} />
-              </div>
-              <h5>{t('whyPoint3')}</h5>
-            </div>
+              ];
+              
+              return (
+                <div key={index} className="col-md-4 text-center">
+                  <div className="mb-3">
+                    {icons[index] || <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />}
+                  </div>
+                  <h5>{point[language] || point.en}</h5>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
