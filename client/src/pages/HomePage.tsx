@@ -598,20 +598,40 @@ export default function HomePage() {
           </h2>
           <div className="row g-4">
             {(savedConfig?.whyPoints || [
-              { es: '70% de los mexicanos buscan en línea', en: '70% of Mexicans search online' },
-              { es: 'Aumenta las ventas en un 20%', en: 'Boost sales by 20%' },
-              { es: 'Disponible 24/7 para tus clientes', en: 'Available 24/7 for your customers' }
+              { es: '70% de los mexicanos buscan en línea', en: '70% of Mexicans search online', icon: 'star' },
+              { es: 'Aumenta las ventas en un 20%', en: 'Boost sales by 20%', icon: 'shield' },
+              { es: 'Disponible 24/7 para tus clientes', en: 'Available 24/7 for your customers', icon: 'clock' }
             ]).map((point, index) => {
-              const icons = [
-                <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />,
-                <Shield size={48} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />,
-                <Clock size={48} className="text-info" style={{ color: 'hsl(var(--info))' }} />
-              ];
+              const getIcon = (iconName: string) => {
+                switch(iconName) {
+                  case 'star': return <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />;
+                  case 'shield': return <Shield size={48} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />;
+                  case 'clock': return <Clock size={48} className="text-info" style={{ color: 'hsl(var(--info))' }} />;
+                  case 'heart': return <span style={{ fontSize: '48px', color: 'red' }}>❤️</span>;
+                  case 'thumbs-up': return <span style={{ fontSize: '48px', color: 'green' }}>👍</span>;
+                  case 'check': return <span style={{ fontSize: '48px', color: 'green' }}>✅</span>;
+                  case 'rocket': return <span style={{ fontSize: '48px', color: 'orange' }}>🚀</span>;
+                  case 'globe': return <Globe size={48} className="text-primary" style={{ color: 'hsl(var(--primary))' }} />;
+                  case 'phone': return <Phone size={48} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />;
+                  case 'mail': return <Mail size={48} className="text-info" style={{ color: 'hsl(var(--info))' }} />;
+                  case 'users': return <span style={{ fontSize: '48px', color: 'blue' }}>👥</span>;
+                  case 'trophy': return <span style={{ fontSize: '48px', color: 'gold' }}>🏆</span>;
+                  case 'lightbulb': return <span style={{ fontSize: '48px', color: 'yellow' }}>💡</span>;
+                  case 'target': return <span style={{ fontSize: '48px', color: 'red' }}>🎯</span>;
+                  case 'trending-up': return <span style={{ fontSize: '48px', color: 'green' }}>📈</span>;
+                  case 'award': return <span style={{ fontSize: '48px', color: 'gold' }}>🏅</span>;
+                  case 'zap': return <span style={{ fontSize: '48px', color: 'yellow' }}>⚡</span>;
+                  case 'diamond': return <span style={{ fontSize: '48px', color: 'cyan' }}>💎</span>;
+                  case 'gift': return <span style={{ fontSize: '48px', color: 'purple' }}>🎁</span>;
+                  case 'megaphone': return <span style={{ fontSize: '48px', color: 'orange' }}>📢</span>;
+                  default: return <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />;
+                }
+              };
               
               return (
                 <div key={index} className="col-md-4 text-center">
                   <div className="mb-3">
-                    {icons[index] || <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />}
+                    {getIcon(point.icon || 'star')}
                   </div>
                   <h5>{point[language] || point.en}</h5>
                 </div>

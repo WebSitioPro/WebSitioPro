@@ -86,6 +86,7 @@ export const websiteConfigs = pgTable("website_configs", {
   whyPoints: json("why_points").$type<Array<{
     es: string;
     en: string;
+    icon: string;
   }>>().default([]),
   serviceSteps: json("service_steps").$type<Array<{
     es: string;

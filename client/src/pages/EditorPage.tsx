@@ -116,9 +116,9 @@ export default function EditorPage() {
       en: 'Why You Need a Website'
     },
     whyPoints: [
-      { es: '70% de los mexicanos buscan en línea', en: '70% of Mexicans search online' },
-      { es: 'Aumenta las ventas en un 20%', en: 'Boost sales by 20%' },
-      { es: 'Disponible 24/7 para tus clientes', en: 'Available 24/7 for your customers' }
+      { es: '70% de los mexicanos buscan en línea', en: '70% of Mexicans search online', icon: 'star' },
+      { es: 'Aumenta las ventas en un 20%', en: 'Boost sales by 20%', icon: 'shield' },
+      { es: 'Disponible 24/7 para tus clientes', en: 'Available 24/7 for your customers', icon: 'clock' }
     ],
     
     // About Section
@@ -272,6 +272,66 @@ export default function EditorPage() {
         return point;
       })
     }));
+  };
+
+  const handleWhyPointIconChange = (index: number, icon: string) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      whyPoints: prev.whyPoints.map((point, i) => {
+        if (i === index) {
+          return { ...point, icon };
+        }
+        return point;
+      })
+    }));
+  };
+
+  const handleAddWhyPoint = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      whyPoints: [
+        ...prev.whyPoints,
+        {
+          es: 'Nuevo punto de beneficio',
+          en: 'New benefit point',
+          icon: 'star'
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveWhyPoint = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      whyPoints: prev.whyPoints.filter((_, i) => i !== index)
+    }));
+  };
+
+  const getIconPreview = (iconName: string) => {
+    const iconMap: { [key: string]: JSX.Element } = {
+      star: <span style={{ fontSize: '24px' }}>⭐</span>,
+      shield: <span style={{ fontSize: '24px' }}>🛡️</span>,
+      clock: <span style={{ fontSize: '24px' }}>⏰</span>,
+      heart: <span style={{ fontSize: '24px' }}>❤️</span>,
+      'thumbs-up': <span style={{ fontSize: '24px' }}>👍</span>,
+      check: <span style={{ fontSize: '24px' }}>✅</span>,
+      rocket: <span style={{ fontSize: '24px' }}>🚀</span>,
+      globe: <span style={{ fontSize: '24px' }}>🌍</span>,
+      phone: <span style={{ fontSize: '24px' }}>📞</span>,
+      mail: <span style={{ fontSize: '24px' }}>✉️</span>,
+      users: <span style={{ fontSize: '24px' }}>👥</span>,
+      trophy: <span style={{ fontSize: '24px' }}>🏆</span>,
+      lightbulb: <span style={{ fontSize: '24px' }}>💡</span>,
+      target: <span style={{ fontSize: '24px' }}>🎯</span>,
+      'trending-up': <span style={{ fontSize: '24px' }}>📈</span>,
+      award: <span style={{ fontSize: '24px' }}>🏅</span>,
+      zap: <span style={{ fontSize: '24px' }}>⚡</span>,
+      diamond: <span style={{ fontSize: '24px' }}>💎</span>,
+      gift: <span style={{ fontSize: '24px' }}>🎁</span>,
+      megaphone: <span style={{ fontSize: '24px' }}>📢</span>
+    };
+    
+    return iconMap[iconName] || iconMap.star;
   };
 
   const handleServiceStepChange = (index: number, field: string, value: string, language: 'es' | 'en') => {
@@ -1250,26 +1310,86 @@ export default function EditorPage() {
                     </div>
                   </div>
                   
-                  <h5 className="mb-3">Key Points</h5>
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5 className="mb-0">Key Points</h5>
+                    <button 
+                      type="button" 
+                      className="btn btn-primary btn-sm"
+                      onClick={handleAddWhyPoint}
+                    >
+                      Add Point
+                    </button>
+                  </div>
                   {websiteData.whyPoints.map((point, index) => (
-                    <div key={index} className="row g-3 mb-3 p-3 bg-light rounded">
-                      <div className="col-md-6">
-                        <label className="form-label">Point {index + 1} (Spanish)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={point.es}
-                          onChange={(e) => handleWhyPointChange(index, e.target.value, 'es')}
-                        />
+                    <div key={index} className="border rounded p-3 mb-3 bg-light">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="mb-0">Point {index + 1}</h6>
+                        <button 
+                          type="button" 
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleRemoveWhyPoint(index)}
+                        >
+                          Remove
+                        </button>
                       </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Point {index + 1} (English)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={point.en}
-                          onChange={(e) => handleWhyPointChange(index, e.target.value, 'en')}
-                        />
+                      
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Point {index + 1} (Spanish)</label>
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={point.es}
+                            onChange={(e) => handleWhyPointChange(index, e.target.value, 'es')}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Point {index + 1} (English)</label>
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={point.en}
+                            onChange={(e) => handleWhyPointChange(index, e.target.value, 'en')}
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Icon</label>
+                          <select 
+                            className="form-control"
+                            value={point.icon || 'star'}
+                            onChange={(e) => handleWhyPointIconChange(index, e.target.value)}
+                          >
+                            <option value="star">⭐ Star</option>
+                            <option value="shield">🛡️ Shield</option>
+                            <option value="clock">⏰ Clock</option>
+                            <option value="heart">❤️ Heart</option>
+                            <option value="thumbs-up">👍 Thumbs Up</option>
+                            <option value="check">✅ Check</option>
+                            <option value="rocket">🚀 Rocket</option>
+                            <option value="globe">🌍 Globe</option>
+                            <option value="phone">📞 Phone</option>
+                            <option value="mail">✉️ Mail</option>
+                            <option value="users">👥 Users</option>
+                            <option value="trophy">🏆 Trophy</option>
+                            <option value="lightbulb">💡 Lightbulb</option>
+                            <option value="target">🎯 Target</option>
+                            <option value="trending-up">📈 Trending Up</option>
+                            <option value="award">🏅 Award</option>
+                            <option value="zap">⚡ Zap</option>
+                            <option value="diamond">💎 Diamond</option>
+                            <option value="gift">🎁 Gift</option>
+                            <option value="megaphone">📢 Megaphone</option>
+                          </select>
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Preview</label>
+                          <div className="form-control d-flex align-items-center justify-content-center" style={{ height: '38px' }}>
+                            {getIconPreview(point.icon || 'star')}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
