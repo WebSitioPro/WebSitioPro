@@ -36,6 +36,15 @@ export const websiteConfigs = pgTable("website_configs", {
   bannerTextColor: text("banner_text_color").default("#000000"),
   bannerTextSize: text("banner_text_size").default("16px"),
   showBanner: boolean("show_banner").default(false),
+  // Hero customization fields
+  heroImageOpacity: text("hero_image_opacity").default("0.5"),
+  heroImagePosition: text("hero_image_position").default("center"),
+  heroSectionHeight: text("hero_section_height").default("70vh"),
+  heroTextAlignment: text("hero_text_alignment").default("text-center"),
+  heroTextColor: text("hero_text_color").default("#ffffff"),
+  heroSubtextColor: text("hero_subtext_color").default("#ffffff"),
+  heroTitleSize: text("hero_title_size").default("3.5rem"),
+  heroSubtitleSize: text("hero_subtitle_size").default("1.25rem"),
   translations: json("translations").$type<{
     en: Record<string, string>;
     es: Record<string, string>;

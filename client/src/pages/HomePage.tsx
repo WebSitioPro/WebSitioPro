@@ -524,50 +524,62 @@ export default function HomePage() {
       )}
 
       {/* Hero Section */}
-      <section id="hero" className="py-5 bg-light">
-        <div className="container">
-          <div className="row align-items-center min-vh-50">
-            <div className="col-lg-6">
-              <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+      <section 
+        id="hero" 
+        className="hero-section position-relative d-flex align-items-center"
+        style={{
+          minHeight: savedConfig?.heroSectionHeight || '70vh',
+          backgroundImage: `url(${savedConfig?.heroImage || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80"})`,
+          backgroundSize: 'cover',
+          backgroundPosition: savedConfig?.heroImagePosition || 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div 
+          className="position-absolute w-100 h-100"
+          style={{
+            backgroundColor: `rgba(0, 0, 0, ${savedConfig?.heroImageOpacity || 0.5})`,
+            top: 0,
+            left: 0
+          }}
+        ></div>
+        
+        <div className="container position-relative" style={{ zIndex: 2 }}>
+          <div className="row">
+            <div 
+              className={`col-12 ${savedConfig?.heroTextAlignment || 'text-center'}`}
+            >
+              <h1 
+                className="display-4 fw-bold mb-4"
+                style={{
+                  color: savedConfig?.heroTextColor || '#ffffff',
+                  fontSize: savedConfig?.heroTitleSize || '3.5rem',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                }}
+              >
                 {savedConfig?.translations?.[language]?.heroHeadline || t('heroHeadline')}
               </h1>
-              <p className="lead text-muted mb-4">
+              <p 
+                className="lead mb-4"
+                style={{
+                  color: savedConfig?.heroSubtextColor || '#ffffff',
+                  fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                }}
+              >
                 {savedConfig?.translations?.[language]?.heroSubheadline || t('heroSubheadline')}
               </p>
-              <Link 
-                href="/pro"
-                className="btn btn-primary btn-lg text-white px-5"
-                style={{ backgroundColor: 'hsl(var(--primary))' }}
-              >
-                {t('exploreProPlans')}
-              </Link>
-            </div>
-            <div className="col-lg-6">
-              <div className="text-center">
-                {savedConfig?.heroImage ? (
-                  <div className="rounded overflow-hidden shadow-sm">
-                    <img 
-                      src={savedConfig.heroImage}
-                      alt="Hero mockup"
-                      className="img-fluid rounded"
-                      style={{ maxHeight: '400px', width: '100%', objectFit: 'cover' }}
-                      onError={(e) => {
-                        // Fallback to placeholder if image fails to load
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextElementSibling?.style.setProperty('display', 'block');
-                      }}
-                    />
-                    <div className="bg-secondary rounded p-5" style={{ backgroundColor: 'hsl(var(--secondary) / 0.1)', display: 'none' }}>
-                      <Globe size={120} className="text-primary mb-3" style={{ color: 'hsl(var(--primary))' }} />
-                      <p className="text-muted">Website Mockup Placeholder</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="bg-secondary rounded p-5" style={{ backgroundColor: 'hsl(var(--secondary) / 0.1)' }}>
-                    <Globe size={120} className="text-primary mb-3" style={{ color: 'hsl(var(--primary))' }} />
-                    <p className="text-muted">Website Mockup Placeholder</p>
-                  </div>
-                )}
+              <div className={`d-flex gap-3 ${savedConfig?.heroTextAlignment === 'text-start' ? 'justify-content-start' : savedConfig?.heroTextAlignment === 'text-end' ? 'justify-content-end' : 'justify-content-center'}`}>
+                <Link 
+                  href="/pro"
+                  className="btn btn-primary btn-lg text-white px-5"
+                  style={{ backgroundColor: 'hsl(var(--primary))' }}
+                >
+                  {t('exploreProPlans')}
+                </Link>
+                <button className="btn btn-outline-light btn-lg px-4">
+                  {t('contactTitle')}
+                </button>
               </div>
             </div>
           </div>
