@@ -781,12 +781,15 @@ export default function HomePage() {
               
               {/* Display saved pricing information if available */}
               {savedConfig?.translations?.[language]?.bannerText && (
-                <div className="alert alert-info mt-4">
+                <div className="mt-4 p-4 rounded shadow-sm" style={{
+                  backgroundColor: savedConfig.pricingBannerBgColor || '#17A2B8',
+                  color: savedConfig.pricingBannerTextColor || '#FFFFFF'
+                }}>
                   <div className="fs-5 fw-bold mb-2">
                     {savedConfig.translations[language].bannerText.split('\n\n')[0]}
                   </div>
                   {savedConfig.translations[language].bannerText.split('\n\n')[1] && (
-                    <div className="text-muted">
+                    <div className="opacity-75">
                       {savedConfig.translations[language].bannerText.split('\n\n')[1]}
                     </div>
                   )}
@@ -794,11 +797,17 @@ export default function HomePage() {
               )}
               
               {savedConfig?.translations?.[language]?.paymentText && (
-                <div className="mt-4 p-3 bg-white rounded shadow-sm">
-                  <h5 className="mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                <div className="mt-4 p-4 rounded shadow-sm" style={{
+                  backgroundColor: savedConfig.paymentBannerBgColor || '#FFFFFF',
+                  color: savedConfig.paymentBannerTextColor || '#333333',
+                  border: savedConfig.paymentBannerBgColor === '#FFFFFF' ? '1px solid #dee2e6' : 'none'
+                }}>
+                  <h5 className="mb-3" style={{ 
+                    color: savedConfig.paymentBannerTextColor || '#333333' 
+                  }}>
                     {language === 'es' ? 'Métodos de Pago' : 'Payment Methods'}
                   </h5>
-                  <p className="text-muted mb-0">
+                  <p className="mb-0">
                     {savedConfig.translations[language].paymentText}
                   </p>
                 </div>

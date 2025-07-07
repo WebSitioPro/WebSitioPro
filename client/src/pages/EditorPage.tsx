@@ -45,6 +45,10 @@ interface WebsiteData {
   pricingTitle: { es: string; en: string };
   pricingText: { es: string; en: string };
   bannerText: { es: string; en: string };
+  pricingBannerBgColor: string;
+  pricingBannerTextColor: string;
+  paymentBannerBgColor: string;
+  paymentBannerTextColor: string;
   
   // Contact Info
   phone: string;
@@ -218,7 +222,13 @@ export default function EditorPage() {
     paymentText: {
       es: 'Paga mediante transferencia bancaria (detalles vía WhatsApp), tarjeta de crédito, o OXXO (código QR proporcionado).',
       en: 'Pay via bank transfer (details via WhatsApp), credit card, or OXXO (QR code provided).'
-    }
+    },
+    
+    // Pricing banner colors
+    pricingBannerBgColor: '#17A2B8',
+    pricingBannerTextColor: '#FFFFFF',
+    paymentBannerBgColor: '#FFFFFF',
+    paymentBannerTextColor: '#333333'
   });
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
@@ -452,6 +462,12 @@ export default function EditorPage() {
                 es: config.translations?.es?.paymentText || prev.paymentText.es,
                 en: config.translations?.en?.paymentText || prev.paymentText.en
               },
+              
+              // Load pricing banner colors
+              pricingBannerBgColor: config.pricingBannerBgColor || prev.pricingBannerBgColor,
+              pricingBannerTextColor: config.pricingBannerTextColor || prev.pricingBannerTextColor,
+              paymentBannerBgColor: config.paymentBannerBgColor || prev.paymentBannerBgColor,
+              paymentBannerTextColor: config.paymentBannerTextColor || prev.paymentBannerTextColor,
               // Parse address safely
               address: typeof config.address === 'string' ? 
                 (config.address.startsWith('{') ? 
@@ -584,7 +600,12 @@ export default function EditorPage() {
         // Store templates data as well
         templates: websiteData.templates,
         whyPoints: websiteData.whyPoints,
-        serviceSteps: websiteData.serviceSteps
+        serviceSteps: websiteData.serviceSteps,
+        // Store pricing banner colors
+        pricingBannerBgColor: websiteData.pricingBannerBgColor,
+        pricingBannerTextColor: websiteData.pricingBannerTextColor,
+        paymentBannerBgColor: websiteData.paymentBannerBgColor,
+        paymentBannerTextColor: websiteData.paymentBannerTextColor
       };
 
       const response = await fetch(`/api/config/${clientId}`, {
@@ -1636,7 +1657,7 @@ export default function EditorPage() {
                   </div>
 
                   <div className="mt-4">
-                    <h5 className="mb-3">Pricing Banner</h5>
+                    <h5 className="mb-3">Main Pricing Banner</h5>
                     <div className="row g-3">
                       <div className="col-md-6">
                         <label className="form-label">Banner Text (Spanish)</label>
@@ -1658,6 +1679,120 @@ export default function EditorPage() {
                           placeholder="We Build Your Website BEFORE You Pay!\n\nSpecial offer details..."
                         />
                       </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Banner Background Color</label>
+                        <div className="d-flex gap-2">
+                          <input 
+                            type="color" 
+                            className="form-control form-control-color"
+                            value={websiteData.pricingBannerBgColor}
+                            onChange={(e) => handleInputChange('pricingBannerBgColor', e.target.value)}
+                          />
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={websiteData.pricingBannerBgColor}
+                            onChange={(e) => handleInputChange('pricingBannerBgColor', e.target.value)}
+                            placeholder="#17A2B8"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Banner Text Color</label>
+                        <div className="d-flex gap-2">
+                          <input 
+                            type="color" 
+                            className="form-control form-control-color"
+                            value={websiteData.pricingBannerTextColor}
+                            onChange={(e) => handleInputChange('pricingBannerTextColor', e.target.value)}
+                          />
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={websiteData.pricingBannerTextColor}
+                            onChange={(e) => handleInputChange('pricingBannerTextColor', e.target.value)}
+                            placeholder="#FFFFFF"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-3 p-3 rounded border" 
+                         style={{ 
+                           backgroundColor: websiteData.pricingBannerBgColor, 
+                           color: websiteData.pricingBannerTextColor 
+                         }}>
+                      <strong>Preview:</strong> {websiteData.bannerText.es.split('\n\n')[0]}
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <h5 className="mb-3">Payment Methods Banner</h5>
+                    <div className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label">Payment Text (Spanish)</label>
+                        <textarea 
+                          className="form-control"
+                          rows={3}
+                          value={websiteData.paymentText.es}
+                          onChange={(e) => handleInputChange('paymentText', e.target.value, 'es')}
+                          placeholder="Payment methods information..."
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Payment Text (English)</label>
+                        <textarea 
+                          className="form-control"
+                          rows={3}
+                          value={websiteData.paymentText.en}
+                          onChange={(e) => handleInputChange('paymentText', e.target.value, 'en')}
+                          placeholder="Payment methods information..."
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Payment Banner Background Color</label>
+                        <div className="d-flex gap-2">
+                          <input 
+                            type="color" 
+                            className="form-control form-control-color"
+                            value={websiteData.paymentBannerBgColor}
+                            onChange={(e) => handleInputChange('paymentBannerBgColor', e.target.value)}
+                          />
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={websiteData.paymentBannerBgColor}
+                            onChange={(e) => handleInputChange('paymentBannerBgColor', e.target.value)}
+                            placeholder="#FFFFFF"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label">Payment Banner Text Color</label>
+                        <div className="d-flex gap-2">
+                          <input 
+                            type="color" 
+                            className="form-control form-control-color"
+                            value={websiteData.paymentBannerTextColor}
+                            onChange={(e) => handleInputChange('paymentBannerTextColor', e.target.value)}
+                          />
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={websiteData.paymentBannerTextColor}
+                            onChange={(e) => handleInputChange('paymentBannerTextColor', e.target.value)}
+                            placeholder="#333333"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-3 p-3 rounded border" 
+                         style={{ 
+                           backgroundColor: websiteData.paymentBannerBgColor, 
+                           color: websiteData.paymentBannerTextColor 
+                         }}>
+                      <strong>Preview:</strong> {websiteData.paymentText.es.substring(0, 50)}...
                     </div>
                   </div>
                 </div>
