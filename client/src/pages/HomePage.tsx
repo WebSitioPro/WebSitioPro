@@ -533,14 +533,14 @@ export default function HomePage() {
           backgroundSize: 'cover',
           backgroundPosition: savedConfig?.heroImagePosition || 'center',
           backgroundRepeat: 'no-repeat',
-          alignItems: savedConfig?.heroVerticalAlignment === 'top' ? 'flex-start' : 
-                     savedConfig?.heroVerticalAlignment === 'bottom' ? 'flex-end' : 'center'
+          alignItems: savedConfig?.heroVerticalAlignment === 'start' ? 'flex-start' : 
+                     savedConfig?.heroVerticalAlignment === 'end' ? 'flex-end' : 'center'
         }}
       >
         <div 
           className="position-absolute w-100 h-100"
           style={{
-            backgroundColor: `rgba(0, 0, 0, ${Math.max(0, Math.min(1, 1 - (parseFloat(savedConfig?.heroImageOpacity || '0.5'))))})`,
+            backgroundColor: `rgba(0, 0, 0, ${Math.max(0, Math.min(1, parseFloat(savedConfig?.heroImageOpacity || '0.5')))})`,
             top: 0,
             left: 0,
             zIndex: 1
