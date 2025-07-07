@@ -686,8 +686,8 @@ export default function HomePage() {
                   <div className="card-body p-4">
                     <div className="row g-3">
                       <div className="col-4">
-                        <div className="bg-light rounded overflow-hidden position-relative" style={{ height: '120px' }}>
-                          {template.image ? (
+                        <div className="bg-light rounded overflow-hidden" style={{ height: '120px' }}>
+                          {template.image && (
                             <img 
                               src={template.image} 
                               alt={template.title[language] || template.title.es}
@@ -696,37 +696,12 @@ export default function HomePage() {
                                 objectFit: 'cover',
                                 display: 'block'
                               }}
-                              onLoad={(e) => {
-                                console.log('Image loaded successfully:', template.image);
-                                e.currentTarget.style.display = 'block';
-                                const fallback = e.currentTarget.parentElement?.querySelector('.fallback-icon') as HTMLElement;
-                                if (fallback) fallback.style.display = 'none';
-                              }}
                               onError={(e) => {
                                 console.log('Image failed to load:', template.image);
                                 e.currentTarget.style.display = 'none';
-                                const fallback = e.currentTarget.parentElement?.querySelector('.fallback-icon') as HTMLElement;
-                                if (fallback) {
-                                  fallback.style.display = 'flex';
-                                  fallback.style.position = 'absolute';
-                                  fallback.style.top = '0';
-                                  fallback.style.left = '0';
-                                  fallback.style.right = '0';
-                                  fallback.style.bottom = '0';
-                                }
                               }}
                             />
-                          ) : null}
-                          <div className="fallback-icon d-flex align-items-center justify-content-center w-100 h-100" style={{ 
-                            display: template.image ? 'none' : 'flex',
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0
-                          }}>
-                            <Globe size={48} className="text-muted" />
-                          </div>
+                          )}
                         </div>
                         <div className="mt-2">
                           <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
