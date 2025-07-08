@@ -69,6 +69,7 @@ interface WebsiteData {
   serviceSteps: Array<{
     es: string;
     en: string;
+    description?: { es: string; en: string };
   }>;
   paymentText: { es: string; en: string };
 }
@@ -213,9 +214,30 @@ export default function EditorPage() {
       en: 'If we\'ve reached out via WhatsApp, you have a custom demo ready! We\'ll finalize your details and photos.'
     },
     serviceSteps: [
-      { es: 'Consulta Inicial', en: 'Initial Consultation' },
-      { es: 'Opciones de Tratamiento', en: 'Treatment Options' },
-      { es: 'Cuidado Profesional', en: 'Professional Care' }
+      { 
+        es: 'Consulta Inicial', 
+        en: 'Initial Consultation',
+        description: {
+          es: 'Nos ponemos en contacto contigo para entender tus necesidades',
+          en: 'We contact you to understand your needs'
+        }
+      },
+      { 
+        es: 'Diseño y Desarrollo', 
+        en: 'Design & Development',
+        description: {
+          es: 'Diseñamos y desarrollamos tu sitio web personalizado',
+          en: 'We design and develop your custom website'
+        }
+      },
+      { 
+        es: 'Lanzamiento', 
+        en: 'Launch',
+        description: {
+          es: 'Lanzamos tu sitio web y te proporcionamos soporte',
+          en: 'We launch your website and provide support'
+        }
+      }
     ],
     paymentText: {
       es: 'Paga mediante transferencia bancaria (detalles vía WhatsApp), tarjeta de crédito, o OXXO (código QR proporcionado).',
@@ -367,15 +389,25 @@ export default function EditorPage() {
     return iconMap[iconName] || iconMap.star;
   };
 
-  const handleServiceStepChange = (index: number, value: string, language: 'es' | 'en') => {
+  const handleServiceStepChange = (index: number, value: string, language: 'es' | 'en', field: 'title' | 'description' = 'title') => {
     setWebsiteData(prev => ({
       ...prev,
       serviceSteps: prev.serviceSteps.map((step, i) => {
         if (i === index) {
-          return {
-            ...step,
-            [language]: value
-          };
+          if (field === 'title') {
+            return {
+              ...step,
+              [language]: value
+            };
+          } else if (field === 'description') {
+            return {
+              ...step,
+              description: {
+                ...step.description,
+                [language]: value
+              }
+            };
+          }
         }
         return step;
       })
@@ -2182,6 +2214,24 @@ export default function EditorPage() {
                             onChange={(e) => handleServiceStepChange(index, e.target.value, 'en')}
                           />
                         </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Description (Spanish)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={2}
+                            value={step.description?.es || ''}
+                            onChange={(e) => handleServiceStepChange(index, e.target.value, 'es', 'description')}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Description (English)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={2}
+                            value={step.description?.en || ''}
+                            onChange={(e) => handleServiceStepChange(index, e.target.value, 'en', 'description')}
+                          />
+                        </div>
                         <div className="col-12">
                           <label className="form-label">Step {index + 1} Icon/Image URL</label>
                           <input 
@@ -2223,6 +2273,46 @@ export default function EditorPage() {
                         </div>
                       </div>
                     ))}
+                  </div>
+
+                  <h5 className="mb-3">Pricing & Domain Section</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.pricingTitle.es}
+                        onChange={(e) => handleInputChange('pricingTitle', e.target.value, 'es')}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.pricingTitle.en}
+                        onChange={(e) => handleInputChange('pricingTitle', e.target.value, 'en')}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Text (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={websiteData.pricingText.es}
+                        onChange={(e) => handleInputChange('pricingText', e.target.value, 'es')}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Text (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={websiteData.pricingText.en}
+                        onChange={(e) => handleInputChange('pricingText', e.target.value, 'en')}
+                      />
+                    </div>
                   </div>
 
                   <h5 className="mb-3">Payment Section</h5>

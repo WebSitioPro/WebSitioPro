@@ -99,6 +99,7 @@ export const websiteConfigs = pgTable("website_configs", {
   serviceSteps: json("service_steps").$type<Array<{
     es: string;
     en: string;
+    description?: { es: string; en: string };
   }>>().default([]),
   templates: json("templates").$type<Array<{
     title: { es: string; en: string };

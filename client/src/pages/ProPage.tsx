@@ -486,9 +486,11 @@ export default function ProPage() {
                   </div>
                   <h4 className="fw-bold mb-3">{index + 1}. {step[language] || step.en}</h4>
                   <p className="text-muted">
-                    {index === 0 && (language === 'es' ? 'Nos ponemos en contacto contigo para entender tus necesidades' : 'We contact you to understand your needs')}
-                    {index === 1 && (language === 'es' ? 'Diseñamos y desarrollamos tu sitio web personalizado' : 'We design and develop your custom website')}
-                    {index === 2 && (language === 'es' ? 'Lanzamos tu sitio web y te proporcionamos soporte' : 'We launch your website and provide support')}
+                    {step.description?.[language] || step.description?.en || 
+                     (index === 0 && (language === 'es' ? 'Nos ponemos en contacto contigo para entender tus necesidades' : 'We contact you to understand your needs')) ||
+                     (index === 1 && (language === 'es' ? 'Diseñamos y desarrollamos tu sitio web personalizado' : 'We design and develop your custom website')) ||
+                     (index === 2 && (language === 'es' ? 'Lanzamos tu sitio web y te proporcionamos soporte' : 'We launch your website and provide support'))
+                    }
                   </p>
                 </div>
               );
@@ -560,10 +562,10 @@ export default function ProPage() {
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('pricingTitle')}
+                {savedConfig?.translations?.[language]?.pricingTitle || t('pricingTitle')}
               </h2>
               <p className="lead text-muted">
-                {t('pricingText')}
+                {savedConfig?.translations?.[language]?.pricingText || t('pricingText')}
               </p>
             </div>
           </div>
