@@ -115,6 +115,12 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 08, 2025. Connected Template Editor to Professional Template Designs
+  - Updated Template Editor to clearly indicate it controls professional template design
+  - Added helpful UI messages explaining that editor changes appear in professional templates
+  - Changed "Preview" button to "Preview Professional Template" for clarity
+  - Added informational alerts explaining the connection between editor and Pro Page templates
+  - Resolved user confusion about disconnect between editor and professional template designs
 - July 08, 2025. Final Pro Page editor completion and cleanup
   - Added description fields to Service Steps editor (title + description for each step)
   - Updated handleServiceStepChange function to handle description field edits

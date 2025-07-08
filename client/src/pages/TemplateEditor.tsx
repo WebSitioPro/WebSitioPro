@@ -478,7 +478,10 @@ export default function TemplateEditor() {
               <ArrowLeft size={16} className="me-2" />
               Back to Main Site
             </Link>
-            <h5 className="mb-0">Professional Template Editor</h5>
+            <div>
+              <h5 className="mb-0">Professional Template Editor</h5>
+              <small className="text-muted">Edit content that appears in the professional template design</small>
+            </div>
           </div>
           <div className="d-flex gap-2">
             <button 
@@ -487,7 +490,7 @@ export default function TemplateEditor() {
               disabled={isLoading}
             >
               <Eye size={16} className="me-2" />
-              Preview
+              Preview Professional Template
             </button>
             <button 
               onClick={handleGenerate} 
@@ -573,6 +576,15 @@ export default function TemplateEditor() {
 
           {/* Main Content */}
           <div className="col-md-9">
+            <div className="alert alert-info mb-4">
+              <strong>Template Editor:</strong> Changes you make here will appear in the professional template design. 
+              Click "Preview Professional Template" to see your changes in the full template layout.
+              <hr className="my-2" />
+              <small>
+                <strong>Note:</strong> This editor controls the same professional template you see on the Pro Page. 
+                Your edits will modify the actual template content, styling, and layout.
+              </small>
+            </div>
             <div className="card">
               <div className="card-body">
                 
