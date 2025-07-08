@@ -64,6 +64,7 @@ interface WebsiteData {
   proHeroHeadline: { es: string; en: string };
   proHeroSubheadline: { es: string; en: string };
   proHeroImage: string;
+  proHeroImageOpacity: string;
   demoNote: { es: string; en: string };
   serviceSteps: Array<{
     es: string;
@@ -206,6 +207,7 @@ export default function EditorPage() {
       en: 'Custom, fully managed sites for Chetumal'
     },
     proHeroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Pro+Hero+Image',
+    proHeroImageOpacity: '0.8',
     demoNote: {
       es: '¡Si nos hemos contactado contigo vía WhatsApp, tienes una demostración personalizada lista! Finalizaremos tus detalles y fotos.',
       en: 'If we\'ve reached out via WhatsApp, you have a custom demo ready! We\'ll finalize your details and photos.'
@@ -454,6 +456,7 @@ export default function EditorPage() {
                 en: config.translations?.en?.proHeroSubheadline || prev.proHeroSubheadline.en
               },
               proHeroImage: config.proHeroImage || prev.proHeroImage,
+              proHeroImageOpacity: config.proHeroImageOpacity || prev.proHeroImageOpacity,
               demoNote: {
                 es: config.translations?.es?.demoNote || prev.demoNote.es,
                 en: config.translations?.en?.demoNote || prev.demoNote.en
@@ -550,6 +553,7 @@ export default function EditorPage() {
         logo: websiteData.logo,
         heroImage: websiteData.heroImage,
         proHeroImage: websiteData.proHeroImage,
+        proHeroImageOpacity: websiteData.proHeroImageOpacity,
         // Hero customization fields
         heroImageOpacity: websiteData.heroImageOpacity,
         heroImagePosition: websiteData.heroImagePosition,
@@ -2107,6 +2111,20 @@ export default function EditorPage() {
                           />
                         </div>
                       )}
+                    </div>
+                    
+                    <div className="col-md-6">
+                      <label className="form-label">Image Opacity</label>
+                      <input 
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.1"
+                        className="form-range"
+                        value={websiteData.proHeroImageOpacity || '0.8'}
+                        onChange={(e) => handleInputChange('proHeroImageOpacity', e.target.value)}
+                      />
+                      <small className="text-muted">Opacity: {Math.round((parseFloat(websiteData.proHeroImageOpacity || '0.8')) * 100)}%</small>
                     </div>
                   </div>
 

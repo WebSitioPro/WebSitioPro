@@ -394,7 +394,7 @@ export default function ProPage() {
         <div 
           className="position-absolute w-100 h-100"
           style={{
-            background: 'rgba(0, 0, 0, 0.4)',
+            background: savedConfig?.proHeroImage ? `rgba(0, 0, 0, ${1 - parseFloat(savedConfig?.proHeroImageOpacity || '0.8')})` : 'rgba(0, 0, 0, 0.4)',
             top: 0,
             left: 0,
             zIndex: 1

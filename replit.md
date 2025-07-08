@@ -115,6 +115,12 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 08, 2025. Fixed Pro Page editor functionality
+  - Connected Pro Page hero text fields to saved configuration data
+  - Added proHeroImage and proHeroImageOpacity fields to data model
+  - Updated Pro Page to use saved hero image as background with opacity control
+  - Fixed data persistence issues where Pro Page changes weren't being saved
+  - Added background overlay with dynamic opacity for better text readability
 - July 08, 2025. Fixed data persistence issues in EditorPage
   - Resolved "savedConfig" undefined errors by fixing variable references
   - Updated serviceSteps data structure to match database (simple {es, en} format)
