@@ -185,7 +185,7 @@ export default function TemplateEditor() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .template-card {
           transition: all 0.3s ease;
         }

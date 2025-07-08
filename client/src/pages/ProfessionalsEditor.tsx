@@ -151,7 +151,37 @@ export default function ProfessionalsEditor() {
         const response = await fetch(`/api/config/${clientId}`);
         if (response.ok) {
           const config = await response.json();
-          setWebsiteData(prev => ({ ...prev, ...config }));
+          
+          // Ensure proper data structure for professionals template
+          const professionalConfig = {
+            ...websiteData, // Use defaults first
+            ...config, // Then override with saved config
+            templateType: 'professionals' as const,
+            
+            // Ensure nested objects exist with proper structure
+            heroTitle: config.heroTitle || websiteData.heroTitle,
+            heroSubtitle: config.heroSubtitle || websiteData.heroSubtitle,
+            heroDescription: config.heroDescription || websiteData.heroDescription,
+            specialty: config.specialty || websiteData.specialty,
+            aboutTitle: config.aboutTitle || websiteData.aboutTitle,
+            aboutText: config.aboutText || websiteData.aboutText,
+            servicesTitle: config.servicesTitle || websiteData.servicesTitle,
+            address: config.address || websiteData.address,
+            whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
+            
+            // Ensure arrays exist
+            services: Array.isArray(config.services) ? config.services : websiteData.services,
+            photos: Array.isArray(config.photos) ? config.photos : websiteData.photos,
+            reviews: Array.isArray(config.reviews) ? config.reviews : websiteData.reviews,
+            
+            // Ensure office hours structure
+            officeHours: {
+              mondayFriday: config.officeHours?.mondayFriday || websiteData.officeHours.mondayFriday,
+              saturday: config.officeHours?.saturday || websiteData.officeHours.saturday
+            }
+          };
+          
+          setWebsiteData(professionalConfig);
         }
       } catch (error) {
         console.error('Error loading config:', error);
@@ -423,7 +453,7 @@ export default function ProfessionalsEditor() {
                   onClick={() => setActiveTab('services')}
                 >
                   <Briefcase size={16} className="me-2" />
-                  Medical Services
+                  Services
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}

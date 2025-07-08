@@ -16,6 +16,10 @@ import TemplateTools from "@/pages/TemplateTools";
 import ClientSelectorPage from "@/pages/ClientSelectorPage";
 import TemplateEditor from "@/pages/TemplateEditor";
 import ProfessionalsEditor from "@/pages/ProfessionalsEditor";
+import RestaurantsEditor from "@/pages/RestaurantsEditor";
+import TourismEditor from "@/pages/TourismEditor";
+import RetailEditor from "@/pages/RetailEditor";
+import ServicesEditor from "@/pages/ServicesEditor";
 
 function Router() {
   return (
@@ -33,6 +37,10 @@ function Router() {
       <Route path="/editor/tools" component={TemplateTools} />
       <Route path="/template-editor" component={TemplateEditor} />
       <Route path="/editor/professionals" component={ProfessionalsEditor} />
+      <Route path="/editor/restaurants" component={RestaurantsEditor} />
+      <Route path="/editor/tourism" component={TourismEditor} />
+      <Route path="/editor/retail" component={RetailEditor} />
+      <Route path="/editor/services" component={ServicesEditor} />
       <Route component={NotFound} />
     </Switch>
   );
