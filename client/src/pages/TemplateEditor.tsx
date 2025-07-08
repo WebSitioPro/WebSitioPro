@@ -1,167 +1,77 @@
-import { useState, useEffect } from 'react';
-import { Link, useParams } from 'wouter';
+import { useState } from 'react';
+import { Link, useLocation } from 'wouter';
 import { 
   ArrowLeft, 
   Eye, 
-  Save, 
-  Type, 
-  Image, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
-  Star,
   Settings,
   Briefcase,
-  Camera,
-  MessageCircle,
-  Plus,
-  Trash2
+  UtensilsCrossed,
+  MapPin,
+  ShoppingBag,
+  Wrench,
+  ChevronRight
 } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
 
-interface WebsiteConfig {
-  id?: string;
+interface TemplateOption {
+  id: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services';
   name: string;
-  templateType: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services';
-  
-  // Colors
-  primaryColor: string;
-  secondaryColor: string;
-  accentColor: string;
-  
-  // Logo and branding
-  logo: string;
-  
-  // Hero Section
-  heroImage: string;
-  heroTitle: { es: string; en: string };
-  heroSubtitle: { es: string; en: string };
-  heroDescription: { es: string; en: string };
-  
-  // Business Information
-  businessName: string;
-  doctorName?: string; // For professionals
-  specialty?: { es: string; en: string };
-  profileImage?: string;
-  
-  // About Section
-  aboutTitle: { es: string; en: string };
-  aboutText: { es: string; en: string };
-  
-  // Services/Products/Menu/Tours
-  servicesTitle: { es: string; en: string };
-  services?: Array<{
-    name: string;
-    description: string;
-    price?: string;
-  }>;
-  tours?: Array<{
-    name: string;
-    price: string;
-  }>;
-  products?: Array<{
-    name: string;
-    description: string;
-    price: string;
-  }>;
-  serviceAreas?: Array<{
-    name: string;
-    description: string;
-  }>;
-  menuImages?: string[];
-  
-  // Photos
-  photos: string[];
-  
-  // Reviews
-  reviews: Array<{
-    name: string;
-    rating: number;
-    text: { es: string; en: string };
-  }>;
-  
-  // Contact Information
-  phone: string;
-  email: string;
-  address: { es: string; en: string };
-  whatsappNumber: string;
-  whatsappMessage: { es: string; en: string };
-  socialLink?: string;
-  
-  // Business Hours
-  officeHours: {
-    mondayFriday: { es: string; en: string };
-    saturday: { es: string; en: string };
-  };
-  
-  // Settings
-  defaultLanguage: 'es' | 'en';
-  showWhatsappButton: boolean;
-  showChatbot: boolean;
-  
-  // Google Maps
-  googleMapsEmbed?: string;
+  description: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  demoUrl: string;
+  editorUrl: string;
+  color: string;
 }
 
-export default function TemplateEditor() {
-  const params = useParams();
-  const clientId = params.clientId || 'default';
-  const { toast } = useToast();
-  
-  const [activeTab, setActiveTab] = useState('template');
-  const [websiteData, setWebsiteData] = useState<WebsiteConfig>({
-    name: 'Professional Template',
-    templateType: 'professionals',
-    primaryColor: '#C8102E',
-    secondaryColor: '#00A859',
-    accentColor: '#007ACC',
-    logo: 'https://via.placeholder.com/150x50/C8102E/FFFFFF?text=Logo',
-    heroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Hero+Image',
-    heroTitle: { es: 'Título Principal', en: 'Main Title' },
-    heroSubtitle: { es: 'Subtítulo', en: 'Subtitle' },
-    heroDescription: { es: 'Descripción del negocio', en: 'Business description' },
-    businessName: 'Mi Negocio',
-    aboutTitle: { es: 'Acerca de Nosotros', en: 'About Us' },
-    aboutText: { es: 'Texto sobre el negocio', en: 'Text about the business' },
-    servicesTitle: { es: 'Servicios', en: 'Services' },
-    photos: [],
-    reviews: [],
-    phone: '+52 983 123 4567',
-    email: 'info@business.com',
-    address: { es: 'Dirección del negocio', en: 'Business address' },
-    whatsappNumber: '529831234567',
-    whatsappMessage: { es: 'Hola, me gustaría más información', en: 'Hello, I would like more information' },
-    officeHours: {
-      mondayFriday: { es: 'Lunes a viernes: 9:00 AM - 6:00 PM', en: 'Monday to Friday: 9:00 AM - 6:00 PM' },
-      saturday: { es: 'Sábado: 9:00 AM - 2:00 PM', en: 'Saturday: 9:00 AM - 2:00 PM' }
-    },
-    defaultLanguage: 'es',
-    showWhatsappButton: true,
-    showChatbot: true
-  });
-  
-  const [isSaving, setIsSaving] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+const templateOptions: TemplateOption[] = [
+  {
+    id: 'professionals',
+    name: 'Professionals',
+    description: 'Perfect for doctors, lawyers, consultants and medical professionals',
+    icon: Briefcase,
+    demoUrl: '/professionals-demo',
+    editorUrl: '/editor/professionals',
+    color: '#C8102E'
+  },
+  {
+    id: 'restaurants',
+    name: 'Restaurants',
+    description: 'Ideal for restaurants, cafes, food services and culinary businesses',
+    icon: UtensilsCrossed,
+    demoUrl: '/restaurants-demo',
+    editorUrl: '/editor/restaurants',
+    color: '#FF6B35'
+  },
+  {
+    id: 'tourism',
+    name: 'Tourism',
+    description: 'Great for tours, hotels, travel agencies and tourism services',
+    icon: MapPin,
+    demoUrl: '/tourism-demo',
+    editorUrl: '/editor/tourism',
+    color: '#00A859'
+  },
+  {
+    id: 'retail',
+    name: 'Retail',
+    description: 'Perfect for shops, boutiques, retail stores and online commerce',
+    icon: ShoppingBag,
+    demoUrl: '/retail-demo',
+    editorUrl: '/editor/retail',
+    color: '#007ACC'
+  },
+  {
+    id: 'services',
+    name: 'Services',
+    description: 'Ideal for plumbers, electricians, repair services and home services',
+    icon: Wrench,
+    demoUrl: '/services-demo',
+    editorUrl: '/editor/services',
+    color: '#6C5CE7'
+  }
+];
 
-  // Load existing configuration on component mount
-  useEffect(() => {
-    const loadConfig = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(`/api/config/${clientId}`);
-        if (response.ok) {
-          const config = await response.json();
-          setWebsiteData(prev => ({ ...prev, ...config }));
-        }
-      } catch (error) {
-        console.error('Error loading config:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadConfig();
-  }, [clientId]);
+export default function TemplateEditor() {
+  const [, navigate] = useLocation();
 
   const handleTemplateChange = (templateType: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services') => {
     setWebsiteData(prev => ({
