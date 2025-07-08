@@ -1,43 +1,58 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'wouter';
-import { Save, Eye, ArrowLeft, Upload, Palette, Type, Image, MapPin, Phone, Star } from 'lucide-react';
+import { Link, useLocation, useRoute } from 'wouter';
+import { 
+  ArrowLeft, 
+  Eye, 
+  Save, 
+  Upload, 
+  Type, 
+  Image, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Clock, 
+  Star,
+  Settings,
+  Users,
+  Briefcase,
+  Camera,
+  MessageCircle
+} from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
-interface TemplateData {
-  // Template metadata
-  templateId?: string;
-  templateType?: string;
-  clientName?: string;
-  businessName?: string;
-  createdAt?: string;
+interface TemplateConfig {
+  id: string;
+  name: string;
+  templateType: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services';
   
-  // Header & Basic Info
-  doctorName: string;
-  specialty: { es: string; en: string };
-  description: { es: string; en: string };
-  profileImage: string;
-  heroImage?: string;
+  // Hero Section
+  heroImage: string;
+  heroTitle: { es: string; en: string };
+  heroSubtitle: { es: string; en: string };
+  heroDescription: { es: string; en: string };
   
   // About Section
   aboutTitle: { es: string; en: string };
   aboutText: { es: string; en: string };
-  experience: string;
-  patientsServed: string;
-  availability: string;
   
-  // Services (4 services)
+  // Services/Products/Menu - Dynamic based on template type
+  servicesTitle: { es: string; en: string };
   services: Array<{
     title: { es: string; en: string };
     description: { es: string; en: string };
-    icon: string;
+    price?: string;
+    icon?: string;
   }>;
   
-  // Photo Gallery (6 photos)
+  // Photos Gallery
+  photosTitle: { es: string; en: string };
   photos: Array<{
     url: string;
     caption: { es: string; en: string };
   }>;
   
-  // Reviews (3 reviews)
+  // Reviews
+  reviewsTitle: { es: string; en: string };
   reviews: Array<{
     name: string;
     rating: number;
@@ -45,424 +60,295 @@ interface TemplateData {
   }>;
   
   // Contact Information
+  contactTitle: { es: string; en: string };
   phone: string;
   email: string;
   address: { es: string; en: string };
   whatsappNumber: string;
   whatsappMessage: { es: string; en: string };
   
-  // Office Hours
-  officeHours: {
-    mondayFriday: { es: string; en: string };
-    saturday: { es: string; en: string };
-  };
+  // Business Hours
+  hoursTitle: { es: string; en: string };
+  mondayFriday: { es: string; en: string };
+  saturday: { es: string; en: string };
   
-  // Google Maps
+  // Social & Maps
+  socialLink: string;
   googleMapsEmbed: string;
   
-  // Colors & Styling
+  // Branding
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;
+  logo: string;
   
-  // SEO & Meta
-  metaTitle: { es: string; en: string };
-  metaDescription: { es: string; en: string };
-  
-  // Make Agent compatibility fields
-  location?: string;
-  rating?: string;
-  fbLikes?: string;
-  placeId?: string;
-  bio?: string;
-  subcategory?: string;
-  hours?: string;
-  photo_url?: string;
+  // Settings
+  defaultLanguage: 'es' | 'en';
+  showWhatsappButton: boolean;
+  showChatbot: boolean;
 }
 
-// Convert Make Agent template format to TemplateEditor format
-const convertMakeAgentToEditorFormat = (makeTemplate: any): TemplateData => {
-  // If it's already in the correct format, return as is
-  if (makeTemplate.aboutTitle && makeTemplate.services && Array.isArray(makeTemplate.services)) {
-    return makeTemplate;
-  }
-
-  // Convert Make Agent format to Editor format
-  return {
-    doctorName: makeTemplate.doctorName || makeTemplate.businessName || makeTemplate.clientName || 'Business Name',
-    specialty: makeTemplate.specialty || {
-      es: makeTemplate.subcategory || 'Especialista',
-      en: makeTemplate.subcategory || 'Specialist'
-    },
-    description: makeTemplate.description || {
-      es: makeTemplate.bio || 'Descripción del negocio',
-      en: makeTemplate.bio || 'Business description'
-    },
-    profileImage: makeTemplate.profileImage || makeTemplate.photo_url || 'https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business',
-    heroImage: makeTemplate.heroImage || makeTemplate.coverImage || '',
-    
-    aboutTitle: {
-      es: 'Acerca del Negocio',
-      en: 'About the Business'
-    },
-    aboutText: makeTemplate.description || {
-      es: makeTemplate.bio || 'Información sobre el negocio',
-      en: makeTemplate.bio || 'Business information'
-    },
-    experience: makeTemplate.experience || '5+',
-    patientsServed: makeTemplate.patientsServed || '100+',
-    availability: makeTemplate.availability || '24/7',
-    
-    services: makeTemplate.services || [
-      {
-        title: { es: 'Servicio Principal', en: 'Main Service' },
-        description: { es: 'Descripción del servicio', en: 'Service description' },
-        icon: 'shield'
-      }
-    ],
-    
-    photos: makeTemplate.photos || [
-      { url: makeTemplate.profileImage || makeTemplate.photo_url || 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Photo+1', caption: { es: 'Foto 1', en: 'Photo 1' } }
-    ],
-    
-    reviews: makeTemplate.reviews || [
-      {
-        name: 'Cliente Satisfecho',
-        rating: parseInt(makeTemplate.rating) || 5,
-        text: {
-          es: 'Excelente servicio, muy recomendado.',
-          en: 'Excellent service, highly recommended.'
-        }
-      }
-    ],
-    
-    phone: makeTemplate.phone || makeTemplate.whatsappNumber || '+52 983 123 4567',
-    email: makeTemplate.email || 'info@business.com',
-    address: makeTemplate.address || {
-      es: makeTemplate.address || 'Dirección del negocio',
-      en: makeTemplate.address || 'Business address'
-    },
-    whatsappNumber: makeTemplate.whatsappNumber || makeTemplate.phone || '+52 983 123 4567',
-    whatsappMessage: makeTemplate.whatsappMessage || {
-      es: 'Hola, me interesa conocer más sobre sus servicios',
-      en: 'Hello, I\'m interested in learning more about your services'
-    },
-    
-    officeHours: makeTemplate.officeHours || {
-      mondayFriday: { 
-        es: makeTemplate.hours || 'Lun-Vie: 9:00 AM - 6:00 PM', 
-        en: makeTemplate.hours || 'Mon-Fri: 9:00 AM - 6:00 PM' 
-      },
-      saturday: { 
-        es: 'Sáb: 10:00 AM - 2:00 PM', 
-        en: 'Sat: 10:00 AM - 2:00 PM' 
-      }
-    },
-    
-    googleMapsEmbed: makeTemplate.googleMapsEmbed || `https://maps.google.com/?q=${encodeURIComponent(makeTemplate.address || 'Chetumal, Quintana Roo')}`,
-    
-    primaryColor: makeTemplate.primaryColor || '#00A859',
-    secondaryColor: makeTemplate.secondaryColor || '#C8102E',
-    accentColor: makeTemplate.accentColor || '#FFC107',
-    
-    metaTitle: makeTemplate.metaTitle || {
-      es: `${makeTemplate.doctorName || makeTemplate.businessName || 'Negocio'} - ${makeTemplate.location || 'Quintana Roo'}`,
-      en: `${makeTemplate.doctorName || makeTemplate.businessName || 'Business'} - ${makeTemplate.location || 'Quintana Roo'}`
-    },
-    metaDescription: makeTemplate.metaDescription || {
-      es: (makeTemplate.bio || 'Descripción del negocio').substring(0, 150),
-      en: (makeTemplate.bio || 'Business description').substring(0, 150)
-    }
-  };
-};
-
 export default function TemplateEditor() {
-  const params = useParams();
-  const templateId = params.templateId;
-  const [activeTab, setActiveTab] = useState('basic');
-  const [isLoadingTemplate, setIsLoadingTemplate] = useState(true);
-  const [templateData, setTemplateData] = useState<TemplateData>({
-    // Default data matching our current template
-    doctorName: 'Dr. María González',
-    specialty: {
-      es: 'Especialista en Medicina Familiar',
-      en: 'Family Medicine Specialist'
-    },
-    description: {
-      es: 'Más de 15 años de experiencia brindando atención médica integral a familias en Chetumal',
-      en: 'Over 15 years of experience providing comprehensive medical care to families in Chetumal'
-    },
-    profileImage: 'https://via.placeholder.com/300x300/00A859/FFFFFF?text=Dr.+María+González',
+  const [, navigate] = useLocation();
+  const [match, params] = useRoute('/editor/:id?');
+  const { toast } = useToast();
+  
+  const [activeTab, setActiveTab] = useState('template');
+  const [selectedTemplate, setSelectedTemplate] = useState<'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services'>('professionals');
+  const [config, setConfig] = useState<TemplateConfig>({
+    id: 'new',
+    name: '',
+    templateType: 'professionals',
     
-    aboutTitle: {
-      es: 'Acerca de la Doctora',
-      en: 'About the Doctor'
-    },
-    aboutText: {
-      es: 'La Dra. María González es una médica especialista en medicina familiar con más de 15 años de experiencia.',
-      en: 'Dr. María González is a family medicine specialist with over 15 years of experience.'
-    },
-    experience: '15+',
-    patientsServed: '500+',
-    availability: '24/7',
+    // Hero Section
+    heroImage: 'https://via.placeholder.com/1200x600/00A859/FFFFFF?text=Hero+Image',
+    heroTitle: { es: '', en: '' },
+    heroSubtitle: { es: '', en: '' },
+    heroDescription: { es: '', en: '' },
     
-    services: [
-      {
-        title: { es: 'Consulta General', en: 'General Consultation' },
-        description: { es: 'Atención médica integral para toda la familia', en: 'Comprehensive medical care for the whole family' },
-        icon: 'shield'
-      },
-      {
-        title: { es: 'Medicina Preventiva', en: 'Preventive Medicine' },
-        description: { es: 'Chequeos regulares y programas de prevención', en: 'Regular checkups and prevention programs' },
-        icon: 'shield'
-      },
-      {
-        title: { es: 'Pediatría', en: 'Pediatrics' },
-        description: { es: 'Cuidado especializado para niños y adolescentes', en: 'Specialized care for children and adolescents' },
-        icon: 'shield'
-      },
-      {
-        title: { es: 'Geriatría', en: 'Geriatrics' },
-        description: { es: 'Atención especializada para adultos mayores', en: 'Specialized care for seniors' },
-        icon: 'shield'
-      }
-    ],
+    // About Section
+    aboutTitle: { es: 'Acerca de', en: 'About' },
+    aboutText: { es: '', en: '' },
     
-    photos: [
-      { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+1', caption: { es: 'Consultorio 1', en: 'Office 1' } },
-      { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+2', caption: { es: 'Consultorio 2', en: 'Office 2' } },
-      { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+3', caption: { es: 'Consultorio 3', en: 'Office 3' } },
-      { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+4', caption: { es: 'Consultorio 4', en: 'Office 4' } },
-      { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+5', caption: { es: 'Consultorio 5', en: 'Office 5' } },
-      { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+6', caption: { es: 'Consultorio 6', en: 'Office 6' } }
-    ],
+    // Services
+    servicesTitle: { es: 'Servicios', en: 'Services' },
+    services: [],
     
-    reviews: [
-      {
-        name: 'Ana López',
-        rating: 5,
-        text: {
-          es: 'Excelente doctora, muy profesional y atenta. Siempre disponible para emergencias.',
-          en: 'Excellent doctor, very professional and caring. Always available for emergencies.'
-        }
-      },
-      {
-        name: 'Carlos Méndez',
-        rating: 5,
-        text: {
-          es: 'La mejor atención médica en Chetumal. Mi familia y yo confiamos completamente en la Dra. González.',
-          en: 'The best medical care in Chetumal. My family and I completely trust Dr. González.'
-        }
-      },
-      {
-        name: 'María Fernández',
-        rating: 5,
-        text: {
-          es: 'Muy recomendada. Explica todo claramente y tiene mucha paciencia con los niños.',
-          en: 'Highly recommended. Explains everything clearly and has great patience with children.'
-        }
-      }
-    ],
+    // Photos
+    photosTitle: { es: 'Galería', en: 'Gallery' },
+    photos: [],
     
-    phone: '+52 983 123 4567',
-    email: 'dra.gonzalez@email.com',
-    address: {
-      es: 'Av. Héroes 123, Centro, Chetumal, Q.R.',
-      en: 'Av. Héroes 123, Centro, Chetumal, Q.R.'
-    },
-    whatsappNumber: '+52 983 123 4567',
-    whatsappMessage: {
-      es: 'Hola, me gustaría agendar una cita médica',
-      en: 'Hello, I would like to schedule a medical appointment'
-    },
+    // Reviews
+    reviewsTitle: { es: 'Reseñas', en: 'Reviews' },
+    reviews: [],
     
-    officeHours: {
-      mondayFriday: { es: 'Lun-Vie: 8:00 AM - 6:00 PM', en: 'Mon-Fri: 8:00 AM - 6:00 PM' },
-      saturday: { es: 'Sáb: 9:00 AM - 2:00 PM', en: 'Sat: 9:00 AM - 2:00 PM' }
-    },
+    // Contact
+    contactTitle: { es: 'Contacto', en: 'Contact' },
+    phone: '',
+    email: '',
+    address: { es: '', en: '' },
+    whatsappNumber: '',
+    whatsappMessage: { es: 'Hola, me gustaría obtener más información', en: 'Hello, I would like to get more information' },
     
-    googleMapsEmbed: 'https://maps.google.com/?q=Av.+Héroes+123,+Centro,+Chetumal,+Q.R.',
+    // Hours
+    hoursTitle: { es: 'Horarios', en: 'Hours' },
+    mondayFriday: { es: 'Lunes a Viernes: 9:00 AM - 6:00 PM', en: 'Monday to Friday: 9:00 AM - 6:00 PM' },
+    saturday: { es: 'Sábado: 9:00 AM - 2:00 PM', en: 'Saturday: 9:00 AM - 2:00 PM' },
     
-    primaryColor: '#00A859',
-    secondaryColor: '#C8102E',
-    accentColor: '#FFC107',
+    // Social & Maps
+    socialLink: '',
+    googleMapsEmbed: '',
     
-    metaTitle: {
-      es: 'Dr. María González - Medicina Familiar en Chetumal',
-      en: 'Dr. María González - Family Medicine in Chetumal'
-    },
-    metaDescription: {
-      es: 'Consulta médica especializada en medicina familiar. 15+ años de experiencia en Chetumal.',
-      en: 'Specialized family medicine consultation. 15+ years of experience in Chetumal.'
-    }
+    // Branding
+    primaryColor: '#C8102E',
+    secondaryColor: '#00A859',
+    accentColor: '#007ACC',
+    logo: '',
+    
+    // Settings
+    defaultLanguage: 'es',
+    showWhatsappButton: true,
+    showChatbot: true,
   });
-
-  const handleInputChange = (field: string, value: any, language?: string, index?: number) => {
-    setTemplateData(prev => {
-      if (language && index !== undefined) {
-        // Handle array items with language
-        const newData = { ...prev };
-        (newData as any)[field][index][language] = value;
-        return newData;
-      } else if (language) {
-        // Handle language-specific fields
-        return {
-          ...prev,
-          [field]: {
-            ...(prev as any)[field],
-            [language]: value
-          }
-        };
-      } else if (index !== undefined) {
-        // Handle array items
-        const newData = { ...prev };
-        (newData as any)[field][index] = value;
-        return newData;
-      } else {
-        // Handle simple fields
-        return {
-          ...prev,
-          [field]: value
-        };
-      }
-    });
-  };
-
-  const [currentTemplateId, setCurrentTemplateId] = useState<string | null>(templateId || null);
+  
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Load existing template data if templateId is provided
   useEffect(() => {
-    const loadTemplate = async () => {
-      if (templateId) {
-        setIsLoadingTemplate(true);
-        try {
-          const response = await fetch(`/api/templates/${templateId}`);
-          if (response.ok) {
-            const existingTemplate = await response.json();
-            
-            // Convert Make Agent template format to TemplateEditor format
-            const convertedTemplate = convertMakeAgentToEditorFormat(existingTemplate);
-            setTemplateData(convertedTemplate);
-            setCurrentTemplateId(templateId);
-          } else {
-            console.error('Failed to load template');
-          }
-        } catch (error) {
-          console.error('Error loading template:', error);
-        } finally {
-          setIsLoadingTemplate(false);
-        }
-      } else {
-        setIsLoadingTemplate(false);
-      }
-    };
+    if (params?.id && params.id !== 'new') {
+      loadTemplate(params.id);
+    }
+  }, [params?.id]);
 
-    loadTemplate();
-  }, [templateId]);
+  const loadTemplate = async (templateId: string) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/config/${templateId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setConfig(data);
+        setSelectedTemplate(data.templateType);
+      }
+    } catch (error) {
+      console.error('Error loading template:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load template",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSave = async () => {
-    setIsLoading(true);
     try {
-      const response = await fetch('/api/templates', {
-        method: 'POST',
+      setIsSaving(true);
+      
+      const method = config.id === 'new' ? 'POST' : 'PUT';
+      const url = config.id === 'new' ? '/api/config' : `/api/config/${config.id}`;
+      
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(templateData),
+        body: JSON.stringify(config),
       });
 
-      const result = await response.json();
-      
-      if (result.success) {
-        setCurrentTemplateId(result.templateId);
-        alert(`Template saved successfully! Template ID: ${result.templateId}`);
+      if (response.ok) {
+        const result = await response.json();
+        if (config.id === 'new') {
+          setConfig(prev => ({ ...prev, id: result.id }));
+        }
+        toast({
+          title: "Success",
+          description: "Template saved successfully",
+        });
       } else {
-        alert('Failed to save template');
+        throw new Error('Failed to save template');
       }
     } catch (error) {
       console.error('Error saving template:', error);
-      alert('Error saving template');
+      toast({
+        title: "Error",
+        description: "Failed to save template",
+        variant: "destructive",
+      });
     } finally {
-      setIsLoading(false);
+      setIsSaving(false);
     }
   };
 
   const handlePreview = () => {
-    if (!currentTemplateId) {
-      alert('Please save the template first to preview it.');
-      return;
-    }
+    const templateRoutes = {
+      professionals: '/professionals-demo',
+      restaurants: '/restaurants-demo',
+      tourism: '/tourism-demo',
+      retail: '/retail-demo',
+      services: '/services-demo'
+    };
     
-    // Determine which template demo to show based on template type
-    let demoRoute = '/professionals-demo';
-    
-    // Get template type from data or infer from current template
-    const templateType = (templateData as any).templateType || 
-                        (templateData.doctorName ? 'professionals' : 'professionals');
-    
-    switch (templateType) {
-      case 'professionals':
-        demoRoute = '/professionals-demo';
-        break;
-      case 'restaurants':
-        demoRoute = '/restaurants-demo';
-        break;
-      case 'tourism':
-        demoRoute = '/tourism-demo';
-        break;
-      case 'retail':
-        demoRoute = '/retail-demo';
-        break;
-      case 'services':
-        demoRoute = '/services-demo';
-        break;
-      default:
-        demoRoute = '/professionals-demo';
-    }
-    
-    // Open our beautiful template demo with the current data
-    const previewUrl = `${demoRoute}?preview=${currentTemplateId}`;
-    window.open(previewUrl, '_blank');
+    const route = templateRoutes[selectedTemplate];
+    window.open(`${route}?preview=${config.id}`, '_blank');
   };
 
-  const handleGenerate = async () => {
-    if (!currentTemplateId) {
-      alert('Please save the template first to generate static files.');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await fetch(`/api/templates/${currentTemplateId}/generate`, {
-        method: 'POST',
-      });
-
-      const result = await response.json();
-      
-      if (result.success) {
-        alert(`Static files generated successfully! Output path: ${result.outputPath}`);
-      } else {
-        alert('Failed to generate static files');
-      }
-    } catch (error) {
-      console.error('Error generating static files:', error);
-      alert('Error generating static files');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleTemplateChange = (templateType: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services') => {
+    setSelectedTemplate(templateType);
+    setConfig(prev => ({ ...prev, templateType }));
+    
+    // Update services title based on template type
+    const serviceTitles = {
+      professionals: { es: 'Servicios Médicos', en: 'Medical Services' },
+      restaurants: { es: 'Nuestro Menú', en: 'Our Menu' },
+      tourism: { es: 'Nuestros Tours', en: 'Our Tours' },
+      retail: { es: 'Nuestros Productos', en: 'Our Products' },
+      services: { es: 'Nuestros Servicios', en: 'Our Services' }
+    };
+    
+    setConfig(prev => ({ ...prev, servicesTitle: serviceTitles[templateType] }));
   };
 
-  // Show loading state while loading template
-  if (isLoadingTemplate) {
+  const addService = () => {
+    const newService = {
+      title: { es: '', en: '' },
+      description: { es: '', en: '' },
+      price: selectedTemplate === 'professionals' ? '' : '$0',
+      icon: selectedTemplate === 'professionals' ? 'stethoscope' : 'service'
+    };
+    
+    setConfig(prev => ({
+      ...prev,
+      services: [...prev.services, newService]
+    }));
+  };
+
+  const removeService = (index: number) => {
+    setConfig(prev => ({
+      ...prev,
+      services: prev.services.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updateService = (index: number, field: string, value: any) => {
+    setConfig(prev => ({
+      ...prev,
+      services: prev.services.map((service, i) => 
+        i === index ? { ...service, [field]: value } : service
+      )
+    }));
+  };
+
+  const addPhoto = () => {
+    const newPhoto = {
+      url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=New+Photo',
+      caption: { es: '', en: '' }
+    };
+    
+    setConfig(prev => ({
+      ...prev,
+      photos: [...prev.photos, newPhoto]
+    }));
+  };
+
+  const removePhoto = (index: number) => {
+    setConfig(prev => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updatePhoto = (index: number, field: string, value: any) => {
+    setConfig(prev => ({
+      ...prev,
+      photos: prev.photos.map((photo, i) => 
+        i === index ? { ...photo, [field]: value } : photo
+      )
+    }));
+  };
+
+  const addReview = () => {
+    const newReview = {
+      name: '',
+      rating: 5,
+      text: { es: '', en: '' }
+    };
+    
+    setConfig(prev => ({
+      ...prev,
+      reviews: [...prev.reviews, newReview]
+    }));
+  };
+
+  const removeReview = (index: number) => {
+    setConfig(prev => ({
+      ...prev,
+      reviews: prev.reviews.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updateReview = (index: number, field: string, value: any) => {
+    setConfig(prev => ({
+      ...prev,
+      reviews: prev.reviews.map((review, i) => 
+        i === index ? { ...review, [field]: value } : review
+      )
+    }));
+  };
+
+  const templateTypeLabels = {
+    professionals: 'Profesionales',
+    restaurants: 'Restaurantes',
+    tourism: 'Turismo',
+    retail: 'Tienda',
+    services: 'Servicios'
+  };
+
+  if (isLoading) {
     return (
-      <div className="min-vh-100 bg-light d-flex align-items-center justify-content-center">
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-          <p className="mt-2">Loading template...</p>
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
     );
@@ -471,8 +357,8 @@ export default function TemplateEditor() {
   return (
     <div className="min-vh-100 bg-light">
       {/* Header */}
-      <nav className="navbar navbar-light bg-white shadow-sm">
-        <div className="container-fluid">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div className="container-fluid px-4">
           <div className="d-flex align-items-center">
             <Link href="/" className="btn btn-outline-secondary me-3">
               <ArrowLeft size={16} className="me-2" />
@@ -480,7 +366,7 @@ export default function TemplateEditor() {
             </Link>
             <div>
               <h5 className="mb-0">Professional Template Editor</h5>
-              <small className="text-muted">Edit content that appears in the professional template design</small>
+              <small className="text-muted">Create and edit professional templates for all 5 categories</small>
             </div>
           </div>
           <div className="d-flex gap-2">
@@ -490,23 +376,15 @@ export default function TemplateEditor() {
               disabled={isLoading}
             >
               <Eye size={16} className="me-2" />
-              Preview Professional Template
-            </button>
-            <button 
-              onClick={handleGenerate} 
-              className="btn btn-outline-info"
-              disabled={isLoading || !currentTemplateId}
-            >
-              <Upload size={16} className="me-2" />
-              Generate
+              Preview Template
             </button>
             <button 
               onClick={handleSave} 
               className="btn btn-success"
-              disabled={isLoading}
+              disabled={isSaving}
             >
               <Save size={16} className="me-2" />
-              {isLoading ? 'Saving...' : 'Save Template'}
+              {isSaving ? 'Saving...' : 'Save Template'}
             </button>
           </div>
         </div>
@@ -522,11 +400,18 @@ export default function TemplateEditor() {
               </div>
               <div className="list-group list-group-flush">
                 <button 
-                  className={`list-group-item list-group-item-action ${activeTab === 'basic' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('basic')}
+                  className={`list-group-item list-group-item-action ${activeTab === 'template' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('template')}
                 >
-                  <Type size={16} className="me-2" />
-                  Basic Information
+                  <Settings size={16} className="me-2" />
+                  Template Type
+                </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'hero' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('hero')}
+                >
+                  <Image size={16} className="me-2" />
+                  Hero Section
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'about' ? 'active' : ''}`}
@@ -539,14 +424,14 @@ export default function TemplateEditor() {
                   className={`list-group-item list-group-item-action ${activeTab === 'services' ? 'active' : ''}`}
                   onClick={() => setActiveTab('services')}
                 >
-                  <Type size={16} className="me-2" />
-                  Services
+                  <Briefcase size={16} className="me-2" />
+                  {templateTypeLabels[selectedTemplate]}
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}
                   onClick={() => setActiveTab('photos')}
                 >
-                  <Image size={16} className="me-2" />
+                  <Camera size={16} className="me-2" />
                   Photo Gallery
                 </button>
                 <button 
@@ -561,14 +446,14 @@ export default function TemplateEditor() {
                   onClick={() => setActiveTab('contact')}
                 >
                   <Phone size={16} className="me-2" />
-                  Contact & Location
+                  Contact Information
                 </button>
                 <button 
-                  className={`list-group-item list-group-item-action ${activeTab === 'styling' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('styling')}
+                  className={`list-group-item list-group-item-action ${activeTab === 'branding' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('branding')}
                 >
-                  <Palette size={16} className="me-2" />
-                  Colors & Styling
+                  <Settings size={16} className="me-2" />
+                  Branding & Colors
                 </button>
               </div>
             </div>
@@ -577,279 +462,476 @@ export default function TemplateEditor() {
           {/* Main Content */}
           <div className="col-md-9">
             <div className="alert alert-info mb-4">
-              <strong>Template Editor:</strong> Changes you make here will appear in the professional template design. 
-              Click "Preview Professional Template" to see your changes in the full template layout.
-              <hr className="my-2" />
-              <small>
-                <strong>Note:</strong> This editor controls the same professional template you see on the Pro Page. 
-                Your edits will modify the actual template content, styling, and layout.
-              </small>
+              <strong>Professional Template Editor:</strong> This editor creates content for the sophisticated professional templates shown on the Pro Page. 
+              Select a template type, edit all sections, and preview your changes in the full professional template layout.
             </div>
+            
             <div className="card">
               <div className="card-body">
-                
-                {/* Basic Information Tab */}
-                {activeTab === 'basic' && (
-                  <div>
-                    <h4 className="mb-4">Basic Information</h4>
-                    
-                    <div className="row g-3">
-                      <div className="col-md-6">
-                        <label className="form-label">Doctor Name</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.doctorName}
-                          onChange={(e) => handleInputChange('doctorName', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Profile Image URL</label>
-                        <input 
-                          type="url" 
-                          className="form-control"
-                          value={templateData.profileImage}
-                          onChange={(e) => handleInputChange('profileImage', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Hero Image URL</label>
-                        <input 
-                          type="url" 
-                          className="form-control"
-                          value={templateData.heroImage || ''}
-                          onChange={(e) => handleInputChange('heroImage', e.target.value)}
-                          placeholder="https://example.com/hero-image.jpg"
-                        />
+                {/* Template Type Selector */}
+                {activeTab === 'template' && (
+                  <div className="row">
+                    <div className="col-12">
+                      <h5 className="mb-4">Select Template Type</h5>
+                      <div className="row">
+                        {Object.entries(templateTypeLabels).map(([key, label]) => (
+                          <div key={key} className="col-md-6 mb-3">
+                            <div 
+                              className={`card h-100 cursor-pointer ${selectedTemplate === key ? 'border-primary' : ''}`}
+                              onClick={() => handleTemplateChange(key as any)}
+                              style={{ cursor: 'pointer' }}
+                            >
+                              <div className="card-body text-center">
+                                <h6 className="card-title">{label}</h6>
+                                <p className="card-text text-muted">
+                                  {key === 'professionals' && 'Doctors, lawyers, consultants'}
+                                  {key === 'restaurants' && 'Restaurants, cafes, food services'}
+                                  {key === 'tourism' && 'Tours, hotels, travel services'}
+                                  {key === 'retail' && 'Shops, boutiques, retail stores'}
+                                  {key === 'services' && 'Plumbing, repair, home services'}
+                                </p>
+                                {selectedTemplate === key && (
+                                  <div className="badge bg-primary">Selected</div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                       
-                      <div className="col-md-6">
-                        <label className="form-label">Specialty (Spanish)</label>
-                        <input 
-                          type="text" 
+                      <div className="mt-4">
+                        <label className="form-label">Template Name</label>
+                        <input
+                          type="text"
                           className="form-control"
-                          value={templateData.specialty.es}
-                          onChange={(e) => handleInputChange('specialty', e.target.value, 'es')}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Specialty (English)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.specialty.en}
-                          onChange={(e) => handleInputChange('specialty', e.target.value, 'en')}
-                        />
-                      </div>
-                      
-                      <div className="col-md-6">
-                        <label className="form-label">Description (Spanish)</label>
-                        <textarea 
-                          className="form-control"
-                          rows={3}
-                          value={templateData.description.es}
-                          onChange={(e) => handleInputChange('description', e.target.value, 'es')}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Description (English)</label>
-                        <textarea 
-                          className="form-control"
-                          rows={3}
-                          value={templateData.description.en}
-                          onChange={(e) => handleInputChange('description', e.target.value, 'en')}
+                          value={config.name}
+                          onChange={(e) => setConfig(prev => ({ ...prev, name: e.target.value }))}
+                          placeholder="Enter template name"
                         />
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* About Section Tab */}
-                {activeTab === 'about' && (
-                  <div>
-                    <h4 className="mb-4">About Section</h4>
-                    
-                    <div className="row g-3">
-                      <div className="col-md-6">
-                        <label className="form-label">About Title (Spanish)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.aboutTitle.es}
-                          onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'es')}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">About Title (English)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.aboutTitle.en}
-                          onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'en')}
-                        />
-                      </div>
+                {/* Hero Section */}
+                {activeTab === 'hero' && (
+                  <div className="row">
+                    <div className="col-12">
+                      <h5 className="mb-4">Hero Section</h5>
                       
-                      <div className="col-md-6">
-                        <label className="form-label">About Text (Spanish)</label>
-                        <textarea 
+                      <div className="mb-4">
+                        <label className="form-label">Hero Background Image</label>
+                        <input
+                          type="url"
                           className="form-control"
-                          rows={4}
-                          value={templateData.aboutText.es}
-                          onChange={(e) => handleInputChange('aboutText', e.target.value, 'es')}
+                          value={config.heroImage}
+                          onChange={(e) => setConfig(prev => ({ ...prev, heroImage: e.target.value }))}
+                          placeholder="Enter image URL"
                         />
+                        {config.heroImage && (
+                          <div className="mt-2">
+                            <img 
+                              src={config.heroImage} 
+                              alt="Hero preview" 
+                              className="img-thumbnail"
+                              style={{ maxWidth: '300px', maxHeight: '200px' }}
+                            />
+                          </div>
+                        )}
                       </div>
-                      <div className="col-md-6">
-                        <label className="form-label">About Text (English)</label>
-                        <textarea 
-                          className="form-control"
-                          rows={4}
-                          value={templateData.aboutText.en}
-                          onChange={(e) => handleInputChange('aboutText', e.target.value, 'en')}
-                        />
-                      </div>
-                      
-                      <div className="col-md-4">
-                        <label className="form-label">Years of Experience</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.experience}
-                          onChange={(e) => handleInputChange('experience', e.target.value)}
-                          placeholder="15+"
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <label className="form-label">Patients Served</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.patientsServed}
-                          onChange={(e) => handleInputChange('patientsServed', e.target.value)}
-                          placeholder="500+"
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <label className="form-label">Availability</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.availability}
-                          onChange={(e) => handleInputChange('availability', e.target.value)}
-                          placeholder="24/7"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
 
-                {/* Services Tab */}
-                {activeTab === 'services' && (
-                  <div>
-                    <h4 className="mb-4">Services</h4>
-                    
-                    {templateData.services.map((service, index) => (
-                      <div key={index} className="border rounded p-3 mb-4">
-                        <h6>Service {index + 1}</h6>
-                        <div className="row g-3">
-                          <div className="col-md-6">
-                            <label className="form-label">Title (Spanish)</label>
-                            <input 
-                              type="text" 
+                      <div className="row">
+                        <div className="col-md-6">
+                          <h6>Spanish Content</h6>
+                          <div className="mb-3">
+                            <label className="form-label">Title</label>
+                            <input
+                              type="text"
                               className="form-control"
-                              value={service.title.es}
-                              onChange={(e) => handleInputChange('services', e.target.value, 'es', index)}
+                              value={config.heroTitle.es}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                heroTitle: { ...prev.heroTitle, es: e.target.value }
+                              }))}
+                              placeholder="Main title in Spanish"
                             />
                           </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Title (English)</label>
-                            <input 
-                              type="text" 
+                          <div className="mb-3">
+                            <label className="form-label">Subtitle</label>
+                            <input
+                              type="text"
                               className="form-control"
-                              value={service.title.en}
-                              onChange={(e) => handleInputChange('services', e.target.value, 'en', index)}
+                              value={config.heroSubtitle.es}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                heroSubtitle: { ...prev.heroSubtitle, es: e.target.value }
+                              }))}
+                              placeholder="Subtitle in Spanish"
                             />
                           </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Description (Spanish)</label>
-                            <textarea 
+                          <div className="mb-3">
+                            <label className="form-label">Description</label>
+                            <textarea
                               className="form-control"
-                              rows={2}
-                              value={service.description.es}
-                              onChange={(e) => {
-                                const newServices = [...templateData.services];
-                                newServices[index].description.es = e.target.value;
-                                setTemplateData(prev => ({ ...prev, services: newServices }));
-                              }}
+                              rows={3}
+                              value={config.heroDescription.es}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                heroDescription: { ...prev.heroDescription, es: e.target.value }
+                              }))}
+                              placeholder="Description in Spanish"
                             />
                           </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Description (English)</label>
-                            <textarea 
+                        </div>
+                        <div className="col-md-6">
+                          <h6>English Content</h6>
+                          <div className="mb-3">
+                            <label className="form-label">Title</label>
+                            <input
+                              type="text"
                               className="form-control"
-                              rows={2}
-                              value={service.description.en}
-                              onChange={(e) => {
-                                const newServices = [...templateData.services];
-                                newServices[index].description.en = e.target.value;
-                                setTemplateData(prev => ({ ...prev, services: newServices }));
-                              }}
+                              value={config.heroTitle.en}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                heroTitle: { ...prev.heroTitle, en: e.target.value }
+                              }))}
+                              placeholder="Main title in English"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Subtitle</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.heroSubtitle.en}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                heroSubtitle: { ...prev.heroSubtitle, en: e.target.value }
+                              }))}
+                              placeholder="Subtitle in English"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Description</label>
+                            <textarea
+                              className="form-control"
+                              rows={3}
+                              value={config.heroDescription.en}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                heroDescription: { ...prev.heroDescription, en: e.target.value }
+                              }))}
+                              placeholder="Description in English"
                             />
                           </div>
                         </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
                 )}
 
-                {/* Photos Tab */}
+                {/* About Section */}
+                {activeTab === 'about' && (
+                  <div className="row">
+                    <div className="col-12">
+                      <h5 className="mb-4">About Section</h5>
+                      
+                      <div className="row">
+                        <div className="col-md-6">
+                          <h6>Spanish Content</h6>
+                          <div className="mb-3">
+                            <label className="form-label">Section Title</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.aboutTitle.es}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                aboutTitle: { ...prev.aboutTitle, es: e.target.value }
+                              }))}
+                              placeholder="About section title in Spanish"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">About Text</label>
+                            <textarea
+                              className="form-control"
+                              rows={6}
+                              value={config.aboutText.es}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                aboutText: { ...prev.aboutText, es: e.target.value }
+                              }))}
+                              placeholder="About text in Spanish"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>English Content</h6>
+                          <div className="mb-3">
+                            <label className="form-label">Section Title</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.aboutTitle.en}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                aboutTitle: { ...prev.aboutTitle, en: e.target.value }
+                              }))}
+                              placeholder="About section title in English"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">About Text</label>
+                            <textarea
+                              className="form-control"
+                              rows={6}
+                              value={config.aboutText.en}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                aboutText: { ...prev.aboutText, en: e.target.value }
+                              }))}
+                              placeholder="About text in English"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Services/Products/Menu Section */}
+                {activeTab === 'services' && (
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="d-flex justify-content-between align-items-center mb-4">
+                        <h5 className="mb-0">{templateTypeLabels[selectedTemplate]} Section</h5>
+                        <button 
+                          className="btn btn-primary"
+                          onClick={addService}
+                        >
+                          Add {selectedTemplate === 'restaurants' ? 'Menu Item' : 
+                               selectedTemplate === 'tourism' ? 'Tour' :
+                               selectedTemplate === 'retail' ? 'Product' : 'Service'}
+                        </button>
+                      </div>
+                      
+                      <div className="row mb-4">
+                        <div className="col-md-6">
+                          <label className="form-label">Section Title (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={config.servicesTitle.es}
+                            onChange={(e) => setConfig(prev => ({ 
+                              ...prev, 
+                              servicesTitle: { ...prev.servicesTitle, es: e.target.value }
+                            }))}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Section Title (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={config.servicesTitle.en}
+                            onChange={(e) => setConfig(prev => ({ 
+                              ...prev, 
+                              servicesTitle: { ...prev.servicesTitle, en: e.target.value }
+                            }))}
+                          />
+                        </div>
+                      </div>
+
+                      {config.services.map((service, index) => (
+                        <div key={index} className="card mb-3">
+                          <div className="card-header d-flex justify-content-between align-items-center">
+                            <h6 className="mb-0">
+                              {selectedTemplate === 'restaurants' ? 'Menu Item' : 
+                               selectedTemplate === 'tourism' ? 'Tour' :
+                               selectedTemplate === 'retail' ? 'Product' : 'Service'} #{index + 1}
+                            </h6>
+                            <button 
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => removeService(index)}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <div className="card-body">
+                            <div className="row">
+                              <div className="col-md-6">
+                                <h6>Spanish</h6>
+                                <div className="mb-3">
+                                  <label className="form-label">Title</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={service.title.es}
+                                    onChange={(e) => updateService(index, 'title', { ...service.title, es: e.target.value })}
+                                    placeholder="Title in Spanish"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Description</label>
+                                  <textarea
+                                    className="form-control"
+                                    rows={3}
+                                    value={service.description.es}
+                                    onChange={(e) => updateService(index, 'description', { ...service.description, es: e.target.value })}
+                                    placeholder="Description in Spanish"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-6">
+                                <h6>English</h6>
+                                <div className="mb-3">
+                                  <label className="form-label">Title</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={service.title.en}
+                                    onChange={(e) => updateService(index, 'title', { ...service.title, en: e.target.value })}
+                                    placeholder="Title in English"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Description</label>
+                                  <textarea
+                                    className="form-control"
+                                    rows={3}
+                                    value={service.description.en}
+                                    onChange={(e) => updateService(index, 'description', { ...service.description, en: e.target.value })}
+                                    placeholder="Description in English"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {selectedTemplate !== 'professionals' && (
+                              <div className="row">
+                                <div className="col-md-6">
+                                  <label className="form-label">Price</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={service.price || ''}
+                                    onChange={(e) => updateService(index, 'price', e.target.value)}
+                                    placeholder="Price (e.g., $50 MXN)"
+                                  />
+                                </div>
+                                <div className="col-md-6">
+                                  <label className="form-label">Icon</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={service.icon || ''}
+                                    onChange={(e) => updateService(index, 'icon', e.target.value)}
+                                    placeholder="Icon name (e.g., utensils, map, shopping-bag)"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Photos Section */}
                 {activeTab === 'photos' && (
-                  <div>
-                    <h4 className="mb-4">Photo Gallery</h4>
-                    <p className="text-muted mb-4">Add 6 photos to showcase your facilities</p>
-                    
-                    <div className="row g-3">
-                      {templateData.photos.map((photo, index) => (
-                        <div key={index} className="col-md-6">
-                          <div className="border rounded p-3">
-                            <h6>Photo {index + 1}</h6>
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="d-flex justify-content-between align-items-center mb-4">
+                        <h5 className="mb-0">Photo Gallery</h5>
+                        <button 
+                          className="btn btn-primary"
+                          onClick={addPhoto}
+                        >
+                          Add Photo
+                        </button>
+                      </div>
+                      
+                      <div className="row mb-4">
+                        <div className="col-md-6">
+                          <label className="form-label">Gallery Title (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={config.photosTitle.es}
+                            onChange={(e) => setConfig(prev => ({ 
+                              ...prev, 
+                              photosTitle: { ...prev.photosTitle, es: e.target.value }
+                            }))}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Gallery Title (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={config.photosTitle.en}
+                            onChange={(e) => setConfig(prev => ({ 
+                              ...prev, 
+                              photosTitle: { ...prev.photosTitle, en: e.target.value }
+                            }))}
+                          />
+                        </div>
+                      </div>
+
+                      {config.photos.map((photo, index) => (
+                        <div key={index} className="card mb-3">
+                          <div className="card-header d-flex justify-content-between align-items-center">
+                            <h6 className="mb-0">Photo #{index + 1}</h6>
+                            <button 
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => removePhoto(index)}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <div className="card-body">
                             <div className="mb-3">
                               <label className="form-label">Image URL</label>
-                              <input 
-                                type="url" 
+                              <input
+                                type="url"
                                 className="form-control"
                                 value={photo.url}
-                                onChange={(e) => {
-                                  const newPhotos = [...templateData.photos];
-                                  newPhotos[index].url = e.target.value;
-                                  setTemplateData(prev => ({ ...prev, photos: newPhotos }));
-                                }}
+                                onChange={(e) => updatePhoto(index, 'url', e.target.value)}
+                                placeholder="Enter image URL"
                               />
+                              {photo.url && (
+                                <div className="mt-2">
+                                  <img 
+                                    src={photo.url} 
+                                    alt="Photo preview" 
+                                    className="img-thumbnail"
+                                    style={{ maxWidth: '200px', maxHeight: '150px' }}
+                                  />
+                                </div>
+                              )}
                             </div>
-                            <div className="row g-2">
-                              <div className="col-6">
+                            
+                            <div className="row">
+                              <div className="col-md-6">
                                 <label className="form-label">Caption (Spanish)</label>
-                                <input 
-                                  type="text" 
+                                <input
+                                  type="text"
                                   className="form-control"
                                   value={photo.caption.es}
-                                  onChange={(e) => {
-                                    const newPhotos = [...templateData.photos];
-                                    newPhotos[index].caption.es = e.target.value;
-                                    setTemplateData(prev => ({ ...prev, photos: newPhotos }));
-                                  }}
+                                  onChange={(e) => updatePhoto(index, 'caption', { ...photo.caption, es: e.target.value })}
+                                  placeholder="Caption in Spanish"
                                 />
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label className="form-label">Caption (English)</label>
-                                <input 
-                                  type="text" 
+                                <input
+                                  type="text"
                                   className="form-control"
                                   value={photo.caption.en}
-                                  onChange={(e) => {
-                                    const newPhotos = [...templateData.photos];
-                                    newPhotos[index].caption.en = e.target.value;
-                                    setTemplateData(prev => ({ ...prev, photos: newPhotos }));
-                                  }}
+                                  onChange={(e) => updatePhoto(index, 'caption', { ...photo.caption, en: e.target.value })}
+                                  placeholder="Caption in English"
                                 />
                               </div>
                             </div>
@@ -860,258 +942,418 @@ export default function TemplateEditor() {
                   </div>
                 )}
 
-                {/* Reviews Tab */}
+                {/* Reviews Section */}
                 {activeTab === 'reviews' && (
-                  <div>
-                    <h4 className="mb-4">Patient Reviews</h4>
-                    
-                    {templateData.reviews.map((review, index) => (
-                      <div key={index} className="border rounded p-3 mb-4">
-                        <h6>Review {index + 1}</h6>
-                        <div className="row g-3">
-                          <div className="col-md-6">
-                            <label className="form-label">Patient Name</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={review.name}
-                              onChange={(e) => {
-                                const newReviews = [...templateData.reviews];
-                                newReviews[index].name = e.target.value;
-                                setTemplateData(prev => ({ ...prev, reviews: newReviews }));
-                              }}
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Rating (1-5)</label>
-                            <select 
-                              className="form-control"
-                              value={review.rating}
-                              onChange={(e) => {
-                                const newReviews = [...templateData.reviews];
-                                newReviews[index].rating = parseInt(e.target.value);
-                                setTemplateData(prev => ({ ...prev, reviews: newReviews }));
-                              }}
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="d-flex justify-content-between align-items-center mb-4">
+                        <h5 className="mb-0">Customer Reviews</h5>
+                        <button 
+                          className="btn btn-primary"
+                          onClick={addReview}
+                        >
+                          Add Review
+                        </button>
+                      </div>
+                      
+                      <div className="row mb-4">
+                        <div className="col-md-6">
+                          <label className="form-label">Reviews Title (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={config.reviewsTitle.es}
+                            onChange={(e) => setConfig(prev => ({ 
+                              ...prev, 
+                              reviewsTitle: { ...prev.reviewsTitle, es: e.target.value }
+                            }))}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Reviews Title (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={config.reviewsTitle.en}
+                            onChange={(e) => setConfig(prev => ({ 
+                              ...prev, 
+                              reviewsTitle: { ...prev.reviewsTitle, en: e.target.value }
+                            }))}
+                          />
+                        </div>
+                      </div>
+
+                      {config.reviews.map((review, index) => (
+                        <div key={index} className="card mb-3">
+                          <div className="card-header d-flex justify-content-between align-items-center">
+                            <h6 className="mb-0">Review #{index + 1}</h6>
+                            <button 
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => removeReview(index)}
                             >
-                              <option value={5}>5 Stars</option>
-                              <option value={4}>4 Stars</option>
-                              <option value={3}>3 Stars</option>
-                              <option value={2}>2 Stars</option>
-                              <option value={1}>1 Star</option>
-                            </select>
+                              Remove
+                            </button>
                           </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Review Text (Spanish)</label>
-                            <textarea 
+                          <div className="card-body">
+                            <div className="row">
+                              <div className="col-md-6">
+                                <div className="mb-3">
+                                  <label className="form-label">Customer Name</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={review.name}
+                                    onChange={(e) => updateReview(index, 'name', e.target.value)}
+                                    placeholder="Customer name"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Rating</label>
+                                  <select
+                                    className="form-control"
+                                    value={review.rating}
+                                    onChange={(e) => updateReview(index, 'rating', parseInt(e.target.value))}
+                                  >
+                                    <option value={5}>5 Stars</option>
+                                    <option value={4}>4 Stars</option>
+                                    <option value={3}>3 Stars</option>
+                                    <option value={2}>2 Stars</option>
+                                    <option value={1}>1 Star</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="mb-3">
+                                  <label className="form-label">Review Text (Spanish)</label>
+                                  <textarea
+                                    className="form-control"
+                                    rows={3}
+                                    value={review.text.es}
+                                    onChange={(e) => updateReview(index, 'text', { ...review.text, es: e.target.value })}
+                                    placeholder="Review text in Spanish"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Review Text (English)</label>
+                                  <textarea
+                                    className="form-control"
+                                    rows={3}
+                                    value={review.text.en}
+                                    onChange={(e) => updateReview(index, 'text', { ...review.text, en: e.target.value })}
+                                    placeholder="Review text in English"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Contact Section */}
+                {activeTab === 'contact' && (
+                  <div className="row">
+                    <div className="col-12">
+                      <h5 className="mb-4">Contact Information</h5>
+                      
+                      <div className="row">
+                        <div className="col-md-6">
+                          <h6>Contact Details</h6>
+                          <div className="mb-3">
+                            <label className="form-label">Phone Number</label>
+                            <input
+                              type="tel"
                               className="form-control"
-                              rows={3}
-                              value={review.text.es}
-                              onChange={(e) => {
-                                const newReviews = [...templateData.reviews];
-                                newReviews[index].text.es = e.target.value;
-                                setTemplateData(prev => ({ ...prev, reviews: newReviews }));
-                              }}
+                              value={config.phone}
+                              onChange={(e) => setConfig(prev => ({ ...prev, phone: e.target.value }))}
+                              placeholder="+52 983 123 4567"
                             />
                           </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Review Text (English)</label>
-                            <textarea 
+                          <div className="mb-3">
+                            <label className="form-label">Email</label>
+                            <input
+                              type="email"
                               className="form-control"
-                              rows={3}
-                              value={review.text.en}
-                              onChange={(e) => {
-                                const newReviews = [...templateData.reviews];
-                                newReviews[index].text.en = e.target.value;
-                                setTemplateData(prev => ({ ...prev, reviews: newReviews }));
-                              }}
+                              value={config.email}
+                              onChange={(e) => setConfig(prev => ({ ...prev, email: e.target.value }))}
+                              placeholder="info@business.com"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">WhatsApp Number</label>
+                            <input
+                              type="tel"
+                              className="form-control"
+                              value={config.whatsappNumber}
+                              onChange={(e) => setConfig(prev => ({ ...prev, whatsappNumber: e.target.value }))}
+                              placeholder="529831234567"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Social Media Link</label>
+                            <input
+                              type="url"
+                              className="form-control"
+                              value={config.socialLink}
+                              onChange={(e) => setConfig(prev => ({ ...prev, socialLink: e.target.value }))}
+                              placeholder="https://facebook.com/yourbusiness"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>Address & Hours</h6>
+                          <div className="mb-3">
+                            <label className="form-label">Address (Spanish)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.address.es}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                address: { ...prev.address, es: e.target.value }
+                              }))}
+                              placeholder="Dirección en español"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Address (English)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.address.en}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                address: { ...prev.address, en: e.target.value }
+                              }))}
+                              placeholder="Address in English"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Monday-Friday Hours (Spanish)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.mondayFriday.es}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                mondayFriday: { ...prev.mondayFriday, es: e.target.value }
+                              }))}
+                              placeholder="Lunes a viernes: 9:00 AM - 6:00 PM"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Monday-Friday Hours (English)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.mondayFriday.en}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                mondayFriday: { ...prev.mondayFriday, en: e.target.value }
+                              }))}
+                              placeholder="Monday to Friday: 9:00 AM - 6:00 PM"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Saturday Hours (Spanish)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.saturday.es}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                saturday: { ...prev.saturday, es: e.target.value }
+                              }))}
+                              placeholder="Sábado: 9:00 AM - 2:00 PM"
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="form-label">Saturday Hours (English)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={config.saturday.en}
+                              onChange={(e) => setConfig(prev => ({ 
+                                ...prev, 
+                                saturday: { ...prev.saturday, en: e.target.value }
+                              }))}
+                              placeholder="Saturday: 9:00 AM - 2:00 PM"
                             />
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Contact Tab */}
-                {activeTab === 'contact' && (
-                  <div>
-                    <h4 className="mb-4">Contact & Location</h4>
-                    
-                    <div className="row g-3">
-                      <div className="col-md-6">
-                        <label className="form-label">Phone Number</label>
-                        <input 
-                          type="tel" 
-                          className="form-control"
-                          value={templateData.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Email Address</label>
-                        <input 
-                          type="email" 
-                          className="form-control"
-                          value={templateData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                        />
+                      
+                      <div className="row">
+                        <div className="col-md-6">
+                          <label className="form-label">WhatsApp Message (Spanish)</label>
+                          <textarea
+                            className="form-control"
+                            rows={2}
+                            value={config.whatsappMessage.es}
+                            onChange={(e) => setConfig(prev => ({ 
+                              ...prev, 
+                              whatsappMessage: { ...prev.whatsappMessage, es: e.target.value }
+                            }))}
+                            placeholder="Mensaje predeterminado en español"
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">WhatsApp Message (English)</label>
+                          <textarea
+                            className="form-control"
+                            rows={2}
+                            value={config.whatsappMessage.en}
+                            onChange={(e) => setConfig(prev => ({ 
+                              ...prev, 
+                              whatsappMessage: { ...prev.whatsappMessage, en: e.target.value }
+                            }))}
+                            placeholder="Default message in English"
+                          />
+                        </div>
                       </div>
                       
-                      <div className="col-md-6">
-                        <label className="form-label">WhatsApp Number</label>
-                        <input 
-                          type="tel" 
+                      <div className="mt-4">
+                        <label className="form-label">Google Maps Embed</label>
+                        <textarea
                           className="form-control"
-                          value={templateData.whatsappNumber}
-                          onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Google Maps URL</label>
-                        <input 
-                          type="url" 
-                          className="form-control"
-                          value={templateData.googleMapsEmbed}
-                          onChange={(e) => handleInputChange('googleMapsEmbed', e.target.value)}
-                        />
-                      </div>
-                      
-                      <div className="col-md-6">
-                        <label className="form-label">Address (Spanish)</label>
-                        <textarea 
-                          className="form-control"
-                          rows={2}
-                          value={templateData.address.es}
-                          onChange={(e) => handleInputChange('address', e.target.value, 'es')}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Address (English)</label>
-                        <textarea 
-                          className="form-control"
-                          rows={2}
-                          value={templateData.address.en}
-                          onChange={(e) => handleInputChange('address', e.target.value, 'en')}
-                        />
-                      </div>
-                      
-                      <div className="col-md-6">
-                        <label className="form-label">Office Hours Mon-Fri (Spanish)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.officeHours.mondayFriday.es}
-                          onChange={(e) => {
-                            setTemplateData(prev => ({
-                              ...prev,
-                              officeHours: {
-                                ...prev.officeHours,
-                                mondayFriday: { ...prev.officeHours.mondayFriday, es: e.target.value }
-                              }
-                            }));
-                          }}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Office Hours Mon-Fri (English)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.officeHours.mondayFriday.en}
-                          onChange={(e) => {
-                            setTemplateData(prev => ({
-                              ...prev,
-                              officeHours: {
-                                ...prev.officeHours,
-                                mondayFriday: { ...prev.officeHours.mondayFriday, en: e.target.value }
-                              }
-                            }));
-                          }}
+                          rows={3}
+                          value={config.googleMapsEmbed}
+                          onChange={(e) => setConfig(prev => ({ ...prev, googleMapsEmbed: e.target.value }))}
+                          placeholder="Google Maps embed iframe src URL"
                         />
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* Styling Tab */}
-                {activeTab === 'styling' && (
-                  <div>
-                    <h4 className="mb-4">Colors & Styling</h4>
-                    
-                    <div className="row g-3">
-                      <div className="col-md-4">
-                        <label className="form-label">Primary Color</label>
-                        <input 
-                          type="color" 
-                          className="form-control form-control-color"
-                          value={templateData.primaryColor}
-                          onChange={(e) => handleInputChange('primaryColor', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <label className="form-label">Secondary Color</label>
-                        <input 
-                          type="color" 
-                          className="form-control form-control-color"
-                          value={templateData.secondaryColor}
-                          onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <label className="form-label">Accent Color</label>
-                        <input 
-                          type="color" 
-                          className="form-control form-control-color"
-                          value={templateData.accentColor}
-                          onChange={(e) => handleInputChange('accentColor', e.target.value)}
-                        />
-                      </div>
+                {/* Branding Section */}
+                {activeTab === 'branding' && (
+                  <div className="row">
+                    <div className="col-12">
+                      <h5 className="mb-4">Branding & Colors</h5>
                       
-                      <div className="col-12">
-                        <h6 className="mt-4 mb-3">SEO Settings</h6>
-                      </div>
-                      
-                      <div className="col-md-6">
-                        <label className="form-label">Page Title (Spanish)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.metaTitle.es}
-                          onChange={(e) => handleInputChange('metaTitle', e.target.value, 'es')}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Page Title (English)</label>
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={templateData.metaTitle.en}
-                          onChange={(e) => handleInputChange('metaTitle', e.target.value, 'en')}
-                        />
-                      </div>
-                      
-                      <div className="col-md-6">
-                        <label className="form-label">Meta Description (Spanish)</label>
-                        <textarea 
-                          className="form-control"
-                          rows={2}
-                          value={templateData.metaDescription.es}
-                          onChange={(e) => handleInputChange('metaDescription', e.target.value, 'es')}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Meta Description (English)</label>
-                        <textarea 
-                          className="form-control"
-                          rows={2}
-                          value={templateData.metaDescription.en}
-                          onChange={(e) => handleInputChange('metaDescription', e.target.value, 'en')}
-                        />
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="mb-3">
+                            <label className="form-label">Logo URL</label>
+                            <input
+                              type="url"
+                              className="form-control"
+                              value={config.logo}
+                              onChange={(e) => setConfig(prev => ({ ...prev, logo: e.target.value }))}
+                              placeholder="Logo image URL"
+                            />
+                            {config.logo && (
+                              <div className="mt-2">
+                                <img 
+                                  src={config.logo} 
+                                  alt="Logo preview" 
+                                  className="img-thumbnail"
+                                  style={{ maxWidth: '150px', maxHeight: '50px' }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="mb-3">
+                            <label className="form-label">Primary Color (Mexican Red)</label>
+                            <input
+                              type="color"
+                              className="form-control"
+                              value={config.primaryColor}
+                              onChange={(e) => setConfig(prev => ({ ...prev, primaryColor: e.target.value }))}
+                            />
+                          </div>
+                          
+                          <div className="mb-3">
+                            <label className="form-label">Secondary Color (Mexican Green)</label>
+                            <input
+                              type="color"
+                              className="form-control"
+                              value={config.secondaryColor}
+                              onChange={(e) => setConfig(prev => ({ ...prev, secondaryColor: e.target.value }))}
+                            />
+                          </div>
+                          
+                          <div className="mb-3">
+                            <label className="form-label">Accent Color (Blue)</label>
+                            <input
+                              type="color"
+                              className="form-control"
+                              value={config.accentColor}
+                              onChange={(e) => setConfig(prev => ({ ...prev, accentColor: e.target.value }))}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <h6>Settings</h6>
+                          
+                          <div className="mb-3">
+                            <label className="form-label">Default Language</label>
+                            <select
+                              className="form-control"
+                              value={config.defaultLanguage}
+                              onChange={(e) => setConfig(prev => ({ ...prev, defaultLanguage: e.target.value as 'es' | 'en' }))}
+                            >
+                              <option value="es">Spanish</option>
+                              <option value="en">English</option>
+                            </select>
+                          </div>
+                          
+                          <div className="form-check mb-3">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              checked={config.showWhatsappButton}
+                              onChange={(e) => setConfig(prev => ({ ...prev, showWhatsappButton: e.target.checked }))}
+                            />
+                            <label className="form-check-label">
+                              Show WhatsApp Button
+                            </label>
+                          </div>
+                          
+                          <div className="form-check mb-3">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              checked={config.showChatbot}
+                              onChange={(e) => setConfig(prev => ({ ...prev, showChatbot: e.target.checked }))}
+                            />
+                            <label className="form-check-label">
+                              Show Chatbot
+                            </label>
+                          </div>
+                          
+                          <div className="mt-4">
+                            <h6>Color Preview</h6>
+                            <div className="d-flex gap-2">
+                              <div 
+                                className="border rounded p-2 text-center text-white"
+                                style={{ backgroundColor: config.primaryColor, minWidth: '80px' }}
+                              >
+                                Primary
+                              </div>
+                              <div 
+                                className="border rounded p-2 text-center text-white"
+                                style={{ backgroundColor: config.secondaryColor, minWidth: '80px' }}
+                              >
+                                Secondary
+                              </div>
+                              <div 
+                                className="border rounded p-2 text-center text-white"
+                                style={{ backgroundColor: config.accentColor, minWidth: '80px' }}
+                              >
+                                Accent
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 )}
-
               </div>
             </div>
           </div>

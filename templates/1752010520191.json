@@ -1,0 +1,67 @@
+{
+  "templateType": "professionals",
+  "businessName": "test",
+  "logoUrl": "test",
+  "intro": {
+    "es": "test",
+    "en": "test"
+  },
+  "address": "test",
+  "phone": "",
+  "email": "",
+  "socialLink": "tset",
+  "whatsappNumber": "",
+  "languageDefault": "es",
+  "chatbotEnabled": true,
+  "aiOptimizedNote": "AI-optimized for speed and search",
+  "reviews": [
+    {
+      "name": "test",
+      "rating": 5,
+      "text": {
+        "es": "",
+        "en": ""
+      }
+    },
+    {
+      "name": "",
+      "rating": 5,
+      "text": {
+        "es": "",
+        "en": ""
+      }
+    },
+    {
+      "name": "",
+      "rating": 5,
+      "text": {
+        "es": "",
+        "en": ""
+      }
+    }
+  ],
+  "photos": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "services": [
+    {
+      "name": "test",
+      "description": ""
+    },
+    {
+      "name": "test",
+      "description": ""
+    },
+    {
+      "name": "test",
+      "description": ""
+    }
+  ],
+  "clientName": "Dr. Garcia",
+  "createdAt": "2025-07-08T21:35:19.776Z"
+}
