@@ -2195,41 +2195,7 @@ export default function EditorPage() {
                     </div>
                   ))}
 
-                  <h5 className="mb-3">Menu Images (for Restaurant Template)</h5>
-                  <div className="row g-3 mb-4">
-                    <div className="col-12">
-                      <p className="text-muted">Add up to 9 menu images for restaurant templates. These will appear in the RestaurantsDemo.</p>
-                    </div>
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                      <div key={num} className="col-md-4">
-                        <div className="border rounded p-3">
-                          <h6>Menu Image {num}</h6>
-                          <label className="form-label">Menu Page {num} URL</label>
-                          <input 
-                            type="url" 
-                            className="form-control"
-                            value={websiteData?.menuImages?.[num - 1] || ''}
-                            onChange={(e) => {
-                              const newMenuImages = [...(websiteData?.menuImages || [])];
-                              newMenuImages[num - 1] = e.target.value;
-                              setWebsiteData(prev => ({ ...prev, menuImages: newMenuImages }));
-                            }}
-                            placeholder={`https://via.placeholder.com/400x600/00A859/FFFFFF?text=Menu+Page+${num}`}
-                          />
-                          {websiteData?.menuImages?.[num - 1] && (
-                            <div className="mt-2">
-                              <img 
-                                src={websiteData.menuImages[num - 1]} 
-                                alt={`Menu ${num}`}
-                                className="img-fluid"
-                                style={{ maxHeight: '100px', objectFit: 'cover' }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+
 
                   <h5 className="mb-3">Template Showcase Images</h5>
                   <div className="row g-3 mb-4">
