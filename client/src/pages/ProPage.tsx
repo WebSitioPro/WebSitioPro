@@ -454,7 +454,7 @@ export default function ProPage() {
                 {t('demoTitle')}
               </h4>
               <p className="mb-0">
-                {t('demoText')}
+                {savedConfig?.translations?.[language]?.demoNote || t('demoText')}
               </p>
             </div>
           </div>
@@ -468,27 +468,31 @@ export default function ProPage() {
             {t('howItWorksTitle')}
           </h2>
           <div className="row g-4">
-            <div className="col-md-4 text-center">
-              <div className="mb-3">
-                <Phone size={64} className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
-              </div>
-              <h4 className="fw-bold mb-3">1. {t('step1Title')}</h4>
-              <p className="text-muted">{t('step1Desc')}</p>
-            </div>
-            <div className="col-md-4 text-center">
-              <div className="mb-3">
-                <Palette size={64} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />
-              </div>
-              <h4 className="fw-bold mb-3">2. {t('step2Title')}</h4>
-              <p className="text-muted">{t('step2Desc')}</p>
-            </div>
-            <div className="col-md-4 text-center">
-              <div className="mb-3">
+            {(savedConfig?.serviceSteps || [
+              { es: 'Contacto Inicial', en: 'Initial Contact' },
+              { es: 'Diseño y Desarrollo', en: 'Design & Development' },
+              { es: 'Lanzamiento', en: 'Launch' }
+            ]).map((step, index) => {
+              const icons = [
+                <Phone size={64} className="text-primary" style={{ color: 'hsl(var(--primary))' }} />,
+                <Palette size={64} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />,
                 <Rocket size={64} className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
-              </div>
-              <h4 className="fw-bold mb-3">3. {t('step3Title')}</h4>
-              <p className="text-muted">{t('step3Desc')}</p>
-            </div>
+              ];
+              
+              return (
+                <div key={index} className="col-md-4 text-center">
+                  <div className="mb-3">
+                    {icons[index]}
+                  </div>
+                  <h4 className="fw-bold mb-3">{index + 1}. {step[language] || step.en}</h4>
+                  <p className="text-muted">
+                    {index === 0 && (language === 'es' ? 'Nos ponemos en contacto contigo para entender tus necesidades' : 'We contact you to understand your needs')}
+                    {index === 1 && (language === 'es' ? 'Diseñamos y desarrollamos tu sitio web personalizado' : 'We design and develop your custom website')}
+                    {index === 2 && (language === 'es' ? 'Lanzamos tu sitio web y te proporcionamos soporte' : 'We launch your website and provide support')}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -561,6 +565,27 @@ export default function ProPage() {
               <p className="lead text-muted">
                 {t('pricingText')}
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Payment Information */}
+      <section className="py-5">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 text-center">
+              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {language === 'es' ? 'Información de Pago' : 'Payment Information'}
+              </h2>
+              <div className="bg-light rounded p-4">
+                <p className="mb-0">
+                  {savedConfig?.translations?.[language]?.paymentText || 
+                   (language === 'es' ? 
+                    'Paga por transferencia bancaria (detalles por WhatsApp), tarjeta de crédito o OXXO (código QR proporcionado).' : 
+                    'Pay via bank transfer (details via WhatsApp), credit card, or OXXO (QR code provided).')}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -656,7 +681,7 @@ export default function ProPage() {
                   <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
                     <Phone className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                     <div>
-                      <h6 className="mb-0">+52 983 123 4567</h6>
+                      <h6 className="mb-0">{savedConfig?.phone || '+52 983 123 4567'}</h6>
                       <small className="text-muted">{t('officeHours')}</small>
                     </div>
                   </div>
@@ -666,7 +691,7 @@ export default function ProPage() {
                   <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
                     <Mail className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                     <div>
-                      <h6 className="mb-0">info@websitiopro.com</h6>
+                      <h6 className="mb-0">{savedConfig?.email || 'info@websitiopro.com'}</h6>
                       <small className="text-muted">{t('emailUs')}</small>
                     </div>
                   </div>
@@ -676,7 +701,23 @@ export default function ProPage() {
                   <div className="d-flex align-items-center gap-3 p-3 bg-white rounded shadow-sm">
                     <MapPin className="text-primary" style={{ color: 'hsl(var(--primary))' }} />
                     <div>
-                      <h6 className="mb-0">Chetumal, Quintana Roo</h6>
+                      <h6 className="mb-0">
+                        {(() => {
+                          const address = savedConfig?.address;
+                          if (typeof address === 'string') {
+                            if (address.startsWith('{')) {
+                              try {
+                                const parsed = JSON.parse(address);
+                                return parsed[language] || parsed.es || parsed.en || 'Chetumal, Quintana Roo';
+                              } catch (e) {
+                                return address;
+                              }
+                            }
+                            return address;
+                          }
+                          return address?.[language] || address?.es || address?.en || 'Chetumal, Quintana Roo';
+                        })()}
+                      </h6>
                       <small className="text-muted">México</small>
                     </div>
                   </div>
@@ -687,7 +728,7 @@ export default function ProPage() {
                     <MessageCircle className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
                     <div>
                       <a 
-                        href="https://wa.me/529831234567?text=Hola! Me interesa el servicio Pro de WebSitioPro."
+                        href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent(savedConfig?.whatsappMessage || 'Hola! Me interesa el servicio Pro de WebSitioPro.')}`}
                         className="text-decoration-none"
                         style={{ color: 'hsl(var(--secondary))' }}
                       >
