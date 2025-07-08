@@ -115,6 +115,11 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 08, 2025. Fixed data persistence issues in EditorPage
+  - Resolved "savedConfig" undefined errors by fixing variable references
+  - Updated serviceSteps data structure to match database (simple {es, en} format)
+  - Fixed hero image display issues (Google Photos URLs don't work for direct display)
+  - Verified editor link functionality and data saving
 - July 04, 2025. Initial setup
 ```
 
