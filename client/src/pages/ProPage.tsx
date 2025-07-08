@@ -44,8 +44,8 @@ export default function ProPage() {
         proSites: 'Sitios Pro',
         
         // Hero
-        proHeroHeadline: 'Sitios Web Premium por WebSitioPro',
-        proHeroSubheadline: 'Sitios personalizados y completamente administrados para Chetumal',
+        proHeroHeadline: savedConfig?.translations?.es?.proHeroHeadline || 'Sitios Web Premium por WebSitioPro',
+        proHeroSubheadline: savedConfig?.translations?.es?.proHeroSubheadline || 'Sitios personalizados y completamente administrados para Chetumal',
         contactWhatsApp: 'Contáctanos vía WhatsApp',
         
         // Demo Note
@@ -114,8 +114,8 @@ export default function ProPage() {
         proSites: 'Pro Sites',
         
         // Hero
-        proHeroHeadline: 'Premium Websites by WebSitioPro',
-        proHeroSubheadline: 'Custom, fully managed sites for Chetumal',
+        proHeroHeadline: savedConfig?.translations?.en?.proHeroHeadline || 'Premium Websites by WebSitioPro',
+        proHeroSubheadline: savedConfig?.translations?.en?.proHeroSubheadline || 'Custom, fully managed sites for Chetumal',
         contactWhatsApp: 'Contact Us via WhatsApp',
         
         // Demo Note
@@ -378,14 +378,48 @@ export default function ProPage() {
       </header>
 
       {/* Hero Section */}
-      <section id="hero" className="py-5 bg-light">
-        <div className="container">
+      <section 
+        id="hero" 
+        className="py-5 position-relative d-flex align-items-center"
+        style={{
+          minHeight: '60vh',
+          backgroundImage: savedConfig?.proHeroImage ? `url(${savedConfig.proHeroImage})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: '#f8f9fa'
+        }}
+      >
+        {/* Background overlay for better text readability */}
+        <div 
+          className="position-absolute w-100 h-100"
+          style={{
+            background: 'rgba(0, 0, 0, 0.4)',
+            top: 0,
+            left: 0,
+            zIndex: 1
+          }}
+        ></div>
+        
+        <div className="container position-relative" style={{ zIndex: 2 }}>
           <div className="row align-items-center">
             <div className="col-lg-8 mx-auto text-center">
-              <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+              <h1 
+                className="display-4 fw-bold mb-4" 
+                style={{ 
+                  color: savedConfig?.proHeroImage ? '#ffffff' : 'hsl(var(--primary))',
+                  textShadow: savedConfig?.proHeroImage ? '2px 2px 4px rgba(0,0,0,0.7)' : 'none'
+                }}
+              >
                 {t('proHeroHeadline')}
               </h1>
-              <p className="lead text-muted mb-4">
+              <p 
+                className="lead mb-4" 
+                style={{ 
+                  color: savedConfig?.proHeroImage ? '#ffffff' : '#6c757d',
+                  textShadow: savedConfig?.proHeroImage ? '1px 1px 2px rgba(0,0,0,0.7)' : 'none'
+                }}
+              >
                 {t('proHeroSubheadline')}
               </p>
               <a 

@@ -63,6 +63,7 @@ interface WebsiteData {
   // Pro Page
   proHeroHeadline: { es: string; en: string };
   proHeroSubheadline: { es: string; en: string };
+  proHeroImage: string;
   demoNote: { es: string; en: string };
   serviceSteps: Array<{
     es: string;
@@ -204,6 +205,7 @@ export default function EditorPage() {
       es: 'Sitios personalizados y completamente administrados para Chetumal',
       en: 'Custom, fully managed sites for Chetumal'
     },
+    proHeroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Pro+Hero+Image',
     demoNote: {
       es: '¡Si nos hemos contactado contigo vía WhatsApp, tienes una demostración personalizada lista! Finalizaremos tus detalles y fotos.',
       en: 'If we\'ve reached out via WhatsApp, you have a custom demo ready! We\'ll finalize your details and photos.'
@@ -451,6 +453,7 @@ export default function EditorPage() {
                 es: config.translations?.es?.proHeroSubheadline || prev.proHeroSubheadline.es,
                 en: config.translations?.en?.proHeroSubheadline || prev.proHeroSubheadline.en
               },
+              proHeroImage: config.proHeroImage || prev.proHeroImage,
               demoNote: {
                 es: config.translations?.es?.demoNote || prev.demoNote.es,
                 en: config.translations?.en?.demoNote || prev.demoNote.en
@@ -546,6 +549,7 @@ export default function EditorPage() {
         },
         logo: websiteData.logo,
         heroImage: websiteData.heroImage,
+        proHeroImage: websiteData.proHeroImage,
         // Hero customization fields
         heroImageOpacity: websiteData.heroImageOpacity,
         heroImagePosition: websiteData.heroImagePosition,
@@ -2083,9 +2087,26 @@ export default function EditorPage() {
                       <input 
                         type="url" 
                         className="form-control"
+                        value={websiteData.proHeroImage}
+                        onChange={(e) => handleInputChange('proHeroImage', e.target.value)}
                         placeholder="https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Pro+Hero+Image"
-                        defaultValue=""
                       />
+                      {websiteData.proHeroImage && (
+                        <div className="mt-3">
+                          <img 
+                            src={websiteData.proHeroImage} 
+                            alt="Pro Hero preview" 
+                            className="img-thumbnail"
+                            style={{ maxHeight: '200px', maxWidth: '100%' }}
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                            onLoad={(e) => {
+                              e.currentTarget.style.display = 'block';
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
 
