@@ -1,0 +1,67 @@
+{
+  "templateType": "professionals",
+  "businessName": "test",
+  "logoUrl": "",
+  "intro": {
+    "es": "test",
+    "en": ""
+  },
+  "address": "test",
+  "phone": "",
+  "email": "",
+  "socialLink": "",
+  "whatsappNumber": "",
+  "languageDefault": "es",
+  "chatbotEnabled": true,
+  "aiOptimizedNote": "AI-optimized for speed and search",
+  "reviews": [
+    {
+      "name": "test",
+      "rating": 5,
+      "text": {
+        "es": "",
+        "en": ""
+      }
+    },
+    {
+      "name": "",
+      "rating": 5,
+      "text": {
+        "es": "",
+        "en": ""
+      }
+    },
+    {
+      "name": "",
+      "rating": 5,
+      "text": {
+        "es": "",
+        "en": ""
+      }
+    }
+  ],
+  "photos": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "services": [
+    {
+      "name": "test",
+      "description": ""
+    },
+    {
+      "name": "",
+      "description": ""
+    },
+    {
+      "name": "",
+      "description": ""
+    }
+  ],
+  "clientName": "test",
+  "createdAt": "2025-07-08T21:45:22.234Z"
+}
