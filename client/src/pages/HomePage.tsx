@@ -361,13 +361,23 @@ export default function HomePage() {
                   {language === 'es' ? 'English' : 'Español'}
                 </button>
 
-                <a 
-                  href="/pro" 
+                <Link 
+                  href="/pro"
                   className="btn btn-primary text-white px-4"
                   style={{ backgroundColor: 'hsl(var(--primary))' }}
                   onClick={() => window.scrollTo(0, 0)}
                 >
-                  {t('getStarted')}
+                  {t('exploreProPlans')}
+                </Link>
+
+                <a 
+                  href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent(savedConfig?.translations?.[language]?.whatsappMessage || 'Hola! Me interesa conocer más sobre WebSitioPro.')}`}
+                  className="btn btn-success text-white px-4"
+                  style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('contact')}
                 </a>
               </div>
             </div>
@@ -455,8 +465,8 @@ export default function HomePage() {
                     >
                       {t('proSites')}
                     </Link>
-                    <a 
-                      href="/pro" 
+                    <Link 
+                      href="/pro"
                       className="btn btn-primary text-white mt-2"
                       style={{ backgroundColor: 'hsl(var(--primary))' }}
                       onClick={() => {
@@ -464,7 +474,17 @@ export default function HomePage() {
                         window.scrollTo(0, 0);
                       }}
                     >
-                      {t('getStarted')}
+                      {t('exploreProPlans')}
+                    </Link>
+                    <a 
+                      href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent(savedConfig?.translations?.[language]?.whatsappMessage || 'Hola! Me interesa conocer más sobre WebSitioPro.')}`}
+                      className="btn btn-success text-white mt-2"
+                      style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      {t('contact')}
                     </a>
                     {import.meta.env.DEV && (
                       <Link 
@@ -573,18 +593,7 @@ export default function HomePage() {
               >
                 {savedConfig?.translations?.[language]?.heroSubheadline || t('heroSubheadline')}
               </p>
-              <div className={`d-flex gap-3 ${savedConfig?.heroTextAlignment === 'text-start' ? 'justify-content-start' : savedConfig?.heroTextAlignment === 'text-end' ? 'justify-content-end' : 'justify-content-center'}`}>
-                <Link 
-                  href="/pro"
-                  className="btn btn-primary btn-lg text-white px-5"
-                  style={{ backgroundColor: 'hsl(var(--primary))' }}
-                >
-                  {t('exploreProPlans')}
-                </Link>
-                <button className="btn btn-outline-light btn-lg px-4">
-                  {t('contactTitle')}
-                </button>
-              </div>
+
             </div>
           </div>
         </div>
