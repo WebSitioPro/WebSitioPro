@@ -383,25 +383,36 @@ export default function ProPage() {
         className="py-5 position-relative d-flex align-items-center"
         style={{
           minHeight: '60vh',
-          backgroundImage: savedConfig?.proHeroImage ? `url(${savedConfig.proHeroImage})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
           backgroundColor: '#f8f9fa'
         }}
       >
-        {/* Background overlay for better text readability */}
+        {/* Background image with opacity control */}
         <div 
           className="position-absolute w-100 h-100"
           style={{
-            background: savedConfig?.proHeroImage ? `rgba(0, 0, 0, ${1 - parseFloat(savedConfig?.proHeroImageOpacity || '0.8')})` : 'rgba(0, 0, 0, 0.4)',
+            backgroundImage: savedConfig?.proHeroImage ? `url(${savedConfig.proHeroImage})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: savedConfig?.proHeroImage ? Math.max(0, Math.min(1, parseFloat(savedConfig?.proHeroImageOpacity || '0.8'))) : 1,
             top: 0,
             left: 0,
             zIndex: 1
           }}
         ></div>
         
-        <div className="container position-relative" style={{ zIndex: 2 }}>
+        {/* Fixed dark overlay for text readability */}
+        <div 
+          className="position-absolute w-100 h-100"
+          style={{
+            background: savedConfig?.proHeroImage ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+            top: 0,
+            left: 0,
+            zIndex: 2
+          }}
+        ></div>
+        
+        <div className="container position-relative" style={{ zIndex: 3 }}>
           <div className="row align-items-center">
             <div className="col-lg-8 mx-auto text-center">
               <h1 

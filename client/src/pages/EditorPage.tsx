@@ -2114,7 +2114,7 @@ export default function EditorPage() {
                     </div>
                     
                     <div className="col-md-6">
-                      <label className="form-label">Image Opacity</label>
+                      <label className="form-label">Image Visibility</label>
                       <input 
                         type="range"
                         min="0"
@@ -2124,7 +2124,7 @@ export default function EditorPage() {
                         value={websiteData.proHeroImageOpacity || '0.8'}
                         onChange={(e) => handleInputChange('proHeroImageOpacity', e.target.value)}
                       />
-                      <small className="text-muted">Opacity: {Math.round((parseFloat(websiteData.proHeroImageOpacity || '0.8')) * 100)}%</small>
+                      <small className="text-muted">Visibility: {Math.round((parseFloat(websiteData.proHeroImageOpacity || '0.8')) * 100)}%</small>
                     </div>
                   </div>
 
