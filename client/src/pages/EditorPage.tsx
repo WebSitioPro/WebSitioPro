@@ -50,6 +50,9 @@ interface WebsiteData {
   paymentBannerBgColor: string;
   paymentBannerTextColor: string;
   
+  // Menu images for restaurant template
+  menuImages: string[];
+  
   // Contact Info
   phone: string;
   email: string;
@@ -219,7 +222,10 @@ export default function EditorPage() {
     pricingBannerBgColor: '#17A2B8',
     pricingBannerTextColor: '#FFFFFF',
     paymentBannerBgColor: '#FFFFFF',
-    paymentBannerTextColor: '#333333'
+    paymentBannerTextColor: '#333333',
+    
+    // Menu images for restaurant template
+    menuImages: []
   });
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
@@ -2163,18 +2169,18 @@ export default function EditorPage() {
                           <input 
                             type="url" 
                             className="form-control"
-                            value={savedConfig?.menuImages?.[num - 1] || ''}
+                            value={websiteData?.menuImages?.[num - 1] || ''}
                             onChange={(e) => {
-                              const newMenuImages = [...(savedConfig?.menuImages || [])];
+                              const newMenuImages = [...(websiteData?.menuImages || [])];
                               newMenuImages[num - 1] = e.target.value;
-                              setSavedConfig(prev => ({ ...prev, menuImages: newMenuImages }));
+                              setWebsiteData(prev => ({ ...prev, menuImages: newMenuImages }));
                             }}
                             placeholder={`https://via.placeholder.com/400x600/00A859/FFFFFF?text=Menu+Page+${num}`}
                           />
-                          {savedConfig?.menuImages?.[num - 1] && (
+                          {websiteData?.menuImages?.[num - 1] && (
                             <div className="mt-2">
                               <img 
-                                src={savedConfig.menuImages[num - 1]} 
+                                src={websiteData.menuImages[num - 1]} 
                                 alt={`Menu ${num}`}
                                 className="img-fluid"
                                 style={{ maxHeight: '100px', objectFit: 'cover' }}
