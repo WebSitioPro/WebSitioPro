@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, useParams } from 'wouter';
 import { 
   ArrowLeft, 
   Eye, 
@@ -14,33 +14,43 @@ import {
   Settings,
   Briefcase,
   Camera,
-  MessageCircle
+  MessageCircle,
+  Plus,
+  Trash2
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
-interface TemplateData {
+interface WebsiteConfig {
   id?: string;
   name: string;
   templateType: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services';
+  
+  // Colors
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  
+  // Logo and branding
+  logo: string;
+  
+  // Hero Section
+  heroImage: string;
+  heroTitle: { es: string; en: string };
+  heroSubtitle: { es: string; en: string };
+  heroDescription: { es: string; en: string };
   
   // Business Information
   businessName: string;
   doctorName?: string; // For professionals
   specialty?: { es: string; en: string };
-  description?: { es: string; en: string };
-  intro?: { es: string; en: string };
-  
-  // Images
-  heroImage: string;
   profileImage?: string;
-  logo?: string;
   
   // About Section
-  aboutTitle?: { es: string; en: string };
-  aboutText?: { es: string; en: string };
+  aboutTitle: { es: string; en: string };
+  aboutText: { es: string; en: string };
   
   // Services/Products/Menu/Tours
-  servicesTitle?: { es: string; en: string };
+  servicesTitle: { es: string; en: string };
   services?: Array<{
     name: string;
     description: string;
@@ -62,10 +72,10 @@ interface TemplateData {
   menuImages?: string[];
   
   // Photos
-  photos?: string[];
+  photos: string[];
   
   // Reviews
-  reviews?: Array<{
+  reviews: Array<{
     name: string;
     rating: number;
     text: { es: string; en: string };
@@ -74,53 +84,87 @@ interface TemplateData {
   // Contact Information
   phone: string;
   email: string;
-  address: string;
+  address: { es: string; en: string };
   whatsappNumber: string;
+  whatsappMessage: { es: string; en: string };
   socialLink?: string;
   
   // Business Hours
-  mondayFriday?: string;
-  saturday?: string;
+  officeHours: {
+    mondayFriday: { es: string; en: string };
+    saturday: { es: string; en: string };
+  };
   
   // Settings
-  defaultLanguage?: 'es' | 'en';
-  showWhatsappButton?: boolean;
-  showChatbot?: boolean;
+  defaultLanguage: 'es' | 'en';
+  showWhatsappButton: boolean;
+  showChatbot: boolean;
   
-  // Colors
-  primaryColor?: string;
-  secondaryColor?: string;
-  accentColor?: string;
+  // Google Maps
+  googleMapsEmbed?: string;
 }
 
-const defaultTemplateData: TemplateData = {
-  name: '',
-  templateType: 'professionals',
-  businessName: '',
-  heroImage: 'https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Hero+Image',
-  phone: '',
-  email: '',
-  address: '',
-  whatsappNumber: '',
-  defaultLanguage: 'es',
-  showWhatsappButton: true,
-  showChatbot: true,
-  primaryColor: '#C8102E',
-  secondaryColor: '#00A859',
-  accentColor: '#007ACC',
-};
-
 export default function TemplateEditor() {
-  const [, navigate] = useLocation();
+  const params = useParams();
+  const clientId = params.clientId || 'default';
   const { toast } = useToast();
   
-  const [activeTab, setActiveTab] = useState('basic');
-  const [templateData, setTemplateData] = useState<TemplateData>(defaultTemplateData);
-  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('template');
+  const [websiteData, setWebsiteData] = useState<WebsiteConfig>({
+    name: 'Professional Template',
+    templateType: 'professionals',
+    primaryColor: '#C8102E',
+    secondaryColor: '#00A859',
+    accentColor: '#007ACC',
+    logo: 'https://via.placeholder.com/150x50/C8102E/FFFFFF?text=Logo',
+    heroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Hero+Image',
+    heroTitle: { es: 'Título Principal', en: 'Main Title' },
+    heroSubtitle: { es: 'Subtítulo', en: 'Subtitle' },
+    heroDescription: { es: 'Descripción del negocio', en: 'Business description' },
+    businessName: 'Mi Negocio',
+    aboutTitle: { es: 'Acerca de Nosotros', en: 'About Us' },
+    aboutText: { es: 'Texto sobre el negocio', en: 'Text about the business' },
+    servicesTitle: { es: 'Servicios', en: 'Services' },
+    photos: [],
+    reviews: [],
+    phone: '+52 983 123 4567',
+    email: 'info@business.com',
+    address: { es: 'Dirección del negocio', en: 'Business address' },
+    whatsappNumber: '529831234567',
+    whatsappMessage: { es: 'Hola, me gustaría más información', en: 'Hello, I would like more information' },
+    officeHours: {
+      mondayFriday: { es: 'Lunes a viernes: 9:00 AM - 6:00 PM', en: 'Monday to Friday: 9:00 AM - 6:00 PM' },
+      saturday: { es: 'Sábado: 9:00 AM - 2:00 PM', en: 'Saturday: 9:00 AM - 2:00 PM' }
+    },
+    defaultLanguage: 'es',
+    showWhatsappButton: true,
+    showChatbot: true
+  });
+  
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Load existing configuration on component mount
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/config/${clientId}`);
+        if (response.ok) {
+          const config = await response.json();
+          setWebsiteData(prev => ({ ...prev, ...config }));
+        }
+      } catch (error) {
+        console.error('Error loading config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadConfig();
+  }, [clientId]);
 
   const handleTemplateChange = (templateType: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services') => {
-    setTemplateData(prev => ({
+    setWebsiteData(prev => ({
       ...prev,
       templateType,
       // Reset type-specific fields
@@ -138,25 +182,19 @@ export default function TemplateEditor() {
     try {
       setIsSaving(true);
       
-      // Save to config endpoint
-      const response = await fetch('/api/config', {
-        method: 'POST',
+      // Save to config endpoint (same as homepage editor)
+      const response = await fetch(`/api/config/${clientId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...templateData,
-          // Ensure compatibility with existing system
-          id: templateData.id || `template-${Date.now()}`,
-        }),
+        body: JSON.stringify(websiteData),
       });
 
       if (response.ok) {
-        const result = await response.json();
-        setTemplateData(prev => ({ ...prev, id: result.id }));
         toast({
           title: "Success",
-          description: "Template saved successfully",
+          description: "Template configuration saved successfully",
         });
       } else {
         throw new Error('Failed to save template');
@@ -174,7 +212,7 @@ export default function TemplateEditor() {
   };
 
   const handlePreview = () => {
-    // Open the appropriate demo page with template data
+    // Open the appropriate demo page (templates will load from saved config)
     const templateRoutes = {
       professionals: '/professionals-demo',
       restaurants: '/restaurants-demo',
@@ -183,48 +221,48 @@ export default function TemplateEditor() {
       services: '/services-demo'
     };
     
-    // Save current data to sessionStorage for preview
-    sessionStorage.setItem('previewTemplateData', JSON.stringify(templateData));
-    
-    const route = templateRoutes[templateData.templateType];
-    window.open(`${route}?preview=editor`, '_blank');
+    const route = templateRoutes[websiteData.templateType];
+    window.open(route, '_blank');
   };
 
-  const updateField = (field: string, value: any) => {
-    setTemplateData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const updateNestedField = (field: string, subField: string, value: any) => {
-    setTemplateData(prev => ({
-      ...prev,
-      [field]: {
-        ...prev[field as keyof TemplateData],
-        [subField]: value
+  const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => {
+      const newData = { ...prev };
+      const keys = path.split('.');
+      let current: any = newData;
+      
+      for (let i = 0; i < keys.length - 1; i++) {
+        current = current[keys[i]];
       }
+      
+      if (language) {
+        current[keys[keys.length - 1]][language] = value;
+      } else {
+        current[keys[keys.length - 1]] = value;
+      }
+      
+      return newData;
+    });
+  };
+
+  const handleArrayChange = (field: string, index: number, value: any) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      [field]: (prev[field as keyof WebsiteConfig] as any[])?.map((item, i) => i === index ? value : item) || []
     }));
   };
 
-  const addArrayItem = (arrayField: string, newItem: any) => {
-    setTemplateData(prev => ({
+  const handleAddArrayItem = (field: string, newItem: any) => {
+    setWebsiteData(prev => ({
       ...prev,
-      [arrayField]: [...(prev[arrayField as keyof TemplateData] as any[] || []), newItem]
+      [field]: [...(prev[field as keyof WebsiteConfig] as any[] || []), newItem]
     }));
   };
 
-  const removeArrayItem = (arrayField: string, index: number) => {
-    setTemplateData(prev => ({
+  const handleRemoveArrayItem = (field: string, index: number) => {
+    setWebsiteData(prev => ({
       ...prev,
-      [arrayField]: (prev[arrayField as keyof TemplateData] as any[])?.filter((_, i) => i !== index) || []
-    }));
-  };
-
-  const updateArrayItem = (arrayField: string, index: number, newItem: any) => {
-    setTemplateData(prev => ({
-      ...prev,
-      [arrayField]: (prev[arrayField as keyof TemplateData] as any[])?.map((item, i) => i === index ? newItem : item) || []
+      [field]: (prev[field as keyof WebsiteConfig] as any[])?.filter((_, i) => i !== index) || []
     }));
   };
 
@@ -260,6 +298,19 @@ export default function TemplateEditor() {
       itemLabel: 'Service Area'
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="text-center">
+          <div className="spinner-border text-primary mb-3" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p>Loading template configuration...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-vh-100 bg-light">
@@ -307,11 +358,11 @@ export default function TemplateEditor() {
               </div>
               <div className="list-group list-group-flush">
                 <button 
-                  className={`list-group-item list-group-item-action ${activeTab === 'basic' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('basic')}
+                  className={`list-group-item list-group-item-action ${activeTab === 'template' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('template')}
                 >
                   <Settings size={16} className="me-2" />
-                  Template & Basic Info
+                  Template & Colors
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'hero' ? 'active' : ''}`}
@@ -332,7 +383,7 @@ export default function TemplateEditor() {
                   onClick={() => setActiveTab('services')}
                 >
                   <Briefcase size={16} className="me-2" />
-                  {templateLabels[templateData.templateType].servicesLabel}
+                  {templateLabels[websiteData.templateType].servicesLabel}
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}
@@ -362,16 +413,16 @@ export default function TemplateEditor() {
           {/* Main Content */}
           <div className="col-md-9">
             <div className="alert alert-info mb-4">
-              <strong>Professional Template Editor:</strong> This editor controls the content that appears in your sophisticated professional templates. 
-              Select a template type, edit the content, and preview to see your changes in the actual template design.
+              <strong>Professional Template Editor:</strong> This editor controls the content that appears in your professional templates. 
+              Changes are saved to your configuration and immediately reflected in the template designs.
             </div>
             
             <div className="card">
               <div className="card-body">
-                {/* Template Type & Basic Info */}
-                {activeTab === 'basic' && (
+                {/* Template Type & Colors */}
+                {activeTab === 'template' && (
                   <div>
-                    <h5 className="mb-4">Template Type & Basic Information</h5>
+                    <h5 className="mb-4">Template Type & Colors</h5>
                     
                     {/* Template Type Selector */}
                     <div className="mb-4">
@@ -380,14 +431,14 @@ export default function TemplateEditor() {
                         {Object.entries(templateLabels).map(([key, label]) => (
                           <div key={key} className="col-md-4 mb-3">
                             <div 
-                              className={`card h-100 cursor-pointer ${templateData.templateType === key ? 'border-primary bg-primary bg-opacity-10' : ''}`}
+                              className={`card h-100 cursor-pointer ${websiteData.templateType === key ? 'border-primary bg-primary bg-opacity-10' : ''}`}
                               onClick={() => handleTemplateChange(key as any)}
                               style={{ cursor: 'pointer' }}
                             >
                               <div className="card-body text-center py-3">
                                 <h6 className="card-title mb-1">{label.name}</h6>
                                 <small className="text-muted">{label.description}</small>
-                                {templateData.templateType === key && (
+                                {websiteData.templateType === key && (
                                   <div className="mt-2">
                                     <span className="badge bg-primary">Selected</span>
                                   </div>
@@ -399,37 +450,88 @@ export default function TemplateEditor() {
                       </div>
                     </div>
 
+                    {/* Colors */}
+                    <div className="row">
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Primary Color</label>
+                          <div className="input-group">
+                            <input
+                              type="color"
+                              className="form-control form-control-color"
+                              value={websiteData.primaryColor}
+                              onChange={(e) => handleInputChange('primaryColor', e.target.value)}
+                            />
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={websiteData.primaryColor}
+                              onChange={(e) => handleInputChange('primaryColor', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Secondary Color</label>
+                          <div className="input-group">
+                            <input
+                              type="color"
+                              className="form-control form-control-color"
+                              value={websiteData.secondaryColor}
+                              onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
+                            />
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={websiteData.secondaryColor}
+                              onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Accent Color</label>
+                          <div className="input-group">
+                            <input
+                              type="color"
+                              className="form-control form-control-color"
+                              value={websiteData.accentColor}
+                              onChange={(e) => handleInputChange('accentColor', e.target.value)}
+                            />
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={websiteData.accentColor}
+                              onChange={(e) => handleInputChange('accentColor', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Basic Information */}
                     <div className="row">
                       <div className="col-md-6">
-                        <div className="mb-3">
-                          <label className="form-label">Template Name</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            value={templateData.name}
-                            onChange={(e) => updateField('name', e.target.value)}
-                            placeholder="Enter template name"
-                          />
-                        </div>
                         <div className="mb-3">
                           <label className="form-label">Business Name</label>
                           <input
                             type="text"
                             className="form-control"
-                            value={templateData.businessName}
-                            onChange={(e) => updateField('businessName', e.target.value)}
+                            value={websiteData.businessName}
+                            onChange={(e) => handleInputChange('businessName', e.target.value)}
                             placeholder="Enter business name"
                           />
                         </div>
-                        {templateData.templateType === 'professionals' && (
+                        {websiteData.templateType === 'professionals' && (
                           <div className="mb-3">
                             <label className="form-label">Doctor Name</label>
                             <input
                               type="text"
                               className="form-control"
-                              value={templateData.doctorName || ''}
-                              onChange={(e) => updateField('doctorName', e.target.value)}
+                              value={websiteData.doctorName || ''}
+                              onChange={(e) => handleInputChange('doctorName', e.target.value)}
                               placeholder="Enter doctor name (e.g., Dr. María González)"
                             />
                           </div>
@@ -437,47 +539,16 @@ export default function TemplateEditor() {
                       </div>
                       <div className="col-md-6">
                         <div className="mb-3">
-                          <label className="form-label">Phone Number</label>
+                          <label className="form-label">Logo URL</label>
                           <input
-                            type="tel"
+                            type="url"
                             className="form-control"
-                            value={templateData.phone}
-                            onChange={(e) => updateField('phone', e.target.value)}
-                            placeholder="+52 983 123 4567"
-                          />
-                        </div>
-                        <div className="mb-3">
-                          <label className="form-label">Email</label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            value={templateData.email}
-                            onChange={(e) => updateField('email', e.target.value)}
-                            placeholder="business@example.com"
-                          />
-                        </div>
-                        <div className="mb-3">
-                          <label className="form-label">WhatsApp Number</label>
-                          <input
-                            type="tel"
-                            className="form-control"
-                            value={templateData.whatsappNumber}
-                            onChange={(e) => updateField('whatsappNumber', e.target.value)}
-                            placeholder="529831234567"
+                            value={websiteData.logo}
+                            onChange={(e) => handleInputChange('logo', e.target.value)}
+                            placeholder="Enter logo URL"
                           />
                         </div>
                       </div>
-                    </div>
-
-                    <div className="mb-3">
-                      <label className="form-label">Address</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={templateData.address}
-                        onChange={(e) => updateField('address', e.target.value)}
-                        placeholder="Complete business address"
-                      />
                     </div>
                   </div>
                 )}
@@ -492,14 +563,14 @@ export default function TemplateEditor() {
                       <input
                         type="url"
                         className="form-control"
-                        value={templateData.heroImage}
-                        onChange={(e) => updateField('heroImage', e.target.value)}
+                        value={websiteData.heroImage}
+                        onChange={(e) => handleInputChange('heroImage', e.target.value)}
                         placeholder="Enter hero image URL"
                       />
-                      {templateData.heroImage && (
+                      {websiteData.heroImage && (
                         <div className="mt-2">
                           <img 
-                            src={templateData.heroImage} 
+                            src={websiteData.heroImage} 
                             alt="Hero preview" 
                             className="img-thumbnail"
                             style={{ maxWidth: '300px', maxHeight: '200px' }}
@@ -508,14 +579,14 @@ export default function TemplateEditor() {
                       )}
                     </div>
 
-                    {templateData.templateType === 'professionals' && (
+                    {websiteData.templateType === 'professionals' && (
                       <div className="mb-4">
                         <label className="form-label">Profile Image</label>
                         <input
                           type="url"
                           className="form-control"
-                          value={templateData.profileImage || ''}
-                          onChange={(e) => updateField('profileImage', e.target.value)}
+                          value={websiteData.profileImage || ''}
+                          onChange={(e) => handleInputChange('profileImage', e.target.value)}
                           placeholder="Enter profile image URL"
                         />
                       </div>
@@ -524,53 +595,93 @@ export default function TemplateEditor() {
                     <div className="row">
                       <div className="col-md-6">
                         <h6>Spanish Content</h6>
-                        {templateData.templateType === 'professionals' && (
-                          <div className="mb-3">
-                            <label className="form-label">Specialty (Spanish)</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              value={templateData.specialty?.es || ''}
-                              onChange={(e) => updateNestedField('specialty', 'es', e.target.value)}
-                              placeholder="Especialidad en español"
-                            />
-                          </div>
-                        )}
+                        <div className="mb-3">
+                          <label className="form-label">Title (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.heroTitle.es}
+                            onChange={(e) => handleInputChange('heroTitle', e.target.value, 'es')}
+                            placeholder="Título principal en español"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Subtitle (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.heroSubtitle.es}
+                            onChange={(e) => handleInputChange('heroSubtitle', e.target.value, 'es')}
+                            placeholder="Subtítulo en español"
+                          />
+                        </div>
                         <div className="mb-3">
                           <label className="form-label">Description (Spanish)</label>
                           <textarea
                             className="form-control"
                             rows={3}
-                            value={templateData.description?.es || templateData.intro?.es || ''}
-                            onChange={(e) => updateNestedField(templateData.templateType === 'professionals' ? 'description' : 'intro', 'es', e.target.value)}
+                            value={websiteData.heroDescription.es}
+                            onChange={(e) => handleInputChange('heroDescription', e.target.value, 'es')}
                             placeholder="Descripción en español"
                           />
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <h6>English Content</h6>
-                        {templateData.templateType === 'professionals' && (
+                        {websiteData.templateType === 'professionals' && (
                           <div className="mb-3">
-                            <label className="form-label">Specialty (English)</label>
+                            <label className="form-label">Specialty (Spanish)</label>
                             <input
                               type="text"
                               className="form-control"
-                              value={templateData.specialty?.en || ''}
-                              onChange={(e) => updateNestedField('specialty', 'en', e.target.value)}
-                              placeholder="Specialty in English"
+                              value={websiteData.specialty?.es || ''}
+                              onChange={(e) => handleInputChange('specialty', e.target.value, 'es')}
+                              placeholder="Especialidad en español"
                             />
                           </div>
                         )}
+                      </div>
+                      <div className="col-md-6">
+                        <h6>English Content</h6>
+                        <div className="mb-3">
+                          <label className="form-label">Title (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.heroTitle.en}
+                            onChange={(e) => handleInputChange('heroTitle', e.target.value, 'en')}
+                            placeholder="Main title in English"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Subtitle (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.heroSubtitle.en}
+                            onChange={(e) => handleInputChange('heroSubtitle', e.target.value, 'en')}
+                            placeholder="Subtitle in English"
+                          />
+                        </div>
                         <div className="mb-3">
                           <label className="form-label">Description (English)</label>
                           <textarea
                             className="form-control"
                             rows={3}
-                            value={templateData.description?.en || templateData.intro?.en || ''}
-                            onChange={(e) => updateNestedField(templateData.templateType === 'professionals' ? 'description' : 'intro', 'en', e.target.value)}
+                            value={websiteData.heroDescription.en}
+                            onChange={(e) => handleInputChange('heroDescription', e.target.value, 'en')}
                             placeholder="Description in English"
                           />
                         </div>
+                        {websiteData.templateType === 'professionals' && (
+                          <div className="mb-3">
+                            <label className="form-label">Specialty (English)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={websiteData.specialty?.en || ''}
+                              onChange={(e) => handleInputChange('specialty', e.target.value, 'en')}
+                              placeholder="Specialty in English"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -589,8 +700,8 @@ export default function TemplateEditor() {
                           <input
                             type="text"
                             className="form-control"
-                            value={templateData.aboutTitle?.es || ''}
-                            onChange={(e) => updateNestedField('aboutTitle', 'es', e.target.value)}
+                            value={websiteData.aboutTitle.es}
+                            onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'es')}
                             placeholder="Título de la sección en español"
                           />
                         </div>
@@ -599,8 +710,8 @@ export default function TemplateEditor() {
                           <textarea
                             className="form-control"
                             rows={6}
-                            value={templateData.aboutText?.es || ''}
-                            onChange={(e) => updateNestedField('aboutText', 'es', e.target.value)}
+                            value={websiteData.aboutText.es}
+                            onChange={(e) => handleInputChange('aboutText', e.target.value, 'es')}
                             placeholder="Texto de la sección en español"
                           />
                         </div>
@@ -612,8 +723,8 @@ export default function TemplateEditor() {
                           <input
                             type="text"
                             className="form-control"
-                            value={templateData.aboutTitle?.en || ''}
-                            onChange={(e) => updateNestedField('aboutTitle', 'en', e.target.value)}
+                            value={websiteData.aboutTitle.en}
+                            onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'en')}
                             placeholder="Section title in English"
                           />
                         </div>
@@ -622,8 +733,8 @@ export default function TemplateEditor() {
                           <textarea
                             className="form-control"
                             rows={6}
-                            value={templateData.aboutText?.en || ''}
-                            onChange={(e) => updateNestedField('aboutText', 'en', e.target.value)}
+                            value={websiteData.aboutText.en}
+                            onChange={(e) => handleInputChange('aboutText', e.target.value, 'en')}
                             placeholder="Section text in English"
                           />
                         </div>
@@ -632,33 +743,40 @@ export default function TemplateEditor() {
                   </div>
                 )}
 
-                {/* Services/Products/Menu/Tours Section */}
+                {/* Services Section */}
                 {activeTab === 'services' && (
                   <div>
-                    <div className="d-flex justify-content-between align-items-center mb-4">
-                      <h5 className="mb-0">{templateLabels[templateData.templateType].servicesLabel}</h5>
-                      <button 
-                        className="btn btn-primary btn-sm"
-                        onClick={() => {
-                          const arrayField = templateData.templateType === 'tourism' ? 'tours' : 
-                                           templateData.templateType === 'retail' ? 'products' : 
-                                           templateData.templateType === 'services' ? 'serviceAreas' : 'services';
-                          const newItem = templateData.templateType === 'tourism' ? 
-                                         { name: '', price: '' } :
-                                         templateData.templateType === 'retail' ? 
-                                         { name: '', description: '', price: '' } :
-                                         templateData.templateType === 'services' ? 
-                                         { name: '', description: '' } :
-                                         { name: '', description: '', price: '' };
-                          addArrayItem(arrayField, newItem);
-                        }}
-                      >
-                        Add {templateLabels[templateData.templateType].itemLabel}
-                      </button>
+                    <h5 className="mb-4">{templateLabels[websiteData.templateType].servicesLabel}</h5>
+                    
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">Services Title (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.servicesTitle.es}
+                            onChange={(e) => handleInputChange('servicesTitle', e.target.value, 'es')}
+                            placeholder="Título de servicios en español"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">Services Title (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.servicesTitle.en}
+                            onChange={(e) => handleInputChange('servicesTitle', e.target.value, 'en')}
+                            placeholder="Services title in English"
+                          />
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Render different fields based on template type */}
-                    {templateData.templateType === 'restaurants' && (
+                    {/* Menu Images for restaurants */}
+                    {websiteData.templateType === 'restaurants' && (
                       <div className="mb-4">
                         <h6>Menu Images</h6>
                         <div className="row">
@@ -668,11 +786,11 @@ export default function TemplateEditor() {
                               <input
                                 type="url"
                                 className="form-control"
-                                value={templateData.menuImages?.[index] || ''}
+                                value={websiteData.menuImages?.[index] || ''}
                                 onChange={(e) => {
-                                  const newImages = [...(templateData.menuImages || [])];
+                                  const newImages = [...(websiteData.menuImages || [])];
                                   newImages[index] = e.target.value;
-                                  updateField('menuImages', newImages);
+                                  handleInputChange('menuImages', JSON.stringify(newImages));
                                 }}
                                 placeholder="Menu image URL"
                               />
@@ -682,187 +800,21 @@ export default function TemplateEditor() {
                       </div>
                     )}
 
-                    {/* Service Items */}
-                    {templateData.templateType === 'tourism' && templateData.tours?.map((tour, index) => (
-                      <div key={index} className="card mb-3">
-                        <div className="card-header d-flex justify-content-between align-items-center">
-                          <h6 className="mb-0">Tour #{index + 1}</h6>
-                          <button 
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => removeArrayItem('tours', index)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                        <div className="card-body">
-                          <div className="row">
-                            <div className="col-md-8">
-                              <label className="form-label">Tour Name</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={tour.name}
-                                onChange={(e) => updateArrayItem('tours', index, { ...tour, name: e.target.value })}
-                                placeholder="Tour name"
-                              />
-                            </div>
-                            <div className="col-md-4">
-                              <label className="form-label">Price</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={tour.price}
-                                onChange={(e) => updateArrayItem('tours', index, { ...tour, price: e.target.value })}
-                                placeholder="Price (e.g., $850 MXN)"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-
-                    {templateData.templateType === 'retail' && templateData.products?.map((product, index) => (
-                      <div key={index} className="card mb-3">
-                        <div className="card-header d-flex justify-content-between align-items-center">
-                          <h6 className="mb-0">Product #{index + 1}</h6>
-                          <button 
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => removeArrayItem('products', index)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                        <div className="card-body">
-                          <div className="row">
-                            <div className="col-md-4">
-                              <label className="form-label">Product Name</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={product.name}
-                                onChange={(e) => updateArrayItem('products', index, { ...product, name: e.target.value })}
-                                placeholder="Product name"
-                              />
-                            </div>
-                            <div className="col-md-4">
-                              <label className="form-label">Description</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={product.description}
-                                onChange={(e) => updateArrayItem('products', index, { ...product, description: e.target.value })}
-                                placeholder="Product description"
-                              />
-                            </div>
-                            <div className="col-md-4">
-                              <label className="form-label">Price</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={product.price}
-                                onChange={(e) => updateArrayItem('products', index, { ...product, price: e.target.value })}
-                                placeholder="Price range"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-
-                    {templateData.templateType === 'services' && templateData.serviceAreas?.map((service, index) => (
-                      <div key={index} className="card mb-3">
-                        <div className="card-header d-flex justify-content-between align-items-center">
-                          <h6 className="mb-0">Service Area #{index + 1}</h6>
-                          <button 
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => removeArrayItem('serviceAreas', index)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                        <div className="card-body">
-                          <div className="row">
-                            <div className="col-md-6">
-                              <label className="form-label">Service Name</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={service.name}
-                                onChange={(e) => updateArrayItem('serviceAreas', index, { ...service, name: e.target.value })}
-                                placeholder="Service name"
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <label className="form-label">Description</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={service.description}
-                                onChange={(e) => updateArrayItem('serviceAreas', index, { ...service, description: e.target.value })}
-                                placeholder="Service description"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-
-                    {templateData.templateType === 'professionals' && templateData.services?.map((service, index) => (
-                      <div key={index} className="card mb-3">
-                        <div className="card-header d-flex justify-content-between align-items-center">
-                          <h6 className="mb-0">Service #{index + 1}</h6>
-                          <button 
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => removeArrayItem('services', index)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                        <div className="card-body">
-                          <div className="row">
-                            <div className="col-md-6">
-                              <label className="form-label">Service Name</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={service.name}
-                                onChange={(e) => updateArrayItem('services', index, { ...service, name: e.target.value })}
-                                placeholder="Service name"
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <label className="form-label">Description</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={service.description}
-                                onChange={(e) => updateArrayItem('services', index, { ...service, description: e.target.value })}
-                                placeholder="Service description"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                    {/* Note about services */}
+                    <div className="alert alert-secondary">
+                      <p className="mb-0">
+                        <strong>Note:</strong> Individual service items are managed through the template's mock data for now. 
+                        This section allows you to edit the services section title and menu images for restaurants.
+                      </p>
+                    </div>
                   </div>
                 )}
 
                 {/* Photos Section */}
                 {activeTab === 'photos' && (
                   <div>
-                    <div className="d-flex justify-content-between align-items-center mb-4">
-                      <h5 className="mb-0">Photo Gallery</h5>
-                      <button 
-                        className="btn btn-primary btn-sm"
-                        onClick={() => {
-                          const newPhotos = [...(templateData.photos || []), ''];
-                          updateField('photos', newPhotos);
-                        }}
-                      >
-                        Add Photo
-                      </button>
-                    </div>
-
+                    <h5 className="mb-4">Photo Gallery</h5>
+                    
                     <div className="row">
                       {Array.from({ length: 12 }).map((_, index) => (
                         <div key={index} className="col-md-4 mb-3">
@@ -870,18 +822,18 @@ export default function TemplateEditor() {
                           <input
                             type="url"
                             className="form-control"
-                            value={templateData.photos?.[index] || ''}
+                            value={websiteData.photos?.[index] || ''}
                             onChange={(e) => {
-                              const newPhotos = [...(templateData.photos || [])];
+                              const newPhotos = [...websiteData.photos];
                               newPhotos[index] = e.target.value;
-                              updateField('photos', newPhotos);
+                              handleArrayChange('photos', index, e.target.value);
                             }}
                             placeholder="Photo URL"
                           />
-                          {templateData.photos?.[index] && (
+                          {websiteData.photos?.[index] && (
                             <div className="mt-2">
                               <img 
-                                src={templateData.photos[index]} 
+                                src={websiteData.photos[index]} 
                                 alt={`Photo ${index + 1}`}
                                 className="img-thumbnail"
                                 style={{ maxWidth: '100px', maxHeight: '75px' }}
@@ -901,21 +853,26 @@ export default function TemplateEditor() {
                       <h5 className="mb-0">Customer Reviews</h5>
                       <button 
                         className="btn btn-primary btn-sm"
-                        onClick={() => addArrayItem('reviews', { name: '', rating: 5, text: { es: '', en: '' } })}
+                        onClick={() => handleAddArrayItem('reviews', { 
+                          name: '', 
+                          rating: 5, 
+                          text: { es: '', en: '' } 
+                        })}
                       >
+                        <Plus size={16} className="me-1" />
                         Add Review
                       </button>
                     </div>
 
-                    {templateData.reviews?.map((review, index) => (
+                    {websiteData.reviews?.map((review, index) => (
                       <div key={index} className="card mb-3">
                         <div className="card-header d-flex justify-content-between align-items-center">
                           <h6 className="mb-0">Review #{index + 1}</h6>
                           <button 
                             className="btn btn-sm btn-outline-danger"
-                            onClick={() => removeArrayItem('reviews', index)}
+                            onClick={() => handleRemoveArrayItem('reviews', index)}
                           >
-                            Remove
+                            <Trash2 size={16} />
                           </button>
                         </div>
                         <div className="card-body">
@@ -926,7 +883,7 @@ export default function TemplateEditor() {
                                 type="text"
                                 className="form-control"
                                 value={review.name}
-                                onChange={(e) => updateArrayItem('reviews', index, { ...review, name: e.target.value })}
+                                onChange={(e) => handleArrayChange('reviews', index, { ...review, name: e.target.value })}
                                 placeholder="Customer name"
                               />
                             </div>
@@ -935,7 +892,7 @@ export default function TemplateEditor() {
                               <select
                                 className="form-control"
                                 value={review.rating}
-                                onChange={(e) => updateArrayItem('reviews', index, { ...review, rating: parseInt(e.target.value) })}
+                                onChange={(e) => handleArrayChange('reviews', index, { ...review, rating: parseInt(e.target.value) })}
                               >
                                 {[1, 2, 3, 4, 5].map(rating => (
                                   <option key={rating} value={rating}>{rating} Stars</option>
@@ -948,7 +905,7 @@ export default function TemplateEditor() {
                                 className="form-control"
                                 rows={3}
                                 value={review.text.es}
-                                onChange={(e) => updateArrayItem('reviews', index, { 
+                                onChange={(e) => handleArrayChange('reviews', index, { 
                                   ...review, 
                                   text: { ...review.text, es: e.target.value }
                                 })}
@@ -961,7 +918,7 @@ export default function TemplateEditor() {
                                 className="form-control"
                                 rows={3}
                                 value={review.text.en}
-                                onChange={(e) => updateArrayItem('reviews', index, { 
+                                onChange={(e) => handleArrayChange('reviews', index, { 
                                   ...review, 
                                   text: { ...review.text, en: e.target.value }
                                 })}
@@ -983,54 +940,165 @@ export default function TemplateEditor() {
                     <div className="row">
                       <div className="col-md-6">
                         <div className="mb-3">
-                          <label className="form-label">Social Media Link</label>
+                          <label className="form-label">Phone Number</label>
                           <input
-                            type="url"
+                            type="tel"
                             className="form-control"
-                            value={templateData.socialLink || ''}
-                            onChange={(e) => updateField('socialLink', e.target.value)}
-                            placeholder="https://facebook.com/yourbusiness"
+                            value={websiteData.phone}
+                            onChange={(e) => handleInputChange('phone', e.target.value)}
+                            placeholder="+52 983 123 4567"
                           />
                         </div>
                         <div className="mb-3">
-                          <label className="form-label">Monday-Friday Hours</label>
+                          <label className="form-label">Email</label>
                           <input
-                            type="text"
+                            type="email"
                             className="form-control"
-                            value={templateData.mondayFriday || ''}
-                            onChange={(e) => updateField('mondayFriday', e.target.value)}
-                            placeholder="Monday to Friday: 9:00 AM - 6:00 PM"
+                            value={websiteData.email}
+                            onChange={(e) => handleInputChange('email', e.target.value)}
+                            placeholder="business@example.com"
                           />
                         </div>
                         <div className="mb-3">
-                          <label className="form-label">Saturday Hours</label>
+                          <label className="form-label">WhatsApp Number</label>
                           <input
-                            type="text"
+                            type="tel"
                             className="form-control"
-                            value={templateData.saturday || ''}
-                            onChange={(e) => updateField('saturday', e.target.value)}
-                            placeholder="Saturday: 9:00 AM - 2:00 PM"
+                            value={websiteData.whatsappNumber}
+                            onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
+                            placeholder="529831234567"
                           />
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="mb-3">
+                          <label className="form-label">Address (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.address.es}
+                            onChange={(e) => handleInputChange('address', e.target.value, 'es')}
+                            placeholder="Dirección en español"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Address (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.address.en}
+                            onChange={(e) => handleInputChange('address', e.target.value, 'en')}
+                            placeholder="Address in English"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Social Media Link</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.socialLink || ''}
+                            onChange={(e) => handleInputChange('socialLink', e.target.value)}
+                            placeholder="https://facebook.com/yourbusiness"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">Monday-Friday Hours (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.officeHours.mondayFriday.es}
+                            onChange={(e) => handleInputChange('officeHours.mondayFriday', e.target.value, 'es')}
+                            placeholder="Lunes a viernes: 9:00 AM - 6:00 PM"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Saturday Hours (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.officeHours.saturday.es}
+                            onChange={(e) => handleInputChange('officeHours.saturday', e.target.value, 'es')}
+                            placeholder="Sábado: 9:00 AM - 2:00 PM"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">Monday-Friday Hours (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.officeHours.mondayFriday.en}
+                            onChange={(e) => handleInputChange('officeHours.mondayFriday', e.target.value, 'en')}
+                            placeholder="Monday to Friday: 9:00 AM - 6:00 PM"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Saturday Hours (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.officeHours.saturday.en}
+                            onChange={(e) => handleInputChange('officeHours.saturday', e.target.value, 'en')}
+                            placeholder="Saturday: 9:00 AM - 2:00 PM"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">WhatsApp Message (Spanish)</label>
+                          <textarea
+                            className="form-control"
+                            rows={2}
+                            value={websiteData.whatsappMessage.es}
+                            onChange={(e) => handleInputChange('whatsappMessage', e.target.value, 'es')}
+                            placeholder="Mensaje de WhatsApp en español"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">WhatsApp Message (English)</label>
+                          <textarea
+                            className="form-control"
+                            rows={2}
+                            value={websiteData.whatsappMessage.en}
+                            onChange={(e) => handleInputChange('whatsappMessage', e.target.value, 'en')}
+                            placeholder="WhatsApp message in English"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3">
                           <label className="form-label">Default Language</label>
                           <select
                             className="form-control"
-                            value={templateData.defaultLanguage || 'es'}
-                            onChange={(e) => updateField('defaultLanguage', e.target.value)}
+                            value={websiteData.defaultLanguage}
+                            onChange={(e) => handleInputChange('defaultLanguage', e.target.value)}
                           >
                             <option value="es">Spanish</option>
                             <option value="en">English</option>
                           </select>
                         </div>
+                      </div>
+                      <div className="col-md-6">
                         <div className="form-check mb-3">
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            checked={templateData.showWhatsappButton}
-                            onChange={(e) => updateField('showWhatsappButton', e.target.checked)}
+                            checked={websiteData.showWhatsappButton}
+                            onChange={(e) => handleInputChange('showWhatsappButton', e.target.checked.toString())}
                           />
                           <label className="form-check-label">
                             Show WhatsApp Button
@@ -1040,8 +1108,8 @@ export default function TemplateEditor() {
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            checked={templateData.showChatbot}
-                            onChange={(e) => updateField('showChatbot', e.target.checked)}
+                            checked={websiteData.showChatbot}
+                            onChange={(e) => handleInputChange('showChatbot', e.target.checked.toString())}
                           />
                           <label className="form-check-label">
                             Show Chatbot
