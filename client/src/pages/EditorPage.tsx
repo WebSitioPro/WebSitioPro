@@ -62,8 +62,8 @@ interface WebsiteData {
   proHeroSubheadline: { es: string; en: string };
   demoNote: { es: string; en: string };
   serviceSteps: Array<{
-    title: { es: string; en: string };
-    description: { es: string; en: string };
+    es: string;
+    en: string;
   }>;
   paymentText: { es: string; en: string };
 }
@@ -206,18 +206,9 @@ export default function EditorPage() {
       en: 'If we\'ve reached out via WhatsApp, you have a custom demo ready! We\'ll finalize your details and photos.'
     },
     serviceSteps: [
-      {
-        title: { es: 'Contacto', en: 'Contact' },
-        description: { es: 'Nos pones en contacto y discutimos tus necesidades', en: 'Get in touch and discuss your needs' }
-      },
-      {
-        title: { es: 'Diseño', en: 'Design' },
-        description: { es: 'Creamos tu sitio web personalizado', en: 'We create your custom website' }
-      },
-      {
-        title: { es: 'Lanzamiento y Mantenimiento', en: 'Launch & Maintenance' },
-        description: { es: 'Lanzamos tu sitio y lo mantenemos actualizado', en: 'We launch your site and keep it updated' }
-      }
+      { es: 'Consulta Inicial', en: 'Initial Consultation' },
+      { es: 'Opciones de Tratamiento', en: 'Treatment Options' },
+      { es: 'Cuidado Profesional', en: 'Professional Care' }
     ],
     paymentText: {
       es: 'Paga mediante transferencia bancaria (detalles vía WhatsApp), tarjeta de crédito, o OXXO (código QR proporcionado).',
@@ -366,14 +357,14 @@ export default function EditorPage() {
     return iconMap[iconName] || iconMap.star;
   };
 
-  const handleServiceStepChange = (index: number, field: string, value: string, language: 'es' | 'en') => {
+  const handleServiceStepChange = (index: number, value: string, language: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
       serviceSteps: prev.serviceSteps.map((step, i) => {
         if (i === index) {
           return {
             ...step,
-            [field]: { ...step[field as keyof typeof step], [language]: value }
+            [language]: value
           };
         }
         return step;
@@ -2133,8 +2124,8 @@ export default function EditorPage() {
                           <input 
                             type="text" 
                             className="form-control"
-                            value={step.title.es}
-                            onChange={(e) => handleServiceStepChange(index, 'title', e.target.value, 'es')}
+                            value={step.es}
+                            onChange={(e) => handleServiceStepChange(index, e.target.value, 'es')}
                           />
                         </div>
                         <div className="col-md-6">
@@ -2142,26 +2133,8 @@ export default function EditorPage() {
                           <input 
                             type="text" 
                             className="form-control"
-                            value={step.title.en}
-                            onChange={(e) => handleServiceStepChange(index, 'title', e.target.value, 'en')}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Description (Spanish)</label>
-                          <textarea 
-                            className="form-control"
-                            rows={2}
-                            value={step.description.es}
-                            onChange={(e) => handleServiceStepChange(index, 'description', e.target.value, 'es')}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Description (English)</label>
-                          <textarea 
-                            className="form-control"
-                            rows={2}
-                            value={step.description.en}
-                            onChange={(e) => handleServiceStepChange(index, 'description', e.target.value, 'en')}
+                            value={step.en}
+                            onChange={(e) => handleServiceStepChange(index, e.target.value, 'en')}
                           />
                         </div>
                         <div className="col-12">
