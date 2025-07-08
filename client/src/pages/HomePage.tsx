@@ -342,7 +342,7 @@ export default function HomePage() {
                 <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
                 <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
                 {import.meta.env.DEV && (
-                  <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Editor</Link>
+                  <Link className="text-decoration-none fw-bold" href="/template-editor" style={{ color: 'hsl(var(--info))' }}>Template Editor</Link>
                 )}
               </div>
             </div>
@@ -489,11 +489,11 @@ export default function HomePage() {
                     {import.meta.env.DEV && (
                       <Link 
                         className="text-decoration-none fw-bold py-2 px-3 rounded" 
-                        href="/editor" 
+                        href="/template-editor" 
                         style={{ color: 'hsl(var(--info))' }}
                         onClick={() => setShowMobileMenu(false)}
                       >
-                        Editor
+                        Template Editor
                       </Link>
                     )}
                   </div>
