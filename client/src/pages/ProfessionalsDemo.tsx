@@ -30,6 +30,7 @@ export default function ProfessionalsDemo() {
         .then(data => {
           setSavedConfig(data);
           console.log('Loaded saved config:', data);
+          console.log('Profile image in saved config:', data.profileImage);
         })
         .catch(err => console.log('Config not loaded:', err));
     }
