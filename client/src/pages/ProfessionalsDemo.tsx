@@ -249,17 +249,31 @@ export default function ProfessionalsDemo() {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-5" style={{ backgroundColor: 'hsl(var(--primary) / 0.05)' }}>
+      <section className="py-5" style={{ 
+        backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
+          `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${previewData?.heroImage || savedConfig?.heroImage})` : 
+          'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: (previewData?.heroImage || savedConfig?.heroImage) ? 'transparent' : 'hsl(var(--primary) / 0.05)'
+      }}>
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-6">
-              <h1 className="display-4 fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+              <h1 className="display-4 fw-bold mb-3" style={{ 
+                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--primary))' 
+              }}>
                 {previewData?.doctorName || previewData?.businessName || t('heroTitle')}
               </h1>
-              <h2 className="h3 mb-4" style={{ color: 'hsl(var(--secondary))' }}>
+              <h2 className="h3 mb-4" style={{ 
+                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--secondary))' 
+              }}>
                 {previewData?.specialty?.es || previewData?.subcategory || t('heroSubtitle')}
               </h2>
-              <p className="lead mb-4 text-muted">
+              <p className="lead mb-4" style={{ 
+                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--muted-foreground))' 
+              }}>
                 {previewData?.description?.es || previewData?.bio || t('heroDescription')}
               </p>
               <a 
@@ -285,7 +299,7 @@ export default function ProfessionalsDemo() {
                   }}
                 >
                   <img 
-                    src={previewData?.profileImage || previewData?.photo_url || savedConfig?.heroImage || "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business"}
+                    src={previewData?.profileImage || previewData?.photo_url || savedConfig?.profileImage || "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business"}
                     alt={previewData?.doctorName || previewData?.businessName || "Business"}
                     className="w-100 h-100"
                     style={{ objectFit: 'cover' }}
@@ -513,13 +527,22 @@ export default function ProfessionalsDemo() {
                     Ubicación
                   </h6>
                   <div className="ratio ratio-16x9">
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
-                      style={{ border: 0, borderRadius: '8px' }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
+                    {(previewData?.googleMapsEmbed || savedConfig?.googleMapsEmbed) ? (
+                      <iframe
+                        src={previewData?.googleMapsEmbed || savedConfig?.googleMapsEmbed}
+                        style={{ border: 0, borderRadius: '8px' }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      ></iframe>
+                    ) : (
+                      <div className="d-flex align-items-center justify-content-center bg-light rounded" style={{ height: '100%' }}>
+                        <div className="text-center text-muted">
+                          <MapPin size={48} className="mb-3" />
+                          <p>Google Maps embed not configured</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="mt-3">
                     <small className="text-muted">
