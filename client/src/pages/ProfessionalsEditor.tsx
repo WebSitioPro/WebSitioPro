@@ -173,10 +173,10 @@ export default function ProfessionalsEditor() {
             heroImage: config.heroImage || websiteData.heroImage,
             profileImage: config.profileImage || websiteData.profileImage,
             
-            // Convert services data structure from database format {name, description} to editor format {title: {es, en}, description: {es, en}}
+            // Services are already in bilingual format in database
             services: Array.isArray(config.services) ? config.services.map(service => ({
               title: service.title || { es: service.name || '', en: service.name || '' },
-              description: service.description ? (typeof service.description === 'string' ? { es: service.description, en: service.description } : service.description) : { es: '', en: '' },
+              description: service.description || { es: '', en: '' },
               icon: service.icon || 'service'
             })) : websiteData.services,
             photos: Array.isArray(config.photos) ? config.photos : websiteData.photos,
@@ -208,12 +208,13 @@ export default function ProfessionalsEditor() {
       console.log('Saving professionals template data:', websiteData);
       console.log('Profile image field:', websiteData.profileImage);
       
-      // Convert services back to database format when saving
+      // Keep services in bilingual format for database storage
       const dataToSave = {
         ...websiteData,
         services: websiteData.services.map(service => ({
-          name: service.title ? service.title.es : service.name || '',
-          description: service.description ? (typeof service.description === 'string' ? service.description : service.description.es) : ''
+          title: service.title || { es: service.name || '', en: service.name || '' },
+          description: service.description || { es: '', en: '' },
+          icon: service.icon || 'service'
         }))
       };
       

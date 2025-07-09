@@ -93,8 +93,15 @@ export const websiteConfigs = pgTable("website_configs", {
   
   // Business-specific data
   services: json("services").$type<Array<{
-    name: string;
-    description: string;
+    title: {
+      es: string;
+      en: string;
+    };
+    description: {
+      es: string;
+      en: string;
+    };
+    icon?: string;
   }>>(),
   menuImages: json("menu_images").$type<string[]>().default([]),
   tours: json("tours").$type<Array<{
