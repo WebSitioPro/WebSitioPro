@@ -169,6 +169,10 @@ export default function ProfessionalsEditor() {
             address: config.address || websiteData.address,
             whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
             
+            // Ensure image fields are preserved
+            heroImage: config.heroImage || websiteData.heroImage,
+            profileImage: config.profileImage || websiteData.profileImage,
+            
             // Ensure arrays exist
             services: Array.isArray(config.services) ? config.services : websiteData.services,
             photos: Array.isArray(config.photos) ? config.photos : websiteData.photos,
@@ -195,6 +199,10 @@ export default function ProfessionalsEditor() {
   const handleSave = async () => {
     try {
       setIsSaving(true);
+      
+      // Debug logging
+      console.log('Saving professionals template data:', websiteData);
+      console.log('Profile image field:', websiteData.profileImage);
       
       // Save to config endpoint (same as homepage editor)
       const response = await fetch(`/api/config/${clientId}`, {
