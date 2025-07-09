@@ -303,6 +303,14 @@ export default function ProfessionalsDemo() {
                     alt={previewData?.doctorName || previewData?.businessName || "Business"}
                     className="w-100 h-100"
                     style={{ objectFit: 'cover' }}
+                    onError={(e) => {
+                      console.log('Profile image failed to load:', e.target.src);
+                      console.log('savedConfig.profileImage:', savedConfig?.profileImage);
+                      console.log('previewData?.profileImage:', previewData?.profileImage);
+                    }}
+                    onLoad={() => {
+                      console.log('Profile image loaded successfully:', previewData?.profileImage || previewData?.photo_url || savedConfig?.profileImage);
+                    }}
                   />
                 </div>
                 <p className="text-muted">{previewData?.specialty?.es || previewData?.subcategory || "Especialista en Medicina Familiar"}</p>
