@@ -406,36 +406,46 @@ export default function ProfessionalsDemo() {
             {t('servicesTitle')}
           </h2>
           <div className="row g-4">
-            {[1, 2, 3, 4].map((num) => (
-              <div key={num} className="col-lg-6">
-                <div className="card h-100 border-0 shadow-sm">
-                  <div className="card-body p-4">
-                    <div className="row">
-                      <div className="col-3">
-                        <div 
-                          className="rounded-circle d-flex align-items-center justify-content-center"
-                          style={{ 
-                            width: '80px', 
-                            height: '80px', 
-                            backgroundColor: 'hsl(var(--primary) / 0.1)' 
-                          }}
-                        >
-                          <Shield size={32} style={{ color: 'hsl(var(--primary))' }} />
+            {(() => {
+              // Get services from saved config, or use defaults
+              const services = savedConfig?.services || [
+                { name: 'Consulta General', description: 'Atención médica integral para toda la familia' },
+                { name: 'Medicina Preventiva', description: 'Chequeos regulares y programas de prevención' },
+                { name: 'Pediatría', description: 'Cuidado especializado para niños y adolescentes' },
+                { name: 'Geriatría', description: 'Atención especializada para adultos mayores' }
+              ];
+              
+              return services.map((service, index) => (
+                <div key={index} className="col-lg-6">
+                  <div className="card h-100 border-0 shadow-sm">
+                    <div className="card-body p-4">
+                      <div className="row">
+                        <div className="col-3">
+                          <div 
+                            className="rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ 
+                              width: '80px', 
+                              height: '80px', 
+                              backgroundColor: 'hsl(var(--primary) / 0.1)' 
+                            }}
+                          >
+                            <Shield size={32} style={{ color: 'hsl(var(--primary))' }} />
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-9">
-                        <h5 className="fw-bold mb-2" style={{ color: 'hsl(var(--primary))' }}>
-                          {t(`service${num}` as any)}
-                        </h5>
-                        <p className="text-muted">
-                          {t(`service${num}Desc` as any)}
-                        </p>
+                        <div className="col-9">
+                          <h5 className="fw-bold mb-2" style={{ color: 'hsl(var(--primary))' }}>
+                            {service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}
+                          </h5>
+                          <p className="text-muted">
+                            {service.description ? (language === 'es' ? service.description.es : service.description.en) : service.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -447,31 +457,40 @@ export default function ProfessionalsDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-4">
-            {[1, 2, 3, 4, 5, 6].map((num) => {
-              const photoIndex = num - 1;
-              const photoUrl = savedConfig?.photos?.[photoIndex] || `https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+${num}`;
+            {(() => {
+              // Get photos from saved config, or use defaults
+              const photos = savedConfig?.photos || [
+                { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+1', caption: { es: 'Consultorio 1', en: 'Office 1' } },
+                { url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Consultorio+2', caption: { es: 'Consultorio 2', en: 'Office 2' } },
+                { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+3', caption: { es: 'Consultorio 3', en: 'Office 3' } },
+                { url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Consultorio+4', caption: { es: 'Consultorio 4', en: 'Office 4' } },
+                { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+5', caption: { es: 'Consultorio 5', en: 'Office 5' } },
+                { url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Consultorio+6', caption: { es: 'Consultorio 6', en: 'Office 6' } }
+              ];
               
-              return (
-                <div key={num} className="col-lg-4 col-md-6">
+              return photos.map((photo, index) => (
+                <div key={index} className="col-lg-4 col-md-6">
                   <div className="card border-0 shadow-sm h-100">
                     <div 
                       className="card-img-top bg-light d-flex align-items-center justify-content-center"
                       style={{ height: '200px' }}
                     >
                       <img 
-                        src={photoUrl}
-                        alt={`Consultorio ${num}`}
+                        src={photo.url || photo}
+                        alt={photo.caption ? (language === 'es' ? photo.caption.es : photo.caption.en) : `Consultorio ${index + 1}`}
                         className="w-100 h-100"
                         style={{ objectFit: 'cover' }}
                       />
                     </div>
                     <div className="card-body text-center">
-                      <p className="text-muted mb-0">Consultorio {num}</p>
+                      <p className="text-muted mb-0">
+                        {photo.caption ? (language === 'es' ? photo.caption.es : photo.caption.en) : `Consultorio ${index + 1}`}
+                      </p>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -483,27 +502,36 @@ export default function ProfessionalsDemo() {
             {t('reviewsTitle')}
           </h2>
           <div className="row g-4 justify-content-center">
-            {[1, 2, 3].map((num) => (
-              <div key={num} className="col-lg-4 col-md-6">
-                <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
-                  <div className="card-body p-4 text-center d-flex flex-column">
-                    <div className="mb-3 d-flex justify-content-center gap-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} size={16} fill="gold" color="gold" />
-                      ))}
+            {(() => {
+              // Get reviews from saved config, or use defaults
+              const reviews = savedConfig?.reviews || [
+                { name: 'Ana López', rating: 5, text: 'Excelente doctora, muy profesional y atenta. Siempre disponible para emergencias.' },
+                { name: 'Carlos Méndez', rating: 5, text: 'La mejor atención médica en Chetumal. Mi familia y yo confiamos completamente en la Dra. González.' },
+                { name: 'María Fernández', rating: 5, text: 'Muy recomendada. Explica todo claramente y tiene mucha paciencia con los niños.' }
+              ];
+              
+              return reviews.map((review, index) => (
+                <div key={index} className="col-lg-4 col-md-6">
+                  <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
+                    <div className="card-body p-4 text-center d-flex flex-column">
+                      <div className="mb-3 d-flex justify-content-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} size={16} fill="gold" color="gold" />
+                        ))}
+                      </div>
+                      <div className="flex-grow-1 d-flex flex-column justify-content-center">
+                        <p className="mb-3 text-muted">
+                          "{review.text ? (language === 'es' ? review.text.es : review.text.en) : review.text}"
+                        </p>
+                      </div>
+                      <h6 className="mb-0 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+                        {review.name}
+                      </h6>
                     </div>
-                    <div className="flex-grow-1 d-flex flex-column justify-content-center">
-                      <p className="mb-3 text-muted">
-                        "{t(`review${num}Text` as any)}"
-                      </p>
-                    </div>
-                    <h6 className="mb-0 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-                      {t(`review${num}Name` as any)}
-                    </h6>
                   </div>
                 </div>
-              </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -560,7 +588,7 @@ export default function ProfessionalsDemo() {
                   
                   <div className="mt-4">
                     <a 
-                      href="https://wa.me/529831234567?text=Hola, me gustaría agendar una cita médica"
+                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || '529831234567'}?text=Hola, me gustaría agendar una cita médica`}
                       className="btn w-100 text-white"
                       style={{ backgroundColor: '#25D366' }}
                       target="_blank"
