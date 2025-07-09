@@ -57,8 +57,9 @@ export default function ProfessionalsDemo() {
   };
 
   const t = (key: string) => {
-    // Use preview data if available, otherwise use default translations
+    // Priority order: 1. Preview data (templates), 2. Saved config (editor), 3. Default values
     const usePreviewData = previewData && Object.keys(previewData).length > 0;
+    const useSavedConfig = savedConfig && Object.keys(savedConfig).length > 0;
     
     const translations = {
       es: {
@@ -70,18 +71,30 @@ export default function ProfessionalsDemo() {
         contact: 'Contacto',
         language: 'English',
         
-        // Hero - Use preview data if available
-        heroTitle: usePreviewData ? previewData.doctorName : 'Dr. María González',
-        heroSubtitle: usePreviewData ? previewData.specialty?.es : 'Especialista en Medicina Familiar',
-        heroDescription: usePreviewData ? previewData.description?.es : 'Más de 15 años de experiencia brindando atención médica integral a familias en Chetumal',
+        // Hero - Use preview data, then saved config, then defaults
+        heroTitle: usePreviewData ? previewData.doctorName : 
+                  (useSavedConfig && savedConfig.doctorName) || 
+                  (useSavedConfig && savedConfig.heroTitle?.es) || 
+                  'Dr. María González',
+        heroSubtitle: usePreviewData ? previewData.specialty?.es : 
+                     (useSavedConfig && savedConfig.specialty?.es) || 
+                     (useSavedConfig && savedConfig.heroSubtitle?.es) || 
+                     'Especialista en Medicina Familiar',
+        heroDescription: usePreviewData ? previewData.description?.es : 
+                        (useSavedConfig && savedConfig.heroDescription?.es) || 
+                        'Más de 15 años de experiencia brindando atención médica integral a familias en Chetumal',
         scheduleAppointment: 'Contactar por WhatsApp',
         
-        // About - Use preview data if available
-        aboutTitle: usePreviewData ? previewData.aboutTitle?.es : 'Acerca de la Doctora',
-        aboutText: usePreviewData ? previewData.aboutText?.es : 'La Dra. María González es una médica especialista en medicina familiar con más de 15 años de experiencia. Se graduó de la Universidad Nacional Autónoma de México y ha estado sirviendo a la comunidad de Chetumal desde 2008.',
+        // About - Use preview data, then saved config, then defaults
+        aboutTitle: usePreviewData ? previewData.aboutTitle?.es : 
+                   (useSavedConfig && savedConfig.aboutTitle?.es) || 
+                   'Acerca de la Doctora',
+        aboutText: usePreviewData ? previewData.aboutText?.es : 
+                  (useSavedConfig && savedConfig.aboutText?.es) || 
+                  'La Dra. María González es una médica especialista en medicina familiar con más de 15 años de experiencia. Se graduó de la Universidad Nacional Autónoma de México y ha estado sirviendo a la comunidad de Chetumal desde 2008.',
         
-        // Services
-        servicesTitle: 'Servicios Médicos',
+        // Services - Use saved config if available
+        servicesTitle: (useSavedConfig && savedConfig.servicesTitle?.es) || 'Servicios Médicos',
         service1: 'Consulta General',
         service1Desc: 'Atención médica integral para toda la familia',
         service2: 'Medicina Preventiva',
@@ -103,14 +116,24 @@ export default function ProfessionalsDemo() {
         review3Name: 'María Fernández',
         review3Text: 'Muy recomendada. Explica todo claramente y tiene mucha paciencia con los niños.',
         
-        // Contact - Use preview data if available
+        // Contact - Use preview data, then saved config, then defaults
         contactTitle: 'Información de Contacto',
-        phone: usePreviewData ? previewData.phone : '+52 983 123 4567',
-        email: usePreviewData ? previewData.email : 'dra.gonzalez@email.com',
-        address: usePreviewData ? previewData.address?.es : 'Av. Héroes 123, Centro, Chetumal, Q.R.',
+        phone: usePreviewData ? previewData.phone : 
+               (useSavedConfig && savedConfig.phone) || 
+               '+52 983 123 4567',
+        email: usePreviewData ? previewData.email : 
+               (useSavedConfig && savedConfig.email) || 
+               'dra.gonzalez@email.com',
+        address: usePreviewData ? previewData.address?.es : 
+                (useSavedConfig && savedConfig.address?.es) || 
+                'Av. Héroes 123, Centro, Chetumal, Q.R.',
         hours: 'Horarios de Atención',
-        mondayFriday: usePreviewData ? previewData.officeHours?.mondayFriday?.es : 'Lun-Vie: 8:00 AM - 6:00 PM',
-        saturday: usePreviewData ? previewData.officeHours?.saturday?.es : 'Sáb: 9:00 AM - 2:00 PM',
+        mondayFriday: usePreviewData ? previewData.officeHours?.mondayFriday?.es : 
+                     (useSavedConfig && savedConfig.officeHours?.mondayFriday?.es) || 
+                     'Lun-Vie: 8:00 AM - 6:00 PM',
+        saturday: usePreviewData ? previewData.officeHours?.saturday?.es : 
+                 (useSavedConfig && savedConfig.officeHours?.saturday?.es) || 
+                 'Sáb: 9:00 AM - 2:00 PM',
         whatsappButton: 'WhatsApp',
         viewOnMaps: 'Ver en Google Maps',
         
@@ -127,18 +150,30 @@ export default function ProfessionalsDemo() {
         contact: 'Contact',
         language: 'Español',
         
-        // Hero
-        heroTitle: 'Dr. María González',
-        heroSubtitle: 'Family Medicine Specialist',
-        heroDescription: 'Over 15 years of experience providing comprehensive medical care to families in Chetumal',
+        // Hero - Use preview data, then saved config, then defaults
+        heroTitle: usePreviewData ? previewData.doctorName : 
+                  (useSavedConfig && savedConfig.doctorName) || 
+                  (useSavedConfig && savedConfig.heroTitle?.en) || 
+                  'Dr. María González',
+        heroSubtitle: usePreviewData ? previewData.specialty?.en : 
+                     (useSavedConfig && savedConfig.specialty?.en) || 
+                     (useSavedConfig && savedConfig.heroSubtitle?.en) || 
+                     'Family Medicine Specialist',
+        heroDescription: usePreviewData ? previewData.description?.en : 
+                        (useSavedConfig && savedConfig.heroDescription?.en) || 
+                        'Over 15 years of experience providing comprehensive medical care to families in Chetumal',
         scheduleAppointment: 'Contact via WhatsApp',
         
-        // About
-        aboutTitle: 'About the Doctor',
-        aboutText: 'Dr. María González is a family medicine specialist with over 15 years of experience. She graduated from the National Autonomous University of Mexico and has been serving the Chetumal community since 2008.',
+        // About - Use preview data, then saved config, then defaults
+        aboutTitle: usePreviewData ? previewData.aboutTitle?.en : 
+                   (useSavedConfig && savedConfig.aboutTitle?.en) || 
+                   'About the Doctor',
+        aboutText: usePreviewData ? previewData.aboutText?.en : 
+                  (useSavedConfig && savedConfig.aboutText?.en) || 
+                  'Dr. María González is a family medicine specialist with over 15 years of experience. She graduated from the National Autonomous University of Mexico and has been serving the Chetumal community since 2008.',
         
-        // Services
-        servicesTitle: 'Medical Services',
+        // Services - Use saved config if available
+        servicesTitle: (useSavedConfig && savedConfig.servicesTitle?.en) || 'Medical Services',
         service1: 'General Consultation',
         service1Desc: 'Comprehensive medical care for the whole family',
         service2: 'Preventive Medicine',
@@ -160,14 +195,24 @@ export default function ProfessionalsDemo() {
         review3Name: 'María Fernández',
         review3Text: 'Highly recommended. Explains everything clearly and has great patience with children.',
         
-        // Contact
+        // Contact - Use preview data, then saved config, then defaults
         contactTitle: 'Contact Information',
-        phone: '+52 983 123 4567',
-        email: 'dra.gonzalez@email.com',
-        address: 'Av. Héroes 123, Centro, Chetumal, Q.R.',
+        phone: usePreviewData ? previewData.phone : 
+               (useSavedConfig && savedConfig.phone) || 
+               '+52 983 123 4567',
+        email: usePreviewData ? previewData.email : 
+               (useSavedConfig && savedConfig.email) || 
+               'dra.gonzalez@email.com',
+        address: usePreviewData ? previewData.address?.en : 
+                (useSavedConfig && savedConfig.address?.en) || 
+                'Av. Héroes 123, Centro, Chetumal, Q.R.',
         hours: 'Office Hours',
-        mondayFriday: 'Mon-Fri: 8:00 AM - 6:00 PM',
-        saturday: 'Sat: 9:00 AM - 2:00 PM',
+        mondayFriday: usePreviewData ? previewData.officeHours?.mondayFriday?.en : 
+                     (useSavedConfig && savedConfig.officeHours?.mondayFriday?.en) || 
+                     'Mon-Fri: 8:00 AM - 6:00 PM',
+        saturday: usePreviewData ? previewData.officeHours?.saturday?.en : 
+                 (useSavedConfig && savedConfig.officeHours?.saturday?.en) || 
+                 'Sat: 9:00 AM - 2:00 PM',
         whatsappButton: 'WhatsApp',
         viewOnMaps: 'View on Google Maps',
         
