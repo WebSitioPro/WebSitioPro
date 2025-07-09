@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Clock, Star, Menu, X, Wrench } from 'lucide-react';
 
 // Mock data for services template
@@ -118,8 +118,47 @@ export default function ServicesDemo() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+  const [savedConfig, setSavedConfig] = useState<any>(null);
 
-  const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
+  // Load saved configuration
+  useEffect(() => {
+    fetch('/api/config/default')
+      .then(res => res.json())
+      .then(data => {
+        setSavedConfig(data);
+        console.log('Services demo loaded config:', data);
+      })
+      .catch(err => console.log('Config not loaded:', err));
+  }, []);
+
+  const t = (key: string) => {
+    const useSavedConfig = savedConfig && Object.keys(savedConfig).length > 0;
+    
+    // Update translations to use saved configuration
+    const updatedTranslations = {
+      ...translations,
+      es: {
+        ...translations.es,
+        businessName: (useSavedConfig && savedConfig.businessName) || mockServicesData.businessName,
+        phone: (useSavedConfig && savedConfig.phone) || mockServicesData.phone,
+        email: (useSavedConfig && savedConfig.email) || mockServicesData.email,
+        address: (useSavedConfig && savedConfig.address?.es) || mockServicesData.address,
+        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.es) || translations.es.mondayFriday,
+        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.es) || translations.es.saturday,
+      },
+      en: {
+        ...translations.en,
+        businessName: (useSavedConfig && savedConfig.businessName) || mockServicesData.businessName,
+        phone: (useSavedConfig && savedConfig.phone) || mockServicesData.phone,
+        email: (useSavedConfig && savedConfig.email) || mockServicesData.email,
+        address: (useSavedConfig && savedConfig.address?.en) || mockServicesData.address,
+        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.en) || translations.en.mondayFriday,
+        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.en) || translations.en.saturday,
+      }
+    };
+
+    return updatedTranslations[language][key as keyof typeof updatedTranslations['es']] || key;
+  };
   const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
 
   const toggleLanguage = () => {
@@ -148,7 +187,7 @@ export default function ServicesDemo() {
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
           <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
-            {mockServicesData.businessName}
+            {t('businessName')}
           </a>
           
           <div className="d-flex align-items-center d-lg-none">
@@ -217,7 +256,7 @@ export default function ServicesDemo() {
           <div className="row align-items-center">
             <div className="col-lg-8">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {mockServicesData.businessName}
+                {t('businessName')}
               </h1>
               <p className="lead mb-4 text-muted">
                 {getLocalizedValue(mockServicesData.intro)}
@@ -458,7 +497,7 @@ export default function ServicesDemo() {
         <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <h5>{mockServicesData.businessName}</h5>
+              <h5>{t('businessName')}</h5>
               <p className="mb-0">AI-optimized for speed and search</p>
             </div>
             <div className="col-md-6 text-md-end">

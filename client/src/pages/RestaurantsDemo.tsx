@@ -109,7 +109,35 @@ export default function RestaurantsDemo() {
       .catch(err => console.log('Config not loaded:', err));
   }, []);
 
-  const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
+  const t = (key: string) => {
+    const useSavedConfig = savedConfig && Object.keys(savedConfig).length > 0;
+    
+    // Update translations to use saved configuration
+    const updatedTranslations = {
+      ...translations,
+      es: {
+        ...translations.es,
+        // Use saved config for business name and contact info
+        businessName: (useSavedConfig && savedConfig.businessName) || mockRestaurantData.businessName,
+        phone: (useSavedConfig && savedConfig.phone) || mockRestaurantData.phone,
+        email: (useSavedConfig && savedConfig.email) || mockRestaurantData.email,
+        address: (useSavedConfig && savedConfig.address?.es) || mockRestaurantData.address,
+        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.es) || translations.es.mondayFriday,
+        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.es) || translations.es.saturday,
+      },
+      en: {
+        ...translations.en,
+        businessName: (useSavedConfig && savedConfig.businessName) || mockRestaurantData.businessName,
+        phone: (useSavedConfig && savedConfig.phone) || mockRestaurantData.phone,
+        email: (useSavedConfig && savedConfig.email) || mockRestaurantData.email,
+        address: (useSavedConfig && savedConfig.address?.en) || mockRestaurantData.address,
+        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.en) || translations.en.mondayFriday,
+        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.en) || translations.en.saturday,
+      }
+    };
+
+    return updatedTranslations[language][key as keyof typeof updatedTranslations['es']] || key;
+  };
   const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
 
   const toggleLanguage = () => {
@@ -139,7 +167,7 @@ export default function RestaurantsDemo() {
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
           <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
-            {mockRestaurantData.businessName}
+            {t('businessName')}
           </a>
           
           <div className="d-flex align-items-center d-lg-none">
@@ -208,13 +236,13 @@ export default function RestaurantsDemo() {
           <div className="row align-items-center">
             <div className="col-lg-8">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {mockRestaurantData.businessName}
+                {t('businessName')}
               </h1>
               <p className="lead mb-4 text-muted">
-                {getLocalizedValue(mockRestaurantData.intro)}
+                {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || getLocalizedValue(mockRestaurantData.intro)}
               </p>
               <a 
-                href={`https://wa.me/${mockRestaurantData.whatsappNumber}?text=Hola, me gustaría hacer una reservación`}
+                href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRestaurantData.whatsappNumber}?text=Hola, me gustaría hacer una reservación`}
                 className="btn btn-lg text-white"
                 style={{ backgroundColor: '#25D366' }}
                 target="_blank"

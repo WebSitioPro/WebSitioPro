@@ -115,6 +115,17 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 09, 2025. Complete Template System Field Mapping Fix
+  - Fixed critical issue where 4 of 5 templates were using hardcoded mock data instead of editor fields
+  - Professionals template: Already connected to saved configuration (profile image, hero, about, contact, services)
+  - Restaurants template: Added saved configuration loading for business name, contact info, hero image, menu images
+  - Tourism template: Added saved configuration loading for business name, contact info, hero subtitle
+  - Retail template: Added saved configuration loading for business name, contact info, hero content
+  - Services template: Added saved configuration loading for business name, contact info, hero content
+  - All 5 templates now use priority order: 1) Preview data, 2) Saved config, 3) Default values
+  - All templates now properly display editor changes immediately after saving
+  - Fixed hardcoded business names in headers, hero sections, and footers across all templates
+  - Verified all templates load saved configuration from database on page load
 - July 08, 2025. Complete Template Editor Redesign for Professional Templates
   - Completely redesigned Template Editor to properly edit all 5 professional template types
   - Added template selector with visual cards for Professionals, Restaurants, Tourism, Retail, Services

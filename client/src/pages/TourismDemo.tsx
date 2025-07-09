@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Clock, Star, Menu, X, DollarSign } from 'lucide-react';
 
 // Mock data for tourism template
@@ -108,8 +108,47 @@ export default function TourismDemo() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+  const [savedConfig, setSavedConfig] = useState<any>(null);
 
-  const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
+  // Load saved configuration
+  useEffect(() => {
+    fetch('/api/config/default')
+      .then(res => res.json())
+      .then(data => {
+        setSavedConfig(data);
+        console.log('Tourism demo loaded config:', data);
+      })
+      .catch(err => console.log('Config not loaded:', err));
+  }, []);
+
+  const t = (key: string) => {
+    const useSavedConfig = savedConfig && Object.keys(savedConfig).length > 0;
+    
+    // Update translations to use saved configuration
+    const updatedTranslations = {
+      ...translations,
+      es: {
+        ...translations.es,
+        businessName: (useSavedConfig && savedConfig.businessName) || mockTourismData.businessName,
+        phone: (useSavedConfig && savedConfig.phone) || mockTourismData.phone,
+        email: (useSavedConfig && savedConfig.email) || mockTourismData.email,
+        address: (useSavedConfig && savedConfig.address?.es) || mockTourismData.address,
+        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.es) || translations.es.mondayFriday,
+        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.es) || translations.es.saturday,
+      },
+      en: {
+        ...translations.en,
+        businessName: (useSavedConfig && savedConfig.businessName) || mockTourismData.businessName,
+        phone: (useSavedConfig && savedConfig.phone) || mockTourismData.phone,
+        email: (useSavedConfig && savedConfig.email) || mockTourismData.email,
+        address: (useSavedConfig && savedConfig.address?.en) || mockTourismData.address,
+        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.en) || translations.en.mondayFriday,
+        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.en) || translations.en.saturday,
+      }
+    };
+
+    return updatedTranslations[language][key as keyof typeof updatedTranslations['es']] || key;
+  };
   const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
 
   const toggleLanguage = () => {
@@ -138,7 +177,7 @@ export default function TourismDemo() {
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
           <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
-            {mockTourismData.businessName}
+            {t('businessName')}
           </a>
           
           <div className="d-flex align-items-center d-lg-none">
