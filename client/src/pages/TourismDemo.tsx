@@ -61,11 +61,13 @@ const mockTourismData = {
 const translations = {
   es: {
     home: "Inicio",
+    about: "Acerca de",
     tours: "Tours",
     photos: "Fotos",
     reviews: "Reseñas",
     contact: "Contacto",
     whatsappButton: "WhatsApp",
+    aboutTitle: "Nuestra Experiencia",
     toursTitle: "Nuestros Tours",
     photosTitle: "Galería de Aventuras",
     reviewsTitle: "Experiencias de nuestros viajeros",
@@ -82,11 +84,13 @@ const translations = {
   },
   en: {
     home: "Home",
+    about: "About",
     tours: "Tours",
     photos: "Photos",
     reviews: "Reviews",
     contact: "Contact",
     whatsappButton: "WhatsApp",
+    aboutTitle: "Our Experience",
     toursTitle: "Our Tours",
     photosTitle: "Adventure Gallery",
     reviewsTitle: "Our travelers' experiences",
@@ -201,6 +205,7 @@ export default function TourismDemo() {
           <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
             <div className="d-none d-lg-flex gap-4 ms-auto align-items-center">
               <a className="text-decoration-none text-dark" href="#home">{t('home')}</a>
+              <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
               <a className="text-decoration-none text-dark" href="#tours">{t('tours')}</a>
               <a className="text-decoration-none text-dark" href="#photos">{t('photos')}</a>
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
@@ -219,6 +224,9 @@ export default function TourismDemo() {
             <ul className={`navbar-nav d-lg-none ${showMobileMenu ? 'd-block' : 'd-none'}`}>
               <li className="nav-item">
                 <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#about" onClick={() => setShowMobileMenu(false)}>{t('about')}</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#tours" onClick={() => setShowMobileMenu(false)}>{t('tours')}</a>
@@ -268,6 +276,58 @@ export default function TourismDemo() {
                 alt="Tourism" 
                 className="img-fluid rounded shadow"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-5">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 mx-auto text-center">
+              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {t('aboutTitle')}
+              </h2>
+              <p className="lead text-muted">
+                {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || 
+                 (language === 'es' ? 
+                  "Somos especialistas en turismo con más de 10 años de experiencia explorando y compartiendo las maravillas de Quintana Roo. Nuestro equipo de guías certificados te llevará a descubrir los secretos mejor guardados de la región, desde cenotes cristalinos hasta sitios arqueológicos mayas." :
+                  "We are tourism specialists with over 10 years of experience exploring and sharing the wonders of Quintana Roo. Our team of certified guides will take you to discover the region's best-kept secrets, from crystal-clear cenotes to Mayan archaeological sites."
+                )}
+              </p>
+              <div className="row mt-5">
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Clock size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>10+ Años</h5>
+                    <p className="text-muted">Experiencia</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Star size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>500+</h5>
+                    <p className="text-muted">Tours Realizados</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Phone size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>Guías</h5>
+                    <p className="text-muted">Certificados</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

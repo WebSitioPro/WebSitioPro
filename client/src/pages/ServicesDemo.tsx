@@ -69,11 +69,13 @@ const mockServicesData = {
 const translations = {
   es: {
     home: "Inicio",
+    about: "Acerca de",
     services: "Servicios",
     photos: "Fotos",
     reviews: "Reseñas",
     contact: "Contacto",
     whatsappButton: "WhatsApp",
+    aboutTitle: "Nuestra Experiencia",
     servicesTitle: "Nuestros Servicios",
     photosTitle: "Galería de Trabajos",
     reviewsTitle: "Lo que dicen nuestros clientes",
@@ -91,11 +93,13 @@ const translations = {
   },
   en: {
     home: "Home",
+    about: "About",
     services: "Services",
     photos: "Photos",
     reviews: "Reviews",
     contact: "Contact",
     whatsappButton: "WhatsApp",
+    aboutTitle: "Our Experience",
     servicesTitle: "Our Services",
     photosTitle: "Work Gallery",
     reviewsTitle: "What our customers say",
@@ -211,6 +215,7 @@ export default function ServicesDemo() {
           <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
             <div className="d-none d-lg-flex gap-4 ms-auto align-items-center">
               <a className="text-decoration-none text-dark" href="#home">{t('home')}</a>
+              <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
               <a className="text-decoration-none text-dark" href="#services">{t('services')}</a>
               <a className="text-decoration-none text-dark" href="#photos">{t('photos')}</a>
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
@@ -229,6 +234,9 @@ export default function ServicesDemo() {
             <ul className={`navbar-nav d-lg-none ${showMobileMenu ? 'd-block' : 'd-none'}`}>
               <li className="nav-item">
                 <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#about" onClick={() => setShowMobileMenu(false)}>{t('about')}</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#services" onClick={() => setShowMobileMenu(false)}>{t('services')}</a>
@@ -283,6 +291,58 @@ export default function ServicesDemo() {
                 alt="Plumbing Services" 
                 className="img-fluid rounded shadow"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-5">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 mx-auto text-center">
+              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {t('aboutTitle')}
+              </h2>
+              <p className="lead text-muted">
+                {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || 
+                 (language === 'es' ? 
+                  "Con más de 15 años de experiencia en servicios de plomería, hemos construido nuestra reputación basada en la calidad, puntualidad y honestidad. Nuestro equipo de técnicos certificados está disponible 24/7 para resolver cualquier emergencia y brindar soluciones duraderas." :
+                  "With over 15 years of experience in plumbing services, we have built our reputation based on quality, punctuality and honesty. Our team of certified technicians is available 24/7 to solve any emergency and provide lasting solutions."
+                )}
+              </p>
+              <div className="row mt-5">
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Clock size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>15+ Años</h5>
+                    <p className="text-muted">Experiencia</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Star size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>24/7</h5>
+                    <p className="text-muted">Disponibles</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Wrench size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>Técnicos</h5>
+                    <p className="text-muted">Certificados</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

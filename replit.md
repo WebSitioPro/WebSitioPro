@@ -115,6 +115,14 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 09, 2025. Added About/Description Content Areas to All Templates
+  - Added comprehensive About sections to all 4 templates (Restaurants, Tourism, Retail, Services)
+  - Added "About" navigation links to all template navigation menus (desktop and mobile)
+  - Each About section includes bilingual support with editor integration
+  - About sections connect to saved configuration (aboutText field) with fallback to professional default content
+  - Added visual stats sections with icons for each template type
+  - About sections positioned after hero section before main content sections
+  - All About sections use consistent styling with professional design
 - July 09, 2025. Complete Template System Field Mapping Fix
   - Fixed critical issue where 4 of 5 templates were using hardcoded mock data instead of editor fields
   - Professionals template: Already connected to saved configuration (profile image, hero, about, contact, services)

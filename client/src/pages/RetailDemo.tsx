@@ -75,11 +75,13 @@ const mockRetailData = {
 const translations = {
   es: {
     home: "Inicio",
+    about: "Acerca de",
     products: "Productos",
     photos: "Fotos",
     reviews: "Reseñas",
     contact: "Contacto",
     whatsappButton: "WhatsApp",
+    aboutTitle: "Nuestra Pasión",
     productsTitle: "Nuestros Productos",
     photosTitle: "Galería de la Tienda",
     reviewsTitle: "Lo que dicen nuestros clientes",
@@ -96,11 +98,13 @@ const translations = {
   },
   en: {
     home: "Home",
+    about: "About",
     products: "Products",
     photos: "Photos",
     reviews: "Reviews",
     contact: "Contact",
     whatsappButton: "WhatsApp",
+    aboutTitle: "Our Passion",
     productsTitle: "Our Products",
     photosTitle: "Store Gallery",
     reviewsTitle: "What our customers say",
@@ -215,6 +219,7 @@ export default function RetailDemo() {
           <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
             <div className="d-none d-lg-flex gap-4 ms-auto align-items-center">
               <a className="text-decoration-none text-dark" href="#home">{t('home')}</a>
+              <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
               <a className="text-decoration-none text-dark" href="#products">{t('products')}</a>
               <a className="text-decoration-none text-dark" href="#photos">{t('photos')}</a>
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
@@ -233,6 +238,9 @@ export default function RetailDemo() {
             <ul className={`navbar-nav d-lg-none ${showMobileMenu ? 'd-block' : 'd-none'}`}>
               <li className="nav-item">
                 <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#about" onClick={() => setShowMobileMenu(false)}>{t('about')}</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#products" onClick={() => setShowMobileMenu(false)}>{t('products')}</a>
@@ -282,6 +290,58 @@ export default function RetailDemo() {
                 alt="Boutique" 
                 className="img-fluid rounded shadow"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-5">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 mx-auto text-center">
+              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {t('aboutTitle')}
+              </h2>
+              <p className="lead text-muted">
+                {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || 
+                 (language === 'es' ? 
+                  "Nuestra pasión por las artesanías mexicanas nos ha llevado a crear un espacio único donde la tradición y la belleza se encuentran. Cada pieza que ofrecemos cuenta una historia, elaborada por artesanos locales con técnicas ancestrales que han pasado de generación en generación." :
+                  "Our passion for Mexican crafts has led us to create a unique space where tradition and beauty meet. Each piece we offer tells a story, crafted by local artisans with ancestral techniques that have been passed down from generation to generation."
+                )}
+              </p>
+              <div className="row mt-5">
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Clock size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>15+ Años</h5>
+                    <p className="text-muted">Experiencia</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Star size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>100%</h5>
+                    <p className="text-muted">Auténticas</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <ShoppingBag size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>Productos</h5>
+                    <p className="text-muted">Únicos</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

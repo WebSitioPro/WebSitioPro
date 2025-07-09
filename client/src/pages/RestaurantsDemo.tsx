@@ -51,11 +51,13 @@ const mockRestaurantData = {
 const translations = {
   es: {
     home: "Inicio",
+    about: "Acerca de",
     menu: "Menú",
     photos: "Fotos",
     reviews: "Reseñas",
     contact: "Contacto",
     whatsappButton: "WhatsApp",
+    aboutTitle: "Nuestra Historia",
     menuTitle: "Nuestro Menú",
     photosTitle: "Galería de Fotos",
     reviewsTitle: "Lo que dicen nuestros clientes",
@@ -71,11 +73,13 @@ const translations = {
   },
   en: {
     home: "Home",
+    about: "About",
     menu: "Menu",
     photos: "Photos",
     reviews: "Reviews",
     contact: "Contact",
     whatsappButton: "WhatsApp",
+    aboutTitle: "Our Story",
     menuTitle: "Our Menu",
     photosTitle: "Photo Gallery",
     reviewsTitle: "What our customers say",
@@ -191,6 +195,7 @@ export default function RestaurantsDemo() {
           <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
             <div className="d-none d-lg-flex gap-4 ms-auto align-items-center">
               <a className="text-decoration-none text-dark" href="#home">{t('home')}</a>
+              <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
               <a className="text-decoration-none text-dark" href="#menu">{t('menu')}</a>
               <a className="text-decoration-none text-dark" href="#photos">{t('photos')}</a>
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
@@ -209,6 +214,9 @@ export default function RestaurantsDemo() {
             <ul className={`navbar-nav d-lg-none ${showMobileMenu ? 'd-block' : 'd-none'}`}>
               <li className="nav-item">
                 <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#about" onClick={() => setShowMobileMenu(false)}>{t('about')}</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#menu" onClick={() => setShowMobileMenu(false)}>{t('menu')}</a>
@@ -258,6 +266,58 @@ export default function RestaurantsDemo() {
                 alt="Restaurant" 
                 className="img-fluid rounded shadow"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-5">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 mx-auto text-center">
+              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+                {t('aboutTitle')}
+              </h2>
+              <p className="lead text-muted">
+                {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || 
+                 (language === 'es' ? 
+                  "Somos una familia dedicada a preservar los sabores auténticos de la cocina mexicana. Con más de 30 años de experiencia, hemos servido a generaciones de familias en Chetumal, manteniendo siempre la calidad y tradición que nos caracterizan." :
+                  "We are a family dedicated to preserving the authentic flavors of Mexican cuisine. With over 30 years of experience, we have served generations of families in Chetumal, always maintaining the quality and tradition that characterizes us."
+                )}
+              </p>
+              <div className="row mt-5">
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Clock size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>30+ Años</h5>
+                    <p className="text-muted">Experiencia</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Star size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>1000+</h5>
+                    <p className="text-muted">Clientes Satisfechos</p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="text-center">
+                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                      <Phone size={32} style={{ color: 'hsl(var(--primary))' }} />
+                    </div>
+                    <h5>Servicio</h5>
+                    <p className="text-muted">Familiar</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
