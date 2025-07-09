@@ -342,7 +342,11 @@ export default function HomePage() {
                 <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
                 <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
                 {import.meta.env.DEV && (
-                  <Link className="text-decoration-none fw-bold" href="/template-editor" style={{ color: 'hsl(var(--info))' }}>Template Editor</Link>
+                  <>
+                    <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Main Site Editor</Link>
+                    <Link className="text-decoration-none fw-bold" href="/editor/clients" style={{ color: 'hsl(var(--info))' }}>Client Manager</Link>
+                    <Link className="text-decoration-none fw-bold" href="/template-editor" style={{ color: 'hsl(var(--info))' }}>Template Editor</Link>
+                  </>
                 )}
               </div>
             </div>
@@ -487,14 +491,32 @@ export default function HomePage() {
                       {t('contact')}
                     </a>
                     {import.meta.env.DEV && (
-                      <Link 
-                        className="text-decoration-none fw-bold py-2 px-3 rounded" 
-                        href="/template-editor" 
-                        style={{ color: 'hsl(var(--info))' }}
-                        onClick={() => setShowMobileMenu(false)}
-                      >
-                        Template Editor
-                      </Link>
+                      <>
+                        <Link 
+                          className="text-decoration-none fw-bold py-2 px-3 rounded" 
+                          href="/editor" 
+                          style={{ color: 'hsl(var(--info))' }}
+                          onClick={() => setShowMobileMenu(false)}
+                        >
+                          Main Site Editor
+                        </Link>
+                        <Link 
+                          className="text-decoration-none fw-bold py-2 px-3 rounded" 
+                          href="/editor/clients" 
+                          style={{ color: 'hsl(var(--info))' }}
+                          onClick={() => setShowMobileMenu(false)}
+                        >
+                          Client Manager
+                        </Link>
+                        <Link 
+                          className="text-decoration-none fw-bold py-2 px-3 rounded" 
+                          href="/template-editor" 
+                          style={{ color: 'hsl(var(--info))' }}
+                          onClick={() => setShowMobileMenu(false)}
+                        >
+                          Template Editor
+                        </Link>
+                      </>
                     )}
                   </div>
                 </div>
