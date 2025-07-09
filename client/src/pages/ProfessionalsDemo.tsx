@@ -20,19 +20,16 @@ export default function ProfessionalsDemo() {
         .then(res => res.json())
         .then(data => {
           setPreviewData(data);
-          console.log('Loaded preview data:', data);
         })
-        .catch(err => console.log('Preview data not loaded:', err));
+        .catch(err => console.error('Preview data not loaded:', err));
     } else {
       // Load default configuration
       fetch('/api/config/default')
         .then(res => res.json())
         .then(data => {
           setSavedConfig(data);
-          console.log('Loaded saved config:', data);
-          console.log('Profile image in saved config:', data.profileImage);
         })
-        .catch(err => console.log('Config not loaded:', err));
+        .catch(err => console.error('Config not loaded:', err));
     }
   }, []);
 
@@ -350,12 +347,7 @@ export default function ProfessionalsDemo() {
                     className="w-100 h-100"
                     style={{ objectFit: 'cover' }}
                     onError={(e) => {
-                      console.log('Profile image failed to load:', e.target.src);
-                      console.log('savedConfig.profileImage:', savedConfig?.profileImage);
-                      console.log('previewData?.profileImage:', previewData?.profileImage);
-                    }}
-                    onLoad={() => {
-                      console.log('Profile image loaded successfully:', previewData?.profileImage || previewData?.photo_url || savedConfig?.profileImage);
+                      e.target.src = "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business";
                     }}
                   />
                 </div>
@@ -408,12 +400,15 @@ export default function ProfessionalsDemo() {
           <div className="row g-4">
             {(() => {
               // Get services from saved config, or use defaults
-              const services = savedConfig?.services || [
+              const savedServices = savedConfig?.services || [];
+              const defaultServices = [
                 { name: 'Consulta General', description: 'Atención médica integral para toda la familia' },
                 { name: 'Medicina Preventiva', description: 'Chequeos regulares y programas de prevención' },
                 { name: 'Pediatría', description: 'Cuidado especializado para niños y adolescentes' },
                 { name: 'Geriatría', description: 'Atención especializada para adultos mayores' }
               ];
+              
+              const services = savedServices.length > 0 ? savedServices : defaultServices;
               
               return services.map((service, index) => (
                 <div key={index} className="col-lg-6">
@@ -437,7 +432,7 @@ export default function ProfessionalsDemo() {
                             {service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}
                           </h5>
                           <p className="text-muted">
-                            {service.description ? (language === 'es' ? service.description.es : service.description.en) : service.description}
+                            {service.description && typeof service.description === 'object' ? (language === 'es' ? service.description.es : service.description.en) : service.description}
                           </p>
                         </div>
                       </div>
@@ -761,44 +756,7 @@ export default function ProfessionalsDemo() {
         </div>
       )}
 
-      {/* Editor Test Section - Shows saved configuration data */}
-      {savedConfig && (
-        <div className="py-4" style={{ backgroundColor: '#FFC107', opacity: 0.1 }}>
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-lg-10">
-                <div className="bg-white rounded p-4 shadow-sm">
-                  <h4 className="fw-bold text-center mb-4" style={{ color: '#C8102E' }}>
-                    Editor Test - Professionals Template
-                  </h4>
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <div className="card border-0 bg-light">
-                        <div className="card-body">
-                          <h6 className="card-title text-primary">Saved Contact Info</h6>
-                          <p className="card-text small">Phone: {savedConfig.phone || 'Not set'}</p>
-                          <p className="card-text small">Email: {savedConfig.email || 'Not set'}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="card border-0 bg-light">
-                        <div className="card-body">
-                          <h6 className="card-title text-primary">Saved Text Content</h6>
-                          <p className="card-text small">About Text: {savedConfig.translations?.es?.aboutText || 'Not set'}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-center mt-3">
-                    <small className="text-muted">Editor changes appear here after saving</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }
