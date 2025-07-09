@@ -59,6 +59,38 @@ export const websiteConfigs = pgTable("website_configs", {
     en: Record<string, string>;
     es: Record<string, string>;
   }>(),
+  // Professional template specific fields
+  doctorName: text("doctor_name"),
+  businessName: text("business_name"),
+  specialty: json("specialty").$type<{
+    es: string;
+    en: string;
+  }>(),
+  heroTitle: json("hero_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  heroSubtitle: json("hero_subtitle").$type<{
+    es: string;
+    en: string;
+  }>(),
+  heroDescription: json("hero_description").$type<{
+    es: string;
+    en: string;
+  }>(),
+  aboutTitle: json("about_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  aboutText: json("about_text").$type<{
+    es: string;
+    en: string;
+  }>(),
+  servicesTitle: json("services_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  
   // Business-specific data
   services: json("services").$type<Array<{
     name: string;
