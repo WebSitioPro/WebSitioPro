@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send, Menu } from 'lucide-react';
+import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send, Menu, Settings, Eye, Briefcase, UtensilsCrossed, ShoppingBag, Wrench, Users, ChevronRight, Plus } from 'lucide-react';
 
 export default function HomePage() {
   const [language, setLanguage] = useState('es');
@@ -345,7 +345,7 @@ export default function HomePage() {
                   <>
                     <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Main Site Editor</Link>
                     <Link className="text-decoration-none fw-bold" href="/editor/clients" style={{ color: 'hsl(var(--info))' }}>Client Manager</Link>
-                    <Link className="text-decoration-none fw-bold" href="/template-editor" style={{ color: 'hsl(var(--info))' }}>Template Editor</Link>
+                    <a className="text-decoration-none fw-bold" href="#template-manager" style={{ color: 'hsl(var(--info))' }}>Template Manager</a>
                   </>
                 )}
               </div>
@@ -687,6 +687,240 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Template Manager - Development Only */}
+      {import.meta.env.DEV && (
+        <section id="template-manager" className="py-5">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-10">
+                <div className="text-center mb-5">
+                  <h2 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                    {language === 'es' ? 'Gestor de Plantillas Profesionales' : 'Professional Template Manager'}
+                  </h2>
+                  <p className="lead text-muted">
+                    {language === 'es' ? 
+                      'Crea, edita y gestiona plantillas profesionales para diferentes tipos de negocio.' : 
+                      'Create, edit and manage professional templates for different business types.'}
+                  </p>
+                </div>
+
+                {/* Template Editor Cards */}
+                <div className="row g-4 mb-5">
+                  {[
+                    {
+                      id: 'professionals',
+                      name: language === 'es' ? 'Profesionales' : 'Professionals',
+                      description: language === 'es' ? 
+                        'Perfecto para doctores, abogados, consultores y profesionales médicos' : 
+                        'Perfect for doctors, lawyers, consultants and medical professionals',
+                      icon: Briefcase,
+                      demoUrl: '/professionals-demo',
+                      editorUrl: '/editor/professionals',
+                      color: '#C8102E'
+                    },
+                    {
+                      id: 'restaurants',
+                      name: language === 'es' ? 'Restaurantes' : 'Restaurants',
+                      description: language === 'es' ? 
+                        'Ideal para restaurantes, cafés, servicios alimentarios y negocios culinarios' : 
+                        'Ideal for restaurants, cafes, food services and culinary businesses',
+                      icon: UtensilsCrossed,
+                      demoUrl: '/restaurants-demo',
+                      editorUrl: '/editor/restaurants',
+                      color: '#FF6B35'
+                    },
+                    {
+                      id: 'tourism',
+                      name: language === 'es' ? 'Turismo' : 'Tourism',
+                      description: language === 'es' ? 
+                        'Genial para tours, hoteles, agencias de viajes y servicios turísticos' : 
+                        'Great for tours, hotels, travel agencies and tourism services',
+                      icon: MapPin,
+                      demoUrl: '/tourism-demo',
+                      editorUrl: '/editor/tourism',
+                      color: '#00A859'
+                    },
+                    {
+                      id: 'retail',
+                      name: language === 'es' ? 'Retail' : 'Retail',
+                      description: language === 'es' ? 
+                        'Perfecto para tiendas, boutiques, tiendas minoristas y comercio en línea' : 
+                        'Perfect for shops, boutiques, retail stores and online commerce',
+                      icon: ShoppingBag,
+                      demoUrl: '/retail-demo',
+                      editorUrl: '/editor/retail',
+                      color: '#007ACC'
+                    },
+                    {
+                      id: 'services',
+                      name: language === 'es' ? 'Servicios' : 'Services',
+                      description: language === 'es' ? 
+                        'Ideal para plomeros, electricistas, servicios de reparación y servicios domésticos' : 
+                        'Ideal for plumbers, electricians, repair services and home services',
+                      icon: Wrench,
+                      demoUrl: '/services-demo',
+                      editorUrl: '/editor/services',
+                      color: '#6C5CE7'
+                    }
+                  ].map((template) => {
+                    const IconComponent = template.icon;
+                    return (
+                      <div key={template.id} className="col-lg-6">
+                        <div className="card h-100 shadow-sm border-0">
+                          <div className="card-body p-4">
+                            <div className="d-flex align-items-start mb-3">
+                              <div 
+                                className="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                style={{ 
+                                  width: '60px', 
+                                  height: '60px', 
+                                  backgroundColor: `${template.color}20`,
+                                  border: `2px solid ${template.color}30`
+                                }}
+                              >
+                                <IconComponent 
+                                  size={28} 
+                                  style={{ color: template.color }}
+                                />
+                              </div>
+                              <div className="flex-grow-1">
+                                <h5 className="card-title mb-2">{template.name}</h5>
+                                <p className="card-text text-muted small">{template.description}</p>
+                              </div>
+                            </div>
+                            
+                            <div className="d-flex gap-2 mt-3">
+                              <button 
+                                className="btn btn-outline-primary btn-sm flex-fill"
+                                onClick={() => window.open(template.demoUrl, '_blank')}
+                              >
+                                <Eye size={16} className="me-2" />
+                                {language === 'es' ? 'Vista Previa' : 'Preview'}
+                              </button>
+                              <Link 
+                                href={template.editorUrl}
+                                className="btn btn-primary btn-sm flex-fill text-decoration-none"
+                              >
+                                <Settings size={16} className="me-2" />
+                                {language === 'es' ? 'Editar' : 'Edit'}
+                                <ChevronRight size={16} className="ms-2" />
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Client Management & Generator */}
+                <div className="row g-4">
+                  <div className="col-lg-6">
+                    <div className="card shadow-sm border-0 h-100">
+                      <div className="card-body p-4 text-center">
+                        <div className="mb-3">
+                          <Users size={48} style={{ color: 'hsl(var(--secondary))' }} />
+                        </div>
+                        <h5 className="card-title">
+                          {language === 'es' ? 'Gestor de Clientes' : 'Client Manager'}
+                        </h5>
+                        <p className="card-text text-muted mb-4">
+                          {language === 'es' ? 
+                            'Gestiona todas las configuraciones de sitios web de clientes en un solo lugar.' : 
+                            'Manage all client website configurations in one place.'}
+                        </p>
+                        <Link 
+                          href="/editor/clients"
+                          className="btn btn-success text-decoration-none"
+                          style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                        >
+                          <Users size={16} className="me-2" />
+                          {language === 'es' ? 'Abrir Gestor' : 'Open Manager'}
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="col-lg-6">
+                    <div className="card shadow-sm border-0 h-100">
+                      <div className="card-body p-4 text-center">
+                        <div className="mb-3">
+                          <Plus size={48} style={{ color: 'hsl(var(--primary))' }} />
+                        </div>
+                        <h5 className="card-title">
+                          {language === 'es' ? 'Generador de Sitios' : 'Website Generator'}
+                        </h5>
+                        <p className="card-text text-muted mb-4">
+                          {language === 'es' ? 
+                            'Crea nuevos sitios web automáticamente y añádelos al gestor de clientes.' : 
+                            'Create new websites automatically and add them to the client manager.'}
+                        </p>
+                        <button 
+                          className="btn btn-primary"
+                          style={{ backgroundColor: 'hsl(var(--primary))' }}
+                          onClick={() => {
+                            // Generate function - creates a new client with sample data
+                            const generateNewClient = async () => {
+                              const newClientId = `client-${Date.now()}`;
+                              const sampleData = {
+                                name: `Website ${newClientId}`,
+                                templateType: 'professionals',
+                                primaryColor: '#C8102E',
+                                secondaryColor: '#00A859',
+                                phone: '+52 983 123 4567',
+                                email: 'info@example.com',
+                                whatsappNumber: '529831234567',
+                                heroImage: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80',
+                                translations: {
+                                  es: {
+                                    heroHeadline: 'Sitio Web Profesional',
+                                    heroSubheadline: 'Creado con WebSitioPro',
+                                    aboutTitle: 'Acerca de Nosotros',
+                                    aboutText: 'Somos una empresa profesional comprometida con la excelencia.'
+                                  },
+                                  en: {
+                                    heroHeadline: 'Professional Website',
+                                    heroSubheadline: 'Created with WebSitioPro',
+                                    aboutTitle: 'About Us',
+                                    aboutText: 'We are a professional company committed to excellence.'
+                                  }
+                                }
+                              };
+                              
+                              try {
+                                const response = await fetch(`/api/config/${newClientId}`, {
+                                  method: 'PUT',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify(sampleData)
+                                });
+                                
+                                if (response.ok) {
+                                  alert(`${language === 'es' ? 'Nuevo sitio web generado' : 'New website generated'}: ${newClientId}`);
+                                  window.open(`/editor/clients`, '_blank');
+                                } else {
+                                  alert(`${language === 'es' ? 'Error al generar sitio web' : 'Error generating website'}`);
+                                }
+                              } catch (error) {
+                                alert(`${language === 'es' ? 'Error de conexión' : 'Connection error'}`);
+                              }
+                            };
+                            
+                            generateNewClient();
+                          }}
+                        >
+                          <Plus size={16} className="me-2" />
+                          {language === 'es' ? 'Generar Sitio' : 'Generate Site'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* What We Offer */}
       <section id="offerings" className="py-5">
