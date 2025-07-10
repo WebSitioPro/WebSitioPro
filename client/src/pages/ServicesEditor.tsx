@@ -92,30 +92,35 @@ export default function ServicesEditor() {
             <button 
               className="btn btn-success"
               onClick={async () => {
-                const newClientId = `services-${Date.now()}`;
+                const timestamp = Date.now();
                 const clientData = {
                   ...websiteData,
-                  name: `Services Client ${newClientId}`,
-                  id: newClientId
+                  name: `Services Client ${timestamp}`,
+                  businessName: websiteData.businessName || `Services Business ${timestamp}`,
+                  templateType: 'services'
                 };
                 
                 try {
-                  const response = await fetch(`/api/config/${newClientId}`, {
-                    method: 'PUT',
+                  const response = await fetch('/api/config', {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(clientData)
                   });
                   
                   if (response.ok) {
+                    const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New services client created: ${newClientId}`,
+                      description: `New services client created with ID: ${result.id}`,
                     });
                     window.open('/editor/clients', '_blank');
                   } else {
-                    throw new Error('Failed to create client');
+                    const errorData = await response.json();
+                    console.error('API Error:', errorData);
+                    throw new Error(errorData.error || 'Failed to create client');
                   }
                 } catch (error) {
+                  console.error('Generate client error:', error);
                   toast({
                     title: "Error",
                     description: "Failed to create new client",

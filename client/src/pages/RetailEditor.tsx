@@ -92,30 +92,35 @@ export default function RetailEditor() {
             <button 
               className="btn btn-success"
               onClick={async () => {
-                const newClientId = `retail-${Date.now()}`;
+                const timestamp = Date.now();
                 const clientData = {
                   ...websiteData,
-                  name: `Retail Client ${newClientId}`,
-                  id: newClientId
+                  name: `Retail Client ${timestamp}`,
+                  businessName: websiteData.businessName || `Retail Business ${timestamp}`,
+                  templateType: 'retail'
                 };
                 
                 try {
-                  const response = await fetch(`/api/config/${newClientId}`, {
-                    method: 'PUT',
+                  const response = await fetch('/api/config', {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(clientData)
                   });
                   
                   if (response.ok) {
+                    const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New retail client created: ${newClientId}`,
+                      description: `New retail client created with ID: ${result.id}`,
                     });
                     window.open('/editor/clients', '_blank');
                   } else {
-                    throw new Error('Failed to create client');
+                    const errorData = await response.json();
+                    console.error('API Error:', errorData);
+                    throw new Error(errorData.error || 'Failed to create client');
                   }
                 } catch (error) {
+                  console.error('Generate client error:', error);
                   toast({
                     title: "Error",
                     description: "Failed to create new client",
