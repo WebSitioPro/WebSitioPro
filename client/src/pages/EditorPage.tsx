@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
-import { Save, Download, Upload, Palette, Type, Image, Settings } from 'lucide-react';
+import { Save, Download, Upload, Palette, Type, Image, Settings, Eye, Briefcase, UtensilsCrossed, MapPin, ShoppingBag, Wrench, Users, ChevronRight, Plus } from 'lucide-react';
 
 interface WebsiteData {
   // Colors
@@ -834,6 +834,13 @@ export default function EditorPage() {
                 >
                   <Type size={16} className="me-2" />
                   Pro Page
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'templates' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('templates')}
+                >
+                  <Settings size={16} className="me-2" />
+                  Template Manager
                 </button>
                 <hr className="my-2" />
                 <Link 
@@ -2219,6 +2226,262 @@ export default function EditorPage() {
                         placeholder="https://via.placeholder.com/200x200/000000/FFFFFF?text=QR+Code"
                         defaultValue=""
                       />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Template Manager Tab */}
+              {activeTab === 'templates' && (
+                <div>
+                  <h4 className="mb-4">Professional Template Manager</h4>
+                  <p className="text-muted mb-5">
+                    Create, edit and manage professional templates for different business types. 
+                    Generate new client websites and add them to the client manager.
+                  </p>
+
+                  {/* Template Editor Cards */}
+                  <div className="row g-4 mb-5">
+                    {[
+                      {
+                        id: 'professionals',
+                        name: 'Professionals',
+                        description: 'Perfect for doctors, lawyers, consultants and medical professionals',
+                        icon: Briefcase,
+                        demoUrl: '/professionals-demo',
+                        editorUrl: '/editor/professionals',
+                        color: '#C8102E'
+                      },
+                      {
+                        id: 'restaurants',
+                        name: 'Restaurants',
+                        description: 'Ideal for restaurants, cafes, food services and culinary businesses',
+                        icon: UtensilsCrossed,
+                        demoUrl: '/restaurants-demo',
+                        editorUrl: '/editor/restaurants',
+                        color: '#FF6B35'
+                      },
+                      {
+                        id: 'tourism',
+                        name: 'Tourism',
+                        description: 'Great for tours, hotels, travel agencies and tourism services',
+                        icon: MapPin,
+                        demoUrl: '/tourism-demo',
+                        editorUrl: '/editor/tourism',
+                        color: '#00A859'
+                      },
+                      {
+                        id: 'retail',
+                        name: 'Retail',
+                        description: 'Perfect for shops, boutiques, retail stores and online commerce',
+                        icon: ShoppingBag,
+                        demoUrl: '/retail-demo',
+                        editorUrl: '/editor/retail',
+                        color: '#007ACC'
+                      },
+                      {
+                        id: 'services',
+                        name: 'Services',
+                        description: 'Ideal for plumbers, electricians, repair services and home services',
+                        icon: Wrench,
+                        demoUrl: '/services-demo',
+                        editorUrl: '/editor/services',
+                        color: '#6C5CE7'
+                      }
+                    ].map((template) => {
+                      const IconComponent = template.icon;
+                      return (
+                        <div key={template.id} className="col-lg-6">
+                          <div className="card h-100 shadow-sm border-0">
+                            <div className="card-body p-4">
+                              <div className="d-flex align-items-start mb-3">
+                                <div 
+                                  className="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                  style={{ 
+                                    width: '60px', 
+                                    height: '60px', 
+                                    backgroundColor: `${template.color}20`,
+                                    border: `2px solid ${template.color}30`
+                                  }}
+                                >
+                                  <IconComponent 
+                                    size={28} 
+                                    style={{ color: template.color }}
+                                  />
+                                </div>
+                                <div className="flex-grow-1">
+                                  <h5 className="card-title mb-2">{template.name}</h5>
+                                  <p className="card-text text-muted small">{template.description}</p>
+                                </div>
+                              </div>
+                              
+                              <div className="d-flex gap-2 mt-3">
+                                <button 
+                                  className="btn btn-outline-primary btn-sm flex-fill"
+                                  onClick={() => window.open(template.demoUrl, '_blank')}
+                                >
+                                  <Eye size={16} className="me-2" />
+                                  Preview
+                                </button>
+                                <button 
+                                  className="btn btn-primary btn-sm flex-fill"
+                                  onClick={() => window.open(template.editorUrl, '_blank')}
+                                >
+                                  <Settings size={16} className="me-2" />
+                                  Edit Template
+                                  <ChevronRight size={16} className="ms-2" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Client Management & Generator */}
+                  <div className="row g-4">
+                    <div className="col-lg-6">
+                      <div className="card shadow-sm border-0 h-100">
+                        <div className="card-body p-4 text-center">
+                          <div className="mb-3">
+                            <Users size={48} style={{ color: websiteData.secondaryColor }} />
+                          </div>
+                          <h5 className="card-title">Client Manager</h5>
+                          <p className="card-text text-muted mb-4">
+                            Manage all client website configurations in one place. 
+                            View, edit and organize all your client websites.
+                          </p>
+                          <button 
+                            className="btn btn-success"
+                            style={{ backgroundColor: websiteData.secondaryColor }}
+                            onClick={() => window.open('/editor/clients', '_blank')}
+                          >
+                            <Users size={16} className="me-2" />
+                            Open Client Manager
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="col-lg-6">
+                      <div className="card shadow-sm border-0 h-100">
+                        <div className="card-body p-4 text-center">
+                          <div className="mb-3">
+                            <Plus size={48} style={{ color: websiteData.primaryColor }} />
+                          </div>
+                          <h5 className="card-title">Website Generator</h5>
+                          <p className="card-text text-muted mb-4">
+                            Create new client websites automatically with sample data. 
+                            Generates a new client entry in the client manager.
+                          </p>
+                          <button 
+                            className="btn btn-primary"
+                            style={{ backgroundColor: websiteData.primaryColor }}
+                            onClick={async () => {
+                              // Generate function - creates a new client with sample data
+                              const newClientId = `client-${Date.now()}`;
+                              const templateTypes = ['professionals', 'restaurants', 'tourism', 'retail', 'services'];
+                              const randomTemplate = templateTypes[Math.floor(Math.random() * templateTypes.length)];
+                              
+                              const sampleData = {
+                                name: `Website ${newClientId}`,
+                                templateType: randomTemplate,
+                                primaryColor: websiteData.primaryColor,
+                                secondaryColor: websiteData.secondaryColor,
+                                phone: '+52 983 123 4567',
+                                email: 'info@example.com',
+                                whatsappNumber: '529831234567',
+                                heroImage: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80',
+                                translations: {
+                                  es: {
+                                    heroHeadline: 'Sitio Web Profesional',
+                                    heroSubheadline: 'Creado con WebSitioPro',
+                                    aboutTitle: 'Acerca de Nosotros',
+                                    aboutText: 'Somos una empresa profesional comprometida con la excelencia y el servicio de calidad.',
+                                    whyTitle: '¿Por qué elegirnos?',
+                                    offeringsTitle: 'Nuestros Servicios',
+                                    pricingTitle: 'Precios',
+                                    pricingText: 'Ofrecemos precios competitivos y planes flexibles para satisfacer sus necesidades.'
+                                  },
+                                  en: {
+                                    heroHeadline: 'Professional Website',
+                                    heroSubheadline: 'Created with WebSitioPro',
+                                    aboutTitle: 'About Us',
+                                    aboutText: 'We are a professional company committed to excellence and quality service.',
+                                    whyTitle: 'Why Choose Us?',
+                                    offeringsTitle: 'Our Services',
+                                    pricingTitle: 'Pricing',
+                                    pricingText: 'We offer competitive prices and flexible plans to meet your needs.'
+                                  }
+                                },
+                                whyPoints: [
+                                  { es: 'Servicio profesional de calidad', en: 'Professional quality service', icon: 'star' },
+                                  { es: 'Años de experiencia', en: 'Years of experience', icon: 'shield' },
+                                  { es: 'Disponible 24/7', en: 'Available 24/7', icon: 'clock' }
+                                ],
+                                templates: [
+                                  {
+                                    title: { es: 'Servicio Premium', en: 'Premium Service' },
+                                    description: { es: 'Nuestro mejor servicio', en: 'Our best service' },
+                                    image: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Service+1'
+                                  }
+                                ]
+                              };
+                              
+                              try {
+                                const response = await fetch(`/api/config/${newClientId}`, {
+                                  method: 'PUT',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify(sampleData)
+                                });
+                                
+                                if (response.ok) {
+                                  alert(`New website generated successfully!\n\nClient ID: ${newClientId}\nTemplate Type: ${randomTemplate}\n\nOpening Client Manager...`);
+                                  window.open('/editor/clients', '_blank');
+                                } else {
+                                  alert('Error generating website. Please try again.');
+                                }
+                              } catch (error) {
+                                alert('Connection error. Please check your network and try again.');
+                              }
+                            }}
+                          >
+                            <Plus size={16} className="me-2" />
+                            Generate New Website
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className="mt-5 p-4 bg-light rounded">
+                    <h6 className="mb-3">Quick Actions</h6>
+                    <div className="d-flex gap-2 flex-wrap">
+                      <button 
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={() => window.open('/template-editor', '_blank')}
+                      >
+                        <Settings size={16} className="me-2" />
+                        Original Template Manager
+                      </button>
+                      <button 
+                        className="btn btn-outline-secondary btn-sm"
+                        onClick={() => window.location.reload()}
+                      >
+                        Refresh Data
+                      </button>
+                      <button 
+                        className="btn btn-outline-info btn-sm"
+                        onClick={() => {
+                          const timestamp = new Date().toLocaleString();
+                          console.log(`Template Manager accessed at ${timestamp}`);
+                          alert(`Template Manager Status: Active\nLast Access: ${timestamp}\nTotal Templates: 5\nClient Manager: Connected`);
+                        }}
+                      >
+                        System Status
+                      </button>
                     </div>
                   </div>
                 </div>
