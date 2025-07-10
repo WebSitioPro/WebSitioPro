@@ -12,7 +12,7 @@ import RestaurantsDemo from "@/pages/RestaurantsDemo";
 import TourismDemo from "@/pages/TourismDemo";
 import RetailDemo from "@/pages/RetailDemo";
 import ServicesDemo from "@/pages/ServicesDemo";
-import TemplateTools from "@/pages/TemplateTools";
+
 import ClientSelectorPage from "@/pages/ClientSelectorPage";
 import TemplateEditor from "@/pages/TemplateEditor";
 import ProfessionalsEditor from "@/pages/ProfessionalsEditor";
@@ -34,7 +34,7 @@ function Router() {
       <Route path="/tourism-demo" component={TourismDemo} />
       <Route path="/retail-demo" component={RetailDemo} />
       <Route path="/services-demo" component={ServicesDemo} />
-      <Route path="/editor/tools" component={TemplateTools} />
+
       <Route path="/template-editor" component={TemplateEditor} />
       <Route path="/editor/professionals" component={ProfessionalsEditor} />
       <Route path="/editor/restaurants" component={RestaurantsEditor} />

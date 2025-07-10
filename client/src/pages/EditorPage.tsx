@@ -814,6 +814,27 @@ export default function EditorPage() {
                   <Settings size={16} className="me-2" />
                   Contact Info
                 </button>
+                
+                {/* Separator for Backend Tools */}
+                <hr className="my-2" />
+                <small className="text-muted px-3 mb-2 d-block">Backend Tools</small>
+                
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'templates' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('templates')}
+                  style={{ 
+                    backgroundColor: activeTab === 'templates' ? '#C8102E' : '#f8f9fa',
+                    color: activeTab === 'templates' ? 'white' : '#C8102E',
+                    border: '1px solid #C8102E'
+                  }}
+                >
+                  <Settings size={16} className="me-2" />
+                  🚀 Template Manager
+                </button>
+                
+                <hr className="my-2" />
+                <small className="text-muted px-3 mb-2 d-block">Advanced</small>
+                
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'footer' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('footer')}
@@ -834,13 +855,6 @@ export default function EditorPage() {
                 >
                   <Type size={16} className="me-2" />
                   Pro Page
-                </button>
-                <button 
-                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'templates' ? 'active fw-bold' : ''}`}
-                  onClick={() => setActiveTab('templates')}
-                >
-                  <Settings size={16} className="me-2" />
-                  Template Manager
                 </button>
 
               </nav>
