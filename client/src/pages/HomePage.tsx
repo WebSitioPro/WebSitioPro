@@ -343,9 +343,7 @@ export default function HomePage() {
                 <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
                 {import.meta.env.DEV && (
                   <>
-                    <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>Main Site Editor</Link>
-                    <Link className="text-decoration-none fw-bold" href="/editor/clients" style={{ color: 'hsl(var(--info))' }}>Client Manager</Link>
-                    <Link className="text-decoration-none fw-bold" href="/template-editor" style={{ color: 'hsl(var(--info))' }}>Template Manager</Link>
+                    <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: 'hsl(var(--info))' }}>WebSitioPro Editor</Link>
                   </>
                 )}
               </div>

@@ -842,23 +842,7 @@ export default function EditorPage() {
                   <Settings size={16} className="me-2" />
                   Template Manager
                 </button>
-                <hr className="my-2" />
-                <Link 
-                  href="/editor/clients"
-                  className="nav-link text-start border-0 bg-transparent text-white mb-2"
-                  style={{ backgroundColor: '#00A859' }}
-                >
-                  <Settings size={16} className="me-2" />
-                  Client Manager
-                </Link>
-                <Link 
-                  href="/editor/tools"
-                  className="nav-link text-start border-0 bg-transparent text-white"
-                  style={{ backgroundColor: '#C8102E' }}
-                >
-                  <Settings size={16} className="me-2" />
-                  Template Editor
-                </Link>
+
               </nav>
             </div>
           </div>
@@ -2459,13 +2443,6 @@ export default function EditorPage() {
                   <div className="mt-5 p-4 bg-light rounded">
                     <h6 className="mb-3">Quick Actions</h6>
                     <div className="d-flex gap-2 flex-wrap">
-                      <button 
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => window.open('/template-editor', '_blank')}
-                      >
-                        <Settings size={16} className="me-2" />
-                        Original Template Manager
-                      </button>
                       <button 
                         className="btn btn-outline-secondary btn-sm"
                         onClick={() => window.location.reload()}

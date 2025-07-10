@@ -115,6 +115,15 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 10, 2025. Integrated Template Manager into WebSitioPro Editor
+  - Removed redundant Template Manager and Client Manager links from homepage header
+  - Removed old Template Editor links from WebSitioPro Editor sidebar
+  - Added new "Template Manager" tab to WebSitioPro Editor with complete template management
+  - Template Manager includes all 5 professional templates with preview and edit functionality
+  - Added website generator function to create new clients with sample data
+  - Integrated client manager access directly within template manager
+  - Clean navigation with single "WebSitioPro Editor" link in development header
+  - Template Manager now serves as backend testing feature within main editor
 - July 09, 2025. Added About/Description Content Areas to All Templates
   - Added comprehensive About sections to all 4 templates (Restaurants, Tourism, Retail, Services)
   - Added "About" navigation links to all template navigation menus (desktop and mobile)
