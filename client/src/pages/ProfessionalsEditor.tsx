@@ -423,10 +423,11 @@ export default function ProfessionalsEditor() {
               className="btn btn-success"
               onClick={async () => {
                 const timestamp = Date.now();
+                const doctorName = websiteData.doctorName || websiteData.businessName || `Dr. Professional ${timestamp}`;
                 const clientData = {
                   ...websiteData,
-                  name: `Professional Client ${timestamp}`,
-                  businessName: websiteData.businessName || `Professional Business ${timestamp}`,
+                  name: doctorName,
+                  businessName: doctorName,
                   templateType: 'professionals'
                 };
                 
@@ -441,7 +442,7 @@ export default function ProfessionalsEditor() {
                     const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New professional client created with ID: ${result.id}. Check the Client Manager to see the new client.`,
+                      description: `New professional client "${doctorName}" created with ID: ${result.id}. Check the Client Manager to see the new client.`,
                     });
                   } else {
                     const errorData = await response.json();

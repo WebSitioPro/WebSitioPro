@@ -335,7 +335,7 @@ export default function ClientSelectorPage() {
 
                         <div className="d-grid">
                           <Link 
-                            href={`/editor?client=${client.id}`}
+                            href={`/editor/${client.templateType}?client=${client.id}`}
                             className="btn btn-primary btn-sm"
                           >
                             <Edit size={16} className="me-1" />

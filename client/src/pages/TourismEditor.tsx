@@ -94,10 +94,11 @@ export default function TourismEditor() {
               className="btn btn-success"
               onClick={async () => {
                 const timestamp = Date.now();
+                const businessName = websiteData.businessName || websiteData.name || `Tourism Business ${timestamp}`;
                 const clientData = {
                   ...websiteData,
-                  name: `Tourism Client ${timestamp}`,
-                  businessName: websiteData.businessName || `Tourism Business ${timestamp}`,
+                  name: businessName,
+                  businessName: businessName,
                   templateType: 'tourism'
                 };
                 
@@ -112,7 +113,7 @@ export default function TourismEditor() {
                     const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New tourism client created with ID: ${result.id}. Check the Client Manager to see the new client.`,
+                      description: `New tourism client "${businessName}" created with ID: ${result.id}. Check the Client Manager to see the new client.`,
                     });
                   } else {
                     const errorData = await response.json();

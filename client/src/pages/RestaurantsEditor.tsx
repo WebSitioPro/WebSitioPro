@@ -205,10 +205,11 @@ export default function RestaurantsEditor() {
               className="btn btn-success"
               onClick={async () => {
                 const timestamp = Date.now();
+                const restaurantName = websiteData.businessName || websiteData.name || `Restaurant ${timestamp}`;
                 const clientData = {
                   ...websiteData,
-                  name: `Restaurant Client ${timestamp}`,
-                  businessName: websiteData.businessName || `Restaurant Business ${timestamp}`,
+                  name: restaurantName,
+                  businessName: restaurantName,
                   templateType: 'restaurants'
                 };
                 
@@ -223,7 +224,7 @@ export default function RestaurantsEditor() {
                     const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New restaurant client created with ID: ${result.id}. Check the Client Manager to see the new client.`,
+                      description: `New restaurant client "${restaurantName}" created with ID: ${result.id}. Check the Client Manager to see the new client.`,
                     });
                   } else {
                     const errorData = await response.json();

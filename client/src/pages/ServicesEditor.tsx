@@ -93,10 +93,11 @@ export default function ServicesEditor() {
               className="btn btn-success"
               onClick={async () => {
                 const timestamp = Date.now();
+                const businessName = websiteData.businessName || websiteData.name || `Services Business ${timestamp}`;
                 const clientData = {
                   ...websiteData,
-                  name: `Services Client ${timestamp}`,
-                  businessName: websiteData.businessName || `Services Business ${timestamp}`,
+                  name: businessName,
+                  businessName: businessName,
                   templateType: 'services'
                 };
                 
@@ -111,7 +112,7 @@ export default function ServicesEditor() {
                     const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New services client created with ID: ${result.id}. Check the Client Manager to see the new client.`,
+                      description: `New services client "${businessName}" created with ID: ${result.id}. Check the Client Manager to see the new client.`,
                     });
                   } else {
                     const errorData = await response.json();

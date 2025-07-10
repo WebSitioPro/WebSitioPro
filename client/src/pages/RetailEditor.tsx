@@ -93,10 +93,11 @@ export default function RetailEditor() {
               className="btn btn-success"
               onClick={async () => {
                 const timestamp = Date.now();
+                const businessName = websiteData.businessName || websiteData.name || `Retail Business ${timestamp}`;
                 const clientData = {
                   ...websiteData,
-                  name: `Retail Client ${timestamp}`,
-                  businessName: websiteData.businessName || `Retail Business ${timestamp}`,
+                  name: businessName,
+                  businessName: businessName,
                   templateType: 'retail'
                 };
                 
@@ -111,7 +112,7 @@ export default function RetailEditor() {
                     const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New retail client created with ID: ${result.id}. Check the Client Manager to see the new client.`,
+                      description: `New retail client "${businessName}" created with ID: ${result.id}. Check the Client Manager to see the new client.`,
                     });
                   } else {
                     const errorData = await response.json();
