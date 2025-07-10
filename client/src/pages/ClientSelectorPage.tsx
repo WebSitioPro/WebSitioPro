@@ -41,19 +41,19 @@ export default function ClientSelectorPage() {
   const loadClients = async () => {
     setIsLoading(true);
     try {
-      // Load templates from the new template system
-      const response = await fetch('/api/templates');
+      // Load clients from the configs endpoint (where template editors create clients)
+      const response = await fetch('/api/configs');
       if (response.ok) {
-        const templates = await response.json();
+        const configs = await response.json();
         
-        const clientList: ClientInfo[] = templates.map((template: TemplateData) => ({
-          id: template.templateId,
-          name: template.clientName || template.businessName || 'Unnamed Client',
-          templateType: template.templateType || 'professionals',
-          businessName: template.businessName || '',
-          lastModified: template.lastModified || template.createdAt,
-          createdAt: template.createdAt,
-          templateId: template.templateId
+        const clientList: ClientInfo[] = configs.map((config: any) => ({
+          id: config.id?.toString() || 'unknown',
+          name: config.name || 'Unnamed Client',
+          templateType: config.templateType || 'professionals',
+          businessName: config.businessName || config.name || '',
+          lastModified: config.lastModified || config.createdAt || new Date().toISOString(),
+          createdAt: config.createdAt || new Date().toISOString(),
+          templateId: config.id?.toString() || 'unknown'
         }));
 
         setClients(clientList);
@@ -104,7 +104,7 @@ export default function ClientSelectorPage() {
     }
 
     try {
-      const response = await fetch(`/api/templates/${clientId}`, {
+      const response = await fetch(`/api/config/${clientId}`, {
         method: 'DELETE',
       });
 
@@ -335,7 +335,7 @@ export default function ClientSelectorPage() {
 
                         <div className="d-grid">
                           <Link 
-                            href={`/editor/template/${client.templateId}`}
+                            href={`/editor?client=${client.id}`}
                             className="btn btn-primary btn-sm"
                           >
                             <Edit size={16} className="me-1" />

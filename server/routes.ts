@@ -9,6 +9,16 @@ import { generateStaticFiles } from "./templateGenerator";
 import { registerAgentRoutes } from "./agent-routes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // API route for getting all website configurations (for client manager)
+  app.get("/api/configs", async (_req: Request, res: Response) => {
+    try {
+      const configs = await storage.getAllWebsiteConfigs();
+      res.json(configs);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch website configurations" });
+    }
+  });
+
   // API route for getting the default website configuration
   app.get("/api/config", async (_req: Request, res: Response) => {
     try {
