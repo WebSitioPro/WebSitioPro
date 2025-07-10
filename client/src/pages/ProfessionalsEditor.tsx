@@ -441,9 +441,8 @@ export default function ProfessionalsEditor() {
                     const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New professional client created with ID: ${result.id}`,
+                      description: `New professional client created with ID: ${result.id}. Check the Client Manager to see the new client.`,
                     });
-                    window.open('/editor/clients', '_blank');
                   } else {
                     const errorData = await response.json();
                     console.error('API Error:', errorData);

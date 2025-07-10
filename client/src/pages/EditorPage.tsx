@@ -2306,7 +2306,10 @@ export default function EditorPage() {
                                 </button>
                                 <button 
                                   className="btn btn-primary btn-sm flex-fill"
-                                  onClick={() => window.open(template.editorUrl, '_blank')}
+                                  onClick={() => {
+                                    // Navigate within the same window instead of opening new window
+                                    window.location.href = template.editorUrl;
+                                  }}
                                 >
                                   <Settings size={16} className="me-2" />
                                   Edit Template
@@ -2336,7 +2339,10 @@ export default function EditorPage() {
                           <button 
                             className="btn btn-success"
                             style={{ backgroundColor: websiteData.secondaryColor }}
-                            onClick={() => window.open('/editor/clients', '_blank')}
+                            onClick={() => {
+                              // Navigate within the same window instead of opening new window
+                              window.location.href = '/editor/clients';
+                            }}
                           >
                             <Users size={16} className="me-2" />
                             Open Client Manager
@@ -2418,8 +2424,8 @@ export default function EditorPage() {
                                 });
                                 
                                 if (response.ok) {
-                                  alert(`New website generated successfully!\n\nClient ID: ${newClientId}\nTemplate Type: ${randomTemplate}\n\nOpening Client Manager...`);
-                                  window.open('/editor/clients', '_blank');
+                                  alert(`New website generated successfully!\n\nClient ID: ${newClientId}\nTemplate Type: ${randomTemplate}\n\nNavigating to Client Manager...`);
+                                  window.location.href = '/editor/clients';
                                 } else {
                                   alert('Error generating website. Please try again.');
                                 }
