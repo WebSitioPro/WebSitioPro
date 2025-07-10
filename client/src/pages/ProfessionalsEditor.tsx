@@ -420,6 +420,44 @@ export default function ProfessionalsEditor() {
           </div>
           <div className="d-flex align-items-center gap-2">
             <button 
+              className="btn btn-success"
+              onClick={async () => {
+                const newClientId = `professional-${Date.now()}`;
+                const clientData = {
+                  ...websiteData,
+                  name: `Professional Client ${newClientId}`,
+                  id: newClientId
+                };
+                
+                try {
+                  const response = await fetch(`/api/config/${newClientId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(clientData)
+                  });
+                  
+                  if (response.ok) {
+                    toast({
+                      title: "Success",
+                      description: `New professional client created: ${newClientId}`,
+                    });
+                    window.open('/editor/clients', '_blank');
+                  } else {
+                    throw new Error('Failed to create client');
+                  }
+                } catch (error) {
+                  toast({
+                    title: "Error",
+                    description: "Failed to create new client",
+                    variant: "destructive",
+                  });
+                }
+              }}
+            >
+              <Plus size={16} className="me-2" />
+              Generate Client
+            </button>
+            <button 
               className="btn btn-outline-primary"
               onClick={handlePreview}
             >
