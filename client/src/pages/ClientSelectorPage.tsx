@@ -46,15 +46,31 @@ export default function ClientSelectorPage() {
       if (response.ok) {
         const configs = await response.json();
         
-        const clientList: ClientInfo[] = configs.map((config: any) => ({
-          id: config.id?.toString() || 'unknown',
-          name: config.name || 'Unnamed Client',
-          templateType: config.templateType || 'professionals',
-          businessName: config.businessName || config.name || '',
-          lastModified: config.lastModified || config.createdAt || new Date().toISOString(),
-          createdAt: config.createdAt || new Date().toISOString(),
-          templateId: config.id?.toString() || 'unknown'
-        }));
+        const clientList: ClientInfo[] = configs.map((config: any) => {
+          // Use the correct field names based on template type
+          let displayName = config.name || 'Unnamed Client';
+          let businessName = config.name || '';
+          
+          // Handle different template types properly
+          if (config.templateType === 'professionals') {
+            displayName = config.doctorName || config.name || 'Unnamed Professional';
+            businessName = config.doctorName || config.name || '';
+          } else {
+            // For all other template types, use businessName
+            displayName = config.businessName || config.name || `Unnamed ${config.templateType || 'Business'}`;
+            businessName = config.businessName || config.name || '';
+          }
+          
+          return {
+            id: config.id?.toString() || 'unknown',
+            name: displayName,
+            templateType: config.templateType || 'professionals',
+            businessName: businessName,
+            lastModified: config.lastModified || config.createdAt || new Date().toISOString(),
+            createdAt: config.createdAt || new Date().toISOString(),
+            templateId: config.id?.toString() || 'unknown'
+          };
+        });
 
         setClients(clientList);
       } else {
