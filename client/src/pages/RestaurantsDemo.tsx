@@ -142,7 +142,7 @@ export default function RestaurantsDemo() {
 
     return updatedTranslations[language][key as keyof typeof updatedTranslations['es']] || key;
   };
-  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
+  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj?.[language] || '';
 
   const toggleLanguage = () => {
     setLanguage(language === 'es' ? 'en' : 'es');
@@ -377,7 +377,13 @@ export default function RestaurantsDemo() {
             {t('reviewsTitle')}
           </h2>
           <div className="row g-4 justify-content-center">
-            {mockRestaurantData.reviews.map((review, index) => (
+            {(() => {
+              // Use reviews from saved config first, then fall back to mock data
+              const reviews = savedConfig?.reviews?.length > 0 
+                ? savedConfig.reviews 
+                : mockRestaurantData.reviews;
+              
+              return reviews.map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
@@ -397,7 +403,8 @@ export default function RestaurantsDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -453,7 +460,7 @@ export default function RestaurantsDemo() {
                         <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Teléfono</h6>
-                          <p className="mb-0 text-muted">{t('phone')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.phone || t('phone')}</p>
                         </div>
                       </div>
                     </div>
@@ -462,7 +469,7 @@ export default function RestaurantsDemo() {
                         <Mail className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Email</h6>
-                          <p className="mb-0 text-muted">{t('email')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.email || t('email')}</p>
                         </div>
                       </div>
                     </div>
@@ -471,7 +478,7 @@ export default function RestaurantsDemo() {
                         <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Dirección</h6>
-                          <p className="mb-0 text-muted">{t('address')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.address?.[language] || t('address')}</p>
                         </div>
                       </div>
                     </div>
@@ -480,8 +487,8 @@ export default function RestaurantsDemo() {
                         <Clock className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">{t('hours')}</h6>
-                          <p className="mb-1 text-muted">{t('mondayFriday')}</p>
-                          <p className="mb-0 text-muted">{t('saturday')}</p>
+                          <p className="mb-1 text-muted">{savedConfig?.officeHours?.mondayFriday?.[language] || t('mondayFriday')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.officeHours?.saturday?.[language] || t('saturday')}</p>
                         </div>
                       </div>
                     </div>
@@ -489,7 +496,7 @@ export default function RestaurantsDemo() {
                   
                   <div className="mt-4">
                     <a 
-                      href={`https://wa.me/${mockRestaurantData.whatsappNumber}?text=Hola, me gustaría hacer una reservación`}
+                      href={`https://wa.me/${savedConfig?.whatsappNumber || mockRestaurantData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue(savedConfig?.whatsappMessage || mockRestaurantData.whatsappMessage))}`}
                       className="btn w-100 text-white mb-2"
                       style={{ backgroundColor: '#25D366' }}
                       target="_blank"
@@ -498,9 +505,9 @@ export default function RestaurantsDemo() {
                       <Phone size={16} className="me-2" />
                       {t('whatsappButton')}
                     </a>
-                    {mockRestaurantData.socialLink && (
+                    {(savedConfig?.socialLink || mockRestaurantData.socialLink) && (
                       <a 
-                        href={mockRestaurantData.socialLink}
+                        href={savedConfig?.socialLink || mockRestaurantData.socialLink}
                         className="btn btn-outline-primary w-100"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -521,7 +528,7 @@ export default function RestaurantsDemo() {
                   </h6>
                   <div className="ratio ratio-16x9">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
+                      src={savedConfig?.googleMapsEmbed || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"}
                       style={{ border: 0, borderRadius: '8px' }}
                       allowFullScreen
                       loading="lazy"
@@ -530,7 +537,7 @@ export default function RestaurantsDemo() {
                   </div>
                   <div className="mt-3">
                     <small className="text-muted">
-                      {t('address')}
+                      {savedConfig?.address?.[language] || t('address')}
                     </small>
                   </div>
                 </div>
@@ -552,7 +559,7 @@ export default function RestaurantsDemo() {
         <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <h5>{mockRestaurantData.businessName}</h5>
+              <h5>{savedConfig?.businessName || mockRestaurantData.businessName}</h5>
               <p className="mb-0">AI-optimized for speed and search</p>
             </div>
             <div className="col-md-6 text-md-end">

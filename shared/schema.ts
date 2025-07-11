@@ -15,16 +15,28 @@ export const websiteConfigs = pgTable("website_configs", {
   showDomainButton: boolean("show_domain_button").default(true),
   showChatbot: boolean("show_chatbot").default(true),
   whatsappNumber: text("whatsapp_number"),
-  whatsappMessage: text("whatsapp_message"),
+  whatsappMessage: json("whatsapp_message").$type<{
+    es: string;
+    en: string;
+  }>(),
   facebookUrl: text("facebook_url"),
   socialLink: text("social_link"),
   googleMapsEmbed: text("google_maps_embed"),
-  address: text("address"),
+  address: json("address").$type<{
+    es: string;
+    en: string;
+  }>(),
   phone: text("phone"),
   email: text("email"),
   officeHours: json("office_hours").$type<{
-    mondayToFriday: string;
-    saturday: string;
+    mondayFriday: {
+      es: string;
+      en: string;
+    };
+    saturday: {
+      es: string;
+      en: string;
+    };
   }>(),
   analyticsCode: text("analytics_code"),
   primaryColor: text("primary_color").default("#C8102E"),
