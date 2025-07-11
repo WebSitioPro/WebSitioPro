@@ -334,15 +334,19 @@ export default function RestaurantsDemo() {
             {t('menuTitle')}
           </h2>
           <div className="row g-4">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => {
-              const menuImage = savedConfig?.menuImages?.[index] || mockRestaurantData.menuImages[index] || `https://via.placeholder.com/400x600/00A859/FFFFFF?text=Menu+Page+${index + 1}`;
+            {(() => {
+              // Use menuPages from saved config first, then fall back to mock data
+              const menuPages = savedConfig?.menuPages || mockRestaurantData.menuImages.map((url, index) => ({
+                url: url,
+                title: { es: `Página de Menú ${index + 1}`, en: `Menu Page ${index + 1}` }
+              }));
               
-              return (
+              return menuPages.map((page, index) => (
                 <div key={index} className="col-md-4 col-sm-6">
                   <div className="card border-0 shadow-sm">
                     <img 
-                      src={menuImage} 
-                      alt={`Menu page ${index + 1}`} 
+                      src={page.url || `https://via.placeholder.com/400x600/00A859/FFFFFF?text=Menu+Page+${index + 1}`} 
+                      alt={page.title?.[language] || `Menu page ${index + 1}`} 
                       className="card-img-top menu-image"
                       style={{ 
                         height: '400px', 
@@ -351,10 +355,15 @@ export default function RestaurantsDemo() {
                         backgroundColor: '#f8f9fa'
                       }}
                     />
+                    {page.title && (
+                      <div className="card-body text-center">
+                        <h6 className="card-title mb-0">{page.title[language]}</h6>
+                      </div>
+                    )}
                   </div>
                 </div>
-              );
-            })}
+              ));
+            })()}
           </div>
         </div>
       </section>
