@@ -115,6 +115,15 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 11, 2025. Fixed Restaurant Template Dynamic Content Loading
+  - Fixed Restaurant template photos section to show only uploaded photos (not 12 static placeholders)
+  - Fixed Restaurant template menu pages to show only uploaded menu pages (not 9 static placeholders)
+  - Added menuPages field to database schema with proper structure (url + bilingual title)
+  - Updated photos section to use dynamic editor data instead of hardcoded array
+  - Templates now properly adjust to show 1-N photos/menu pages based on editor content
+  - Both menu pages and photos sections now correctly display editor changes immediately
+  - Removed hardcoded loops and replaced with dynamic data rendering
+  - Database schema migration applied successfully with npm run db:push
 - July 10, 2025. Integrated Template Manager into WebSitioPro Editor
   - Removed redundant Template Manager and Client Manager links from homepage header
   - Removed old Template Editor links from WebSitioPro Editor sidebar

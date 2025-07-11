@@ -409,10 +409,13 @@ export default function RestaurantsDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-3">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((index) => {
-              const photoUrl = savedConfig?.photos?.[index] || mockRestaurantData.photos[index] || `https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Restaurant+Photo+${index + 1}`;
+            {(() => {
+              // Use photos from saved config first, then fall back to mock data
+              const photos = savedConfig?.photos?.length > 0 
+                ? savedConfig.photos 
+                : mockRestaurantData.photos;
               
-              return (
+              return photos.map((photoUrl, index) => (
                 <div key={index} className="col-md-4 col-sm-6">
                   <img 
                     src={photoUrl} 
@@ -425,8 +428,8 @@ export default function RestaurantsDemo() {
                     }}
                   />
                 </div>
-              );
-            })}
+              ));
+            })()}
           </div>
         </div>
       </section>
