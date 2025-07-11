@@ -85,7 +85,7 @@ export default function RetailEditor() {
   };
 
   const handlePreview = () => {
-    window.open('/retail-demo', '_blank');
+    window.location.href = '/retail-demo';
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {

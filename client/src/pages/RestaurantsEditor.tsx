@@ -117,7 +117,12 @@ export default function RestaurantsEditor() {
             address: config.address || websiteData.address,
             whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
             menuPages: Array.isArray(config.menuPages) ? config.menuPages : websiteData.menuPages,
-            photos: Array.isArray(config.photos) ? config.photos : websiteData.photos,
+            photos: Array.isArray(config.photos) ? 
+              config.photos.map(photo => 
+                typeof photo === 'string' ? 
+                  { url: photo, caption: { es: '', en: '' } } : 
+                  photo
+              ) : websiteData.photos,
             reviews: Array.isArray(config.reviews) ? config.reviews : websiteData.reviews,
             officeHours: {
               mondayFriday: config.officeHours?.mondayFriday || websiteData.officeHours.mondayFriday,
@@ -138,10 +143,17 @@ export default function RestaurantsEditor() {
   const handleSave = async () => {
     try {
       setIsSaving(true);
+      
+      // Convert photos array to format expected by template
+      const processedData = {
+        ...websiteData,
+        photos: websiteData.photos.map(photo => photo.url).filter(url => url.trim() !== '')
+      };
+      
       const response = await fetch(`/api/config/${clientId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(websiteData),
+        body: JSON.stringify(processedData),
       });
       if (response.ok) {
         toast({ title: "Success", description: "Restaurant template saved successfully" });
@@ -156,7 +168,7 @@ export default function RestaurantsEditor() {
   };
 
   const handlePreview = () => {
-    window.open('/restaurants-demo', '_blank');
+    window.location.href = '/restaurants-demo';
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {

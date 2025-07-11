@@ -86,7 +86,7 @@ export default function TourismEditor() {
   };
 
   const handlePreview = () => {
-    window.open('/tourism-demo', '_blank');
+    window.location.href = '/tourism-demo';
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {

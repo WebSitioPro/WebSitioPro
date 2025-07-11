@@ -248,7 +248,7 @@ export default function ProfessionalsEditor() {
   };
 
   const handlePreview = () => {
-    window.open('/professionals-demo', '_blank');
+    window.location.href = '/professionals-demo';
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {

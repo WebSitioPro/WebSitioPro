@@ -85,7 +85,7 @@ export default function ServicesEditor() {
   };
 
   const handlePreview = () => {
-    window.open('/services-demo', '_blank');
+    window.location.href = '/services-demo';
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
