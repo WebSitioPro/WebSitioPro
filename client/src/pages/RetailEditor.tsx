@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
-import { Save, ArrowLeft, Eye, ShoppingBag, Image, Type, Palette } from 'lucide-react';
+import { Save, ArrowLeft, Eye, ShoppingBag, Image, Type, Palette, Plus } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 export default function RetailEditor() {

@@ -156,21 +156,139 @@ export default function RestaurantsEditor() {
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
     setWebsiteData(prev => {
       const newData = { ...prev };
-      const keys = path.split('.');
-      let current: any = newData;
-      
-      for (let i = 0; i < keys.length - 1; i++) {
-        current = current[keys[i]];
-      }
       
       if (language) {
-        current[keys[keys.length - 1]][language] = value;
+        // Handle bilingual fields
+        newData[path as keyof typeof newData] = {
+          ...newData[path as keyof typeof newData],
+          [language]: value
+        };
       } else {
-        current[keys[keys.length - 1]] = value;
+        // Handle regular fields
+        newData[path as keyof typeof newData] = value;
       }
       
       return newData;
     });
+  };
+
+  const handleServiceChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      services: prev.services.map((service, i) => {
+        if (i === index) {
+          if (language && (field === 'title' || field === 'description')) {
+            return {
+              ...service,
+              [field]: {
+                ...service[field as keyof typeof service],
+                [language]: value
+              }
+            };
+          } else {
+            return { ...service, [field]: value };
+          }
+        }
+        return service;
+      })
+    }));
+  };
+
+  const addService = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      services: [...prev.services, {
+        title: { es: '', en: '' },
+        description: { es: '', en: '' },
+        price: ''
+      }]
+    }));
+  };
+
+  const removeService = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      services: prev.services.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handlePhotoChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: prev.photos.map((photo, i) => {
+        if (i === index) {
+          if (language && field === 'caption') {
+            return {
+              ...photo,
+              caption: {
+                ...photo.caption,
+                [language]: value
+              }
+            };
+          } else {
+            return { ...photo, [field]: value };
+          }
+        }
+        return photo;
+      })
+    }));
+  };
+
+  const addPhoto = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: [...prev.photos, {
+        url: '',
+        caption: { es: '', en: '' }
+      }]
+    }));
+  };
+
+  const removePhoto = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleReviewChange = (index: number, field: string, value: string | number, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: prev.reviews.map((review, i) => {
+        if (i === index) {
+          if (language && field === 'text') {
+            return {
+              ...review,
+              text: {
+                ...review.text,
+                [language]: value as string
+              }
+            };
+          } else {
+            return { ...review, [field]: value };
+          }
+        }
+        return review;
+      })
+    }));
+  };
+
+  const addReview = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: [...prev.reviews, {
+        name: '',
+        rating: 5,
+        text: { es: '', en: '' }
+      }]
+    }));
+  };
+
+  const removeReview = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: prev.reviews.filter((_, i) => i !== index)
+    }));
   };
 
   if (isLoading) {
@@ -475,6 +593,240 @@ export default function RestaurantsEditor() {
                         </div>
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {activeTab === 'services' && (
+                  <div>
+                    <h5 className="mb-4">Menu Items</h5>
+                    {websiteData.services.map((service, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <h6>Spanish</h6>
+                              <div className="mb-3">
+                                <label className="form-label">Dish Name (Spanish)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={service.title.es}
+                                  onChange={(e) => handleServiceChange(index, 'title', e.target.value, 'es')}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Description (Spanish)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={3}
+                                  value={service.description.es}
+                                  onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'es')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <h6>English</h6>
+                              <div className="mb-3">
+                                <label className="form-label">Dish Name (English)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={service.title.en}
+                                  onChange={(e) => handleServiceChange(index, 'title', e.target.value, 'en')}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Description (English)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={3}
+                                  value={service.description.en}
+                                  onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'en')}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="mb-3">
+                                <label className="form-label">Price</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={service.price}
+                                  onChange={(e) => handleServiceChange(index, 'price', e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-6 d-flex align-items-end">
+                              <button 
+                                className="btn btn-danger"
+                                onClick={() => removeService(index)}
+                              >
+                                Remove Item
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button 
+                      className="btn btn-success"
+                      onClick={addService}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Menu Item
+                    </button>
+                  </div>
+                )}
+
+                {activeTab === 'photos' && (
+                  <div>
+                    <h5 className="mb-4">Photo Gallery</h5>
+                    {websiteData.photos.map((photo, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Photo URL</label>
+                                <input
+                                  type="url"
+                                  className="form-control"
+                                  value={photo.url}
+                                  onChange={(e) => handlePhotoChange(index, 'url', e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Caption (Spanish)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={photo.caption.es}
+                                  onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'es')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Caption (English)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={photo.caption.en}
+                                  onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'en')}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-6">
+                              <img 
+                                src={photo.url || 'https://via.placeholder.com/300x200'} 
+                                alt="Preview" 
+                                className="img-fluid rounded"
+                                style={{ maxHeight: '150px' }}
+                              />
+                            </div>
+                            <div className="col-md-6 d-flex align-items-end">
+                              <button 
+                                className="btn btn-danger"
+                                onClick={() => removePhoto(index)}
+                              >
+                                Remove Photo
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button 
+                      className="btn btn-success"
+                      onClick={addPhoto}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Photo
+                    </button>
+                  </div>
+                )}
+
+                {activeTab === 'reviews' && (
+                  <div>
+                    <h5 className="mb-4">Customer Reviews</h5>
+                    {websiteData.reviews.map((review, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Customer Name</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={review.name}
+                                  onChange={(e) => handleReviewChange(index, 'name', e.target.value)}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Rating</label>
+                                <select
+                                  className="form-select"
+                                  value={review.rating}
+                                  onChange={(e) => handleReviewChange(index, 'rating', parseInt(e.target.value))}
+                                >
+                                  <option value={5}>5 Stars</option>
+                                  <option value={4}>4 Stars</option>
+                                  <option value={3}>3 Stars</option>
+                                  <option value={2}>2 Stars</option>
+                                  <option value={1}>1 Star</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Review (Spanish)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={4}
+                                  value={review.text.es}
+                                  onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'es')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Review (English)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={4}
+                                  value={review.text.en}
+                                  onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'en')}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12 d-flex justify-content-end">
+                              <button 
+                                className="btn btn-danger"
+                                onClick={() => removeReview(index)}
+                              >
+                                Remove Review
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button 
+                      className="btn btn-success"
+                      onClick={addReview}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Review
+                    </button>
                   </div>
                 )}
 

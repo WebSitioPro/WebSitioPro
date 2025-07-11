@@ -244,10 +244,13 @@ export default function RestaurantsDemo() {
           <div className="row align-items-center">
             <div className="col-lg-8">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('businessName')}
+                {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || t('businessName')}
               </h1>
               <p className="lead mb-4 text-muted">
                 {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || getLocalizedValue(mockRestaurantData.intro)}
+              </p>
+              <p className="mb-4 text-muted">
+                {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
               </p>
               <a 
                 href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRestaurantData.whatsappNumber}?text=Hola, me gustaría hacer una reservación`}
@@ -262,9 +265,10 @@ export default function RestaurantsDemo() {
             </div>
             <div className="col-lg-4 text-center">
               <img 
-                src={savedConfig?.heroImage || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Restaurant+Logo"} 
+                src={savedConfig?.heroImage || "https://via.placeholder.com/500x400/C8102E/FFFFFF?text=Restaurant+Logo"} 
                 alt="Restaurant" 
                 className="img-fluid rounded shadow"
+                style={{ maxHeight: '400px', width: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>
@@ -277,7 +281,7 @@ export default function RestaurantsDemo() {
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('aboutTitle')}
+                {(savedConfig && savedConfig.aboutTitle && getLocalizedValue(savedConfig.aboutTitle)) || t('aboutTitle')}
               </h2>
               <p className="lead text-muted">
                 {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || 
