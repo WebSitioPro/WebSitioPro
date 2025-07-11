@@ -17,10 +17,9 @@ interface RestaurantsConfig {
   aboutTitle: { es: string; en: string };
   aboutText: { es: string; en: string };
   servicesTitle: { es: string; en: string };
-  services: Array<{
+  menuPages: Array<{
+    url: string;
     title: { es: string; en: string };
-    description: { es: string; en: string };
-    price: string;
   }>;
   photos: Array<{
     url: string;
@@ -65,11 +64,18 @@ export default function RestaurantsEditor() {
     aboutTitle: { es: 'Nuestra Historia', en: 'Our Story' },
     aboutText: { es: 'Desde 1985, ofrecemos la mejor comida mexicana...', en: 'Since 1985, we have been offering the best Mexican food...' },
     servicesTitle: { es: 'Nuestro Menú', en: 'Our Menu' },
-    services: [
+    menuPages: [
       {
-        title: { es: 'Tacos al Pastor', en: 'Al Pastor Tacos' },
-        description: { es: 'Deliciosos tacos con carne al pastor', en: 'Delicious tacos with al pastor meat' },
-        price: '$120'
+        url: 'https://via.placeholder.com/400x600/FF6B35/FFFFFF?text=Menu+Page+1',
+        title: { es: 'Página de Menú 1', en: 'Menu Page 1' }
+      },
+      {
+        url: 'https://via.placeholder.com/400x600/FF6B35/FFFFFF?text=Menu+Page+2',
+        title: { es: 'Página de Menú 2', en: 'Menu Page 2' }
+      },
+      {
+        url: 'https://via.placeholder.com/400x600/FF6B35/FFFFFF?text=Menu+Page+3',
+        title: { es: 'Página de Menú 3', en: 'Menu Page 3' }
       }
     ],
     photos: [],
@@ -110,7 +116,7 @@ export default function RestaurantsEditor() {
             servicesTitle: config.servicesTitle || websiteData.servicesTitle,
             address: config.address || websiteData.address,
             whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
-            services: Array.isArray(config.services) ? config.services : websiteData.services,
+            menuPages: Array.isArray(config.menuPages) ? config.menuPages : websiteData.menuPages,
             photos: Array.isArray(config.photos) ? config.photos : websiteData.photos,
             reviews: Array.isArray(config.reviews) ? config.reviews : websiteData.reviews,
             officeHours: {
@@ -172,43 +178,42 @@ export default function RestaurantsEditor() {
     });
   };
 
-  const handleServiceChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+  const handleMenuPageChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
-      services: prev.services.map((service, i) => {
+      menuPages: prev.menuPages.map((page, i) => {
         if (i === index) {
-          if (language && (field === 'title' || field === 'description')) {
+          if (language && field === 'title') {
             return {
-              ...service,
-              [field]: {
-                ...service[field as keyof typeof service],
+              ...page,
+              title: {
+                ...page.title,
                 [language]: value
               }
             };
           } else {
-            return { ...service, [field]: value };
+            return { ...page, [field]: value };
           }
         }
-        return service;
+        return page;
       })
     }));
   };
 
-  const addService = () => {
+  const addMenuPage = () => {
     setWebsiteData(prev => ({
       ...prev,
-      services: [...prev.services, {
-        title: { es: '', en: '' },
-        description: { es: '', en: '' },
-        price: ''
+      menuPages: [...prev.menuPages, {
+        url: '',
+        title: { es: '', en: '' }
       }]
     }));
   };
 
-  const removeService = (index: number) => {
+  const removeMenuPage = (index: number) => {
     setWebsiteData(prev => ({
       ...prev,
-      services: prev.services.filter((_, i) => i !== index)
+      menuPages: prev.menuPages.filter((_, i) => i !== index)
     }));
   };
 
@@ -406,11 +411,11 @@ export default function RestaurantsEditor() {
                   About Section
                 </button>
                 <button 
-                  className={`list-group-item list-group-item-action ${activeTab === 'services' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('services')}
+                  className={`list-group-item list-group-item-action ${activeTab === 'menu' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('menu')}
                 >
                   <UtensilsCrossed size={16} className="me-2" />
-                  Menu Items
+                  Menu Pages
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}
@@ -596,75 +601,80 @@ export default function RestaurantsEditor() {
                   </div>
                 )}
 
-                {activeTab === 'services' && (
+                {activeTab === 'menu' && (
                   <div>
-                    <h5 className="mb-4">Menu Items</h5>
-                    {websiteData.services.map((service, index) => (
+                    <h5 className="mb-4">Menu Pages</h5>
+                    <div className="alert alert-info">
+                      <strong>Menu Pages:</strong> Upload photos of your menu pages. Each page will be displayed as a gallery in your restaurant website.
+                    </div>
+                    {websiteData.menuPages.map((page, index) => (
                       <div key={index} className="card mb-3">
                         <div className="card-body">
                           <div className="row">
-                            <div className="col-md-6">
-                              <h6>Spanish</h6>
+                            <div className="col-md-4">
                               <div className="mb-3">
-                                <label className="form-label">Dish Name (Spanish)</label>
+                                <label className="form-label">Menu Page Photo URL</label>
                                 <input
-                                  type="text"
+                                  type="url"
                                   className="form-control"
-                                  value={service.title.es}
-                                  onChange={(e) => handleServiceChange(index, 'title', e.target.value, 'es')}
-                                />
-                              </div>
-                              <div className="mb-3">
-                                <label className="form-label">Description (Spanish)</label>
-                                <textarea
-                                  className="form-control"
-                                  rows={3}
-                                  value={service.description.es}
-                                  onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'es')}
+                                  placeholder="https://example.com/menu-page.jpg"
+                                  value={page.url}
+                                  onChange={(e) => handleMenuPageChange(index, 'url', e.target.value)}
                                 />
                               </div>
                             </div>
-                            <div className="col-md-6">
-                              <h6>English</h6>
+                            <div className="col-md-4">
                               <div className="mb-3">
-                                <label className="form-label">Dish Name (English)</label>
+                                <label className="form-label">Title (Spanish)</label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={service.title.en}
-                                  onChange={(e) => handleServiceChange(index, 'title', e.target.value, 'en')}
+                                  placeholder="Página de Menú 1"
+                                  value={page.title.es}
+                                  onChange={(e) => handleMenuPageChange(index, 'title', e.target.value, 'es')}
                                 />
                               </div>
                               <div className="mb-3">
-                                <label className="form-label">Description (English)</label>
-                                <textarea
-                                  className="form-control"
-                                  rows={3}
-                                  value={service.description.en}
-                                  onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'en')}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-6">
-                              <div className="mb-3">
-                                <label className="form-label">Price</label>
+                                <label className="form-label">Title (English)</label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={service.price}
-                                  onChange={(e) => handleServiceChange(index, 'price', e.target.value)}
+                                  placeholder="Menu Page 1"
+                                  value={page.title.en}
+                                  onChange={(e) => handleMenuPageChange(index, 'title', e.target.value, 'en')}
                                 />
                               </div>
                             </div>
-                            <div className="col-md-6 d-flex align-items-end">
-                              <button 
-                                className="btn btn-danger"
-                                onClick={() => removeService(index)}
-                              >
-                                Remove Item
-                              </button>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Preview</label>
+                                <div className="border rounded p-2" style={{ height: '150px', overflow: 'hidden' }}>
+                                  {page.url ? (
+                                    <img 
+                                      src={page.url} 
+                                      alt="Menu page preview" 
+                                      className="img-fluid w-100 h-100" 
+                                      style={{ objectFit: 'cover' }}
+                                    />
+                                  ) : (
+                                    <div className="d-flex align-items-center justify-content-center h-100 text-muted">
+                                      <div className="text-center">
+                                        <UtensilsCrossed size={24} />
+                                        <p className="mb-0 small">No image</p>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="d-grid">
+                                <button 
+                                  className="btn btn-danger"
+                                  onClick={() => removeMenuPage(index)}
+                                >
+                                  <Trash2 size={16} className="me-2" />
+                                  Remove Page
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -672,10 +682,10 @@ export default function RestaurantsEditor() {
                     ))}
                     <button 
                       className="btn btn-success"
-                      onClick={addService}
+                      onClick={addMenuPage}
                     >
                       <Plus size={16} className="me-2" />
-                      Add Menu Item
+                      Add Menu Page
                     </button>
                   </div>
                 )}
