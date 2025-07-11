@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
-import { Save, ArrowLeft, Eye, MapPin, Camera, Phone, Star, Image, Type, Palette, Plus } from 'lucide-react';
+import { Save, ArrowLeft, Eye, MapPin, Camera, Phone, Star, Image, Type, Palette, Plus, Trash2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 export default function TourismEditor() {
@@ -26,6 +26,40 @@ export default function TourismEditor() {
     address: { es: 'Av. Tulum 123, Playa del Carmen, QR', en: 'Av. Tulum 123, Playa del Carmen, QR' },
     whatsappNumber: '529831234567',
     whatsappMessage: { es: 'Hola, me interesa un tour', en: 'Hello, I am interested in a tour' },
+    tours: [
+      {
+        name: { es: 'Tour Laguna de Bacalar', en: 'Bacalar Lagoon Tour' },
+        description: { es: 'Descubre la laguna de los siete colores', en: 'Discover the seven-color lagoon' },
+        price: '$850 MXN'
+      },
+      {
+        name: { es: 'Excursión Ruinas de Kohunlich', en: 'Kohunlich Ruins Excursion' },
+        description: { es: 'Explora las ruinas mayas milenarias', en: 'Explore the ancient Mayan ruins' },
+        price: '$1,200 MXN'
+      }
+    ],
+    photos: [
+      {
+        url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Bacalar+Lagoon',
+        caption: { es: 'Laguna de Bacalar', en: 'Bacalar Lagoon' }
+      },
+      {
+        url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Mayan+Ruins',
+        caption: { es: 'Ruinas Mayas', en: 'Mayan Ruins' }
+      }
+    ],
+    reviews: [
+      {
+        name: 'Jennifer Smith',
+        rating: 5,
+        text: { es: '¡Increíble experiencia en Bacalar! Guías muy profesionales y conocedores.', en: 'Amazing experience in Bacalar! Very professional and knowledgeable guides.' }
+      },
+      {
+        name: 'Roberto Martínez',
+        rating: 5,
+        text: { es: 'Tours bien organizados, precios justos. Recomendamos la excursión a Kohunlich.', en: 'Well-organized tours, fair prices. We recommend the Kohunlich excursion.' }
+      }
+    ],
   });
   
   const [isSaving, setIsSaving] = useState(false);
@@ -73,6 +107,125 @@ export default function TourismEditor() {
       
       return newData;
     });
+  };
+
+  const handleTourChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      tours: prev.tours.map((tour, i) => {
+        if (i === index) {
+          if (language && (field === 'name' || field === 'description')) {
+            return {
+              ...tour,
+              [field]: {
+                ...tour[field as keyof typeof tour],
+                [language]: value
+              }
+            };
+          } else {
+            return { ...tour, [field]: value };
+          }
+        }
+        return tour;
+      })
+    }));
+  };
+
+  const addTour = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      tours: [...prev.tours, {
+        name: { es: '', en: '' },
+        description: { es: '', en: '' },
+        price: ''
+      }]
+    }));
+  };
+
+  const removeTour = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      tours: prev.tours.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handlePhotoChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: prev.photos.map((photo, i) => {
+        if (i === index) {
+          if (language && field === 'caption') {
+            return {
+              ...photo,
+              caption: {
+                ...photo.caption,
+                [language]: value
+              }
+            };
+          } else {
+            return { ...photo, [field]: value };
+          }
+        }
+        return photo;
+      })
+    }));
+  };
+
+  const addPhoto = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: [...prev.photos, {
+        url: '',
+        caption: { es: '', en: '' }
+      }]
+    }));
+  };
+
+  const removePhoto = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleReviewChange = (index: number, field: string, value: string | number, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: prev.reviews.map((review, i) => {
+        if (i === index) {
+          if (language && field === 'text') {
+            return {
+              ...review,
+              text: {
+                ...review.text,
+                [language]: value as string
+              }
+            };
+          } else {
+            return { ...review, [field]: value };
+          }
+        }
+        return review;
+      })
+    }));
+  };
+
+  const addReview = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: [...prev.reviews, {
+        name: '',
+        rating: 5,
+        text: { es: '', en: '' }
+      }]
+    }));
+  };
+
+  const removeReview = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: prev.reviews.filter((_, i) => i !== index)
+    }));
   };
 
   return (
@@ -177,6 +330,27 @@ export default function TourismEditor() {
                   About Section
                 </button>
                 <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'tours' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('tours')}
+                >
+                  <MapPin size={16} className="me-2" />
+                  Tours & Packages
+                </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('photos')}
+                >
+                  <Camera size={16} className="me-2" />
+                  Photo Gallery
+                </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'reviews' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('reviews')}
+                >
+                  <Star size={16} className="me-2" />
+                  Reviews
+                </button>
+                <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'contact' ? 'active' : ''}`}
                   onClick={() => setActiveTab('contact')}
                 >
@@ -271,6 +445,325 @@ export default function TourismEditor() {
                             className="form-control"
                             value={websiteData.heroSubtitle.en}
                             onChange={(e) => handleInputChange('heroSubtitle', e.target.value, 'en')}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'about' && (
+                  <div>
+                    <h5 className="mb-4">About Section</h5>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <h6>Spanish Content</h6>
+                        <div className="mb-3">
+                          <label className="form-label">About Title (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.aboutTitle.es}
+                            onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'es')}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">About Text (Spanish)</label>
+                          <textarea
+                            className="form-control"
+                            rows={6}
+                            value={websiteData.aboutText.es}
+                            onChange={(e) => handleInputChange('aboutText', e.target.value, 'es')}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <h6>English Content</h6>
+                        <div className="mb-3">
+                          <label className="form-label">About Title (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.aboutTitle.en}
+                            onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'en')}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">About Text (English)</label>
+                          <textarea
+                            className="form-control"
+                            rows={6}
+                            value={websiteData.aboutText.en}
+                            onChange={(e) => handleInputChange('aboutText', e.target.value, 'en')}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'tours' && (
+                  <div>
+                    <h5 className="mb-4">Tours & Packages</h5>
+                    {websiteData.tours.map((tour, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Tour Name (Spanish)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.name.es}
+                                  onChange={(e) => handleTourChange(index, 'name', e.target.value, 'es')}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Tour Name (English)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.name.en}
+                                  onChange={(e) => handleTourChange(index, 'name', e.target.value, 'en')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Description (Spanish)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={3}
+                                  value={tour.description.es}
+                                  onChange={(e) => handleTourChange(index, 'description', e.target.value, 'es')}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Description (English)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={3}
+                                  value={tour.description.en}
+                                  onChange={(e) => handleTourChange(index, 'description', e.target.value, 'en')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Price</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.price}
+                                  onChange={(e) => handleTourChange(index, 'price', e.target.value)}
+                                />
+                              </div>
+                              <div className="d-grid">
+                                <button 
+                                  className="btn btn-danger"
+                                  onClick={() => removeTour(index)}
+                                >
+                                  Remove Tour
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button 
+                      className="btn btn-success"
+                      onClick={addTour}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Tour
+                    </button>
+                  </div>
+                )}
+
+                {activeTab === 'photos' && (
+                  <div>
+                    <h5 className="mb-4">Photo Gallery</h5>
+                    {websiteData.photos.map((photo, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Photo URL</label>
+                                <input
+                                  type="url"
+                                  className="form-control"
+                                  value={photo.url}
+                                  onChange={(e) => handlePhotoChange(index, 'url', e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Caption (Spanish)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={photo.caption.es}
+                                  onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'es')}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Caption (English)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={photo.caption.en}
+                                  onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'en')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <img 
+                                  src={photo.url || 'https://via.placeholder.com/300x200'} 
+                                  alt="Preview" 
+                                  className="img-fluid rounded"
+                                  style={{ maxHeight: '150px' }}
+                                />
+                              </div>
+                              <div className="d-grid">
+                                <button 
+                                  className="btn btn-danger"
+                                  onClick={() => removePhoto(index)}
+                                >
+                                  Remove Photo
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button 
+                      className="btn btn-success"
+                      onClick={addPhoto}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Photo
+                    </button>
+                  </div>
+                )}
+
+                {activeTab === 'reviews' && (
+                  <div>
+                    <h5 className="mb-4">Customer Reviews</h5>
+                    {websiteData.reviews.map((review, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Customer Name</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={review.name}
+                                  onChange={(e) => handleReviewChange(index, 'name', e.target.value)}
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Rating</label>
+                                <select
+                                  className="form-select"
+                                  value={review.rating}
+                                  onChange={(e) => handleReviewChange(index, 'rating', parseInt(e.target.value))}
+                                >
+                                  <option value={5}>5 Stars</option>
+                                  <option value={4}>4 Stars</option>
+                                  <option value={3}>3 Stars</option>
+                                  <option value={2}>2 Stars</option>
+                                  <option value={1}>1 Star</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Review (Spanish)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={4}
+                                  value={review.text.es}
+                                  onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'es')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Review (English)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={4}
+                                  value={review.text.en}
+                                  onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'en')}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12 d-flex justify-content-end">
+                              <button 
+                                className="btn btn-danger"
+                                onClick={() => removeReview(index)}
+                              >
+                                Remove Review
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button 
+                      className="btn btn-success"
+                      onClick={addReview}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Review
+                    </button>
+                  </div>
+                )}
+                
+                {activeTab === 'colors' && (
+                  <div>
+                    <h5 className="mb-4">Colors & Branding</h5>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Primary Color</label>
+                          <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={websiteData.primaryColor}
+                            onChange={(e) => handleInputChange('primaryColor', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Secondary Color</label>
+                          <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={websiteData.secondaryColor}
+                            onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Accent Color</label>
+                          <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={websiteData.accentColor}
+                            onChange={(e) => handleInputChange('accentColor', e.target.value)}
                           />
                         </div>
                       </div>

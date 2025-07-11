@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
-import { Save, ArrowLeft, Eye, Wrench, Image, Type, Palette, Plus } from 'lucide-react';
+import { Save, ArrowLeft, Eye, Wrench, Camera, Phone, Star, Image, Type, Palette, Plus, Trash2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 export default function ServicesEditor() {
@@ -26,6 +26,40 @@ export default function ServicesEditor() {
     address: { es: 'Av. Insurgentes 123, Chetumal, QR', en: 'Av. Insurgentes 123, Chetumal, QR' },
     whatsappNumber: '529831234567',
     whatsappMessage: { es: 'Hola, necesito un servicio técnico', en: 'Hello, I need technical service' },
+    services: [
+      {
+        name: { es: 'Reparaciones de Emergencia', en: 'Emergency Repairs' },
+        description: { es: 'Fugas, tuberías rotas, desagües tapados', en: 'Leaks, broken pipes, clogged drains' },
+        price: 'Desde $200 MXN'
+      },
+      {
+        name: { es: 'Instalaciones Nuevas', en: 'New Installations' },
+        description: { es: 'Baños completos, cocinas, calentadores', en: 'Complete bathrooms, kitchens, heaters' },
+        price: 'Cotización personalizada'
+      }
+    ],
+    photos: [
+      {
+        url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Plumbing+Work+1',
+        caption: { es: 'Trabajo de Plomería', en: 'Plumbing Work' }
+      },
+      {
+        url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Tools+Equipment',
+        caption: { es: 'Herramientas y Equipos', en: 'Tools and Equipment' }
+      }
+    ],
+    reviews: [
+      {
+        name: 'Luis Hernández',
+        rating: 5,
+        text: { es: 'Excelente servicio, llegaron rápido en una emergencia. Trabajo limpio y profesional.', en: 'Excellent service, arrived quickly in an emergency. Clean and professional work.' }
+      },
+      {
+        name: 'Sandra López',
+        rating: 5,
+        text: { es: 'Instalaron mi baño completo. Muy puntuales y precio justo. Altamente recomendados.', en: 'Installed my complete bathroom. Very punctual and fair price. Highly recommended.' }
+      }
+    ],
   });
   
   const [isSaving, setIsSaving] = useState(false);
@@ -72,6 +106,96 @@ export default function ServicesEditor() {
       
       return newData;
     });
+  };
+
+  const handleServiceChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      services: prev.services.map((service, i) => {
+        if (i === index) {
+          if (language && (field === 'name' || field === 'description')) {
+            return { ...service, [field]: { ...service[field as keyof typeof service], [language]: value } };
+          } else {
+            return { ...service, [field]: value };
+          }
+        }
+        return service;
+      })
+    }));
+  };
+
+  const addService = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      services: [...prev.services, { name: { es: '', en: '' }, description: { es: '', en: '' }, price: '' }]
+    }));
+  };
+
+  const removeService = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      services: prev.services.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handlePhotoChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: prev.photos.map((photo, i) => {
+        if (i === index) {
+          if (language && field === 'caption') {
+            return { ...photo, caption: { ...photo.caption, [language]: value } };
+          } else {
+            return { ...photo, [field]: value };
+          }
+        }
+        return photo;
+      })
+    }));
+  };
+
+  const addPhoto = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: [...prev.photos, { url: '', caption: { es: '', en: '' } }]
+    }));
+  };
+
+  const removePhoto = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleReviewChange = (index: number, field: string, value: string | number, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: prev.reviews.map((review, i) => {
+        if (i === index) {
+          if (language && field === 'text') {
+            return { ...review, text: { ...review.text, [language]: value as string } };
+          } else {
+            return { ...review, [field]: value };
+          }
+        }
+        return review;
+      })
+    }));
+  };
+
+  const addReview = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: [...prev.reviews, { name: '', rating: 5, text: { es: '', en: '' } }]
+    }));
+  };
+
+  const removeReview = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      reviews: prev.reviews.filter((_, i) => i !== index)
+    }));
   };
 
   return (
@@ -176,6 +300,34 @@ export default function ServicesEditor() {
                   About Section
                 </button>
                 <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'services' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('services')}
+                >
+                  <Wrench size={16} className="me-2" />
+                  Service Areas
+                </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('photos')}
+                >
+                  <Camera size={16} className="me-2" />
+                  Photo Gallery
+                </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'reviews' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('reviews')}
+                >
+                  <Star size={16} className="me-2" />
+                  Reviews
+                </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'contact' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('contact')}
+                >
+                  <Phone size={16} className="me-2" />
+                  Contact Info
+                </button>
+                <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'colors' ? 'active' : ''}`}
                   onClick={() => setActiveTab('colors')}
                 >
@@ -264,6 +416,227 @@ export default function ServicesEditor() {
                             value={websiteData.heroSubtitle.en}
                             onChange={(e) => handleInputChange('heroSubtitle', e.target.value, 'en')}
                           />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'about' && (
+                  <div>
+                    <h5 className="mb-4">About Section</h5>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <h6>Spanish Content</h6>
+                        <div className="mb-3">
+                          <label className="form-label">About Title (Spanish)</label>
+                          <input type="text" className="form-control" value={websiteData.aboutTitle.es} onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'es')} />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">About Text (Spanish)</label>
+                          <textarea className="form-control" rows={6} value={websiteData.aboutText.es} onChange={(e) => handleInputChange('aboutText', e.target.value, 'es')} />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <h6>English Content</h6>
+                        <div className="mb-3">
+                          <label className="form-label">About Title (English)</label>
+                          <input type="text" className="form-control" value={websiteData.aboutTitle.en} onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'en')} />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">About Text (English)</label>
+                          <textarea className="form-control" rows={6} value={websiteData.aboutText.en} onChange={(e) => handleInputChange('aboutText', e.target.value, 'en')} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'services' && (
+                  <div>
+                    <h5 className="mb-4">Service Areas</h5>
+                    {websiteData.services.map((service, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Service Name (Spanish)</label>
+                                <input type="text" className="form-control" value={service.name.es} onChange={(e) => handleServiceChange(index, 'name', e.target.value, 'es')} />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Service Name (English)</label>
+                                <input type="text" className="form-control" value={service.name.en} onChange={(e) => handleServiceChange(index, 'name', e.target.value, 'en')} />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Description (Spanish)</label>
+                                <textarea className="form-control" rows={3} value={service.description.es} onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'es')} />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Description (English)</label>
+                                <textarea className="form-control" rows={3} value={service.description.en} onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'en')} />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Price</label>
+                                <input type="text" className="form-control" value={service.price} onChange={(e) => handleServiceChange(index, 'price', e.target.value)} />
+                              </div>
+                              <div className="d-grid">
+                                <button className="btn btn-danger" onClick={() => removeService(index)}>Remove Service</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button className="btn btn-success" onClick={addService}>
+                      <Plus size={16} className="me-2" />Add Service
+                    </button>
+                  </div>
+                )}
+
+                {activeTab === 'photos' && (
+                  <div>
+                    <h5 className="mb-4">Photo Gallery</h5>
+                    {websiteData.photos.map((photo, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Photo URL</label>
+                                <input type="url" className="form-control" value={photo.url} onChange={(e) => handlePhotoChange(index, 'url', e.target.value)} />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Caption (Spanish)</label>
+                                <input type="text" className="form-control" value={photo.caption.es} onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'es')} />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Caption (English)</label>
+                                <input type="text" className="form-control" value={photo.caption.en} onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'en')} />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <img src={photo.url || 'https://via.placeholder.com/300x200'} alt="Preview" className="img-fluid rounded" style={{ maxHeight: '150px' }} />
+                              </div>
+                              <div className="d-grid">
+                                <button className="btn btn-danger" onClick={() => removePhoto(index)}>Remove Photo</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button className="btn btn-success" onClick={addPhoto}>
+                      <Plus size={16} className="me-2" />Add Photo
+                    </button>
+                  </div>
+                )}
+
+                {activeTab === 'reviews' && (
+                  <div>
+                    <h5 className="mb-4">Customer Reviews</h5>
+                    {websiteData.reviews.map((review, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Customer Name</label>
+                                <input type="text" className="form-control" value={review.name} onChange={(e) => handleReviewChange(index, 'name', e.target.value)} />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Rating</label>
+                                <select className="form-select" value={review.rating} onChange={(e) => handleReviewChange(index, 'rating', parseInt(e.target.value))}>
+                                  <option value={5}>5 Stars</option>
+                                  <option value={4}>4 Stars</option>
+                                  <option value={3}>3 Stars</option>
+                                  <option value={2}>2 Stars</option>
+                                  <option value={1}>1 Star</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Review (Spanish)</label>
+                                <textarea className="form-control" rows={4} value={review.text.es} onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'es')} />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Review (English)</label>
+                                <textarea className="form-control" rows={4} value={review.text.en} onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'en')} />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-12 d-flex justify-content-end">
+                              <button className="btn btn-danger" onClick={() => removeReview(index)}>Remove Review</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button className="btn btn-success" onClick={addReview}>
+                      <Plus size={16} className="me-2" />Add Review
+                    </button>
+                  </div>
+                )}
+
+                {activeTab === 'contact' && (
+                  <div>
+                    <h5 className="mb-4">Contact Information</h5>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">Phone Number</label>
+                          <input type="tel" className="form-control" value={websiteData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Email</label>
+                          <input type="email" className="form-control" value={websiteData.email} onChange={(e) => handleInputChange('email', e.target.value)} />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">Address (Spanish)</label>
+                          <input type="text" className="form-control" value={websiteData.address.es} onChange={(e) => handleInputChange('address', e.target.value, 'es')} />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Address (English)</label>
+                          <input type="text" className="form-control" value={websiteData.address.en} onChange={(e) => handleInputChange('address', e.target.value, 'en')} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'colors' && (
+                  <div>
+                    <h5 className="mb-4">Colors & Branding</h5>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Primary Color</label>
+                          <input type="color" className="form-control form-control-color" value={websiteData.primaryColor} onChange={(e) => handleInputChange('primaryColor', e.target.value)} />
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Secondary Color</label>
+                          <input type="color" className="form-control form-control-color" value={websiteData.secondaryColor} onChange={(e) => handleInputChange('secondaryColor', e.target.value)} />
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="mb-3">
+                          <label className="form-label">Accent Color</label>
+                          <input type="color" className="form-control form-control-color" value={websiteData.accentColor} onChange={(e) => handleInputChange('accentColor', e.target.value)} />
                         </div>
                       </div>
                     </div>
