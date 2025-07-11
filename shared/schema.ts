@@ -104,6 +104,13 @@ export const websiteConfigs = pgTable("website_configs", {
     icon?: string;
   }>>(),
   menuImages: json("menu_images").$type<string[]>().default([]),
+  menuPages: json("menu_pages").$type<Array<{
+    url: string;
+    title: {
+      es: string;
+      en: string;
+    };
+  }>>().default([]),
   tours: json("tours").$type<Array<{
     name: string;
     price: string;

@@ -336,10 +336,12 @@ export default function RestaurantsDemo() {
           <div className="row g-4">
             {(() => {
               // Use menuPages from saved config first, then fall back to mock data
-              const menuPages = savedConfig?.menuPages || mockRestaurantData.menuImages.map((url, index) => ({
-                url: url,
-                title: { es: `Página de Menú ${index + 1}`, en: `Menu Page ${index + 1}` }
-              }));
+              const menuPages = savedConfig?.menuPages?.length > 0 
+                ? savedConfig.menuPages 
+                : mockRestaurantData.menuImages.map((url, index) => ({
+                    url: url,
+                    title: { es: `Página de Menú ${index + 1}`, en: `Menu Page ${index + 1}` }
+                  }));
               
               return menuPages.map((page, index) => (
                 <div key={index} className="col-md-4 col-sm-6">
