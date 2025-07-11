@@ -163,7 +163,7 @@ export default function ServicesDemo() {
 
     return updatedTranslations[language][key as keyof typeof updatedTranslations['es']] || key;
   };
-  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
+  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj?.[language] || '';
 
   const toggleLanguage = () => {
     setLanguage(language === 'es' ? 'en' : 'es');
@@ -267,11 +267,12 @@ export default function ServicesDemo() {
                 {t('businessName')}
               </h1>
               <p className="lead mb-4 text-muted">
-                {getLocalizedValue(mockServicesData.intro)}
+                {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || 
+                 getLocalizedValue(mockServicesData.intro)}
               </p>
               <div className="d-flex flex-wrap gap-3">
                 <a 
-                  href={`https://wa.me/${mockServicesData.whatsappNumber}?text=Hola, necesito servicios de plomería`}
+                  href={`https://wa.me/${savedConfig?.whatsappNumber || mockServicesData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue(savedConfig?.whatsappMessage || { es: 'Hola, necesito servicios de plomería', en: 'Hello, I need plumbing services' }))}`}
                   className="btn btn-lg text-white"
                   style={{ backgroundColor: '#25D366' }}
                   target="_blank"
@@ -287,7 +288,7 @@ export default function ServicesDemo() {
             </div>
             <div className="col-lg-4 text-center">
               <img 
-                src="https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Plumbing+Logo" 
+                src={savedConfig?.profileImage || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Plumbing+Logo"} 
                 alt="Plumbing Services" 
                 className="img-fluid rounded shadow"
               />
@@ -355,19 +356,29 @@ export default function ServicesDemo() {
             {t('servicesTitle')}
           </h2>
           <div className="row g-4">
-            {mockServicesData.serviceAreas.map((service, index) => (
+            {(() => {
+              // Use services from saved config first, then fall back to mock data
+              const services = savedConfig?.services?.length > 0 
+                ? savedConfig.services 
+                : mockServicesData.serviceAreas.map(service => ({
+                    name: { es: service.name, en: service.name },
+                    description: { es: service.description, en: service.description },
+                    price: 'Cotización'
+                  }));
+              
+              return services.map((service, index) => (
               <div key={index} className="col-md-6 col-lg-4">
                 <div className="card border-0 shadow-sm h-100">
                   <div className="card-body p-4">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
                       <Wrench size={20} className="me-2" />
-                      {service.name}
+                      {service.name ? getLocalizedValue(service.name) : service.name}
                     </h5>
                     <p className="text-muted mb-4">
-                      {service.description}
+                      {service.description ? getLocalizedValue(service.description) : service.description}
                     </p>
                     <a 
-                      href={`https://wa.me/${mockServicesData.whatsappNumber}?text=Me interesa el servicio de ${service.name}`}
+                      href={`https://wa.me/${savedConfig?.whatsappNumber || mockServicesData.whatsappNumber}?text=Me interesa el servicio de ${service.name ? getLocalizedValue(service.name) : service.name}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -377,7 +388,8 @@ export default function ServicesDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -389,7 +401,13 @@ export default function ServicesDemo() {
             {t('reviewsTitle')}
           </h2>
           <div className="row g-4 justify-content-center">
-            {mockServicesData.reviews.map((review, index) => (
+            {(() => {
+              // Use reviews from saved config first, then fall back to mock data
+              const reviews = savedConfig?.reviews?.length > 0 
+                ? savedConfig.reviews 
+                : mockServicesData.reviews;
+              
+              return reviews.map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
@@ -409,7 +427,8 @@ export default function ServicesDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -421,10 +440,16 @@ export default function ServicesDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-3">
-            {mockServicesData.photos.slice(0, 12).map((photo, index) => (
+            {(() => {
+              // Use photos from saved config first, then fall back to mock data
+              const photos = savedConfig?.photos?.length > 0 
+                ? savedConfig.photos 
+                : mockServicesData.photos;
+              
+              return photos.map((photo, index) => (
               <div key={index} className="col-md-4 col-sm-6">
                 <img 
-                  src={photo} 
+                  src={typeof photo === 'string' ? photo : photo.url} 
                   alt={`Service photo ${index + 1}`} 
                   className="img-fluid rounded shadow-sm"
                   style={{ 
@@ -434,7 +459,8 @@ export default function ServicesDemo() {
                   }}
                 />
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -458,7 +484,7 @@ export default function ServicesDemo() {
                         <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Teléfono</h6>
-                          <p className="mb-0 text-muted">{t('phone')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.phone || t('phone')}</p>
                         </div>
                       </div>
                     </div>
@@ -467,7 +493,7 @@ export default function ServicesDemo() {
                         <Mail className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Email</h6>
-                          <p className="mb-0 text-muted">{t('email')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.email || t('email')}</p>
                         </div>
                       </div>
                     </div>
@@ -476,7 +502,7 @@ export default function ServicesDemo() {
                         <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Dirección</h6>
-                          <p className="mb-0 text-muted">{t('address')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.address?.[language] || t('address')}</p>
                         </div>
                       </div>
                     </div>
@@ -485,8 +511,8 @@ export default function ServicesDemo() {
                         <Clock className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">{t('hours')}</h6>
-                          <p className="mb-1 text-muted">{t('mondayFriday')}</p>
-                          <p className="mb-0 text-muted">{t('saturday')}</p>
+                          <p className="mb-1 text-muted">{savedConfig?.officeHours?.mondayFriday?.[language] || t('mondayFriday')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.officeHours?.saturday?.[language] || t('saturday')}</p>
                         </div>
                       </div>
                     </div>
@@ -494,7 +520,7 @@ export default function ServicesDemo() {
                   
                   <div className="mt-4">
                     <a 
-                      href={`https://wa.me/${mockServicesData.whatsappNumber}?text=Hola, necesito servicios de plomería`}
+                      href={`https://wa.me/${savedConfig?.whatsappNumber || mockServicesData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue(savedConfig?.whatsappMessage || { es: 'Hola, necesito servicios de plomería', en: 'Hello, I need plumbing services' }))}`}
                       className="btn w-100 text-white mb-2"
                       style={{ backgroundColor: '#25D366' }}
                       target="_blank"
@@ -503,9 +529,9 @@ export default function ServicesDemo() {
                       <Phone size={16} className="me-2" />
                       {t('whatsappButton')}
                     </a>
-                    {mockServicesData.socialLink && (
+                    {(savedConfig?.socialLink || mockServicesData.socialLink) && (
                       <a 
-                        href={mockServicesData.socialLink}
+                        href={savedConfig?.socialLink || mockServicesData.socialLink}
                         className="btn btn-outline-primary w-100"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -526,7 +552,7 @@ export default function ServicesDemo() {
                   </h6>
                   <div className="ratio ratio-16x9">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
+                      src={savedConfig?.googleMapsEmbed || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"}
                       style={{ border: 0, borderRadius: '8px' }}
                       allowFullScreen
                       loading="lazy"
@@ -535,7 +561,7 @@ export default function ServicesDemo() {
                   </div>
                   <div className="mt-3">
                     <small className="text-muted">
-                      {t('address')}
+                      {savedConfig?.address?.[language] || t('address')}
                     </small>
                   </div>
                 </div>
@@ -557,7 +583,7 @@ export default function ServicesDemo() {
         <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <h5>{t('businessName')}</h5>
+              <h5>{savedConfig?.businessName || t('businessName')}</h5>
               <p className="mb-0">AI-optimized for speed and search</p>
             </div>
             <div className="col-md-6 text-md-end">

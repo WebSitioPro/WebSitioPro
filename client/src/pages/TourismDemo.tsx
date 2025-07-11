@@ -153,7 +153,7 @@ export default function TourismDemo() {
 
     return updatedTranslations[language][key as keyof typeof updatedTranslations['es']] || key;
   };
-  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
+  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj?.[language] || '';
 
   const toggleLanguage = () => {
     setLanguage(language === 'es' ? 'en' : 'es');
@@ -254,13 +254,14 @@ export default function TourismDemo() {
           <div className="row align-items-center">
             <div className="col-lg-8">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {mockTourismData.businessName}
+                {t('businessName')}
               </h1>
               <p className="lead mb-4 text-muted">
-                {getLocalizedValue(mockTourismData.intro)}
+                {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || 
+                 getLocalizedValue(mockTourismData.intro)}
               </p>
               <a 
-                href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Hola, me gustaría información sobre sus tours`}
+                href={`https://wa.me/${savedConfig?.whatsappNumber || mockTourismData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue(savedConfig?.whatsappMessage || { es: 'Hola, me gustaría información sobre sus tours', en: 'Hello, I would like information about your tours' }))}`}
                 className="btn btn-lg text-white"
                 style={{ backgroundColor: '#25D366' }}
                 target="_blank"
@@ -272,7 +273,7 @@ export default function TourismDemo() {
             </div>
             <div className="col-lg-4 text-center">
               <img 
-                src="https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Tourism+Logo" 
+                src={savedConfig?.profileImage || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Tourism+Logo"} 
                 alt="Tourism" 
                 className="img-fluid rounded shadow"
               />
@@ -340,7 +341,16 @@ export default function TourismDemo() {
             {t('toursTitle')}
           </h2>
           <div className="row g-4">
-            {mockTourismData.tours.map((tour, index) => (
+            {(() => {
+              // Use tours/services from saved config first, then fall back to mock data
+              const tours = savedConfig?.services?.length > 0 
+                ? savedConfig.services.map(service => ({
+                    name: getLocalizedValue(service.name),
+                    price: service.price || 'Cotización'
+                  }))
+                : mockTourismData.tours;
+              
+              return tours.map((tour, index) => (
               <div key={index} className="col-md-6 col-lg-3">
                 <div className="card border-0 shadow-sm h-100">
                   <div className="card-body p-4 text-center">
@@ -354,7 +364,7 @@ export default function TourismDemo() {
                       </span>
                     </div>
                     <a 
-                      href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Me interesa el ${tour.name}`}
+                      href={`https://wa.me/${savedConfig?.whatsappNumber || mockTourismData.whatsappNumber}?text=Me interesa el ${tour.name}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -364,7 +374,8 @@ export default function TourismDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -376,7 +387,13 @@ export default function TourismDemo() {
             {t('reviewsTitle')}
           </h2>
           <div className="row g-4 justify-content-center">
-            {mockTourismData.reviews.map((review, index) => (
+            {(() => {
+              // Use reviews from saved config first, then fall back to mock data
+              const reviews = savedConfig?.reviews?.length > 0 
+                ? savedConfig.reviews 
+                : mockTourismData.reviews;
+              
+              return reviews.map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
@@ -396,7 +413,8 @@ export default function TourismDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -408,10 +426,16 @@ export default function TourismDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-3">
-            {mockTourismData.photos.slice(0, 12).map((photo, index) => (
+            {(() => {
+              // Use photos from saved config first, then fall back to mock data
+              const photos = savedConfig?.photos?.length > 0 
+                ? savedConfig.photos 
+                : mockTourismData.photos;
+              
+              return photos.map((photo, index) => (
               <div key={index} className="col-md-4 col-sm-6">
                 <img 
-                  src={photo} 
+                  src={typeof photo === 'string' ? photo : photo.url} 
                   alt={`Tourism photo ${index + 1}`} 
                   className="img-fluid rounded shadow-sm"
                   style={{ 
@@ -421,7 +445,8 @@ export default function TourismDemo() {
                   }}
                 />
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -445,7 +470,7 @@ export default function TourismDemo() {
                         <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Teléfono</h6>
-                          <p className="mb-0 text-muted">{t('phone')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.phone || t('phone')}</p>
                         </div>
                       </div>
                     </div>
@@ -454,7 +479,7 @@ export default function TourismDemo() {
                         <Mail className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Email</h6>
-                          <p className="mb-0 text-muted">{t('email')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.email || t('email')}</p>
                         </div>
                       </div>
                     </div>
@@ -463,7 +488,7 @@ export default function TourismDemo() {
                         <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">Dirección</h6>
-                          <p className="mb-0 text-muted">{t('address')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.address?.[language] || t('address')}</p>
                         </div>
                       </div>
                     </div>
@@ -472,8 +497,8 @@ export default function TourismDemo() {
                         <Clock className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
                           <h6 className="mb-0">{t('hours')}</h6>
-                          <p className="mb-1 text-muted">{t('mondayFriday')}</p>
-                          <p className="mb-0 text-muted">{t('saturday')}</p>
+                          <p className="mb-1 text-muted">{savedConfig?.officeHours?.mondayFriday?.[language] || t('mondayFriday')}</p>
+                          <p className="mb-0 text-muted">{savedConfig?.officeHours?.saturday?.[language] || t('saturday')}</p>
                         </div>
                       </div>
                     </div>
@@ -481,7 +506,7 @@ export default function TourismDemo() {
                   
                   <div className="mt-4">
                     <a 
-                      href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Hola, me gustaría información sobre sus tours`}
+                      href={`https://wa.me/${savedConfig?.whatsappNumber || mockTourismData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue(savedConfig?.whatsappMessage || { es: 'Hola, me gustaría información sobre sus tours', en: 'Hello, I would like information about your tours' }))}`}
                       className="btn w-100 text-white mb-2"
                       style={{ backgroundColor: '#25D366' }}
                       target="_blank"
@@ -490,9 +515,9 @@ export default function TourismDemo() {
                       <Phone size={16} className="me-2" />
                       {t('whatsappButton')}
                     </a>
-                    {mockTourismData.socialLink && (
+                    {(savedConfig?.socialLink || mockTourismData.socialLink) && (
                       <a 
-                        href={mockTourismData.socialLink}
+                        href={savedConfig?.socialLink || mockTourismData.socialLink}
                         className="btn btn-outline-primary w-100"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -513,7 +538,7 @@ export default function TourismDemo() {
                   </h6>
                   <div className="ratio ratio-16x9">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
+                      src={savedConfig?.googleMapsEmbed || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"}
                       style={{ border: 0, borderRadius: '8px' }}
                       allowFullScreen
                       loading="lazy"
@@ -522,7 +547,7 @@ export default function TourismDemo() {
                   </div>
                   <div className="mt-3">
                     <small className="text-muted">
-                      {t('address')}
+                      {savedConfig?.address?.[language] || t('address')}
                     </small>
                   </div>
                 </div>
@@ -642,7 +667,7 @@ export default function TourismDemo() {
         <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <h5>{mockTourismData.businessName}</h5>
+              <h5>{savedConfig?.businessName || t('businessName')}</h5>
               <p className="mb-0">AI-optimized for speed and search</p>
             </div>
             <div className="col-md-6 text-md-end">
