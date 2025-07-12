@@ -108,11 +108,12 @@ export default function RestaurantsEditor() {
             ...websiteData,
             ...config,
             templateType: 'restaurants' as const,
-            heroTitle: config.heroTitle || websiteData.heroTitle,
-            heroSubtitle: config.heroSubtitle || websiteData.heroSubtitle,
-            heroDescription: config.heroDescription || websiteData.heroDescription,
-            aboutTitle: config.aboutTitle || websiteData.aboutTitle,
-            aboutText: config.aboutText || websiteData.aboutText,
+            businessName: config.translations?.businessName?.es || config.businessName || websiteData.businessName,
+            heroTitle: config.translations?.heroTitle || config.heroTitle || websiteData.heroTitle,
+            heroSubtitle: config.translations?.heroSubtitle || config.heroSubtitle || websiteData.heroSubtitle,
+            heroDescription: config.translations?.heroDescription || config.heroDescription || websiteData.heroDescription,
+            aboutTitle: config.translations?.aboutTitle || config.aboutTitle || websiteData.aboutTitle,
+            aboutText: config.translations?.aboutText || config.aboutText || websiteData.aboutText,
             servicesTitle: config.servicesTitle || websiteData.servicesTitle,
             address: config.address || websiteData.address,
             whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
@@ -144,10 +145,18 @@ export default function RestaurantsEditor() {
     try {
       setIsSaving(true);
       
-      // Convert photos array to format expected by template
+      // Convert photos array to format expected by template and ensure translations
       const processedData = {
         ...websiteData,
-        photos: websiteData.photos.map(photo => photo.url).filter(url => url.trim() !== '')
+        photos: websiteData.photos.map(photo => photo.url).filter(url => url.trim() !== ''),
+        translations: {
+          businessName: { es: websiteData.businessName, en: websiteData.businessName },
+          heroTitle: websiteData.heroTitle,
+          heroSubtitle: websiteData.heroSubtitle,
+          heroDescription: websiteData.heroDescription,
+          aboutTitle: websiteData.aboutTitle,
+          aboutText: websiteData.aboutText
+        }
       };
       
       const response = await fetch(`/api/config/${clientId}`, {

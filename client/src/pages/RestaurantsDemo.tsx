@@ -122,7 +122,7 @@ export default function RestaurantsDemo() {
       es: {
         ...translations.es,
         // Use saved config for business name and contact info
-        businessName: (useSavedConfig && savedConfig.businessName) || mockRestaurantData.businessName,
+        businessName: (useSavedConfig && (savedConfig.translations?.businessName?.es || savedConfig.businessName)) || mockRestaurantData.businessName,
         phone: (useSavedConfig && savedConfig.phone) || mockRestaurantData.phone,
         email: (useSavedConfig && savedConfig.email) || mockRestaurantData.email,
         address: (useSavedConfig && savedConfig.address?.es) || mockRestaurantData.address,
@@ -131,7 +131,7 @@ export default function RestaurantsDemo() {
       },
       en: {
         ...translations.en,
-        businessName: (useSavedConfig && savedConfig.businessName) || mockRestaurantData.businessName,
+        businessName: (useSavedConfig && (savedConfig.translations?.businessName?.en || savedConfig.businessName)) || mockRestaurantData.businessName,
         phone: (useSavedConfig && savedConfig.phone) || mockRestaurantData.phone,
         email: (useSavedConfig && savedConfig.email) || mockRestaurantData.email,
         address: (useSavedConfig && savedConfig.address?.en) || mockRestaurantData.address,
