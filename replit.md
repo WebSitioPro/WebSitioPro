@@ -115,6 +115,15 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 11, 2025. Restaurant Template Reviews and Contact Sections Fixed
+  - Fixed Restaurant template reviews section to use saved configuration data instead of mock data
+  - Fixed Restaurant template contact section to use saved configuration for phone, email, address, WhatsApp
+  - Added bilingual support for address and WhatsApp message fields in database schema
+  - Fixed hero image display issue (was showing Tourism placeholder instead of proper restaurant image)
+  - Fixed getLocalizedValue function to handle undefined objects safely
+  - Reviews and contact sections now properly sync between Restaurant Editor and template
+  - All contact information now displays edited content immediately after saving
+  - Fixed database schema issues after rollback - address and whatsappMessage fields properly configured as JSON
 - July 11, 2025. Fixed Restaurant Template Dynamic Content Loading
   - Fixed Restaurant template photos section to show only uploaded photos (not 12 static placeholders)
   - Fixed Restaurant template menu pages to show only uploaded menu pages (not 9 static placeholders)
