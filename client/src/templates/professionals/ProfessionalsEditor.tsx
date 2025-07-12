@@ -179,7 +179,12 @@ export default function ProfessionalsEditor() {
               description: service.description || { es: '', en: '' },
               icon: service.icon || 'service'
             })) : websiteData.services,
-            photos: Array.isArray(config.photos) ? config.photos : websiteData.photos,
+            photos: Array.isArray(config.photos) ? 
+              config.photos.map(photo => 
+                typeof photo === 'string' ? 
+                  { url: photo, caption: { es: '', en: '' } } : 
+                  photo
+              ) : websiteData.photos,
             reviews: Array.isArray(config.reviews) ? config.reviews : websiteData.reviews,
             
             // Ensure office hours structure
@@ -337,7 +342,7 @@ export default function ProfessionalsEditor() {
             return {
               ...photo,
               caption: {
-                ...photo.caption,
+                ...photo.caption || { es: '', en: '' },
                 [language]: value
               }
             };
@@ -938,7 +943,7 @@ export default function ProfessionalsEditor() {
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={photo.caption.es}
+                                  value={photo.caption?.es || ''}
                                   onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'es')}
                                   placeholder="Descripción de la foto"
                                 />
@@ -950,7 +955,7 @@ export default function ProfessionalsEditor() {
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={photo.caption.en}
+                                  value={photo.caption?.en || ''}
                                   onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'en')}
                                   placeholder="Photo description"
                                 />

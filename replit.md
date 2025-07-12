@@ -115,6 +115,14 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 12, 2025. Professionals Template Photos Section Fixed
+  - Fixed TypeError in Photos section: "undefined is not an object (evaluating 'photo.caption.es')"
+  - Added data migration in ProfessionalsEditor.tsx to convert string photo URLs to proper objects
+  - Added optional chaining safety checks (photo.caption?.es) to prevent undefined errors
+  - Updated handlePhotoChange function with additional caption structure validation
+  - Photos now properly support bilingual captions (Spanish/English) with proper data structure
+  - Database photos migrated from string array to object array with url and caption properties
+  - All Photos section functionality now working correctly in the modular Professionals template
 - July 12, 2025. Professionals Template Modularization Complete
   - Successfully reorganized Professionals template into modular structure under client/src/templates/professionals/
   - Created config.ts with ProfessionalsTemplateConfig interface and template metadata
