@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Browser Storage</title>
+</head>
+<body>
+    <h1>Clear Browser Storage</h1>
+    <button onclick="clearAllStorage()">Clear All Storage</button>
+    <div id="status"></div>
+
+    <script>
+        function clearAllStorage() {
+            // Clear localStorage
+            localStorage.clear();
+            
+            // Clear sessionStorage  
+            sessionStorage.clear();
+            
+            // Clear IndexedDB
+            indexedDB.databases().then(databases => {
+                databases.forEach(db => {
+                    indexedDB.deleteDatabase(db.name);
+                });
+            });
+            
+            document.getElementById('status').innerHTML = '✅ All browser storage cleared!';
+            
+            // Reload after 2 seconds
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
