@@ -1,0 +1,109 @@
+Task: Package the existing Professionals template and editor for the WebSitioPro project into a single, self-contained module without modifying their current code or functionality. The module should be easily integrated into the main website and fully compatible with Vercel hosting. The module must maintain existing features and use the Replit API for data storage and retrieval.
+Project Context:
+WebSitioPro is a website generator hosted on Replit, with a main site and a working Professionals template and editor
+The Professionals editor allows users to input/update business data (name, phone, address, photos) and save it via the Replit API (https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev).
+The project will be migrated to Vercel, which supports static sites, React, or Next.js.
+No changes should be made to the existing Professionals template or editor code.
+No Google Sheets or Make automation should be used; rely solely on the Replit API for data.
+Requirements:
+Modular Structure:
+Package the existing Professionals template and editor into a single module under src/templates/professionals/.
+Ensure the module is self-contained, with all necessary files (template code, editor code, styles, configuration) and no dependencies on other templates.
+Preserve the existing code exactly as it is, only reorganizing it into the module structure.
+File Structure:
+Create the following structure, moving existing files without modification:
+plaintext
+
+src/templates/professionals/
+  ├── Professionals.tsx       // Existing template code (React) or index.html (vanilla JS)
+  ├── ProfessionalsEditor.tsx  // Existing editor code (React) or editor.html (vanilla JS)
+  ├── styles.css              // Existing template-specific styles (or Tailwind CSS)
+  ├── config.json             // New configuration file for the module
+  ├── index.tsx               // New entry point to export template and editor
+If shared components (e.g., navigation bar, Tawk.to script) exist, place them in src/components/ and import them into the module.
+Configuration:
+Create a config.json file to store module settings:
+json
+
+{
+  "templateName": "Professionals",
+  "apiEndpoint": "https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev/professionals",
+  "maxPhotos": 12,
+  "chatbotEnabled": true,
+  "enabled": true
+}
+Use the config to enable/disable the module or specify the Replit API endpoint.
+Integration with Main Site:
+Create a simple template registry (src/template-registry.ts) to register the Professionals module.
+Example:
+ts
+
+// src/template-registry.ts
+import Professionals from './templates/professionals';
+export const templates = [
+  { id: 'professionals', component: Professionals, config: Professionals.config }
+];
+Ensure the main site can load the module dynamically via a route (e.g., /professionals).
+Vercel Compatibility:
+Structure the module for Vercel’s deployment model (Next.js preferred, or static site if using vanilla JS).
+For Next.js, place the template in pages/professionals.tsx (copy existing code) or use a dynamic route (pages/[template].tsx).
+For static sites, ensure the module works as a standalone HTML page or client-side script.
+Include a vercel.json file for deployment:
+json
+
+{
+  "framework": "nextjs",
+  "rewrites": [
+    { "source": "/professionals", "destination": "/professionals" }
+  ]
+}
+Ensure API calls to the Replit API work client-side or via Vercel serverless functions.
+API Integration:
+Confirm the existing template and editor use the Replit API (https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev) for data fetching (GET /professionals/:id) and saving (POST /professionals).
+If the existing code uses a local JSON file, include it in the module and provide a script to sync with the API.
+No Code Changes:
+Do not modify the existing Professionals template or editor code (e.g., photo gallery, contact info, editor form, Tawk.to integration).
+Only move files to the new src/templates/professionals/ structure and add the registry/config.
+Testing:
+Test the module in Replit to ensure the template and editor function exactly as before (gallery, chatbot, data saving).
+Verify the module integrates with the main site via the registry and /professionals route.
+Provide instructions for deploying to Vercel (vercel --prod) and testing post-deployment.
+Deliverables:
+Complete src/templates/professionals/ folder with existing template/editor files, styles, config.json, and index.tsx.
+Template registry (src/template-registry.ts) for main site integration.
+vercel.json for Vercel deployment.
+Instructions for testing in Replit and deploying to Vercel.
+Confirmation that existing code is unchanged.
+Implementation Guidance:
+Framework: Assume the project uses React (or vanilla JS if specified). For React, keep existing .tsx/.jsxfiles; for vanilla JS, keep .html/.js/.css files.
+Registry: Use a simple registry to enable dynamic loading:
+ts
+
+// src/templates/professionals/index.tsx
+import Professionals from './Professionals';
+import ProfessionalsEditor from './ProfessionalsEditor';
+import config from './config.json';
+
+export default {
+  template: Professionals,
+  editor: ProfessionalsEditor,
+  config
+};
+Routing: For Next.js, copy the template code to pages/professionals.tsx. For vanilla JS, ensure the module works as a standalone page.
+API: Verify existing API calls (GET/POST to Replit API) work unchanged. Example:
+tsx
+
+fetch('https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev/professionals/1')
+  .then(res => res.json())
+  .then(data => console.log(data));
+Vercel: Ensure the module is lightweight (no server-side dependencies beyond API calls) for fast Vercel builds.
+Testing Instructions:
+In Replit, navigate to /professionals to test the template and /professionals/editor (or equivalent) for the editor.
+Verify the photo gallery (up to 12 photos), Tawk.to chatbot, contact info, and data saving work as before.
+Deploy to Vercel using vercel --prod and test the module at the assigned URL.
+Additional Notes:
+Do not use Google Sheets or Make automation.
+Keep the module independent of other templates (e.g., Restaurants).
+If the Replit API is unavailable, include a data.json file as a fallback.
+Provide clear error messages if API calls fail (e.g., “Unable to load data, please try again”).
+Please provide the reorganized src/templates/professionals/ folder, registry, vercel.json, and testing/deployment instructions. Confirm that no changes were made to the existing Professionals template or editor code. Let me know if you need the existing code or further details to complete the task.

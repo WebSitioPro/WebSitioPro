@@ -7,7 +7,7 @@ import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/HomePage";
 import ProPage from "@/pages/ProPage";
 import EditorPage from "@/pages/EditorPage";
-import ProfessionalsDemo from "@/pages/ProfessionalsDemo";
+import { ProfessionalsDemo, ProfessionalsEditor } from "@/templates/professionals";
 import RestaurantsDemo from "@/pages/RestaurantsDemo";
 import TourismDemo from "@/pages/TourismDemo";
 import RetailDemo from "@/pages/RetailDemo";
@@ -15,7 +15,6 @@ import ServicesDemo from "@/pages/ServicesDemo";
 
 import ClientSelectorPage from "@/pages/ClientSelectorPage";
 import TemplateEditor from "@/pages/TemplateEditor";
-import ProfessionalsEditor from "@/pages/ProfessionalsEditor";
 import RestaurantsEditor from "@/pages/RestaurantsEditor";
 import TourismEditor from "@/pages/TourismEditor";
 import RetailEditor from "@/pages/RetailEditor";

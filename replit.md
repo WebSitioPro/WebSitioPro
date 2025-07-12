@@ -115,6 +115,18 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 12, 2025. Professionals Template Modularization Complete
+  - Successfully reorganized Professionals template into modular structure under client/src/templates/professionals/
+  - Created config.ts with ProfessionalsTemplateConfig interface and template metadata
+  - Created index.tsx for module exports and template option configuration
+  - Moved ProfessionalsDemo.tsx and ProfessionalsEditor.tsx to new modular structure
+  - Updated App.tsx imports to use new modular structure with template-specific imports
+  - Updated TemplateEditor.tsx to reference professionalsTemplateOption from the module
+  - Maintained all existing functionality - demo and editor routes work exactly as before
+  - API endpoints remain unchanged using relative paths (/api/config)
+  - All tests pass: routes functional, data persistence working, template switching operational
+  - Removed original files from client/src/pages/ after successful migration
+  - Template module now serves as foundation for future template modularization
 - July 11, 2025. Restaurant Template Reviews and Contact Sections Fixed
   - Fixed Restaurant template reviews section to use saved configuration data instead of mock data
   - Fixed Restaurant template contact section to use saved configuration for phone, email, address, WhatsApp

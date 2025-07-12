@@ -1,0 +1,133 @@
+Task: Reorganize the existing Professionals template and editor in the WebSitioPro project into a single, self-contained module within the current Replit environment to improve maintainability and enable easy template management. Do not modify the existing template or editor code or functionality. Ensure the module integrates seamlessly with the main site and aligns with the current React/TypeScript/Vite architecture, using existing API endpoints and deployment capabilities.
+Project Context:
+The project uses a template registry in TemplateEditor.tsx and a database schema for configuration.
+The goal is to reorganize the existing Professionals template and editor into a modular structure without changing their code, ensuring they remain functional and integrable with the main site.
+No Google Sheets or Make automation should be used; rely solely on the existing /api/config endpoint for data.
+Requirements:
+Modular Structure:
+Move the existing ProfessionalsDemo.tsx and ProfessionalsEditor.tsx (and associated styles) into a self-contained module under client/src/templates/professionals/ without modifying their code.
+Ensure the module is independent of other templates and can be enabled/disabled via configuration.
+Suggested file structure:
+plaintext
+
+client/src/templates/professionals/
+  ├── ProfessionalsDemo.tsx    // Existing template code (unchanged)
+  ├── ProfessionalsEditor.tsx  // Existing editor code (unchanged)
+  ├── styles.css              // Existing template-specific styles (unchanged)
+  ├── config.ts               // New configuration file for module settings
+  ├── index.tsx               // New entry point to export template and editor
+Configuration:
+Create a config.ts file to store module settings:
+ts
+
+// client/src/templates/professionals/config.ts
+export const config = {
+  templateName: "Professionals",
+  apiEndpoint: "https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev/api/config",
+  maxPhotos: 12,
+  chatbotEnabled: true,
+  enabled: true
+};
+Use the enabled flag to toggle the module in the registry.
+Template Registry:
+Update the existing TemplateEditor.tsx registry (or create a new client/src/template-registry.tsif needed) to register the Professionals module.
+Example:
+ts
+
+// client/src/template-registry.ts
+import Professionals from './templates/professionals';
+export const templates = [
+  { id: 'professionals', component: Professionals.template, editor: Professionals.editor, config: Professionals.config }
+];
+Ensure the main site can dynamically load the module via the registry and route (e.g., /professionals).
+Integration with Main Site:
+Maintain existing routing in the React app (e.g., /professionals for the template, /professionals/editor for the editor).
+Update the main app’s router to use the registry for dynamic loading:
+tsx
+
+// client/src/App.tsx (example)
+import { Routes, Route } from 'react-router-dom';
+import { templates } from './template-registry';
+
+const App = () => (
+  <Routes>
+    {templates.map((template) => (
+      <Route
+        key={template.id}
+        path={`/${template.id}`}
+        element={<template.component />}
+      />
+    ))}
+  </Routes>
+);
+export default App;
+Ensure the module integrates without altering existing navigation or shared components.
+API Integration:
+Confirm the existing template and editor use the /api/config endpoint for data fetching (GET) and saving (POST).
+Do not create new endpoints; preserve existing API logic.
+Example (unchanged):
+tsx
+
+fetch('https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev/api/config')
+  .then(res => res.json())
+  .then(data => console.log(data));
+No Code Changes:
+Do not modify the code in ProfessionalsDemo.tsx, ProfessionalsEditor.tsx, or their styles.
+Only move these files to the new client/src/templates/professionals/ structure and add config.ts and index.tsx.
+Replit Deployment:
+Ensure the module works with Replit’s existing deployment setup (Vite).
+Update vite.config.ts if needed to include the new module path:
+ts
+
+// vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': 'https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev'
+    }
+  }
+});
+Testing:
+Test the module in Replit by navigating to /professionals and /professionals/editor.
+Verify the photo gallery (up to 12 photos), Tawk.to chatbot, contact info, and editor functionality work exactly as before.
+Confirm the module integrates with the main site via the registry and routing.
+Provide instructions for running the project in Replit (npm run dev).
+Deliverables:
+Reorganized client/src/templates/professionals/ folder with existing ProfessionalsDemo.tsx, ProfessionalsEditor.tsx, styles, config.ts, and index.tsx.
+Updated or new template-registry.ts for module registration.
+Updated vite.config.ts if needed for deployment.
+Instructions for testing in Replit.
+Confirmation that no changes were made to the existing template or editor code.
+Implementation Guidance:
+Framework: Use the existing React/TypeScript/Vite setup. Keep ProfessionalsDemo.tsx and ProfessionalsEditor.tsx unchanged.
+Entry Point:
+ts
+
+// client/src/templates/professionals/index.tsx
+import ProfessionalsDemo from './ProfessionalsDemo';
+import ProfessionalsEditor from './ProfessionalsEditor';
+import { config } from './config';
+
+export default {
+  template: ProfessionalsDemo,
+  editor: ProfessionalsEditor,
+  config
+};
+Registry: Update TemplateEditor.tsx or create template-registry.ts to include the Professionals module.
+Routing: Preserve existing React Router setup, ensuring /professionals and /professionals/editorroutes work.
+API: Use the existing /api/config endpoint without changes.
+Styles: Move existing CSS (or Tailwind classes) to client/src/templates/professionals/styles.cssunchanged.
+Testing Instructions:
+Run npm run dev in Replit and navigate to /professionals and /professionals/editor.
+Verify the template (gallery, chatbot, contact info) and editor (data input, saving) work as before.
+Confirm the module loads via the registry without affecting the main site.
+Additional Notes:
+Do not reference external platforms like Vercel.
+Do not use Google Sheets or Make automation.
+Ensure the module is lightweight and compatible with Replit’s Vite deployment.
+If the /api/config endpoint is unavailable, include a fallback data.json file in the module.
+Please provide the reorganized client/src/templates/professionals/ folder, updated registry, vite.config.ts (if needed), and testing instructions. Confirm that no changes were made to ProfessionalsDemo.tsx or ProfessionalsEditor.tsx.

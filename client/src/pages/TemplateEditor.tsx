@@ -10,6 +10,7 @@ import {
   Wrench,
   ChevronRight
 } from 'lucide-react';
+import { professionalsTemplateOption } from '@/templates/professionals';
 
 interface TemplateOption {
   id: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services';
@@ -23,12 +24,12 @@ interface TemplateOption {
 
 const templateOptions: TemplateOption[] = [
   {
-    id: 'professionals',
-    name: 'Professionals',
-    description: 'Perfect for doctors, lawyers, consultants and medical professionals',
+    id: professionalsTemplateOption.id,
+    name: professionalsTemplateOption.name,
+    description: professionalsTemplateOption.description.en,
     icon: Briefcase,
-    demoUrl: '/professionals-demo',
-    editorUrl: '/editor/professionals',
+    demoUrl: professionalsTemplateOption.demoRoute,
+    editorUrl: professionalsTemplateOption.editorRoute,
     color: '#C8102E'
   },
   {
