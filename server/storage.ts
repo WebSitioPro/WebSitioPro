@@ -16,6 +16,10 @@ export interface IStorage {
   updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined>;
   deleteWebsiteConfig(id: number): Promise<boolean>;
   getDefaultWebsiteConfig(): Promise<WebsiteConfig>;
+  
+  // Template-specific config methods
+  getTemplateConfig(templateType: string): Promise<WebsiteConfig | undefined>;
+  updateTemplateConfig(templateType: string, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -138,40 +142,41 @@ export class DatabaseStorage implements IStorage {
           { name: "Cosmetic Dentistry", description: "Teeth whitening, veneers, and smile makeovers" },
           { name: "Oral Surgery", description: "Tooth extractions, implants, and surgical procedures" }
         ],
-        templates: [],
-        whyPoints: [
-          { es: "15+ Años de Experiencia", en: "15+ Years Experience" },
-          { es: "Equipo Moderno", en: "Modern Equipment" },
-          { es: "Ambiente Cómodo", en: "Comfortable Environment" }
-        ],
-        serviceSteps: [
-          { es: "Consulta Inicial", en: "Initial Consultation" },
-          { es: "Opciones de Tratamiento", en: "Treatment Options" },
-          { es: "Cuidado Profesional", en: "Professional Care" }
-        ],
-        chatbotQuestions: [
-          { 
-            key: "office_hours",
-            question: { es: "¿Cuáles son sus horarios de oficina?", en: "What are your office hours?" },
-            answer: { es: "Estamos abiertos de lunes a viernes de 9:00 AM - 6:00 PM, y sábados de 10:00 AM - 2:00 PM", en: "We're open Monday to Friday 9:00 AM - 6:00 PM, and Saturday 10:00 AM - 2:00 PM" }
-          },
-          { 
-            key: "insurance",
-            question: { es: "¿Aceptan seguro?", en: "Do you accept insurance?" },
-            answer: { es: "Sí, aceptamos la mayoría de los planes de seguro dental. Por favor llame para verificar su cobertura.", en: "Yes, we accept most dental insurance plans. Please call to verify your coverage." }
-          },
-          { 
-            key: "appointment",
-            question: { es: "¿Cómo programo una cita?", en: "How do I schedule an appointment?" },
-            answer: { es: "Puede llamarnos al +52 987 654 321 o enviarnos un mensaje de WhatsApp.", en: "You can call us at +52 987 654 321 or send us a WhatsApp message." }
-          }
-        ]
+        templates: []
       };
       
-      [config] = await db.insert(websiteConfigs).values(defaultConfig).returning();
+      config = await this.createWebsiteConfig(defaultConfig);
     }
     
     return config;
+  }
+
+  async getTemplateConfig(templateType: string): Promise<WebsiteConfig | undefined> {
+    const [config] = await db.select().from(websiteConfigs).where(eq(websiteConfigs.templateType, templateType));
+    return config || undefined;
+  }
+
+  async updateTemplateConfig(templateType: string, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined> {
+    // First, try to find existing config for this template type
+    const existingConfig = await this.getTemplateConfig(templateType);
+    
+    if (existingConfig) {
+      // Update existing config
+      const [updatedConfig] = await db
+        .update(websiteConfigs)
+        .set(config)
+        .where(eq(websiteConfigs.templateType, templateType))
+        .returning();
+      return updatedConfig || undefined;
+    } else {
+      // Create new config for this template type
+      const newConfig = {
+        ...config,
+        templateType: templateType,
+        name: config.name || `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Template`
+      };
+      return await this.createWebsiteConfig(newConfig as InsertWebsiteConfig);
+    }
   }
 }
 

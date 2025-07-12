@@ -116,7 +116,7 @@ export default function TourismDemo() {
 
   // Load saved configuration
   useEffect(() => {
-    fetch('/api/config/default')
+    fetch('/api/config/template/tourism')
       .then(res => res.json())
       .then(data => {
         setSavedConfig(data);

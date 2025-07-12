@@ -63,11 +63,47 @@ export default function RetailEditor() {
   });
   
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Load existing configuration on component mount
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/config/template/retail`);
+        if (response.ok) {
+          const config = await response.json();
+          const retailConfig = {
+            ...websiteData,
+            ...config,
+            templateType: 'retail' as const,
+            heroTitle: config.heroTitle || websiteData.heroTitle,
+            heroSubtitle: config.heroSubtitle || websiteData.heroSubtitle,
+            heroDescription: config.heroDescription || websiteData.heroDescription,
+            aboutTitle: config.aboutTitle || websiteData.aboutTitle,
+            aboutText: config.aboutText || websiteData.aboutText,
+            address: config.address || websiteData.address,
+            whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
+            products: Array.isArray(config.products) ? config.products : websiteData.products,
+            photos: Array.isArray(config.photos) ? config.photos : websiteData.photos,
+            reviews: Array.isArray(config.reviews) ? config.reviews : websiteData.reviews,
+            officeHours: config.officeHours || websiteData.officeHours
+          };
+          setWebsiteData(retailConfig);
+        }
+      } catch (error) {
+        console.error('Error loading retail config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadConfig();
+  }, []);
 
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      const response = await fetch(`/api/config/${clientId}`, {
+      const response = await fetch(`/api/config/template/retail`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(websiteData),

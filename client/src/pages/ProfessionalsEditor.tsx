@@ -148,7 +148,7 @@ export default function ProfessionalsEditor() {
     const loadConfig = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/config/${clientId}`);
+        const response = await fetch(`/api/config/template/professionals`);
         if (response.ok) {
           const config = await response.json();
           
@@ -218,8 +218,8 @@ export default function ProfessionalsEditor() {
         }))
       };
       
-      // Save to config endpoint (same as homepage editor)
-      const response = await fetch(`/api/config/${clientId}`, {
+      // Save to template-specific endpoint
+      const response = await fetch(`/api/config/template/professionals`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
