@@ -101,7 +101,7 @@ export default function RestaurantsEditor() {
     const loadConfig = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/config/template/restaurants`);
+        const response = await fetch(`/api/config/${clientId}`);
         if (response.ok) {
           const config = await response.json();
           const restaurantConfig = {
@@ -150,7 +150,7 @@ export default function RestaurantsEditor() {
         photos: websiteData.photos.map(photo => photo.url).filter(url => url.trim() !== '')
       };
       
-      const response = await fetch(`/api/config/template/restaurants`, {
+      const response = await fetch(`/api/config/${clientId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(processedData),

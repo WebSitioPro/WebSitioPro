@@ -104,7 +104,7 @@ export default function RestaurantsDemo() {
 
   // Load saved configuration
   useEffect(() => {
-    fetch('/api/config/template/restaurants')
+    fetch('/api/config/default')
       .then(res => res.json())
       .then(data => {
         setSavedConfig(data);

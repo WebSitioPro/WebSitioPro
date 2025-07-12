@@ -65,45 +65,10 @@ export default function TourismEditor() {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Load existing configuration on component mount
-  useEffect(() => {
-    const loadConfig = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(`/api/config/template/tourism`);
-        if (response.ok) {
-          const config = await response.json();
-          const tourismConfig = {
-            ...websiteData,
-            ...config,
-            templateType: 'tourism' as const,
-            heroTitle: config.heroTitle || websiteData.heroTitle,
-            heroSubtitle: config.heroSubtitle || websiteData.heroSubtitle,
-            heroDescription: config.heroDescription || websiteData.heroDescription,
-            aboutTitle: config.aboutTitle || websiteData.aboutTitle,
-            aboutText: config.aboutText || websiteData.aboutText,
-            address: config.address || websiteData.address,
-            whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
-            tours: Array.isArray(config.tours) ? config.tours : websiteData.tours,
-            photos: Array.isArray(config.photos) ? config.photos : websiteData.photos,
-            reviews: Array.isArray(config.reviews) ? config.reviews : websiteData.reviews,
-            officeHours: config.officeHours || websiteData.officeHours
-          };
-          setWebsiteData(tourismConfig);
-        }
-      } catch (error) {
-        console.error('Error loading tourism config:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadConfig();
-  }, []);
-
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      const response = await fetch(`/api/config/template/tourism`, {
+      const response = await fetch(`/api/config/${clientId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(websiteData),
