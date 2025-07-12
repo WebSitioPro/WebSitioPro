@@ -8,17 +8,17 @@ import HomePage from "@/pages/HomePage";
 import ProPage from "@/pages/ProPage";
 import EditorPage from "@/pages/EditorPage";
 import { ProfessionalsDemo, ProfessionalsEditor } from "@/templates/professionals";
-import RestaurantsDemo from "@/pages/RestaurantsDemo";
-import TourismDemo from "@/pages/TourismDemo";
-import RetailDemo from "@/pages/RetailDemo";
-import ServicesDemo from "@/pages/ServicesDemo";
+import { RestaurantsDemo } from "@/templates/restaurants";
+import { TourismDemo } from "@/templates/tourism";
+import { RetailDemo } from "@/templates/retail";
+import { ServicesDemo } from "@/templates/services";
 
 import ClientSelectorPage from "@/pages/ClientSelectorPage";
 import TemplateEditor from "@/pages/TemplateEditor";
-import RestaurantsEditor from "@/pages/RestaurantsEditor";
-import TourismEditor from "@/pages/TourismEditor";
-import RetailEditor from "@/pages/RetailEditor";
-import ServicesEditor from "@/pages/ServicesEditor";
+import { RestaurantsEditor } from "@/templates/restaurants";
+import { TourismEditor } from "@/templates/tourism";
+import { RetailEditor } from "@/templates/retail";
+import { ServicesEditor } from "@/templates/services";
 
 function Router() {
   return (

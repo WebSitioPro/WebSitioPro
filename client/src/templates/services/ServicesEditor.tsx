@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
 import { Save, ArrowLeft, Eye, Wrench, Camera, Phone, Star, Image, Type, Palette, Plus, Trash2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { ServicesTemplateConfig } from './config';
 
 export default function ServicesEditor() {
   const params = useParams();
@@ -9,7 +10,7 @@ export default function ServicesEditor() {
   const { toast } = useToast();
   
   const [activeTab, setActiveTab] = useState('hero');
-  const [websiteData, setWebsiteData] = useState({
+  const [websiteData, setWebsiteData] = useState<ServicesTemplateConfig>({
     templateType: 'services',
     primaryColor: '#6C5CE7',
     secondaryColor: '#00A859',
@@ -26,16 +27,18 @@ export default function ServicesEditor() {
     address: { es: 'Av. Insurgentes 123, Chetumal, QR', en: 'Av. Insurgentes 123, Chetumal, QR' },
     whatsappNumber: '529831234567',
     whatsappMessage: { es: 'Hola, necesito un servicio técnico', en: 'Hello, I need technical service' },
+    logo: 'https://via.placeholder.com/150x50/6C5CE7/FFFFFF?text=Logo',
+    servicesTitle: { es: 'Nuestros Servicios', en: 'Our Services' },
     services: [
       {
-        name: { es: 'Reparaciones de Emergencia', en: 'Emergency Repairs' },
+        title: { es: 'Reparaciones de Emergencia', en: 'Emergency Repairs' },
         description: { es: 'Fugas, tuberías rotas, desagües tapados', en: 'Leaks, broken pipes, clogged drains' },
-        price: 'Desde $200 MXN'
+        icon: 'wrench'
       },
       {
-        name: { es: 'Instalaciones Nuevas', en: 'New Installations' },
+        title: { es: 'Instalaciones Nuevas', en: 'New Installations' },
         description: { es: 'Baños completos, cocinas, calentadores', en: 'Complete bathrooms, kitchens, heaters' },
-        price: 'Cotización personalizada'
+        icon: 'hammer'
       }
     ],
     photos: [
@@ -60,6 +63,13 @@ export default function ServicesEditor() {
         text: { es: 'Instalaron mi baño completo. Muy puntuales y precio justo. Altamente recomendados.', en: 'Installed my complete bathroom. Very punctual and fair price. Highly recommended.' }
       }
     ],
+    officeHours: {
+      mondayFriday: { es: 'Lunes a Viernes: 8:00 AM - 6:00 PM', en: 'Monday to Friday: 8:00 AM - 6:00 PM' },
+      saturday: { es: 'Sábado: 9:00 AM - 3:00 PM', en: 'Saturday: 9:00 AM - 3:00 PM' }
+    },
+    googleMapsEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118512.58023648334!2d-88.39913461528183!3d18.51958518800781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba377a0246b03%3A0xb429c9d207b111d9!2sChetumal%2C%20Quintana%20Roo%2C%20Mexico!5e0!3m2!1sen!2sus!4v1620151766401!5m2!1sen!2sus',
+    showWhatsappButton: true,
+    showChatbot: true
   });
   
   const [isSaving, setIsSaving] = useState(false);

@@ -1,68 +1,79 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
-import { Save, ArrowLeft, Eye, ShoppingBag, Camera, Phone, Star, Image, Type, Palette, Plus, Trash2 } from 'lucide-react';
+import { Save, ArrowLeft, Eye, MapPin, Camera, Phone, Star, Image, Type, Palette, Plus, Trash2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { TourismTemplateConfig } from './config';
 
-export default function RetailEditor() {
+export default function TourismEditor() {
   const params = useParams();
   const clientId = params.clientId || 'default';
   const { toast } = useToast();
   
   const [activeTab, setActiveTab] = useState('hero');
-  const [websiteData, setWebsiteData] = useState({
-    templateType: 'retail',
-    primaryColor: '#007ACC',
-    secondaryColor: '#00A859',
+  const [websiteData, setWebsiteData] = useState<TourismTemplateConfig>({
+    templateType: 'tourism',
+    primaryColor: '#00A859',
+    secondaryColor: '#007ACC',
     accentColor: '#FFC107',
-    heroImage: 'https://via.placeholder.com/800x400/007ACC/FFFFFF?text=Retail',
-    heroTitle: { es: 'Boutique Bella', en: 'Boutique Bella' },
-    heroSubtitle: { es: 'Moda y Estilo', en: 'Fashion & Style' },
-    heroDescription: { es: 'Encuentra las últimas tendencias', en: 'Find the latest trends' },
-    businessName: 'Boutique Bella',
+    heroImage: 'https://via.placeholder.com/800x400/00A859/FFFFFF?text=Tourism',
+    heroTitle: { es: 'Tours Riviera Maya', en: 'Riviera Maya Tours' },
+    heroSubtitle: { es: 'Descubre la belleza de México', en: 'Discover the beauty of Mexico' },
+    heroDescription: { es: 'Explora cenotes, ruinas mayas y playas paradisíacas', en: 'Explore cenotes, Mayan ruins and paradisiacal beaches' },
+    businessName: 'Tours Riviera Maya',
     aboutTitle: { es: 'Acerca de Nosotros', en: 'About Us' },
-    aboutText: { es: 'Ofrecemos moda de calidad...', en: 'We offer quality fashion...' },
+    aboutText: { es: 'Ofrecemos tours únicos...', en: 'We offer unique tours...' },
     phone: '+52 983 123 4567',
-    email: 'info@boutiquebella.com',
-    address: { es: 'Av. Héroes 123, Chetumal, QR', en: 'Av. Heroes 123, Chetumal, QR' },
+    email: 'info@toursrivieramaya.com',
+    address: { es: 'Av. Tulum 123, Playa del Carmen, QR', en: 'Av. Tulum 123, Playa del Carmen, QR' },
     whatsappNumber: '529831234567',
-    whatsappMessage: { es: 'Hola, me interesa un producto', en: 'Hello, I am interested in a product' },
-    products: [
+    whatsappMessage: { es: 'Hola, me interesa un tour', en: 'Hello, I am interested in a tour' },
+    logo: 'https://via.placeholder.com/150x50/00A859/FFFFFF?text=Logo',
+    servicesTitle: { es: 'Nuestros Tours', en: 'Our Tours' },
+    services: [
       {
-        name: { es: 'Textiles Mayas', en: 'Maya Textiles' },
-        description: { es: 'Huipiles y rebozos tradicionales', en: 'Traditional huipiles and rebozos' },
-        price: '$450 - $1,200 MXN'
+        title: { es: 'Tour Laguna de Bacalar', en: 'Bacalar Lagoon Tour' },
+        description: { es: 'Descubre la laguna de los siete colores', en: 'Discover the seven-color lagoon' },
+        icon: 'map-pin'
       },
       {
-        name: { es: 'Joyería Artesanal', en: 'Artisan Jewelry' },
-        description: { es: 'Collares y aretes de plata', en: 'Silver necklaces and earrings' },
-        price: '$200 - $800 MXN'
+        title: { es: 'Excursión Ruinas de Kohunlich', en: 'Kohunlich Ruins Excursion' },
+        description: { es: 'Explora las ruinas mayas milenarias', en: 'Explore the ancient Mayan ruins' },
+        icon: 'landmark'
       }
     ],
     photos: [
       {
-        url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Textiles+Display',
-        caption: { es: 'Exhibición de Textiles', en: 'Textiles Display' }
+        url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Bacalar+Lagoon',
+        caption: { es: 'Laguna de Bacalar', en: 'Bacalar Lagoon' }
       },
       {
-        url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Jewelry+Collection',
-        caption: { es: 'Colección de Joyería', en: 'Jewelry Collection' }
+        url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Mayan+Ruins',
+        caption: { es: 'Ruinas Mayas', en: 'Mayan Ruins' }
       }
     ],
     reviews: [
       {
-        name: 'Patricia González',
+        name: 'Jennifer Smith',
         rating: 5,
-        text: { es: 'Productos hermosos y auténticos. Excelente atención al cliente y precios justos.', en: 'Beautiful and authentic products. Excellent customer service and fair prices.' }
+        text: { es: '¡Increíble experiencia en Bacalar! Guías muy profesionales y conocedores.', en: 'Amazing experience in Bacalar! Very professional and knowledgeable guides.' }
       },
       {
-        name: 'Michael Davis',
+        name: 'Roberto Martínez',
         rating: 5,
-        text: { es: 'Encontré regalos únicos que no conseguiría en otro lugar. Muy recomendado.', en: 'Found unique gifts I couldn\'t get anywhere else. Highly recommended.' }
+        text: { es: 'Tours bien organizados, precios justos. Recomendamos la excursión a Kohunlich.', en: 'Well-organized tours, fair prices. We recommend the Kohunlich excursion.' }
       }
     ],
+    officeHours: {
+      mondayFriday: { es: 'Lunes a Viernes: 9:00 AM - 6:00 PM', en: 'Monday to Friday: 9:00 AM - 6:00 PM' },
+      saturday: { es: 'Sábado: 10:00 AM - 4:00 PM', en: 'Saturday: 10:00 AM - 4:00 PM' }
+    },
+    googleMapsEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118512.58023648334!2d-88.39913461528183!3d18.51958518800781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba377a0246b03%3A0xb429c9d207b111d9!2sChetumal%2C%20Quintana%20Roo%2C%20Mexico!5e0!3m2!1sen!2sus!4v1620151766401!5m2!1sen!2sus',
+    showWhatsappButton: true,
+    showChatbot: true
   });
   
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
     try {
@@ -73,7 +84,7 @@ export default function RetailEditor() {
         body: JSON.stringify(websiteData),
       });
       if (response.ok) {
-        toast({ title: "Success", description: "Retail template saved successfully" });
+        toast({ title: "Success", description: "Tourism template saved successfully" });
       } else {
         throw new Error('Failed to save template');
       }
@@ -85,7 +96,7 @@ export default function RetailEditor() {
   };
 
   const handlePreview = () => {
-    window.location.href = '/retail-demo';
+    window.location.href = '/tourism-demo';
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
@@ -108,33 +119,43 @@ export default function RetailEditor() {
     });
   };
 
-  const handleProductChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+  const handleTourChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
-      products: prev.products.map((product, i) => {
+      tours: prev.tours.map((tour, i) => {
         if (i === index) {
           if (language && (field === 'name' || field === 'description')) {
-            return { ...product, [field]: { ...product[field as keyof typeof product], [language]: value } };
+            return {
+              ...tour,
+              [field]: {
+                ...tour[field as keyof typeof tour],
+                [language]: value
+              }
+            };
           } else {
-            return { ...product, [field]: value };
+            return { ...tour, [field]: value };
           }
         }
-        return product;
+        return tour;
       })
     }));
   };
 
-  const addProduct = () => {
+  const addTour = () => {
     setWebsiteData(prev => ({
       ...prev,
-      products: [...prev.products, { name: { es: '', en: '' }, description: { es: '', en: '' }, price: '' }]
+      tours: [...prev.tours, {
+        name: { es: '', en: '' },
+        description: { es: '', en: '' },
+        price: ''
+      }]
     }));
   };
 
-  const removeProduct = (index: number) => {
+  const removeTour = (index: number) => {
     setWebsiteData(prev => ({
       ...prev,
-      products: prev.products.filter((_, i) => i !== index)
+      tours: prev.tours.filter((_, i) => i !== index)
     }));
   };
 
@@ -144,7 +165,13 @@ export default function RetailEditor() {
       photos: prev.photos.map((photo, i) => {
         if (i === index) {
           if (language && field === 'caption') {
-            return { ...photo, caption: { ...photo.caption, [language]: value } };
+            return {
+              ...photo,
+              caption: {
+                ...photo.caption,
+                [language]: value
+              }
+            };
           } else {
             return { ...photo, [field]: value };
           }
@@ -157,7 +184,10 @@ export default function RetailEditor() {
   const addPhoto = () => {
     setWebsiteData(prev => ({
       ...prev,
-      photos: [...prev.photos, { url: '', caption: { es: '', en: '' } }]
+      photos: [...prev.photos, {
+        url: '',
+        caption: { es: '', en: '' }
+      }]
     }));
   };
 
@@ -174,7 +204,13 @@ export default function RetailEditor() {
       reviews: prev.reviews.map((review, i) => {
         if (i === index) {
           if (language && field === 'text') {
-            return { ...review, text: { ...review.text, [language]: value as string } };
+            return {
+              ...review,
+              text: {
+                ...review.text,
+                [language]: value as string
+              }
+            };
           } else {
             return { ...review, [field]: value };
           }
@@ -187,7 +223,11 @@ export default function RetailEditor() {
   const addReview = () => {
     setWebsiteData(prev => ({
       ...prev,
-      reviews: [...prev.reviews, { name: '', rating: 5, text: { es: '', en: '' } }]
+      reviews: [...prev.reviews, {
+        name: '',
+        rating: 5,
+        text: { es: '', en: '' }
+      }]
     }));
   };
 
@@ -208,8 +248,8 @@ export default function RetailEditor() {
               Back to Templates
             </Link>
             <div className="d-flex align-items-center">
-              <ShoppingBag size={20} className="me-2" style={{ color: '#007ACC' }} />
-              <h1 className="navbar-brand mb-0 h4">Retail Template Editor</h1>
+              <MapPin size={20} className="me-2" style={{ color: '#00A859' }} />
+              <h1 className="navbar-brand mb-0 h4">Tourism Template Editor</h1>
             </div>
           </div>
           <div className="d-flex align-items-center gap-2">
@@ -217,12 +257,12 @@ export default function RetailEditor() {
               className="btn btn-success"
               onClick={async () => {
                 const timestamp = Date.now();
-                const businessName = websiteData.businessName || websiteData.name || `Retail Business ${timestamp}`;
+                const businessName = websiteData.businessName || websiteData.name || `Tourism Business ${timestamp}`;
                 const clientData = {
                   ...websiteData,
                   name: businessName,
                   businessName: businessName,
-                  templateType: 'retail'
+                  templateType: 'tourism'
                 };
                 
                 try {
@@ -236,7 +276,7 @@ export default function RetailEditor() {
                     const result = await response.json();
                     toast({
                       title: "Success",
-                      description: `New retail client "${businessName}" created with ID: ${result.id}. Check the Client Manager to see the new client.`,
+                      description: `New tourism client "${businessName}" created with ID: ${result.id}. Check the Client Manager to see the new client.`,
                     });
                   } else {
                     const errorData = await response.json();
@@ -300,11 +340,11 @@ export default function RetailEditor() {
                   About Section
                 </button>
                 <button 
-                  className={`list-group-item list-group-item-action ${activeTab === 'products' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('products')}
+                  className={`list-group-item list-group-item-action ${activeTab === 'tours' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('tours')}
                 >
-                  <ShoppingBag size={16} className="me-2" />
-                  Products
+                  <MapPin size={16} className="me-2" />
+                  Tours & Packages
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}
@@ -340,7 +380,7 @@ export default function RetailEditor() {
 
           <div className="col-md-9">
             <div className="alert alert-info mb-4">
-              <strong>Retail Template Editor:</strong> Configure your retail business content.
+              <strong>Tourism Template Editor:</strong> Configure your tourism business content.
             </div>
             
             <div className="card">
@@ -430,70 +470,124 @@ export default function RetailEditor() {
                         <h6>Spanish Content</h6>
                         <div className="mb-3">
                           <label className="form-label">About Title (Spanish)</label>
-                          <input type="text" className="form-control" value={websiteData.aboutTitle.es} onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'es')} />
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.aboutTitle.es}
+                            onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'es')}
+                          />
                         </div>
                         <div className="mb-3">
                           <label className="form-label">About Text (Spanish)</label>
-                          <textarea className="form-control" rows={6} value={websiteData.aboutText.es} onChange={(e) => handleInputChange('aboutText', e.target.value, 'es')} />
+                          <textarea
+                            className="form-control"
+                            rows={6}
+                            value={websiteData.aboutText.es}
+                            onChange={(e) => handleInputChange('aboutText', e.target.value, 'es')}
+                          />
                         </div>
                       </div>
                       <div className="col-md-6">
                         <h6>English Content</h6>
                         <div className="mb-3">
                           <label className="form-label">About Title (English)</label>
-                          <input type="text" className="form-control" value={websiteData.aboutTitle.en} onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'en')} />
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.aboutTitle.en}
+                            onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'en')}
+                          />
                         </div>
                         <div className="mb-3">
                           <label className="form-label">About Text (English)</label>
-                          <textarea className="form-control" rows={6} value={websiteData.aboutText.en} onChange={(e) => handleInputChange('aboutText', e.target.value, 'en')} />
+                          <textarea
+                            className="form-control"
+                            rows={6}
+                            value={websiteData.aboutText.en}
+                            onChange={(e) => handleInputChange('aboutText', e.target.value, 'en')}
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {activeTab === 'products' && (
+                {activeTab === 'tours' && (
                   <div>
-                    <h5 className="mb-4">Products</h5>
-                    {websiteData.products.map((product, index) => (
+                    <h5 className="mb-4">Tours & Packages</h5>
+                    {websiteData.tours.map((tour, index) => (
                       <div key={index} className="card mb-3">
                         <div className="card-body">
                           <div className="row">
                             <div className="col-md-4">
                               <div className="mb-3">
-                                <label className="form-label">Product Name (Spanish)</label>
-                                <input type="text" className="form-control" value={product.name.es} onChange={(e) => handleProductChange(index, 'name', e.target.value, 'es')} />
+                                <label className="form-label">Tour Name (Spanish)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.name.es}
+                                  onChange={(e) => handleTourChange(index, 'name', e.target.value, 'es')}
+                                />
                               </div>
                               <div className="mb-3">
-                                <label className="form-label">Product Name (English)</label>
-                                <input type="text" className="form-control" value={product.name.en} onChange={(e) => handleProductChange(index, 'name', e.target.value, 'en')} />
+                                <label className="form-label">Tour Name (English)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.name.en}
+                                  onChange={(e) => handleTourChange(index, 'name', e.target.value, 'en')}
+                                />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Description (Spanish)</label>
-                                <textarea className="form-control" rows={3} value={product.description.es} onChange={(e) => handleProductChange(index, 'description', e.target.value, 'es')} />
+                                <textarea
+                                  className="form-control"
+                                  rows={3}
+                                  value={tour.description.es}
+                                  onChange={(e) => handleTourChange(index, 'description', e.target.value, 'es')}
+                                />
                               </div>
                               <div className="mb-3">
                                 <label className="form-label">Description (English)</label>
-                                <textarea className="form-control" rows={3} value={product.description.en} onChange={(e) => handleProductChange(index, 'description', e.target.value, 'en')} />
+                                <textarea
+                                  className="form-control"
+                                  rows={3}
+                                  value={tour.description.en}
+                                  onChange={(e) => handleTourChange(index, 'description', e.target.value, 'en')}
+                                />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Price</label>
-                                <input type="text" className="form-control" value={product.price} onChange={(e) => handleProductChange(index, 'price', e.target.value)} />
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.price}
+                                  onChange={(e) => handleTourChange(index, 'price', e.target.value)}
+                                />
                               </div>
                               <div className="d-grid">
-                                <button className="btn btn-danger" onClick={() => removeProduct(index)}>Remove Product</button>
+                                <button 
+                                  className="btn btn-danger"
+                                  onClick={() => removeTour(index)}
+                                >
+                                  Remove Tour
+                                </button>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
-                    <button className="btn btn-success" onClick={addProduct}>
-                      <Plus size={16} className="me-2" />Add Product
+                    <button 
+                      className="btn btn-success"
+                      onClick={addTour}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Tour
                     </button>
                   </div>
                 )}
@@ -508,33 +602,62 @@ export default function RetailEditor() {
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Photo URL</label>
-                                <input type="url" className="form-control" value={photo.url} onChange={(e) => handlePhotoChange(index, 'url', e.target.value)} />
+                                <input
+                                  type="url"
+                                  className="form-control"
+                                  value={photo.url}
+                                  onChange={(e) => handlePhotoChange(index, 'url', e.target.value)}
+                                />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Caption (Spanish)</label>
-                                <input type="text" className="form-control" value={photo.caption.es} onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'es')} />
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={photo.caption.es}
+                                  onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'es')}
+                                />
                               </div>
                               <div className="mb-3">
                                 <label className="form-label">Caption (English)</label>
-                                <input type="text" className="form-control" value={photo.caption.en} onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'en')} />
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={photo.caption.en}
+                                  onChange={(e) => handlePhotoChange(index, 'caption', e.target.value, 'en')}
+                                />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="mb-3">
-                                <img src={photo.url || 'https://via.placeholder.com/300x200'} alt="Preview" className="img-fluid rounded" style={{ maxHeight: '150px' }} />
+                                <img 
+                                  src={photo.url || 'https://via.placeholder.com/300x200'} 
+                                  alt="Preview" 
+                                  className="img-fluid rounded"
+                                  style={{ maxHeight: '150px' }}
+                                />
                               </div>
                               <div className="d-grid">
-                                <button className="btn btn-danger" onClick={() => removePhoto(index)}>Remove Photo</button>
+                                <button 
+                                  className="btn btn-danger"
+                                  onClick={() => removePhoto(index)}
+                                >
+                                  Remove Photo
+                                </button>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
-                    <button className="btn btn-success" onClick={addPhoto}>
-                      <Plus size={16} className="me-2" />Add Photo
+                    <button 
+                      className="btn btn-success"
+                      onClick={addPhoto}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Photo
                     </button>
                   </div>
                 )}
@@ -549,11 +672,20 @@ export default function RetailEditor() {
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Customer Name</label>
-                                <input type="text" className="form-control" value={review.name} onChange={(e) => handleReviewChange(index, 'name', e.target.value)} />
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={review.name}
+                                  onChange={(e) => handleReviewChange(index, 'name', e.target.value)}
+                                />
                               </div>
                               <div className="mb-3">
                                 <label className="form-label">Rating</label>
-                                <select className="form-select" value={review.rating} onChange={(e) => handleReviewChange(index, 'rating', parseInt(e.target.value))}>
+                                <select
+                                  className="form-select"
+                                  value={review.rating}
+                                  onChange={(e) => handleReviewChange(index, 'rating', parseInt(e.target.value))}
+                                >
                                   <option value={5}>5 Stars</option>
                                   <option value={4}>4 Stars</option>
                                   <option value={3}>3 Stars</option>
@@ -565,58 +697,49 @@ export default function RetailEditor() {
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Review (Spanish)</label>
-                                <textarea className="form-control" rows={4} value={review.text.es} onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'es')} />
+                                <textarea
+                                  className="form-control"
+                                  rows={4}
+                                  value={review.text.es}
+                                  onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'es')}
+                                />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Review (English)</label>
-                                <textarea className="form-control" rows={4} value={review.text.en} onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'en')} />
+                                <textarea
+                                  className="form-control"
+                                  rows={4}
+                                  value={review.text.en}
+                                  onChange={(e) => handleReviewChange(index, 'text', e.target.value, 'en')}
+                                />
                               </div>
                             </div>
                           </div>
                           <div className="row">
                             <div className="col-md-12 d-flex justify-content-end">
-                              <button className="btn btn-danger" onClick={() => removeReview(index)}>Remove Review</button>
+                              <button 
+                                className="btn btn-danger"
+                                onClick={() => removeReview(index)}
+                              >
+                                Remove Review
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
-                    <button className="btn btn-success" onClick={addReview}>
-                      <Plus size={16} className="me-2" />Add Review
+                    <button 
+                      className="btn btn-success"
+                      onClick={addReview}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Review
                     </button>
                   </div>
                 )}
-
-                {activeTab === 'contact' && (
-                  <div>
-                    <h5 className="mb-4">Contact Information</h5>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="mb-3">
-                          <label className="form-label">Phone Number</label>
-                          <input type="tel" className="form-control" value={websiteData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} />
-                        </div>
-                        <div className="mb-3">
-                          <label className="form-label">Email</label>
-                          <input type="email" className="form-control" value={websiteData.email} onChange={(e) => handleInputChange('email', e.target.value)} />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="mb-3">
-                          <label className="form-label">Address (Spanish)</label>
-                          <input type="text" className="form-control" value={websiteData.address.es} onChange={(e) => handleInputChange('address', e.target.value, 'es')} />
-                        </div>
-                        <div className="mb-3">
-                          <label className="form-label">Address (English)</label>
-                          <input type="text" className="form-control" value={websiteData.address.en} onChange={(e) => handleInputChange('address', e.target.value, 'en')} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
+                
                 {activeTab === 'colors' && (
                   <div>
                     <h5 className="mb-4">Colors & Branding</h5>
@@ -624,19 +747,82 @@ export default function RetailEditor() {
                       <div className="col-md-4">
                         <div className="mb-3">
                           <label className="form-label">Primary Color</label>
-                          <input type="color" className="form-control form-control-color" value={websiteData.primaryColor} onChange={(e) => handleInputChange('primaryColor', e.target.value)} />
+                          <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={websiteData.primaryColor}
+                            onChange={(e) => handleInputChange('primaryColor', e.target.value)}
+                          />
                         </div>
                       </div>
                       <div className="col-md-4">
                         <div className="mb-3">
                           <label className="form-label">Secondary Color</label>
-                          <input type="color" className="form-control form-control-color" value={websiteData.secondaryColor} onChange={(e) => handleInputChange('secondaryColor', e.target.value)} />
+                          <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={websiteData.secondaryColor}
+                            onChange={(e) => handleInputChange('secondaryColor', e.target.value)}
+                          />
                         </div>
                       </div>
                       <div className="col-md-4">
                         <div className="mb-3">
                           <label className="form-label">Accent Color</label>
-                          <input type="color" className="form-control form-control-color" value={websiteData.accentColor} onChange={(e) => handleInputChange('accentColor', e.target.value)} />
+                          <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={websiteData.accentColor}
+                            onChange={(e) => handleInputChange('accentColor', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {activeTab === 'contact' && (
+                  <div>
+                    <h5 className="mb-4">Contact Information</h5>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">Phone Number</label>
+                          <input
+                            type="tel"
+                            className="form-control"
+                            value={websiteData.phone}
+                            onChange={(e) => handleInputChange('phone', e.target.value)}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Email</label>
+                          <input
+                            type="email"
+                            className="form-control"
+                            value={websiteData.email}
+                            onChange={(e) => handleInputChange('email', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="form-label">Address (Spanish)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.address.es}
+                            onChange={(e) => handleInputChange('address', e.target.value, 'es')}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Address (English)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={websiteData.address.en}
+                            onChange={(e) => handleInputChange('address', e.target.value, 'en')}
+                          />
                         </div>
                       </div>
                     </div>

@@ -11,6 +11,10 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { professionalsTemplateOption } from '@/templates/professionals';
+import { restaurantsTemplateOption } from '@/templates/restaurants';
+import { tourismTemplateOption } from '@/templates/tourism';
+import { retailTemplateOption } from '@/templates/retail';
+import { servicesTemplateOption } from '@/templates/services';
 
 interface TemplateOption {
   id: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services';
