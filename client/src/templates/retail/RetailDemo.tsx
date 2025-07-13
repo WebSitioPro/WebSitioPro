@@ -130,7 +130,7 @@ export default function RetailDemo() {
 
   // Load saved configuration
   useEffect(() => {
-    fetch('/api/config/default')
+    fetch('/api/config/retail-demo')
       .then(res => res.json())
       .then(data => {
         setSavedConfig(data);

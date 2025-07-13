@@ -126,7 +126,7 @@ export default function ServicesDemo() {
 
   // Load saved configuration
   useEffect(() => {
-    fetch('/api/config/default')
+    fetch('/api/config/services-demo')
       .then(res => res.json())
       .then(data => {
         setSavedConfig(data);

@@ -1,0 +1,63 @@
+Based on my analysis of your codebase, I can see the fundamental problem with your template editors. Here's the detailed report:
+
+The Core Problem
+Your template editors are not properly isolated - they're sharing configurations instead of having separate ones for each template type. This causes:
+
+Data Contamination - When you edit one template, it affects others
+Homepage Corruption - Templates can accidentally modify your main site
+Lost Work - Edits get overwritten by other templates
+Specific Issues Found
+1. Configuration ID Problems
+From the console logs, I can see your homepage loads correctly:
+
+["Loaded saved config:",{"id":1,"name":"WebSitioPro Homepage"...
+But your template editors in client/src/templates/*/ are likely defaulting to "default" instead of using unique IDs.
+
+2. Missing URL Parameter Extraction
+Your template editors should extract client IDs from URLs like:
+
+/editor/professionals?client=prof-123
+/editor/tourism?client=tour-456
+But they're probably not doing this properly.
+
+3. Shared Database Records
+All templates are hitting the same database configuration instead of having separate ones.
+
+Quick Fix Solutions for the Agent
+CRITICAL: DO NOT TOUCH THE MAIN HOMEPAGE OR HOMEPAGE CONFIGURATION
+
+Solution 1: Fix Template Editor URL Handling
+Each template editor needs to:
+
+Extract clientId from URL parameters: const clientId = new URLSearchParams(window.location.search).get('client') || 'demo'
+Use that clientId in API calls: /api/config/${clientId}
+Never use "default" as fallback
+Solution 2: Implement Proper Demo Configurations
+Create separate demo configs for each template:
+
+professionals-demo (already exists)
+tourism-demo
+retail-demo
+services-demo
+restaurants-demo
+Solution 3: Update Template Editor Navigation
+Template selector should link to: /editor/tourism?client=tourism-demo
+
+Recommended Agent Instructions
+"Fix the template editors to use proper client isolation:
+
+DO NOT MODIFY THE HOMEPAGE OR MAIN SITE CONFIGURATION
+Update each template editor to extract clientId from URL parameters
+Use unique demo configurations for each template type
+Ensure template editors never use 'default' configuration
+Test that editing one template doesn't affect others
+Verify homepage remains untouched"
+Cost-Effective Approach
+Instead of rewriting editors line by line, focus on:
+
+Configuration isolation - 1 checkpoint
+URL parameter handling - 1 checkpoint
+Demo config creation - 1 checkpoint
+This should fix all 5 template editors simultaneously rather than fixing each one individually.
+
+The isolation system in server/config-isolation.ts already exists but isn't being used properly by the frontend editors. The fix is to connect the frontend to use this existing system.
