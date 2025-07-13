@@ -605,7 +605,43 @@ export default function EditorPage() {
               bannerBackgroundColor: config.bannerBackgroundColor || prev.bannerBackgroundColor,
               bannerTextColor: config.bannerTextColor || prev.bannerTextColor,
               bannerTextSize: config.bannerTextSize || prev.bannerTextSize,
-              showBanner: config.showBanner !== undefined ? config.showBanner : prev.showBanner
+              showBanner: config.showBanner !== undefined ? config.showBanner : prev.showBanner,
+              // Chatbot fields
+              chatbotIcon: config.chatbotIcon || prev.chatbotIcon,
+              chatbotColor: config.chatbotColor || prev.chatbotColor,
+              chatbotTitle: config.chatbotTitle ? 
+                (typeof config.chatbotTitle === 'string' ? 
+                  (() => {
+                    try {
+                      return JSON.parse(config.chatbotTitle);
+                    } catch (e) {
+                      return prev.chatbotTitle;
+                    }
+                  })() : 
+                  config.chatbotTitle
+                ) : prev.chatbotTitle,
+              chatbotWelcome: config.chatbotWelcome ? 
+                (typeof config.chatbotWelcome === 'string' ? 
+                  (() => {
+                    try {
+                      return JSON.parse(config.chatbotWelcome);
+                    } catch (e) {
+                      return prev.chatbotWelcome;
+                    }
+                  })() : 
+                  config.chatbotWelcome
+                ) : prev.chatbotWelcome,
+              chatbotQuestions: config.chatbotQuestions ? 
+                (typeof config.chatbotQuestions === 'string' ? 
+                  (() => {
+                    try {
+                      return JSON.parse(config.chatbotQuestions);
+                    } catch (e) {
+                      return prev.chatbotQuestions;
+                    }
+                  })() : 
+                  config.chatbotQuestions
+                ) : prev.chatbotQuestions
             }));
           }
         }
@@ -706,7 +742,13 @@ export default function EditorPage() {
         pricingBannerBgColor: websiteData.pricingBannerBgColor,
         pricingBannerTextColor: websiteData.pricingBannerTextColor,
         paymentBannerBgColor: websiteData.paymentBannerBgColor,
-        paymentBannerTextColor: websiteData.paymentBannerTextColor
+        paymentBannerTextColor: websiteData.paymentBannerTextColor,
+        // Chatbot fields
+        chatbotIcon: websiteData.chatbotIcon,
+        chatbotColor: websiteData.chatbotColor,
+        chatbotTitle: JSON.stringify(websiteData.chatbotTitle),
+        chatbotWelcome: JSON.stringify(websiteData.chatbotWelcome),
+        chatbotQuestions: JSON.stringify(websiteData.chatbotQuestions)
       };
 
       const response = await fetch(`/api/config/${clientId}`, {
