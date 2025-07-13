@@ -120,7 +120,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // API route for creating a new website configuration
   app.post("/api/config", async (req: Request, res: Response) => {
     try {
-      const validationResult = insertWebsiteConfigSchema.safeParse(req.body);
+      // Clean the request body by removing timestamp fields
+      const { createdAt, updatedAt, ...cleanBody } = req.body;
+      
+      const validationResult = insertWebsiteConfigSchema.safeParse(cleanBody);
 
       if (!validationResult.success) {
         return res.status(400).json({ 
@@ -204,9 +207,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Configuration not found" });
       }
 
+      // Clean the request body by removing timestamp fields
+      const { createdAt, updatedAt, ...cleanBody } = req.body;
+      
       // Partial validation of the update data
       const partialSchema = insertWebsiteConfigSchema.partial();
-      const validationResult = partialSchema.safeParse(req.body);
+      const validationResult = partialSchema.safeParse(cleanBody);
 
       if (!validationResult.success) {
         console.error("Validation failed:", validationResult.error);

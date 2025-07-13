@@ -173,6 +173,8 @@ export const websiteConfigs = pgTable("website_configs", {
 // Define insert schema
 export const insertWebsiteConfigSchema = createInsertSchema(websiteConfigs).omit({
   id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 export type InsertWebsiteConfig = z.infer<typeof insertWebsiteConfigSchema>;
