@@ -634,7 +634,8 @@ export default function HomePage() {
                 style={{
                   color: savedConfig?.heroTextColor || '#ffffff',
                   fontSize: savedConfig?.heroTitleSize || '3.5rem',
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                  whiteSpace: 'pre-line'
                 }}
               >
                 {savedConfig?.translations?.[language]?.heroHeadline || t('heroHeadline')}
@@ -644,7 +645,8 @@ export default function HomePage() {
                 style={{
                   color: savedConfig?.heroSubtextColor || '#ffffff',
                   fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
-                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                  whiteSpace: 'pre-line'
                 }}
               >
                 {savedConfig?.translations?.[language]?.heroSubheadline || t('heroSubheadline')}
