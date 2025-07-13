@@ -76,7 +76,7 @@ interface WebsiteData {
 
 export default function EditorPage() {
   const params = useParams();
-  const clientId = params.clientId || 'default';
+  const clientId = params.clientId || 'editor-demo';
   const [activeTab, setActiveTab] = useState('colors');
   const [websiteData, setWebsiteData] = useState<WebsiteData>({
     // Default colors (Mexican theme)

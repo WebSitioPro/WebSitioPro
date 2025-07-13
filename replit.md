@@ -115,6 +115,16 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 13, 2025. Complete Template Data Isolation Fix
+  - RESOLVED: Critical template data contamination issue where all templates shared same database record
+  - Updated all template editors to use unique demo configuration IDs (professionals-demo, tourism-demo, etc.)
+  - Modified API routes to handle template-specific demo configurations with proper creation/lookup
+  - Fixed EditorPage to use 'editor-demo' instead of 'default' to prevent configuration collision
+  - Each template type now has completely isolated database records preventing data overwrite
+  - Template editors now properly extract client IDs from URL parameters (?client=123)
+  - Homepage uses dedicated 'homepage' configuration, completely separate from template demos
+  - Verified isolation: professionals-demo (ID 16), tourism-demo (ID 17), restaurants-demo (ID 18)
+  - Templates are now truly independent - editing one template no longer affects others
 - July 13, 2025. Fixed Client Configuration Isolation Issue
   - Fixed critical bug where all template editors were sharing the same 'default' configuration
   - Updated all template editors to properly extract client ID from query parameters (?client=123)
