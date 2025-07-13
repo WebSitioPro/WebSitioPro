@@ -115,6 +115,14 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 13, 2025. Fixed Client Configuration Isolation Issue
+  - Fixed critical bug where all template editors were sharing the same 'default' configuration
+  - Updated all template editors to properly extract client ID from query parameters (?client=123)
+  - Modified Home page to use dedicated 'homepage' configuration instead of shared 'default'
+  - Client-specific edits now only affect that specific client, not all templates or the Home page
+  - Each client editor now properly loads and saves to its own unique configuration ID
+  - Fixed URL parameter handling in ProfessionalsEditor, TourismEditor, RetailEditor, ServicesEditor, and RestaurantsEditor
+  - Client Manager "Edit Website" button now correctly isolates client configurations
 - July 12, 2025. Complete Template Modularization - All 5 Templates
   - Successfully applied modular structure to all 4 remaining templates (Restaurants, Tourism, Retail, Services)
   - Created config.ts files for each template with proper TypeScript interfaces

@@ -37,15 +37,35 @@ export default function HomePage() {
     document.head.appendChild(style);
 
     // Load saved configuration to demonstrate Editor functionality
+    // Use a dedicated 'homepage' configuration separate from client configs
     const loadConfig = async () => {
       try {
         // Add cache-busting timestamp
         const timestamp = Date.now();
-        const response = await fetch(`/api/config/default?_t=${timestamp}`);
+        const response = await fetch(`/api/config/homepage?_t=${timestamp}`);
         if (response.ok) {
           const data = await response.json();
           setSavedConfig(data);
           console.log('Loaded saved config:', data);
+        } else {
+          // If homepage config doesn't exist, create it with default values
+          const defaultConfig = {
+            templateType: 'professionals',
+            businessName: 'WebSitioPro Demo',
+            heroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Hero+Image',
+            phone: '+52 983 123 4567',
+            email: 'info@websitiopro.com'
+          };
+          
+          const createResponse = await fetch('/api/config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...defaultConfig, id: 'homepage', name: 'Homepage Configuration' })
+          });
+          
+          if (createResponse.ok) {
+            setSavedConfig(defaultConfig);
+          }
         }
       } catch (err) {
         console.log('Config not loaded:', err);

@@ -6,7 +6,9 @@ import { ServicesTemplateConfig } from './config';
 
 export default function ServicesEditor() {
   const params = useParams();
-  const clientId = params.clientId || 'default';
+  // Get client ID from query parameters (client=123) or URL params (clientId)
+  const urlParams = new URLSearchParams(window.location.search);
+  const clientId = urlParams.get('client') || params.clientId || 'default';
   const { toast } = useToast();
   
   const [activeTab, setActiveTab] = useState('hero');
