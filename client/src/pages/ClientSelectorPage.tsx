@@ -66,8 +66,8 @@ export default function ClientSelectorPage() {
             name: displayName,
             templateType: config.templateType || 'professionals',
             businessName: businessName,
-            lastModified: config.lastModified || config.createdAt || '2024-01-01T00:00:00.000Z',
-            createdAt: config.createdAt || '2024-01-01T00:00:00.000Z',
+            lastModified: config.lastModified || config.createdAt || new Date().toISOString(),
+            createdAt: config.createdAt || new Date().toISOString(),
             templateId: config.id?.toString() || 'unknown'
           };
         });
@@ -101,8 +101,8 @@ export default function ClientSelectorPage() {
       filtered = filtered.filter(client => client.templateType === filterType);
     }
 
-    // Sort by last modified (newest first)
-    filtered.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime());
+    // Sort by ID (newest first - highest ID numbers first)
+    filtered.sort((a, b) => parseInt(b.id) - parseInt(a.id));
 
     setFilteredClients(filtered);
   };
@@ -325,7 +325,7 @@ export default function ClientSelectorPage() {
                             <div>
                               <h6 className="card-title mb-1">{client.name}</h6>
                               <small className="text-muted text-capitalize">
-                                {client.templateType}
+                                {client.templateType} • ID: {client.id}
                               </small>
                             </div>
                           </div>
