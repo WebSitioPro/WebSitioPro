@@ -23,8 +23,8 @@ export default function ProfessionalsDemo() {
         })
         .catch(err => console.error('Preview data not loaded:', err));
     } else {
-      // Load default configuration
-      fetch('/api/config/default')
+      // Load professionals demo configuration
+      fetch('/api/config/professionals-demo')
         .then(res => res.json())
         .then(data => {
           setSavedConfig(data);
