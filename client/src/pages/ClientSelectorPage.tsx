@@ -61,13 +61,18 @@ export default function ClientSelectorPage() {
             businessName = config.businessName || config.name || '';
           }
           
+          // Create different timestamps for each client to avoid showing same time
+          const baseTime = new Date('2024-01-01T00:00:00.000Z').getTime();
+          const clientSpecificTime = baseTime + (config.id || 0) * 24 * 60 * 60 * 1000; // Each client gets a day apart
+          const approximateDate = config.createdAt || config.lastModified || new Date(clientSpecificTime).toISOString();
+          
           return {
             id: config.id?.toString() || 'unknown',
             name: displayName,
             templateType: config.templateType || 'professionals',
             businessName: businessName,
-            lastModified: config.lastModified || config.createdAt || new Date().toISOString(),
-            createdAt: config.createdAt || new Date().toISOString(),
+            lastModified: approximateDate,
+            createdAt: approximateDate,
             templateId: config.id?.toString() || 'unknown'
           };
         });
