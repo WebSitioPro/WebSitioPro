@@ -33,18 +33,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/config/:id", async (req: Request, res: Response) => {
     try {
       const idParam = req.params.id;
-      let id: number;
+      let config;
 
-      if (idParam === "default") {
-        id = 1; // Use ID 1 for default configuration
+      // Handle special demo template IDs
+      if (idParam === "professionals-demo" || idParam === "tourism-demo" || 
+          idParam === "retail-demo" || idParam === "services-demo" || 
+          idParam === "restaurants-demo" || idParam === "homepage") {
+        
+        // Try to find existing config by name
+        const configs = await storage.getAllWebsiteConfigs();
+        config = configs.find(c => c.name === `${idParam} Configuration`);
+        
+        if (!config) {
+          // Create default config for this demo template
+          const templateType = idParam.replace('-demo', '');
+          const defaultConfig = {
+            name: `${idParam} Configuration`,
+            templateType: templateType === 'homepage' ? 'professionals' : templateType,
+            businessName: `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Demo`,
+            heroImage: `https://via.placeholder.com/800x400/C8102E/FFFFFF?text=${templateType}+Demo`,
+            phone: '+52 983 123 4567',
+            email: `info@${templateType}demo.com`,
+            primaryColor: '#C8102E',
+            secondaryColor: '#00A859',
+            accentColor: '#007ACC'
+          };
+          
+          config = await storage.createWebsiteConfig(defaultConfig);
+        }
+      } else if (idParam === "default") {
+        // Legacy fallback - redirect to homepage
+        const configs = await storage.getAllWebsiteConfigs();
+        config = configs.find(c => c.name === "homepage Configuration");
+        
+        if (!config) {
+          const defaultConfig = {
+            name: "homepage Configuration",
+            templateType: 'professionals',
+            businessName: 'WebSitioPro Demo',
+            heroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=WebSitioPro+Demo',
+            phone: '+52 983 123 4567',
+            email: 'info@websitiopro.com'
+          };
+          config = await storage.createWebsiteConfig(defaultConfig);
+        }
       } else {
-        id = parseInt(idParam);
+        // Handle numeric IDs
+        const id = parseInt(idParam);
         if (isNaN(id)) {
           return res.status(400).json({ error: "Invalid ID format" });
         }
+        config = await storage.getWebsiteConfig(id);
       }
 
-      const config = await storage.getWebsiteConfig(id);
       if (!config) {
         return res.status(404).json({ error: "Configuration not found" });
       }
@@ -78,15 +119,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/config/:id", async (req: Request, res: Response) => {
     try {
       const idParam = req.params.id;
-      let id: number;
+      let config;
 
-      if (idParam === "default") {
-        id = 1; // Use ID 1 for default configuration
+      // Handle special demo template IDs
+      if (idParam === "professionals-demo" || idParam === "tourism-demo" || 
+          idParam === "retail-demo" || idParam === "services-demo" || 
+          idParam === "restaurants-demo" || idParam === "homepage") {
+        
+        // Try to find existing config by name
+        const configs = await storage.getAllWebsiteConfigs();
+        config = configs.find(c => c.name === `${idParam} Configuration`);
+        
+        if (!config) {
+          // Create new config if it doesn't exist
+          const templateType = idParam.replace('-demo', '');
+          const defaultConfig = {
+            name: `${idParam} Configuration`,
+            templateType: templateType === 'homepage' ? 'professionals' : templateType,
+            businessName: `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Demo`,
+            heroImage: `https://via.placeholder.com/800x400/C8102E/FFFFFF?text=${templateType}+Demo`,
+            phone: '+52 983 123 4567',
+            email: `info@${templateType}demo.com`,
+            primaryColor: '#C8102E',
+            secondaryColor: '#00A859',
+            accentColor: '#007ACC'
+          };
+          
+          config = await storage.createWebsiteConfig(defaultConfig);
+        }
+      } else if (idParam === "default") {
+        // Legacy fallback - redirect to homepage
+        const configs = await storage.getAllWebsiteConfigs();
+        config = configs.find(c => c.name === "homepage Configuration");
+        
+        if (!config) {
+          const defaultConfig = {
+            name: "homepage Configuration",
+            templateType: 'professionals',
+            businessName: 'WebSitioPro Demo',
+            heroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=WebSitioPro+Demo',
+            phone: '+52 983 123 4567',
+            email: 'info@websitiopro.com'
+          };
+          config = await storage.createWebsiteConfig(defaultConfig);
+        }
       } else {
-        id = parseInt(idParam);
+        // Handle numeric IDs
+        const id = parseInt(idParam);
         if (isNaN(id)) {
           return res.status(400).json({ error: "Invalid ID format" });
         }
+        config = await storage.getWebsiteConfig(id);
+      }
+
+      if (!config) {
+        return res.status(404).json({ error: "Configuration not found" });
       }
 
       // Partial validation of the update data
@@ -101,15 +188,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      console.log(`Updating config ${id} with data:`, JSON.stringify(validationResult.data, null, 2));
+      console.log(`Updating config ${config.id} with data:`, JSON.stringify(validationResult.data, null, 2));
 
-      const updatedConfig = await storage.updateWebsiteConfig(id, validationResult.data);
+      const updatedConfig = await storage.updateWebsiteConfig(config.id, validationResult.data);
       if (!updatedConfig) {
-        console.error(`Configuration with ID ${id} not found`);
+        console.error(`Configuration with ID ${config.id} not found`);
         return res.status(404).json({ error: "Configuration not found" });
       }
 
-      console.log(`Successfully updated config ${id}:`, JSON.stringify(updatedConfig, null, 2));
+      console.log(`Successfully updated config ${config.id}:`, JSON.stringify(updatedConfig, null, 2));
       res.json(updatedConfig);
     } catch (error) {
       console.error("Error updating configuration:", error);

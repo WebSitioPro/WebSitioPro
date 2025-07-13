@@ -8,7 +8,7 @@ export default function TourismEditor() {
   const params = useParams();
   // Get client ID from query parameters (client=123) or URL params (clientId)
   const urlParams = new URLSearchParams(window.location.search);
-  const clientId = urlParams.get('client') || params.clientId || 'default';
+  const clientId = urlParams.get('client') || params.clientId || 'tourism-demo';
   const { toast } = useToast();
   
   const [activeTab, setActiveTab] = useState('hero');
