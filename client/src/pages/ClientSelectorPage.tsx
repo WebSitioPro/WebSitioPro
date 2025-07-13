@@ -61,18 +61,16 @@ export default function ClientSelectorPage() {
             businessName = config.businessName || config.name || '';
           }
           
-          // Create different timestamps for each client to avoid showing same time
-          const baseTime = new Date('2024-01-01T00:00:00.000Z').getTime();
-          const clientSpecificTime = baseTime + (config.id || 0) * 24 * 60 * 60 * 1000; // Each client gets a day apart
-          const approximateDate = config.createdAt || config.lastModified || new Date(clientSpecificTime).toISOString();
+          // Use actual database timestamps or current time for new clients
+          const actualTimestamp = config.createdAt || config.updatedAt || new Date().toISOString();
           
           return {
             id: config.id?.toString() || 'unknown',
             name: displayName,
             templateType: config.templateType || 'professionals',
             businessName: businessName,
-            lastModified: approximateDate,
-            createdAt: approximateDate,
+            lastModified: actualTimestamp,
+            createdAt: actualTimestamp,
             templateId: config.id?.toString() || 'unknown'
           };
         });
