@@ -69,6 +69,7 @@ interface WebsiteData {
   proHeroImageOpacity: string;
   demoNote: { es: string; en: string };
   serviceStepsTitle: { es: string; en: string };
+  serviceStepsDescription: { es: string; en: string };
   serviceSteps: Array<{
     es: string;
     en: string;
@@ -278,6 +279,10 @@ export default function EditorPage() {
     serviceStepsTitle: {
       es: '¿Cómo Funciona Nuestro Servicio?',
       en: 'How Our Service Works'
+    },
+    serviceStepsDescription: {
+      es: 'Nuestro proceso simple y eficiente para crear tu sitio web profesional',
+      en: 'Our simple and efficient process to create your professional website'
     },
     serviceSteps: [
       { 
@@ -645,6 +650,7 @@ export default function EditorPage() {
               templates: config.templates || prev.templates,
               whyPoints: config.whyPoints || prev.whyPoints,
               serviceStepsTitle: config.serviceStepsTitle || prev.serviceStepsTitle,
+              serviceStepsDescription: config.serviceStepsDescription || prev.serviceStepsDescription,
               serviceSteps: config.serviceSteps || prev.serviceSteps,
               templateShowcaseImages: config.templateShowcaseImages || prev.templateShowcaseImages,
               // Banner fields
@@ -798,6 +804,7 @@ export default function EditorPage() {
         templates: websiteData.templates,
         whyPoints: websiteData.whyPoints,
         serviceStepsTitle: websiteData.serviceStepsTitle,
+        serviceStepsDescription: websiteData.serviceStepsDescription,
         serviceSteps: websiteData.serviceSteps,
         templateShowcaseImages: websiteData.templateShowcaseImages,
         // Store pricing banner colors
@@ -2421,7 +2428,7 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        value={websiteData.serviceStepsTitle?.es || '¿Cómo Funciona Nuestro Servicio?'}
+                        value={websiteData.serviceStepsTitle.es}
                         onChange={(e) => handleInputChange('serviceStepsTitle', e.target.value, 'es')}
                         placeholder="¿Cómo Funciona Nuestro Servicio?"
                       />
@@ -2431,9 +2438,29 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        value={websiteData.serviceStepsTitle?.en || 'How Our Service Works'}
+                        value={websiteData.serviceStepsTitle.en}
                         onChange={(e) => handleInputChange('serviceStepsTitle', e.target.value, 'en')}
                         placeholder="How Our Service Works"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Section Description (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={websiteData.serviceStepsDescription.es}
+                        onChange={(e) => handleInputChange('serviceStepsDescription', e.target.value, 'es')}
+                        placeholder="Descripción de cómo funciona nuestro servicio"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Section Description (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={websiteData.serviceStepsDescription.en}
+                        onChange={(e) => handleInputChange('serviceStepsDescription', e.target.value, 'en')}
+                        placeholder="Description of how our service works"
                       />
                     </div>
                   </div>

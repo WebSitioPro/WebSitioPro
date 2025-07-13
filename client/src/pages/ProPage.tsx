@@ -467,6 +467,11 @@ export default function ProPage() {
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
             {savedConfig?.serviceStepsTitle?.[language] || t('howItWorksTitle')}
           </h2>
+          {savedConfig?.serviceStepsDescription?.[language] && (
+            <p className="text-center text-muted mb-5 lead">
+              {savedConfig.serviceStepsDescription[language]}
+            </p>
+          )}
           <div className="row g-4">
             {(savedConfig?.serviceSteps || [
               { es: 'Contacto Inicial', en: 'Initial Contact' },
