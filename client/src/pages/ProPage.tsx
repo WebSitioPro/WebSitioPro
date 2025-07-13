@@ -520,19 +520,56 @@ export default function ProPage() {
                 '/services-demo'
               ];
               
+              // Get template showcase images from saved configuration
+              const templateIndex = num - 1;
+              const templateImage = savedConfig?.templateShowcaseImages?.[templateIndex];
+              const desktopImage = templateImage?.desktop || '';
+              const mobileImage = templateImage?.mobile || '';
+              
               return (
                 <div key={num} className="col-lg-6">
                   <div className="card h-100 border-0 shadow">
                     <div className="card-body p-4">
                       <div className="row g-3">
                         <div className="col-4">
+                          {/* Desktop Preview */}
                           <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
-                            <Globe size={48} className="text-muted" />
+                            {desktopImage ? (
+                              <img 
+                                src={desktopImage} 
+                                alt={`Template ${num} Desktop Preview`}
+                                style={{ 
+                                  maxWidth: '100%', 
+                                  maxHeight: '100%', 
+                                  objectFit: 'contain',
+                                  borderRadius: '4px'
+                                }}
+                              />
+                            ) : (
+                              <Globe size={48} className="text-muted" />
+                            )}
                           </div>
-                          <div className="mt-2">
-                            <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
-                            <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
-                            <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                          {/* Mobile Preview */}
+                          <div className="mt-2 d-flex justify-content-center">
+                            {mobileImage ? (
+                              <img 
+                                src={mobileImage} 
+                                alt={`Template ${num} Mobile Preview`}
+                                style={{ 
+                                  width: '40px', 
+                                  height: '60px', 
+                                  objectFit: 'contain',
+                                  borderRadius: '4px',
+                                  border: '1px solid #e0e0e0'
+                                }}
+                              />
+                            ) : (
+                              <div>
+                                <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
+                                <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
+                                <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                              </div>
+                            )}
                           </div>
                         </div>
                         <div className="col-8">
