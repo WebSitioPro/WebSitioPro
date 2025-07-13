@@ -649,6 +649,7 @@ export default function EditorPage() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'X-Homepage-Editor': 'true', // Special header to identify homepage editor requests
         },
         body: JSON.stringify(configData),
       });
