@@ -7,19 +7,21 @@ import fs from "fs/promises";
 import path from "path";
 import { generateStaticFiles } from "./templateGenerator";
 import { registerAgentRoutes } from "./agent-routes";
+import { 
+  validateConfigAccess, 
+  createSafeDemoConfig, 
+  filterClientConfigs, 
+  logConfigAccess,
+  ISOLATION_RULES 
+} from "./config-isolation";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API route for getting all website configurations (for client manager)
   app.get("/api/configs", async (_req: Request, res: Response) => {
     try {
       const configs = await storage.getAllWebsiteConfigs();
-      // Filter out homepage configuration from client listings
-      const clientConfigs = configs.filter(config => 
-        config.name !== 'WebSitioPro Homepage' && 
-        config.name !== 'Homepage Configuration' && 
-        !config.name?.includes('demo') &&
-        config.id !== 'homepage'
-      );
+      // Filter out homepage configuration from client listings using isolation system
+      const clientConfigs = filterClientConfigs(configs);
       res.json(clientConfigs);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch website configurations" });
@@ -41,22 +43,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const idParam = req.params.id;
 
+      // Validate configuration access using isolation system
+      const accessValidation = validateConfigAccess(idParam, 'read');
+      
+      if (!accessValidation.isValid) {
+        logConfigAccess('GET', idParam, false, accessValidation.error);
+        return res.status(403).json({ 
+          error: accessValidation.error || "Access denied to protected configuration" 
+        });
+      }
+
       let config;
 
       // Handle special demo template IDs
       if (idParam === "professionals-demo" || idParam === "tourism-demo" || 
           idParam === "retail-demo" || idParam === "services-demo" || 
-          idParam === "restaurants-demo" || idParam === "homepage" || idParam === "editor-demo") {
+          idParam === "restaurants-demo") {
         
         // Try to find existing config by name
         const configs = await storage.getAllWebsiteConfigs();
+        config = configs.find(c => c.name === accessValidation.configName);
         
-        // Map both editor-demo and homepage to the same configuration
-        const configName = (idParam === 'editor-demo' || idParam === 'homepage') ? 'WebSitioPro Homepage' : `${idParam} Configuration`;
-        config = configs.find(c => c.name === configName);
+        // If demo config doesn't exist, create it with safe defaults
+        if (!config) {
+          const templateType = idParam.replace('-demo', '');
+          const safeDemoConfig = {
+            name: accessValidation.configName,
+            ...createSafeDemoConfig(templateType)
+          };
+          config = await storage.createWebsiteConfig(safeDemoConfig);
+          logConfigAccess('CREATE-DEMO', idParam, true, `Created safe demo config for ${templateType}`);
+        }
+      } else if (idParam === "homepage" || idParam === "editor-demo") {
+        // Homepage access allowed for read operations
+        const configs = await storage.getAllWebsiteConfigs();
+        config = configs.find(c => c.name === accessValidation.configName);
         
         if (!config) {
-          return res.status(404).json({ error: "Configuration not found" });
+          return res.status(404).json({ error: "Homepage configuration not found" });
         }
       } else if (idParam === "default") {
         // Legacy fallback - redirect to homepage
@@ -117,23 +141,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const idParam = req.params.id;
 
+      // Validate configuration access using isolation system
+      const accessValidation = validateConfigAccess(idParam, 'write');
+      
+      if (!accessValidation.isValid) {
+        logConfigAccess('PUT', idParam, false, accessValidation.error);
+        return res.status(403).json({ 
+          error: accessValidation.error || "Access denied to protected configuration" 
+        });
+      }
+
       let config;
 
       // Handle special demo template IDs
       if (idParam === "professionals-demo" || idParam === "tourism-demo" || 
           idParam === "retail-demo" || idParam === "services-demo" || 
-          idParam === "restaurants-demo" || idParam === "homepage" || idParam === "editor-demo") {
+          idParam === "restaurants-demo") {
         
         // Try to find existing config by name
         const configs = await storage.getAllWebsiteConfigs();
+        config = configs.find(c => c.name === accessValidation.configName);
         
-        // Map both editor-demo and homepage to the same configuration
-        const configName = (idParam === 'editor-demo' || idParam === 'homepage') ? 'WebSitioPro Homepage' : `${idParam} Configuration`;
-        config = configs.find(c => c.name === configName);
-        
+        // If demo config doesn't exist, create it with safe defaults
         if (!config) {
-          return res.status(404).json({ error: "Configuration not found" });
+          const templateType = idParam.replace('-demo', '');
+          const safeDemoConfig = {
+            name: accessValidation.configName,
+            ...createSafeDemoConfig(templateType)
+          };
+          config = await storage.createWebsiteConfig(safeDemoConfig);
+          logConfigAccess('CREATE-DEMO', idParam, true, `Created safe demo config for ${templateType}`);
         }
+      } else if (idParam === "homepage" || idParam === "editor-demo") {
+        // Homepage access blocked by validation above
+        return res.status(403).json({ error: "Templates cannot modify homepage" });
       } else if (idParam === "default") {
         // Legacy fallback - redirect to homepage
         const configs = await storage.getAllWebsiteConfigs();
