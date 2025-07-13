@@ -210,6 +210,45 @@ export default function EditorPage() {
       en: 'Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM'
     },
     
+    // Chatbot settings
+    chatbotIcon: '📞',
+    chatbotColor: '#007BFF',
+    chatbotTitle: {
+      es: 'Chat con WebSitioPro',
+      en: 'Chat with WebSitioPro'
+    },
+    chatbotWelcome: {
+      es: '¡Hola! ¿En qué puedo ayudarte con tu sitio web?',
+      en: 'Hello! How can I help you with your website?'
+    },
+    chatbotQuestions: [
+      {
+        key: 'hola',
+        question: { es: 'hola', en: 'hello' },
+        answer: { es: '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte hoy?', en: 'Hello! I\'m the WebSitioPro assistant. How can I help you today?' }
+      },
+      {
+        key: 'precios',
+        question: { es: 'precios', en: 'pricing' },
+        answer: { es: 'Nuestros sitios Pro cuestan 2,000 pesos de construcción + 3,000 pesos/año de hosting.', en: 'Our Pro sites cost 2,000 pesos for construction + 3,000 pesos/year for hosting.' }
+      },
+      {
+        key: 'servicios',
+        question: { es: 'servicios', en: 'services' },
+        answer: { es: 'Ofrecemos sitios web para profesionales, restaurantes, negocios turísticos, retail y servicios.', en: 'We offer websites for professionals, restaurants, tourist businesses, retail, and services.' }
+      },
+      {
+        key: 'contacto',
+        question: { es: 'contacto', en: 'contact' },
+        answer: { es: 'Puedes contactarnos por WhatsApp al +52 983 123 4567 o por email a info@websitiopro.com', en: 'You can contact us via WhatsApp at +52 983 123 4567 or email us at info@websitiopro.com' }
+      },
+      {
+        key: 'tiempo',
+        question: { es: 'tiempo', en: 'time' },
+        answer: { es: 'Típicamente creamos tu sitio web en 5-7 días hábiles después de recibir todo tu contenido.', en: 'We typically create your website in 5-7 business days after receiving all your content.' }
+      }
+    ],
+    
     // Pro Page
     proHeroHeadline: {
       es: 'Sitios Web Premium por WebSitioPro',
@@ -328,6 +367,17 @@ export default function EditorPage() {
     setWebsiteData(prev => ({
       ...prev,
       templates: prev.templates.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleChatbotQuestionChange = (index: number, field: 'question' | 'answer', value: string, language: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      chatbotQuestions: prev.chatbotQuestions.map((item, i) => 
+        i === index 
+          ? { ...item, [field]: { ...item[field], [language]: value } }
+          : item
+      )
     }));
   };
 
@@ -1959,14 +2009,22 @@ export default function EditorPage() {
                   <div className="row g-3 mb-4">
                     <div className="col-md-4">
                       <label className="form-label">Enable Chatbot</label>
-                      <select className="form-control">
+                      <select 
+                        className="form-control"
+                        value={websiteData.showChatbot ? 'true' : 'false'}
+                        onChange={(e) => handleInputChange('showChatbot', e.target.value === 'true')}
+                      >
                         <option value="true">Enabled</option>
                         <option value="false">Disabled</option>
                       </select>
                     </div>
                     <div className="col-md-4">
                       <label className="form-label">Chatbot Icon</label>
-                      <select className="form-control">
+                      <select 
+                        className="form-control"
+                        value={websiteData.chatbotIcon || '📞'}
+                        onChange={(e) => handleInputChange('chatbotIcon', e.target.value)}
+                      >
                         <option value="📞">📞 Teléfono (Most Clear)</option>
                         <option value="💬">💬 Conversación</option>
                         <option value="🤝">🤝 Ayuda</option>
@@ -1978,14 +2036,15 @@ export default function EditorPage() {
                         <option value="🗣️">🗣️ Hablar</option>
                         <option value="💭">💭 Pensar</option>
                       </select>
-                      <small className="text-muted">Preview: <span style={{fontSize: '20px'}}>📞</span></small>
+                      <small className="text-muted">Preview: <span style={{fontSize: '20px'}}>{websiteData.chatbotIcon || '📞'}</span></small>
                     </div>
                     <div className="col-md-4">
                       <label className="form-label">Chatbot Color</label>
                       <input 
                         type="color" 
                         className="form-control form-control-color"
-                        defaultValue="#007BFF"
+                        value={websiteData.chatbotColor || '#007BFF'}
+                        onChange={(e) => handleInputChange('chatbotColor', e.target.value)}
                       />
                     </div>
                   </div>
@@ -1997,7 +2056,8 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        defaultValue="Chat con WebSitioPro"
+                        value={websiteData.chatbotTitle?.es || 'Chat con WebSitioPro'}
+                        onChange={(e) => handleInputChange('chatbotTitle', e.target.value, 'es')}
                       />
                     </div>
                     <div className="col-md-6">
@@ -2005,7 +2065,8 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        defaultValue="Chat with WebSitioPro"
+                        value={websiteData.chatbotTitle?.en || 'Chat with WebSitioPro'}
+                        onChange={(e) => handleInputChange('chatbotTitle', e.target.value, 'en')}
                       />
                     </div>
                     <div className="col-md-6">
@@ -2013,7 +2074,8 @@ export default function EditorPage() {
                       <textarea 
                         className="form-control"
                         rows={3}
-                        defaultValue="¡Hola! ¿En qué puedo ayudarte con tu sitio web?"
+                        value={websiteData.chatbotWelcome?.es || '¡Hola! ¿En qué puedo ayudarte con tu sitio web?'}
+                        onChange={(e) => handleInputChange('chatbotWelcome', e.target.value, 'es')}
                       />
                     </div>
                     <div className="col-md-6">
@@ -2021,7 +2083,8 @@ export default function EditorPage() {
                       <textarea 
                         className="form-control"
                         rows={3}
-                        defaultValue="Hello! How can I help you with your website?"
+                        value={websiteData.chatbotWelcome?.en || 'Hello! How can I help you with your website?'}
+                        onChange={(e) => handleInputChange('chatbotWelcome', e.target.value, 'en')}
                       />
                     </div>
                   </div>
@@ -2032,13 +2095,7 @@ export default function EditorPage() {
                   {/* Spanish Responses */}
                   <h6>Spanish Responses</h6>
                   <div className="mb-4">
-                    {[
-                      { keyword: 'hola', response: '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte hoy?' },
-                      { keyword: 'precios', response: 'Nuestros sitios Pro cuestan 2,000 pesos de construcción + 3,000 pesos/año de hosting.' },
-                      { keyword: 'servicios', response: 'Ofrecemos sitios web para profesionales, restaurantes, negocios turísticos, retail y servicios.' },
-                      { keyword: 'contacto', response: 'Puedes contactarnos por WhatsApp al +52 983 123 4567 o por email a info@websitiopro.com' },
-                      { keyword: 'tiempo', response: 'Típicamente creamos tu sitio web en 5-7 días hábiles después de recibir todo tu contenido.' }
-                    ].map((item, index) => (
+                    {websiteData.chatbotQuestions.map((item, index) => (
                       <div key={index} className="border rounded p-3 mb-3">
                         <div className="row g-3">
                           <div className="col-md-4">
@@ -2046,7 +2103,8 @@ export default function EditorPage() {
                             <input 
                               type="text" 
                               className="form-control"
-                              defaultValue={item.keyword}
+                              value={item.question.es}
+                              onChange={(e) => handleChatbotQuestionChange(index, 'question', e.target.value, 'es')}
                             />
                           </div>
                           <div className="col-md-8">
@@ -2054,7 +2112,8 @@ export default function EditorPage() {
                             <textarea 
                               className="form-control"
                               rows={2}
-                              defaultValue={item.response}
+                              value={item.answer.es}
+                              onChange={(e) => handleChatbotQuestionChange(index, 'answer', e.target.value, 'es')}
                             />
                           </div>
                         </div>
@@ -2065,13 +2124,7 @@ export default function EditorPage() {
                   {/* English Responses */}
                   <h6>English Responses</h6>
                   <div className="mb-4">
-                    {[
-                      { keyword: 'hello', response: 'Hello! I\'m the WebSitioPro assistant. How can I help you today?' },
-                      { keyword: 'pricing', response: 'Our Pro sites cost 2,000 pesos for construction + 3,000 pesos/year for hosting.' },
-                      { keyword: 'services', response: 'We offer websites for professionals, restaurants, tourist businesses, retail, and services.' },
-                      { keyword: 'contact', response: 'You can contact us via WhatsApp at +52 983 123 4567 or email us at info@websitiopro.com' },
-                      { keyword: 'time', response: 'We typically create your website in 5-7 business days after receiving all your content.' }
-                    ].map((item, index) => (
+                    {websiteData.chatbotQuestions.map((item, index) => (
                       <div key={index} className="border rounded p-3 mb-3">
                         <div className="row g-3">
                           <div className="col-md-4">
@@ -2079,7 +2132,8 @@ export default function EditorPage() {
                             <input 
                               type="text" 
                               className="form-control"
-                              defaultValue={item.keyword}
+                              value={item.question.en}
+                              onChange={(e) => handleChatbotQuestionChange(index, 'question', e.target.value, 'en')}
                             />
                           </div>
                           <div className="col-md-8">
@@ -2087,7 +2141,8 @@ export default function EditorPage() {
                             <textarea 
                               className="form-control"
                               rows={2}
-                              defaultValue={item.response}
+                              value={item.answer.en}
+                              onChange={(e) => handleChatbotQuestionChange(index, 'answer', e.target.value, 'en')}
                             />
                           </div>
                         </div>

@@ -148,7 +148,17 @@ export const websiteConfigs = pgTable("website_configs", {
     key: string;
     question: { en: string; es: string };
     answer: { en: string; es: string };
-  }>>(),
+  }>>().default([]),
+  chatbotIcon: text("chatbot_icon").default('📞'),
+  chatbotColor: text("chatbot_color").default('#007BFF'),
+  chatbotTitle: json("chatbot_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  chatbotWelcome: json("chatbot_welcome").$type<{
+    es: string;
+    en: string;
+  }>(),
   // Additional editor fields
   whyPoints: json("why_points").$type<Array<{
     es: string;
