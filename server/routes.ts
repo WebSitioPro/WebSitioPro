@@ -44,7 +44,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const configs = await storage.getAllWebsiteConfigs();
         
         // Map editor-demo to homepage configuration
-        const configName = idParam === 'editor-demo' ? 'homepage Configuration' : `${idParam} Configuration`;
+        const configName = idParam === 'editor-demo' ? 'Homepage Configuration' : `${idParam} Configuration`;
         config = configs.find(c => c.name === configName);
         
         if (!config) {
@@ -134,7 +134,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const configs = await storage.getAllWebsiteConfigs();
         
         // Map editor-demo to homepage configuration
-        const configName = idParam === 'editor-demo' ? 'homepage Configuration' : `${idParam} Configuration`;
+        const configName = idParam === 'editor-demo' ? 'Homepage Configuration' : `${idParam} Configuration`;
         config = configs.find(c => c.name === configName);
         
         if (!config) {
