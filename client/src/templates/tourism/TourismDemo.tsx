@@ -340,21 +340,21 @@ export default function TourismDemo() {
             {t('toursTitle')}
           </h2>
           <div className="row g-4">
-            {mockTourismData.tours.map((tour, index) => (
+            {(savedConfig?.services || mockTourismData.tours).map((service, index) => (
               <div key={index} className="col-md-6 col-lg-3">
                 <div className="card border-0 shadow-sm h-100">
                   <div className="card-body p-4 text-center">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                      {tour.name}
+                      {service.title ? getLocalizedValue(service.title) : service.name}
                     </h5>
                     <div className="mb-3">
                       <span className="badge fs-6 px-3 py-2" style={{ backgroundColor: 'hsl(var(--secondary))', color: 'white' }}>
                         <DollarSign size={16} className="me-1" />
-                        {tour.price}
+                        {service.description ? getLocalizedValue(service.description) : service.price}
                       </span>
                     </div>
                     <a 
-                      href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Me interesa el ${tour.name}`}
+                      href={`https://wa.me/${savedConfig?.whatsappNumber || mockTourismData.whatsappNumber}?text=Me interesa el ${service.title ? getLocalizedValue(service.title) : service.name}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"

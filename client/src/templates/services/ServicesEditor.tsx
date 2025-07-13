@@ -73,6 +73,33 @@ export default function ServicesEditor() {
   });
   
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Load saved configuration on mount
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/config/${clientId}`);
+        if (response.ok) {
+          const savedConfig = await response.json();
+          if (savedConfig) {
+            setWebsiteData(prevData => ({
+              ...prevData,
+              ...savedConfig,
+              templateType: 'services'
+            }));
+          }
+        }
+      } catch (error) {
+        console.error('Error loading config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadConfig();
+  }, [clientId]);
 
   const handleSave = async () => {
     try {

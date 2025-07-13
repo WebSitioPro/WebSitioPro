@@ -75,6 +75,33 @@ export default function RetailEditor() {
   });
   
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Load saved configuration on mount
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/config/${clientId}`);
+        if (response.ok) {
+          const savedConfig = await response.json();
+          if (savedConfig) {
+            setWebsiteData(prevData => ({
+              ...prevData,
+              ...savedConfig,
+              templateType: 'retail'
+            }));
+          }
+        }
+      } catch (error) {
+        console.error('Error loading config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadConfig();
+  }, [clientId]);
 
   const handleSave = async () => {
     try {
@@ -125,7 +152,7 @@ export default function RetailEditor() {
       ...prev,
       products: prev.products.map((product, i) => {
         if (i === index) {
-          if (language && (field === 'name' || field === 'description')) {
+          if (language && (field === 'title' || field === 'description')) {
             return { ...product, [field]: { ...product[field as keyof typeof product], [language]: value } };
           } else {
             return { ...product, [field]: value };
@@ -139,7 +166,7 @@ export default function RetailEditor() {
   const addProduct = () => {
     setWebsiteData(prev => ({
       ...prev,
-      products: [...prev.products, { name: { es: '', en: '' }, description: { es: '', en: '' }, price: '' }]
+      products: [...prev.products, { title: { es: '', en: '' }, description: { es: '', en: '' }, price: '', image: '' }]
     }));
   };
 

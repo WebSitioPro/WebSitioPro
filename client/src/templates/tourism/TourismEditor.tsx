@@ -74,6 +74,32 @@ export default function TourismEditor() {
   
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Load saved configuration on mount
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/config/${clientId}`);
+        if (response.ok) {
+          const savedConfig = await response.json();
+          if (savedConfig) {
+            setWebsiteData(prevData => ({
+              ...prevData,
+              ...savedConfig,
+              templateType: 'tourism'
+            }));
+          }
+        }
+      } catch (error) {
+        console.error('Error loading config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadConfig();
+  }, [clientId]);
 
   const handleSave = async () => {
     try {
@@ -119,43 +145,43 @@ export default function TourismEditor() {
     });
   };
 
-  const handleTourChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+  const handleServiceChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
-      tours: prev.tours.map((tour, i) => {
+      services: prev.services.map((service, i) => {
         if (i === index) {
-          if (language && (field === 'name' || field === 'description')) {
+          if (language && (field === 'title' || field === 'description')) {
             return {
-              ...tour,
+              ...service,
               [field]: {
-                ...tour[field as keyof typeof tour],
+                ...service[field as keyof typeof service],
                 [language]: value
               }
             };
           } else {
-            return { ...tour, [field]: value };
+            return { ...service, [field]: value };
           }
         }
-        return tour;
+        return service;
       })
     }));
   };
 
-  const addTour = () => {
+  const addService = () => {
     setWebsiteData(prev => ({
       ...prev,
-      tours: [...prev.tours, {
-        name: { es: '', en: '' },
+      services: [...prev.services, {
+        title: { es: '', en: '' },
         description: { es: '', en: '' },
-        price: ''
+        icon: 'map-pin'
       }]
     }));
   };
 
-  const removeTour = (index: number) => {
+  const removeService = (index: number) => {
     setWebsiteData(prev => ({
       ...prev,
-      tours: prev.tours.filter((_, i) => i !== index)
+      services: prev.services.filter((_, i) => i !== index)
     }));
   };
 
@@ -340,11 +366,11 @@ export default function TourismEditor() {
                   About Section
                 </button>
                 <button 
-                  className={`list-group-item list-group-item-action ${activeTab === 'tours' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('tours')}
+                  className={`list-group-item list-group-item-action ${activeTab === 'services' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('services')}
                 >
                   <MapPin size={16} className="me-2" />
-                  Tours & Packages
+                  Tours & Services
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}
@@ -512,30 +538,30 @@ export default function TourismEditor() {
                   </div>
                 )}
 
-                {activeTab === 'tours' && (
+                {activeTab === 'services' && (
                   <div>
-                    <h5 className="mb-4">Tours & Packages</h5>
-                    {websiteData.tours.map((tour, index) => (
+                    <h5 className="mb-4">Tours & Services</h5>
+                    {websiteData.services.map((service, index) => (
                       <div key={index} className="card mb-3">
                         <div className="card-body">
                           <div className="row">
                             <div className="col-md-4">
                               <div className="mb-3">
-                                <label className="form-label">Tour Name (Spanish)</label>
+                                <label className="form-label">Service Title (Spanish)</label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={tour.name.es}
-                                  onChange={(e) => handleTourChange(index, 'name', e.target.value, 'es')}
+                                  value={service.title.es}
+                                  onChange={(e) => handleServiceChange(index, 'title', e.target.value, 'es')}
                                 />
                               </div>
                               <div className="mb-3">
-                                <label className="form-label">Tour Name (English)</label>
+                                <label className="form-label">Service Title (English)</label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={tour.name.en}
-                                  onChange={(e) => handleTourChange(index, 'name', e.target.value, 'en')}
+                                  value={service.title.en}
+                                  onChange={(e) => handleServiceChange(index, 'title', e.target.value, 'en')}
                                 />
                               </div>
                             </div>
@@ -545,8 +571,8 @@ export default function TourismEditor() {
                                 <textarea
                                   className="form-control"
                                   rows={3}
-                                  value={tour.description.es}
-                                  onChange={(e) => handleTourChange(index, 'description', e.target.value, 'es')}
+                                  value={service.description.es}
+                                  onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'es')}
                                 />
                               </div>
                               <div className="mb-3">
@@ -554,27 +580,28 @@ export default function TourismEditor() {
                                 <textarea
                                   className="form-control"
                                   rows={3}
-                                  value={tour.description.en}
-                                  onChange={(e) => handleTourChange(index, 'description', e.target.value, 'en')}
+                                  value={service.description.en}
+                                  onChange={(e) => handleServiceChange(index, 'description', e.target.value, 'en')}
                                 />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="mb-3">
-                                <label className="form-label">Price</label>
+                                <label className="form-label">Icon</label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={tour.price}
-                                  onChange={(e) => handleTourChange(index, 'price', e.target.value)}
+                                  value={service.icon}
+                                  onChange={(e) => handleServiceChange(index, 'icon', e.target.value)}
+                                  placeholder="e.g., map-pin, landmark"
                                 />
                               </div>
                               <div className="d-grid">
                                 <button 
                                   className="btn btn-danger"
-                                  onClick={() => removeTour(index)}
+                                  onClick={() => removeService(index)}
                                 >
-                                  Remove Tour
+                                  Remove Service
                                 </button>
                               </div>
                             </div>
@@ -584,10 +611,10 @@ export default function TourismEditor() {
                     ))}
                     <button 
                       className="btn btn-success"
-                      onClick={addTour}
+                      onClick={addService}
                     >
                       <Plus size={16} className="me-2" />
-                      Add Tour
+                      Add Service
                     </button>
                   </div>
                 )}
