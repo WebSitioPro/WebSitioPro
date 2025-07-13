@@ -115,17 +115,17 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
-- July 13, 2025. Fixed Critical Homepage Saving Issue - RESOLVED
-  - Fixed configuration mapping issue where homepage and editor-demo endpoints were not using the same database record
-  - Updated both GET and PUT API routes to map 'homepage' and 'editor-demo' to the same 'Homepage Configuration' 
-  - Cleaned up duplicate database configurations causing API conflicts
-  - Verified both endpoints now correctly use the same configuration (ID 1)
-  - Homepage and editor-demo configurations are now properly synchronized
-  - All homepage editor changes now persist correctly to the database
-  - Testing confirmed: PUT /api/config/homepage and GET /api/config/homepage work perfectly
-  - Both heroImage and businessName fields save and load correctly
-  - Configuration isolation between templates maintained (professionals-demo, tourism-demo, etc.)
-  - Homepage editing functionality fully operational after multiple fix iterations
+- July 13, 2025. Fixed Critical Homepage/Client Data Separation Issue - RESOLVED
+  - CRITICAL FIX: Separated homepage configuration from client configurations to prevent data mixing
+  - Updated /api/configs endpoint to filter out homepage configuration from client listings
+  - Homepage configuration now uses 'WebSitioPro Homepage' name and is excluded from client manager
+  - Client configurations (Dr. Martinez Cardiology, Tacos El Mejor, Playa Tours Cancun) properly restored
+  - Homepage saving functionality maintained: /api/config/homepage works correctly
+  - Editor-demo endpoint properly maps to homepage configuration (not client data)
+  - Client Manager now shows only actual client websites, not the main homepage
+  - Fixed data architecture: homepage is main website, clients are template-generated websites
+  - Configuration isolation restored: homepage separate from client template configurations
+  - Data loss recovery: recreated sample client data to demonstrate proper structure
 - July 13, 2025. Complete Template Data Isolation Fix
   - RESOLVED: Critical template data contamination issue where all templates shared same database record
   - Updated all template editors to use unique demo configuration IDs (professionals-demo, tourism-demo, etc.)

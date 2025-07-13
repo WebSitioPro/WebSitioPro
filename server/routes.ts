@@ -13,7 +13,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/configs", async (_req: Request, res: Response) => {
     try {
       const configs = await storage.getAllWebsiteConfigs();
-      res.json(configs);
+      // Filter out homepage configuration from client listings
+      const clientConfigs = configs.filter(config => 
+        config.name !== 'WebSitioPro Homepage' && 
+        config.name !== 'Homepage Configuration' && 
+        !config.name?.includes('demo') &&
+        config.id !== 'homepage'
+      );
+      res.json(clientConfigs);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch website configurations" });
     }
@@ -45,7 +52,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const configs = await storage.getAllWebsiteConfigs();
         
         // Map both editor-demo and homepage to the same configuration
-        const configName = (idParam === 'editor-demo' || idParam === 'homepage') ? 'Homepage Configuration' : `${idParam} Configuration`;
+        const configName = (idParam === 'editor-demo' || idParam === 'homepage') ? 'WebSitioPro Homepage' : `${idParam} Configuration`;
         config = configs.find(c => c.name === configName);
         
         if (!config) {
@@ -121,7 +128,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const configs = await storage.getAllWebsiteConfigs();
         
         // Map both editor-demo and homepage to the same configuration
-        const configName = (idParam === 'editor-demo' || idParam === 'homepage') ? 'Homepage Configuration' : `${idParam} Configuration`;
+        const configName = (idParam === 'editor-demo' || idParam === 'homepage') ? 'WebSitioPro Homepage' : `${idParam} Configuration`;
         config = configs.find(c => c.name === configName);
         
         if (!config) {
