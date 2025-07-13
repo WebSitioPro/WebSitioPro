@@ -21,7 +21,7 @@ interface WebsiteData {
   showBanner: boolean;
   
   // Hero Section
-  heroHeadline: { es: string; en: string };
+  heroHeadline: { es: { line1: string; line2: string }; en: { line1: string; line2: string } };
   heroSubheadline: { es: string; en: string };
   heroImage: string;
   
@@ -103,8 +103,14 @@ export default function EditorPage() {
     
     // Hero Section - will be populated from database
     heroHeadline: {
-      es: 'Construye tu Negocio con WebSitioPro',
-      en: 'Build Your Business with WebSitioPro'
+      es: {
+        line1: 'Construye tu Negocio',
+        line2: 'con WebSitioPro'
+      },
+      en: {
+        line1: 'Build Your Business',
+        line2: 'with WebSitioPro'
+      }
     },
     heroSubheadline: {
       es: 'Sitios web accesibles y personalizados para México—desde 2,000 pesos',
@@ -381,6 +387,19 @@ export default function EditorPage() {
     }));
   };
 
+  const handleHeroHeadlineChange = (language: 'es' | 'en', line: 'line1' | 'line2', value: string) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      heroHeadline: {
+        ...prev.heroHeadline,
+        [language]: {
+          ...prev.heroHeadline[language],
+          [line]: value
+        }
+      }
+    }));
+  };
+
   const handleWhyPointChange = (index: number, value: string, language: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
@@ -512,8 +531,22 @@ export default function EditorPage() {
               heroSubtitleSize: config.heroSubtitleSize || prev.heroSubtitleSize,
               heroVerticalAlignment: config.heroVerticalAlignment || prev.heroVerticalAlignment,
               heroHeadline: {
-                es: config.translations?.es?.heroHeadline || prev.heroHeadline.es,
-                en: config.translations?.en?.heroHeadline || prev.heroHeadline.en
+                es: config.translations?.es?.heroHeadline ? 
+                  (() => {
+                    const lines = config.translations.es.heroHeadline.split('\n');
+                    return {
+                      line1: lines[0] || prev.heroHeadline.es.line1,
+                      line2: lines[1] || prev.heroHeadline.es.line2
+                    };
+                  })() : prev.heroHeadline.es,
+                en: config.translations?.en?.heroHeadline ?
+                  (() => {
+                    const lines = config.translations.en.heroHeadline.split('\n');
+                    return {
+                      line1: lines[0] || prev.heroHeadline.en.line1,
+                      line2: lines[1] || prev.heroHeadline.en.line2
+                    };
+                  })() : prev.heroHeadline.en
               },
               heroSubheadline: {
                 es: config.translations?.es?.heroSubheadline || prev.heroSubheadline.es,
@@ -704,7 +737,7 @@ export default function EditorPage() {
         showBanner: websiteData.showBanner,
         translations: {
           es: {
-            heroHeadline: websiteData.heroHeadline.es,
+            heroHeadline: `${websiteData.heroHeadline.es.line1}\n${websiteData.heroHeadline.es.line2}`,
             heroSubheadline: websiteData.heroSubheadline.es,
             whyTitle: websiteData.whyTitle.es,
             aboutTitle: websiteData.aboutTitle.es,
@@ -719,7 +752,7 @@ export default function EditorPage() {
             bannerText: websiteData.bannerText.es
           },
           en: {
-            heroHeadline: websiteData.heroHeadline.en,
+            heroHeadline: `${websiteData.heroHeadline.en.line1}\n${websiteData.heroHeadline.en.line2}`,
             heroSubheadline: websiteData.heroSubheadline.en,
             whyTitle: websiteData.whyTitle.en,
             aboutTitle: websiteData.aboutTitle.en,
@@ -1255,21 +1288,43 @@ export default function EditorPage() {
                   <h4 className="mb-4">Hero Section</h4>
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label">Main Headline (Spanish)</label>
+                      <label className="form-label">Main Headline Line 1 (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
-                        value={websiteData.heroHeadline.es}
-                        onChange={(e) => handleInputChange('heroHeadline', e.target.value, 'es')}
+                        value={websiteData.heroHeadline.es.line1}
+                        onChange={(e) => handleHeroHeadlineChange('es', 'line1', e.target.value)}
+                        placeholder="First line of headline"
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Main Headline (English)</label>
+                      <label className="form-label">Main Headline Line 1 (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
-                        value={websiteData.heroHeadline.en}
-                        onChange={(e) => handleInputChange('heroHeadline', e.target.value, 'en')}
+                        value={websiteData.heroHeadline.en.line1}
+                        onChange={(e) => handleHeroHeadlineChange('en', 'line1', e.target.value)}
+                        placeholder="First line of headline"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Main Headline Line 2 (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.heroHeadline.es.line2}
+                        onChange={(e) => handleHeroHeadlineChange('es', 'line2', e.target.value)}
+                        placeholder="Second line of headline"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Main Headline Line 2 (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.heroHeadline.en.line2}
+                        onChange={(e) => handleHeroHeadlineChange('en', 'line2', e.target.value)}
+                        placeholder="Second line of headline"
                       />
                     </div>
                     <div className="col-md-6">
