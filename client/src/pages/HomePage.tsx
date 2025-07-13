@@ -788,12 +788,20 @@ export default function HomePage() {
                               {template.description[language] || template.description.es}
                             </p>
                             <div className="d-flex gap-2">
-                              <button className="btn btn-outline-primary btn-sm">
+                              <Link 
+                                href={template.demoUrl || '#'}
+                                className="btn btn-outline-primary btn-sm"
+                                onClick={() => window.scrollTo(0, 0)}
+                              >
                                 {language === 'es' ? 'Ver Demo' : 'View Demo'}
-                              </button>
-                              <button className="btn btn-primary btn-sm">
+                              </Link>
+                              <Link 
+                                href={template.getStartedUrl || '/pro'}
+                                className="btn btn-primary btn-sm"
+                                onClick={() => window.scrollTo(0, 0)}
+                              >
                                 {language === 'es' ? 'Comenzar' : 'Get Started'}
-                              </button>
+                              </Link>
                             </div>
                           </div>
                         </div>

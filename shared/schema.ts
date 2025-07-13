@@ -164,6 +164,8 @@ export const websiteConfigs = pgTable("website_configs", {
     title: { es: string; en: string };
     description: { es: string; en: string };
     image: string;
+    demoUrl?: string;
+    getStartedUrl?: string;
   }>>().default([]),
   // Timestamp fields
   createdAt: timestamp("created_at").defaultNow(),

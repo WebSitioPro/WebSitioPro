@@ -39,6 +39,8 @@ interface WebsiteData {
     title: { es: string; en: string };
     description: { es: string; en: string };
     image: string;
+    demoUrl?: string;
+    getStartedUrl?: string;
   }>;
   
   // Pricing
@@ -151,27 +153,37 @@ export default function EditorPage() {
       {
         title: { es: 'Profesionales', en: 'Professionals' },
         description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
-        image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professional'
+        image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professional',
+        demoUrl: '/professionals-demo',
+        getStartedUrl: '/pro'
       },
       {
         title: { es: 'Restaurantes', en: 'Restaurants' },
         description: { es: 'Menús atractivos y sistemas de reservas', en: 'Attractive menus and reservation systems' },
-        image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Restaurant'
+        image: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Restaurant',
+        demoUrl: '/restaurants-demo',
+        getStartedUrl: '/pro'
       },
       {
         title: { es: 'Negocios Turísticos', en: 'Tourist Businesses' },
         description: { es: 'Promociona tours y experiencias locales', en: 'Promote local tours and experiences' },
-        image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Tourism'
+        image: 'https://via.placeholder.com/300x200/007ACC/FFFFFF?text=Tourism',
+        demoUrl: '/tourism-demo',
+        getStartedUrl: '/pro'
       },
       {
         title: { es: 'Retail', en: 'Retail' },
         description: { es: 'Tiendas en línea con carrito de compras', en: 'Online stores with shopping carts' },
-        image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Retail'
+        image: 'https://via.placeholder.com/300x200/FF6B35/FFFFFF?text=Retail',
+        demoUrl: '/retail-demo',
+        getStartedUrl: '/pro'
       },
       {
         title: { es: 'Servicios', en: 'Services' },
         description: { es: 'Plomeros, electricistas y más', en: 'Plumbers, electricians, and more' },
-        image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Services'
+        image: 'https://via.placeholder.com/300x200/6C5CE7/FFFFFF?text=Services',
+        demoUrl: '/services-demo',
+        getStartedUrl: '/pro'
       }
     ],
     
@@ -304,7 +316,9 @@ export default function EditorPage() {
         {
           title: { es: 'Nuevo Servicio', en: 'New Service' },
           description: { es: 'Descripción del servicio', en: 'Service description' },
-          image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=New+Service'
+          image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=New+Service',
+          demoUrl: '/new-demo',
+          getStartedUrl: '/pro'
         }
       ]
     }));
@@ -804,7 +818,13 @@ export default function EditorPage() {
                   <Type size={16} className="me-2" />
                   About Section
                 </button>
-
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'templates' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('templates')}
+                >
+                  <Briefcase size={16} className="me-2" />
+                  Templates Section
+                </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pricing' ? 'active fw-bold' : ''}`}
                   onClick={() => setActiveTab('pricing')}
@@ -1501,6 +1521,172 @@ export default function EditorPage() {
                       />
                     </div>
                   </div>
+                </div>
+              )}
+
+              {/* Templates Tab */}
+              {activeTab === 'templates' && (
+                <div>
+                  <h4 className="mb-4">Templates Section</h4>
+                  
+                  {/* Section Title */}
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Section Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.offeringsTitle.es}
+                        onChange={(e) => handleInputChange('offeringsTitle', e.target.value, 'es')}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Section Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.offeringsTitle.en}
+                        onChange={(e) => handleInputChange('offeringsTitle', e.target.value, 'en')}
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Template Cards */}
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5 className="mb-0">Template Cards</h5>
+                    <button 
+                      type="button" 
+                      className="btn btn-primary btn-sm"
+                      onClick={handleAddTemplate}
+                    >
+                      <Plus size={16} className="me-1" />
+                      Add Template
+                    </button>
+                  </div>
+                  
+                  {websiteData.templates.map((template, index) => (
+                    <div key={index} className="border rounded p-3 mb-3 bg-light">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="mb-0">Template {index + 1}</h6>
+                        <button 
+                          type="button" 
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleRemoveTemplate(index)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      
+                      {/* Template Title */}
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Title (Spanish)</label>
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={template.title.es}
+                            onChange={(e) => handleTemplateChange(index, 'title', e.target.value, 'es')}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Title (English)</label>
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={template.title.en}
+                            onChange={(e) => handleTemplateChange(index, 'title', e.target.value, 'en')}
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Template Description */}
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Description (Spanish)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={3}
+                            value={template.description.es}
+                            onChange={(e) => handleTemplateChange(index, 'description', e.target.value, 'es')}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Description (English)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={3}
+                            value={template.description.en}
+                            onChange={(e) => handleTemplateChange(index, 'description', e.target.value, 'en')}
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Template Image */}
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-8">
+                          <label className="form-label">Template Image URL</label>
+                          <input 
+                            type="url" 
+                            className="form-control"
+                            value={template.image}
+                            onChange={(e) => handleTemplateChange(index, 'image', e.target.value)}
+                            placeholder="https://example.com/template-image.jpg"
+                          />
+                        </div>
+                        <div className="col-md-4">
+                          <label className="form-label">Image Preview</label>
+                          <div className="border rounded p-2 bg-white" style={{ height: '100px' }}>
+                            {template.image ? (
+                              <img 
+                                src={template.image} 
+                                alt="Template preview"
+                                className="w-100 h-100"
+                                style={{ objectFit: 'cover' }}
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
+                              />
+                            ) : null}
+                            <div 
+                              className="w-100 h-100 d-flex align-items-center justify-content-center text-muted"
+                              style={{ display: template.image ? 'none' : 'flex' }}
+                            >
+                              <div className="text-center">
+                                <Image size={24} className="mb-1" />
+                                <small>No image</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Template Links */}
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Demo URL</label>
+                          <input 
+                            type="url" 
+                            className="form-control"
+                            value={template.demoUrl || ''}
+                            onChange={(e) => handleTemplateChange(index, 'demoUrl', e.target.value)}
+                            placeholder="/professionals-demo"
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Get Started URL</label>
+                          <input 
+                            type="url" 
+                            className="form-control"
+                            value={template.getStartedUrl || ''}
+                            onChange={(e) => handleTemplateChange(index, 'getStartedUrl', e.target.value)}
+                            placeholder="/pro"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
 
