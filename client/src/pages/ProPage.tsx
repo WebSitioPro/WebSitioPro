@@ -465,7 +465,7 @@ export default function ProPage() {
       <section className="py-5">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {t('howItWorksTitle')}
+            {savedConfig?.serviceStepsTitle?.[language] || t('howItWorksTitle')}
           </h2>
           <div className="row g-4">
             {(savedConfig?.serviceSteps || [

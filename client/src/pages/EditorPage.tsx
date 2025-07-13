@@ -68,10 +68,15 @@ interface WebsiteData {
   proHeroImage: string;
   proHeroImageOpacity: string;
   demoNote: { es: string; en: string };
+  serviceStepsTitle: { es: string; en: string };
   serviceSteps: Array<{
     es: string;
     en: string;
     description?: { es: string; en: string };
+  }>;
+  templateShowcaseImages: Array<{
+    desktop: string;
+    mobile: string;
   }>;
   paymentText: { es: string; en: string };
 }
@@ -270,6 +275,10 @@ export default function EditorPage() {
       es: '¡Si nos hemos contactado contigo vía WhatsApp, tienes una demostración personalizada lista! Finalizaremos tus detalles y fotos.',
       en: 'If we\'ve reached out via WhatsApp, you have a custom demo ready! We\'ll finalize your details and photos.'
     },
+    serviceStepsTitle: {
+      es: '¿Cómo Funciona Nuestro Servicio?',
+      en: 'How Our Service Works'
+    },
     serviceSteps: [
       { 
         es: 'Consulta Inicial', 
@@ -295,6 +304,13 @@ export default function EditorPage() {
           en: 'We launch your website and provide support'
         }
       }
+    ],
+    templateShowcaseImages: [
+      { desktop: '', mobile: '' },
+      { desktop: '', mobile: '' },
+      { desktop: '', mobile: '' },
+      { desktop: '', mobile: '' },
+      { desktop: '', mobile: '' }
     ],
     paymentText: {
       es: 'Paga mediante transferencia bancaria (detalles vía WhatsApp), tarjeta de crédito, o OXXO (código QR proporcionado).',
@@ -397,6 +413,15 @@ export default function EditorPage() {
           [line]: value
         }
       }
+    }));
+  };
+
+  const handleTemplateShowcaseImageChange = (index: number, field: 'desktop' | 'mobile', value: string) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      templateShowcaseImages: prev.templateShowcaseImages.map((img, i) => 
+        i === index ? { ...img, [field]: value } : img
+      )
     }));
   };
 
@@ -619,7 +644,9 @@ export default function EditorPage() {
               },
               templates: config.templates || prev.templates,
               whyPoints: config.whyPoints || prev.whyPoints,
+              serviceStepsTitle: config.serviceStepsTitle || prev.serviceStepsTitle,
               serviceSteps: config.serviceSteps || prev.serviceSteps,
+              templateShowcaseImages: config.templateShowcaseImages || prev.templateShowcaseImages,
               // Banner fields
               bannerText: config.bannerText ? 
                 (typeof config.bannerText === 'string' ? 
@@ -770,7 +797,9 @@ export default function EditorPage() {
         // Store templates data as well
         templates: websiteData.templates,
         whyPoints: websiteData.whyPoints,
+        serviceStepsTitle: websiteData.serviceStepsTitle,
         serviceSteps: websiteData.serviceSteps,
+        templateShowcaseImages: websiteData.templateShowcaseImages,
         // Store pricing banner colors
         pricingBannerBgColor: websiteData.pricingBannerBgColor,
         pricingBannerTextColor: websiteData.pricingBannerTextColor,
@@ -2385,7 +2414,31 @@ export default function EditorPage() {
                     </div>
                   </div>
 
-                  <h5 className="mb-3">Service Steps</h5>
+                  <h5 className="mb-3">How Our Service Works Section</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Section Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.serviceStepsTitle?.es || '¿Cómo Funciona Nuestro Servicio?'}
+                        onChange={(e) => handleInputChange('serviceStepsTitle', e.target.value, 'es')}
+                        placeholder="¿Cómo Funciona Nuestro Servicio?"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Section Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.serviceStepsTitle?.en || 'How Our Service Works'}
+                        onChange={(e) => handleInputChange('serviceStepsTitle', e.target.value, 'en')}
+                        placeholder="How Our Service Works"
+                      />
+                    </div>
+                  </div>
+
+                  <h6 className="mb-3">Service Steps</h6>
                   {websiteData.serviceSteps.map((step, index) => (
                     <div key={index} className="border rounded p-3 mb-3">
                       <h6>Step {index + 1}</h6>
@@ -2446,23 +2499,25 @@ export default function EditorPage() {
                     <div className="col-12">
                       <p className="text-muted">Add showcase images for your Pro templates that will be displayed on the Pro page.</p>
                     </div>
-                    {[1, 2, 3, 4, 5].map((num) => (
-                      <div key={num} className="col-md-6">
+                    {websiteData.templateShowcaseImages.map((img, index) => (
+                      <div key={index} className="col-md-6">
                         <div className="border rounded p-3">
-                          <h6>Template {num} Showcase Image</h6>
-                          <label className="form-label">Template {num} Preview Image URL</label>
+                          <h6>Template {index + 1} Showcase Image</h6>
+                          <label className="form-label">Template {index + 1} Preview Image URL</label>
                           <input 
                             type="url" 
                             className="form-control"
-                            placeholder={`https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Template+${num}+Preview`}
-                            defaultValue=""
+                            placeholder={`https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Template+${index + 1}+Preview`}
+                            value={img.desktop}
+                            onChange={(e) => handleTemplateShowcaseImageChange(index, 'desktop', e.target.value)}
                           />
-                          <label className="form-label mt-2">Template {num} Mobile Preview URL</label>
+                          <label className="form-label mt-2">Template {index + 1} Mobile Preview URL</label>
                           <input 
                             type="url" 
                             className="form-control"
-                            placeholder={`https://via.placeholder.com/200x300/00A859/FFFFFF?text=Mobile+${num}`}
-                            defaultValue=""
+                            placeholder={`https://via.placeholder.com/200x300/00A859/FFFFFF?text=Mobile+${index + 1}`}
+                            value={img.mobile}
+                            onChange={(e) => handleTemplateShowcaseImageChange(index, 'mobile', e.target.value)}
                           />
                         </div>
                       </div>
