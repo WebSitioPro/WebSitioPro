@@ -38,22 +38,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Handle special demo template IDs
       if (idParam === "professionals-demo" || idParam === "tourism-demo" || 
           idParam === "retail-demo" || idParam === "services-demo" || 
-          idParam === "restaurants-demo" || idParam === "homepage") {
+          idParam === "restaurants-demo" || idParam === "homepage" || idParam === "editor-demo") {
         
         // Try to find existing config by name
         const configs = await storage.getAllWebsiteConfigs();
-        config = configs.find(c => c.name === `${idParam} Configuration`);
+        
+        // Map editor-demo to homepage configuration
+        const configName = idParam === 'editor-demo' ? 'homepage Configuration' : `${idParam} Configuration`;
+        config = configs.find(c => c.name === configName);
         
         if (!config) {
           // Create default config for this demo template
-          const templateType = idParam.replace('-demo', '');
+          const templateType = idParam === 'editor-demo' ? 'homepage' : idParam.replace('-demo', '');
+          const businessName = idParam === 'editor-demo' ? 'Homepage Demo' : `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Demo`;
           const defaultConfig = {
-            name: `${idParam} Configuration`,
+            name: configName,
             templateType: templateType === 'homepage' ? 'professionals' : templateType,
-            businessName: `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Demo`,
+            businessName: businessName,
             heroImage: `https://via.placeholder.com/800x400/C8102E/FFFFFF?text=${templateType}+Demo`,
             phone: '+52 983 123 4567',
-            email: `info@${templateType}demo.com`,
+            email: `info@${templateType === 'homepage' ? 'homepage' : templateType}demo.com`,
             primaryColor: '#C8102E',
             secondaryColor: '#00A859',
             accentColor: '#007ACC'
@@ -124,22 +128,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Handle special demo template IDs
       if (idParam === "professionals-demo" || idParam === "tourism-demo" || 
           idParam === "retail-demo" || idParam === "services-demo" || 
-          idParam === "restaurants-demo" || idParam === "homepage") {
+          idParam === "restaurants-demo" || idParam === "homepage" || idParam === "editor-demo") {
         
         // Try to find existing config by name
         const configs = await storage.getAllWebsiteConfigs();
-        config = configs.find(c => c.name === `${idParam} Configuration`);
+        
+        // Map editor-demo to homepage configuration
+        const configName = idParam === 'editor-demo' ? 'homepage Configuration' : `${idParam} Configuration`;
+        config = configs.find(c => c.name === configName);
         
         if (!config) {
           // Create new config if it doesn't exist
-          const templateType = idParam.replace('-demo', '');
+          const templateType = idParam === 'editor-demo' ? 'homepage' : idParam.replace('-demo', '');
+          const businessName = idParam === 'editor-demo' ? 'Homepage Demo' : `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Demo`;
           const defaultConfig = {
-            name: `${idParam} Configuration`,
+            name: configName,
             templateType: templateType === 'homepage' ? 'professionals' : templateType,
-            businessName: `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Demo`,
+            businessName: businessName,
             heroImage: `https://via.placeholder.com/800x400/C8102E/FFFFFF?text=${templateType}+Demo`,
             phone: '+52 983 123 4567',
-            email: `info@${templateType}demo.com`,
+            email: `info@${templateType === 'homepage' ? 'homepage' : templateType}demo.com`,
             primaryColor: '#C8102E',
             secondaryColor: '#00A859',
             accentColor: '#007ACC'
