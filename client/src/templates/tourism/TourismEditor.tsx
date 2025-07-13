@@ -89,7 +89,18 @@ export default function TourismEditor() {
             setWebsiteData(prevData => ({
               ...prevData,
               ...savedConfig,
-              templateType: 'tourism'
+              templateType: 'tourism',
+              // Ensure critical fields have fallback values
+              heroTitle: savedConfig.heroTitle || { es: 'Tours Riviera Maya', en: 'Riviera Maya Tours' },
+              heroSubtitle: savedConfig.heroSubtitle || { es: 'Descubre la belleza de México', en: 'Discover the beauty of Mexico' },
+              heroDescription: savedConfig.heroDescription || { es: 'Explora cenotes, ruinas mayas y playas paradisíacas', en: 'Explore cenotes, Mayan ruins and paradisiacal beaches' },
+              businessName: savedConfig.businessName || 'Tours Riviera Maya',
+              aboutTitle: savedConfig.aboutTitle || { es: 'Acerca de Nosotros', en: 'About Us' },
+              aboutText: savedConfig.aboutText || { es: 'Ofrecemos tours únicos...', en: 'We offer unique tours...' },
+              servicesTitle: savedConfig.servicesTitle || { es: 'Nuestros Tours', en: 'Our Tours' },
+              services: savedConfig.services || [],
+              photos: savedConfig.photos || [],
+              reviews: savedConfig.reviews || []
             }));
           }
         }
