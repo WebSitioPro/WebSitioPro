@@ -165,10 +165,22 @@ export const websiteConfigs = pgTable("website_configs", {
     en: string;
     icon: string;
   }>>().default([]),
+  serviceStepsTitle: json("service_steps_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  serviceStepsDescription: json("service_steps_description").$type<{
+    es: string;
+    en: string;
+  }>(),
   serviceSteps: json("service_steps").$type<Array<{
     es: string;
     en: string;
     description?: { es: string; en: string };
+  }>>().default([]),
+  templateShowcaseImages: json("template_showcase_images").$type<Array<{
+    desktop: string;
+    mobile: string;
   }>>().default([]),
   templates: json("templates").$type<Array<{
     title: { es: string; en: string };
