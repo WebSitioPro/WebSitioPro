@@ -163,7 +163,9 @@ export function filterClientConfigs(configs: any[]): any[] {
   return configs.filter(config => 
     !ISOLATION_RULES.protectedConfigs.includes(config.name) &&
     !config.name?.includes('demo') &&
-    config.id !== 'homepage'
+    !config.name?.includes('Demo') &&
+    config.id !== 'homepage' &&
+    config.id !== 1 // Filter out homepage by ID as well
   );
 }
 

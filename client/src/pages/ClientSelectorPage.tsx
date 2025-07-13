@@ -66,8 +66,8 @@ export default function ClientSelectorPage() {
             name: displayName,
             templateType: config.templateType || 'professionals',
             businessName: businessName,
-            lastModified: config.lastModified || config.createdAt || new Date().toISOString(),
-            createdAt: config.createdAt || new Date().toISOString(),
+            lastModified: config.lastModified || config.createdAt || '2024-01-01T00:00:00.000Z',
+            createdAt: config.createdAt || '2024-01-01T00:00:00.000Z',
             templateId: config.id?.toString() || 'unknown'
           };
         });
