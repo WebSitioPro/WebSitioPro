@@ -79,6 +79,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const configs = await storage.getAllWebsiteConfigs();
         config = configs.find(c => c.name === accessValidation.configName);
         
+        // If homepage config doesn't exist, find by ID 1
+        if (!config) {
+          config = configs.find(c => c.id === 1);
+        }
+        
         if (!config) {
           return res.status(404).json({ error: "Homepage configuration not found" });
         }
@@ -150,7 +155,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // For homepage editor, bypass isolation system temporarily
       if (isHomepageEditor) {
         const configs = await storage.getAllWebsiteConfigs();
-        const config = configs.find(c => c.name === 'WebSitioPro Homepage');
+        let config = configs.find(c => c.name === 'WebSitioPro Homepage');
+        
+        // If homepage config doesn't exist, find by ID 1
+        if (!config) {
+          config = configs.find(c => c.id === 1);
+        }
         
         if (!config) {
           return res.status(404).json({ error: "Homepage configuration not found" });
