@@ -115,27 +115,43 @@ export default function HomePage() {
 
 
 
-  // Chatbot Q&A data
-  const chatbotResponses = {
-    es: {
-      'hola': '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte hoy?',
-      'precios': 'Nuestros sitios Pro cuestan 2,000 pesos de construcción + 3,000 pesos/año de hosting. También ofrecemos planes de pago flexibles.',
-      'servicios': 'Ofrecemos sitios web para profesionales, restaurantes, negocios turísticos, retail y servicios. Todos completamente personalizados.',
-      'contacto': 'Puedes contactarnos por WhatsApp al +52 983 123 4567 o por email a info@websitiopro.com',
-      'tiempo': 'Típicamente creamos tu sitio web en 5-7 días hábiles después de recibir todo tu contenido.',
-      'dominio': 'Sí, incluimos un dominio gratis hasta $12 USD. Para dominios premium hay costo adicional.',
-      'default': 'Gracias por tu pregunta. Para una respuesta personalizada, por favor contáctanos por WhatsApp al +52 983 123 4567'
-    },
-    en: {
-      'hello': 'Hello! I\'m the WebSitioPro assistant. How can I help you today?',
-      'pricing': 'Our Pro sites cost 2,000 pesos for construction + 3,000 pesos/year for hosting. We also offer flexible payment plans.',
-      'services': 'We offer websites for professionals, restaurants, tourist businesses, retail, and services. All completely customized.',
-      'contact': 'You can contact us via WhatsApp at +52 983 123 4567 or email us at info@websitiopro.com',
-      'time': 'We typically create your website in 5-7 business days after receiving all your content.',
-      'domain': 'Yes, we include a free domain up to $12 USD. Premium domains have additional cost.',
-      'default': 'Thanks for your question. For a personalized answer, please contact us via WhatsApp at +52 983 123 4567'
+  // Chatbot Q&A data - use saved configuration or fallback
+  const getChatbotResponses = () => {
+    const responses = { es: {}, en: {} };
+    
+    if (savedConfig?.chatbotQuestions) {
+      savedConfig.chatbotQuestions.forEach(item => {
+        responses.es[item.question.es] = item.answer.es;
+        responses.en[item.question.en] = item.answer.en;
+      });
     }
+    
+    // Fallback responses if no saved responses
+    if (Object.keys(responses.es).length === 0) {
+      responses.es = {
+        'hola': '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte hoy?',
+        'precios': 'Nuestros sitios Pro cuestan 2,000 pesos de construcción + 3,000 pesos/año de hosting. También ofrecemos planes de pago flexibles.',
+        'servicios': 'Ofrecemos sitios web para profesionales, restaurantes, negocios turísticos, retail y servicios. Todos completamente personalizados.',
+        'contacto': 'Puedes contactarnos por WhatsApp al +52 983 123 4567 o por email a info@websitiopro.com',
+        'tiempo': 'Típicamente creamos tu sitio web en 5-7 días hábiles después de recibir todo tu contenido.',
+        'dominio': 'Sí, incluimos un dominio gratis hasta $12 USD. Para dominios premium hay costo adicional.',
+        'default': 'Gracias por tu pregunta. Para una respuesta personalizada, por favor contáctanos por WhatsApp al +52 983 123 4567'
+      };
+      responses.en = {
+        'hello': 'Hello! I\'m the WebSitioPro assistant. How can I help you today?',
+        'pricing': 'Our Pro sites cost 2,000 pesos for construction + 3,000 pesos/year for hosting. We also offer flexible payment plans.',
+        'services': 'We offer websites for professionals, restaurants, tourist businesses, retail, and services. All completely customized.',
+        'contact': 'You can contact us via WhatsApp at +52 983 123 4567 or email us at info@websitiopro.com',
+        'time': 'We typically create your website in 5-7 business days after receiving all your content.',
+        'domain': 'Yes, we include a free domain up to $12 USD. Premium domains have additional cost.',
+        'default': 'Thanks for your question. For a personalized answer, please contact us via WhatsApp at +52 983 123 4567'
+      };
+    }
+    
+    return responses;
   };
+  
+  const chatbotResponses = getChatbotResponses();
 
   const handleChatSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,7 +187,7 @@ export default function HomePage() {
     if (messages.length === 0) {
       // Add welcome message
       setTimeout(() => {
-        setMessages([{ text: t('chatbotWelcome'), isUser: false }]);
+        setMessages([{ text: savedConfig?.chatbotWelcome?.[language] || t('chatbotWelcome'), isUser: false }]);
       }, 300);
     }
   };
@@ -1031,14 +1047,14 @@ export default function HomePage() {
           onClick={openChat}
           className="btn btn-primary rounded-circle position-fixed bottom-0 end-0 m-4"
           style={{ 
-            backgroundColor: 'hsl(var(--info))',
+            backgroundColor: savedConfig?.chatbotColor || 'hsl(var(--info))',
             width: '60px',
             height: '60px',
             zIndex: 1000 
           }}
           title={t('chatWithUs')}
         >
-          <span style={{ fontSize: '24px' }}>{chatbotIcon}</span>
+          <span style={{ fontSize: '24px' }}>{savedConfig?.chatbotIcon || '📞'}</span>
         </button>
       )}
 
@@ -1057,9 +1073,9 @@ export default function HomePage() {
           {/* Chat Header */}
           <div 
             className="p-3 rounded-top text-white d-flex justify-content-between align-items-center"
-            style={{ backgroundColor: 'hsl(var(--primary))' }}
+            style={{ backgroundColor: savedConfig?.chatbotColor || 'hsl(var(--primary))' }}
           >
-            <h6 className="mb-0">{t('chatbotTitle')}</h6>
+            <h6 className="mb-0">{savedConfig?.chatbotTitle?.[language] || t('chatbotTitle')}</h6>
             <button 
               onClick={() => setChatOpen(false)}
               className="btn btn-sm text-white p-0"
