@@ -24,7 +24,7 @@ export default function ProPage() {
 
   useEffect(() => {
     // Load saved configuration to demonstrate Editor functionality
-    fetch('/api/config/default')
+    fetch('/api/config/homepage')
       .then(res => res.json())
       .then(data => setSavedConfig(data))
       .catch(err => console.log('Config not loaded:', err));
