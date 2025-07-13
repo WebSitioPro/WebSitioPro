@@ -42,7 +42,7 @@ export function validateConfigAccess(requestedId: string, operation: 'read' | 'w
       isValid: operation === 'read', // Only allow read operations from templates
       resolvedId: requestedId,
       configName: ISOLATION_RULES.homepageConfigName,
-      error: operation === 'write' ? 'Templates cannot modify homepage configuration' : undefined
+      error: operation === 'write' ? 'Templates cannot modify homepage' : undefined
     };
   }
 
