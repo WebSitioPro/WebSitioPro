@@ -33,6 +33,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/config/:id", async (req: Request, res: Response) => {
     try {
       const idParam = req.params.id;
+
       let config;
 
       // Handle special demo template IDs
@@ -43,27 +44,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Try to find existing config by name
         const configs = await storage.getAllWebsiteConfigs();
         
-        // Map editor-demo to homepage configuration
-        const configName = idParam === 'editor-demo' ? 'Homepage Configuration' : `${idParam} Configuration`;
+        // Map both editor-demo and homepage to the same configuration
+        const configName = (idParam === 'editor-demo' || idParam === 'homepage') ? 'Homepage Configuration' : `${idParam} Configuration`;
         config = configs.find(c => c.name === configName);
         
         if (!config) {
-          // Create default config for this demo template
-          const templateType = idParam === 'editor-demo' ? 'homepage' : idParam.replace('-demo', '');
-          const businessName = idParam === 'editor-demo' ? 'Homepage Demo' : `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Demo`;
-          const defaultConfig = {
-            name: configName,
-            templateType: templateType === 'homepage' ? 'professionals' : templateType,
-            businessName: businessName,
-            heroImage: `https://via.placeholder.com/800x400/C8102E/FFFFFF?text=${templateType}+Demo`,
-            phone: '+52 983 123 4567',
-            email: `info@${templateType === 'homepage' ? 'homepage' : templateType}demo.com`,
-            primaryColor: '#C8102E',
-            secondaryColor: '#00A859',
-            accentColor: '#007ACC'
-          };
-          
-          config = await storage.createWebsiteConfig(defaultConfig);
+          return res.status(404).json({ error: "Configuration not found" });
         }
       } else if (idParam === "default") {
         // Legacy fallback - redirect to homepage
@@ -123,6 +109,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/config/:id", async (req: Request, res: Response) => {
     try {
       const idParam = req.params.id;
+
       let config;
 
       // Handle special demo template IDs
@@ -133,27 +120,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Try to find existing config by name
         const configs = await storage.getAllWebsiteConfigs();
         
-        // Map editor-demo to homepage configuration
-        const configName = idParam === 'editor-demo' ? 'Homepage Configuration' : `${idParam} Configuration`;
+        // Map both editor-demo and homepage to the same configuration
+        const configName = (idParam === 'editor-demo' || idParam === 'homepage') ? 'Homepage Configuration' : `${idParam} Configuration`;
         config = configs.find(c => c.name === configName);
         
         if (!config) {
-          // Create new config if it doesn't exist
-          const templateType = idParam === 'editor-demo' ? 'homepage' : idParam.replace('-demo', '');
-          const businessName = idParam === 'editor-demo' ? 'Homepage Demo' : `${templateType.charAt(0).toUpperCase() + templateType.slice(1)} Demo`;
-          const defaultConfig = {
-            name: configName,
-            templateType: templateType === 'homepage' ? 'professionals' : templateType,
-            businessName: businessName,
-            heroImage: `https://via.placeholder.com/800x400/C8102E/FFFFFF?text=${templateType}+Demo`,
-            phone: '+52 983 123 4567',
-            email: `info@${templateType === 'homepage' ? 'homepage' : templateType}demo.com`,
-            primaryColor: '#C8102E',
-            secondaryColor: '#00A859',
-            accentColor: '#007ACC'
-          };
-          
-          config = await storage.createWebsiteConfig(defaultConfig);
+          return res.status(404).json({ error: "Configuration not found" });
         }
       } else if (idParam === "default") {
         // Legacy fallback - redirect to homepage
