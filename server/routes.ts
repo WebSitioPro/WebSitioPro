@@ -144,8 +144,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const idParam = req.params.id;
 
+      // Check if this is a legitimate homepage editor request
+      const isHomepageEditor = idParam === 'homepage' && req.headers.referer?.includes('/editor');
+      
       // Validate configuration access using isolation system
-      const accessValidation = validateConfigAccess(idParam, 'write');
+      const accessValidation = validateConfigAccess(idParam, 'write', isHomepageEditor);
       
       if (!accessValidation.isValid) {
         logConfigAccess('PUT', idParam, false, accessValidation.error);

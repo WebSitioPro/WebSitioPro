@@ -21,16 +21,25 @@ export const ISOLATION_RULES: ConfigIsolationRules = {
 /**
  * Validates if a configuration ID is safe to modify
  */
-export function validateConfigAccess(requestedId: string, operation: 'read' | 'write'): {
+export function validateConfigAccess(requestedId: string, operation: 'read' | 'write', isHomepageEditor: boolean = false): {
   isValid: boolean;
   resolvedId: string;
   configName: string;
   error?: string;
 } {
-  // Handle homepage/editor-demo mapping (read-only for templates)
+  // Handle homepage/editor-demo mapping
   if (requestedId === 'homepage' || requestedId === 'editor-demo') {
+    // Allow writes from the actual homepage editor
+    if (isHomepageEditor && operation === 'write') {
+      return {
+        isValid: true,
+        resolvedId: requestedId,
+        configName: ISOLATION_RULES.homepageConfigName
+      };
+    }
+    
     return {
-      isValid: operation === 'read', // Only allow read operations
+      isValid: operation === 'read', // Only allow read operations from templates
       resolvedId: requestedId,
       configName: ISOLATION_RULES.homepageConfigName,
       error: operation === 'write' ? 'Templates cannot modify homepage configuration' : undefined
