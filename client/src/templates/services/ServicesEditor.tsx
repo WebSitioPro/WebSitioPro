@@ -113,32 +113,6 @@ export default function ServicesEditor() {
     
     loadConfig();
   }, [clientId]);
-  
-  // Load saved configuration on mount
-  useEffect(() => {
-    const loadConfig = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(`/api/config/${clientId}`);
-        if (response.ok) {
-          const savedConfig = await response.json();
-          if (savedConfig) {
-            setWebsiteData(prevData => ({
-              ...prevData,
-              ...savedConfig,
-              templateType: 'services'
-            }));
-          }
-        }
-      } catch (error) {
-        console.error('Error loading config:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    loadConfig();
-  }, [clientId]);
 
   const handleSave = async () => {
     try {
@@ -273,6 +247,19 @@ export default function ServicesEditor() {
       reviews: prev.reviews.filter((_, i) => i !== index)
     }));
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-3">Loading Services Editor...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-vh-100" style={{ backgroundColor: '#f8f9fa' }}>
