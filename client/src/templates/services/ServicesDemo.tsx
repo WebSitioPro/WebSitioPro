@@ -258,20 +258,33 @@ export default function ServicesDemo() {
         </div>
       </nav>
 
-      {/* Intro Section */}
-      <section id="home" className="py-5">
+      {/* Hero Section */}
+      <section id="home" className="py-5" style={{
+        background: savedConfig?.heroImage ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${savedConfig.heroImage}')` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '60vh'
+      }}>
         <div className="container">
-          <div className="row align-items-center">
+          <div className="row align-items-center" style={{ minHeight: '50vh' }}>
             <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('businessName')}
+              <h1 className="display-4 fw-bold mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'hsl(var(--primary))' }}>
+                {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
+                 (savedConfig && savedConfig.businessName) || 
+                 t('businessName')}
               </h1>
-              <p className="lead mb-4 text-muted">
-                {getLocalizedValue(mockServicesData.intro)}
+              <h2 className="h4 mb-4" style={{ color: savedConfig?.heroImage ? '#f8f9fa' : 'hsl(var(--primary))' }}>
+                {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
+                 (language === 'es' ? 'Reparaciones y Mantenimiento' : 'Repairs & Maintenance')}
+              </h2>
+              <p className="lead mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'var(--bs-gray-600)' }}>
+                {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || 
+                 getLocalizedValue(mockServicesData.intro)}
               </p>
               <div className="d-flex flex-wrap gap-3">
                 <a 
-                  href={`https://wa.me/${mockServicesData.whatsappNumber}?text=Hola, necesito servicios de plomería`}
+                  href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockServicesData.whatsappNumber}?text=Hola, necesito servicios de plomería`}
                   className="btn btn-lg text-white"
                   style={{ backgroundColor: '#25D366' }}
                   target="_blank"
@@ -287,7 +300,7 @@ export default function ServicesDemo() {
             </div>
             <div className="col-lg-4 text-center">
               <img 
-                src="https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Plumbing+Logo" 
+                src={savedConfig?.logo || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Plumbing+Logo"} 
                 alt="Plumbing Services" 
                 className="img-fluid rounded shadow"
               />

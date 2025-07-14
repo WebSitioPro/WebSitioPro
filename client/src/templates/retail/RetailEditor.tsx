@@ -91,6 +91,43 @@ export default function RetailEditor() {
             setWebsiteData(prevData => ({
               ...prevData,
               ...savedConfig,
+              templateType: 'retail',
+              // Ensure critical fields have fallback values
+              heroTitle: savedConfig.heroTitle || { es: 'Boutique Bella', en: 'Boutique Bella' },
+              heroSubtitle: savedConfig.heroSubtitle || { es: 'Moda y Estilo', en: 'Fashion & Style' },
+              heroDescription: savedConfig.heroDescription || { es: 'Encuentra las últimas tendencias', en: 'Find the latest trends' },
+              businessName: savedConfig.businessName || 'Boutique Bella',
+              aboutTitle: savedConfig.aboutTitle || { es: 'Acerca de Nosotros', en: 'About Us' },
+              aboutText: savedConfig.aboutText || { es: 'Ofrecemos moda de calidad...', en: 'We offer quality fashion...' },
+              servicesTitle: savedConfig.servicesTitle || { es: 'Nuestros Productos', en: 'Our Products' },
+              products: savedConfig.products || [],
+              photos: savedConfig.photos || [],
+              reviews: savedConfig.reviews || []
+            }));
+          }
+        }
+      } catch (error) {
+        console.error('Error loading config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadConfig();
+  }, [clientId]);
+  
+  // Load saved configuration on mount
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/config/${clientId}`);
+        if (response.ok) {
+          const savedConfig = await response.json();
+          if (savedConfig) {
+            setWebsiteData(prevData => ({
+              ...prevData,
+              ...savedConfig,
               templateType: 'retail'
             }));
           }

@@ -262,19 +262,32 @@ export default function RetailDemo() {
         </div>
       </nav>
 
-      {/* Intro Section */}
-      <section id="home" className="py-5">
+      {/* Hero Section */}
+      <section id="home" className="py-5" style={{
+        background: savedConfig?.heroImage ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${savedConfig.heroImage}')` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '60vh'
+      }}>
         <div className="container">
-          <div className="row align-items-center">
+          <div className="row align-items-center" style={{ minHeight: '50vh' }}>
             <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('businessName')}
+              <h1 className="display-4 fw-bold mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'hsl(var(--primary))' }}>
+                {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
+                 (savedConfig && savedConfig.businessName) || 
+                 t('businessName')}
               </h1>
-              <p className="lead mb-4 text-muted">
-                {getLocalizedValue(mockRetailData.intro)}
+              <h2 className="h4 mb-4" style={{ color: savedConfig?.heroImage ? '#f8f9fa' : 'hsl(var(--primary))' }}>
+                {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
+                 (language === 'es' ? 'Moda y Estilo' : 'Fashion & Style')}
+              </h2>
+              <p className="lead mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'var(--bs-gray-600)' }}>
+                {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || 
+                 getLocalizedValue(mockRetailData.intro)}
               </p>
               <a 
-                href={`https://wa.me/${mockRetailData.whatsappNumber}?text=Hola, me interesa conocer más sobre sus productos`}
+                href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRetailData.whatsappNumber}?text=Hola, me interesa conocer más sobre sus productos`}
                 className="btn btn-lg text-white"
                 style={{ backgroundColor: '#25D366' }}
                 target="_blank"
@@ -286,7 +299,7 @@ export default function RetailDemo() {
             </div>
             <div className="col-lg-4 text-center">
               <img 
-                src="https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Boutique+Logo" 
+                src={savedConfig?.logo || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Boutique+Logo"} 
                 alt="Boutique" 
                 className="img-fluid rounded shadow"
               />

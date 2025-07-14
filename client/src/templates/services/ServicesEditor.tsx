@@ -89,6 +89,43 @@ export default function ServicesEditor() {
             setWebsiteData(prevData => ({
               ...prevData,
               ...savedConfig,
+              templateType: 'services',
+              // Ensure critical fields have fallback values
+              heroTitle: savedConfig.heroTitle || { es: 'Servicios Técnicos Pro', en: 'Pro Technical Services' },
+              heroSubtitle: savedConfig.heroSubtitle || { es: 'Reparaciones y Mantenimiento', en: 'Repairs & Maintenance' },
+              heroDescription: savedConfig.heroDescription || { es: 'Servicios técnicos profesionales', en: 'Professional technical services' },
+              businessName: savedConfig.businessName || 'Servicios Técnicos Pro',
+              aboutTitle: savedConfig.aboutTitle || { es: 'Acerca de Nosotros', en: 'About Us' },
+              aboutText: savedConfig.aboutText || { es: 'Ofrecemos servicios técnicos...', en: 'We offer technical services...' },
+              servicesTitle: savedConfig.servicesTitle || { es: 'Nuestros Servicios', en: 'Our Services' },
+              services: savedConfig.services || [],
+              photos: savedConfig.photos || [],
+              reviews: savedConfig.reviews || []
+            }));
+          }
+        }
+      } catch (error) {
+        console.error('Error loading config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadConfig();
+  }, [clientId]);
+  
+  // Load saved configuration on mount
+  useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/config/${clientId}`);
+        if (response.ok) {
+          const savedConfig = await response.json();
+          if (savedConfig) {
+            setWebsiteData(prevData => ({
+              ...prevData,
+              ...savedConfig,
               templateType: 'services'
             }));
           }
