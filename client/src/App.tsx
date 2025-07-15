@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/HomePage";
 import ProPage from "@/pages/ProPage";
 import EditorPage from "@/pages/EditorPage";
+import ProEditorPage from "@/pages/ProEditorPage";
 import { ProfessionalsDemo, ProfessionalsEditor } from "@/templates/professionals";
 import { RestaurantsDemo } from "@/templates/restaurants";
 import { TourismDemo } from "@/templates/tourism";
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/pro" component={ProPage} />
       <Route path="/editor" component={EditorPage} />
+      <Route path="/editor/pro" component={ProEditorPage} />
       <Route path="/editor/clients" component={ClientSelectorPage} />
       <Route path="/editor/template/:templateId" component={TemplateEditor} />
       <Route path="/professionals-demo" component={ProfessionalsDemo} />

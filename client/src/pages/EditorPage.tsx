@@ -504,51 +504,7 @@ export default function EditorPage() {
     }));
   };
 
-  const handleAddWhatsAppButton = () => {
-    setWebsiteData(prev => ({
-      ...prev,
-      proWhatsappButtons: [
-        ...prev.proWhatsappButtons,
-        {
-          text: { es: 'Contáctanos por WhatsApp', en: 'Contact us via WhatsApp' },
-          color: '#00A859',
-          message: { es: 'Hola, estoy interesado en sus servicios', en: 'Hello, I\'m interested in your services' }
-        }
-      ]
-    }));
-  };
 
-  const handleRemoveWhatsAppButton = (index: number) => {
-    setWebsiteData(prev => ({
-      ...prev,
-      proWhatsappButtons: prev.proWhatsappButtons.filter((_, i) => i !== index)
-    }));
-  };
-
-  const handleWhatsAppButtonChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
-    setWebsiteData(prev => ({
-      ...prev,
-      proWhatsappButtons: prev.proWhatsappButtons.map((button, i) => {
-        if (i === index) {
-          if (language) {
-            return {
-              ...button,
-              [field]: {
-                ...button[field as keyof typeof button],
-                [language]: value
-              }
-            };
-          } else {
-            return {
-              ...button,
-              [field]: value
-            };
-          }
-        }
-        return button;
-      })
-    }));
-  };
 
   const handleChatbotQuestionChange = (index: number, field: 'question' | 'answer', value: string, language: 'es' | 'en') => {
     setWebsiteData(prev => ({
@@ -806,6 +762,9 @@ export default function EditorPage() {
               serviceStepsDescription: config.serviceStepsDescription || prev.serviceStepsDescription,
               serviceSteps: config.serviceSteps || prev.serviceSteps,
               templateShowcaseImages: config.templateShowcaseImages || prev.templateShowcaseImages,
+              // Solutions overview data
+              solutionsTitle: config.solutionsTitle || prev.solutionsTitle,
+              solutionsOverview: config.solutionsOverview || prev.solutionsOverview,
               // Banner fields
               bannerText: config.bannerText ? 
                 (typeof config.bannerText === 'string' ? 
@@ -954,6 +913,7 @@ export default function EditorPage() {
           }
         },
         // Store solutions overview data
+        solutionsTitle: websiteData.solutionsTitle,
         solutionsOverview: websiteData.solutionsOverview,
         // Store templates data as well
         templates: websiteData.templates,
@@ -1183,11 +1143,11 @@ export default function EditorPage() {
                   Pro Page
                 </button>
                 <button 
-                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pro-banner' ? 'active fw-bold' : ''}`}
-                  onClick={() => setActiveTab('pro-banner')}
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pro-editor' ? 'active fw-bold' : ''}`}
+                  onClick={() => window.location.href = '/editor/pro'}
                 >
                   <Type size={16} className="me-2" />
-                  Pro Banner
+                  Pro Page Editor
                 </button>
 
               </nav>
@@ -3032,207 +2992,7 @@ export default function EditorPage() {
                 </div>
               )}
 
-              {/* Pro Banner Tab */}
-              {activeTab === 'pro-banner' && (
-                <div>
-                  <h4 className="mb-4">Pro Page Banner</h4>
-                  
-                  <div className="row g-3 mb-4">
-                    <div className="col-md-6">
-                      <label className="form-label">Show Pro Banner</label>
-                      <select 
-                        className="form-select"
-                        value={websiteData.showProBanner ? 'true' : 'false'}
-                        onChange={(e) => handleInputChange('showProBanner', e.target.value === 'true')}
-                      >
-                        <option value="true">Show Banner</option>
-                        <option value="false">Hide Banner</option>
-                      </select>
-                    </div>
-                  </div>
-                  
-                  <div className="row g-3 mb-4">
-                    <div className="col-md-6">
-                      <label className="form-label">Banner Text (Spanish)</label>
-                      <input 
-                        type="text" 
-                        className="form-control"
-                        value={websiteData.proBannerText.es}
-                        onChange={(e) => handleInputChange('proBannerText', e.target.value, 'es')}
-                        placeholder="Sitios web profesionales para tu negocio - ¡Contáctanos hoy!"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Banner Text (English)</label>
-                      <input 
-                        type="text" 
-                        className="form-control"
-                        value={websiteData.proBannerText.en}
-                        onChange={(e) => handleInputChange('proBannerText', e.target.value, 'en')}
-                        placeholder="Professional websites for your business - Contact us today!"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="row g-3 mb-4">
-                    <div className="col-md-6">
-                      <label className="form-label">Banner Background Color</label>
-                      <div className="d-flex gap-2">
-                        <input 
-                          type="color" 
-                          className="form-control form-control-color"
-                          value={websiteData.proBannerBackgroundColor}
-                          onChange={(e) => handleInputChange('proBannerBackgroundColor', e.target.value)}
-                        />
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={websiteData.proBannerBackgroundColor}
-                          onChange={(e) => handleInputChange('proBannerBackgroundColor', e.target.value)}
-                          placeholder="#C8102E"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Banner Text Color</label>
-                      <div className="d-flex gap-2">
-                        <input 
-                          type="color" 
-                          className="form-control form-control-color"
-                          value={websiteData.proBannerTextColor}
-                          onChange={(e) => handleInputChange('proBannerTextColor', e.target.value)}
-                        />
-                        <input 
-                          type="text" 
-                          className="form-control"
-                          value={websiteData.proBannerTextColor}
-                          onChange={(e) => handleInputChange('proBannerTextColor', e.target.value)}
-                          placeholder="#FFFFFF"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <label className="form-label">Banner Preview</label>
-                    <div 
-                      className="p-3 rounded border text-center"
-                      style={{ 
-                        backgroundColor: websiteData.proBannerBackgroundColor,
-                        color: websiteData.proBannerTextColor
-                      }}
-                    >
-                      <strong>{websiteData.proBannerText.es}</strong>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4">
-                    <h5 className="mb-3">WhatsApp Contact Buttons</h5>
-                    <div className="mb-3">
-                      <button 
-                        type="button" 
-                        className="btn btn-primary btn-sm"
-                        onClick={handleAddWhatsAppButton}
-                      >
-                        <Plus size={16} className="me-1" />
-                        Add WhatsApp Button
-                      </button>
-                    </div>
-                    
-                    {websiteData.proWhatsappButtons.map((button, index) => (
-                      <div key={index} className="border rounded p-3 mb-3 bg-light">
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                          <h6 className="mb-0">WhatsApp Button {index + 1}</h6>
-                          <button 
-                            type="button" 
-                            className="btn btn-danger btn-sm"
-                            onClick={() => handleRemoveWhatsAppButton(index)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                        
-                        <div className="row g-3 mb-3">
-                          <div className="col-md-6">
-                            <label className="form-label">Button Text (Spanish)</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={button.text.es}
-                              onChange={(e) => handleWhatsAppButtonChange(index, 'text', e.target.value, 'es')}
-                              placeholder="Contáctanos por WhatsApp"
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Button Text (English)</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={button.text.en}
-                              onChange={(e) => handleWhatsAppButtonChange(index, 'text', e.target.value, 'en')}
-                              placeholder="Contact us via WhatsApp"
-                            />
-                          </div>
-                        </div>
-                        
-                        <div className="row g-3 mb-3">
-                          <div className="col-md-6">
-                            <label className="form-label">WhatsApp Message (Spanish)</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={button.message.es}
-                              onChange={(e) => handleWhatsAppButtonChange(index, 'message', e.target.value, 'es')}
-                              placeholder="Hola, estoy interesado en sus servicios"
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">WhatsApp Message (English)</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={button.message.en}
-                              onChange={(e) => handleWhatsAppButtonChange(index, 'message', e.target.value, 'en')}
-                              placeholder="Hello, I'm interested in your services"
-                            />
-                          </div>
-                        </div>
-                        
-                        <div className="row g-3">
-                          <div className="col-md-6">
-                            <label className="form-label">Button Color</label>
-                            <div className="d-flex gap-2">
-                              <input 
-                                type="color" 
-                                className="form-control form-control-color"
-                                value={button.color}
-                                onChange={(e) => handleWhatsAppButtonChange(index, 'color', e.target.value)}
-                              />
-                              <input 
-                                type="text" 
-                                className="form-control"
-                                value={button.color}
-                                onChange={(e) => handleWhatsAppButtonChange(index, 'color', e.target.value)}
-                                placeholder="#00A859"
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Button Preview</label>
-                            <button 
-                              className="btn btn-sm text-white w-100"
-                              style={{ backgroundColor: button.color }}
-                              disabled
-                            >
-                              {button.text.es}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+
 
               <div className="text-center mt-4 pt-4 border-top">
                 <p className="text-muted">Los cambios se guardan automáticamente. Usa "Exportar" para descargar tu configuración.</p>
