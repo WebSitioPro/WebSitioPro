@@ -735,7 +735,7 @@ export default function HomePage() {
           <div className="row justify-content-center">
             <div className="col-lg-10">
               <div className="row g-4">
-                {(savedConfig?.solutionsOverview || [
+                {(savedConfig?.templates || [
                   { 
                     title: { es: 'Profesionales', en: 'Professionals' },
                     description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
@@ -771,7 +771,7 @@ export default function HomePage() {
                         <div className="card-body text-center p-4">
                           <div className="mb-3">
                             <img 
-                              src={solution.image} 
+                              src={solution.image || 'https://via.placeholder.com/200x150/C8102E/FFFFFF?text=Template'} 
                               alt={title}
                               className="img-fluid rounded mb-3"
                               style={{ height: '120px', width: '100%', objectFit: 'cover' }}

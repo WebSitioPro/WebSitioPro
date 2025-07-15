@@ -599,18 +599,38 @@ export default function EditorPage() {
   };
 
   const handleWhatsAppButtonChange = (index: number, field: 'text' | 'color' | 'message', value: string, language?: 'es' | 'en') => {
-    setWebsiteData(prev => ({
-      ...prev,
-      proWhatsappButtons: prev.proWhatsappButtons.map((button, i) => 
-        i === index ? { 
-          ...button, 
-          [field]: language ? {
-            ...button[field],
+    setWebsiteData(prev => {
+      const newButtons = [...prev.proWhatsappButtons];
+      
+      // Ensure the button exists at the index
+      if (!newButtons[index]) {
+        newButtons[index] = {
+          text: { es: '', en: '' },
+          color: '#00A859',
+          message: { es: '', en: '' }
+        };
+      }
+      
+      if (language && (field === 'text' || field === 'message')) {
+        newButtons[index] = {
+          ...newButtons[index],
+          [field]: {
+            ...newButtons[index][field],
             [language]: value
-          } : value
-        } : button
-      )
-    }));
+          }
+        };
+      } else {
+        newButtons[index] = {
+          ...newButtons[index],
+          [field]: value
+        };
+      }
+      
+      return {
+        ...prev,
+        proWhatsappButtons: newButtons
+      };
+    });
   };
 
   const handleWhyPointChange = (index: number, value: string, language: 'es' | 'en') => {

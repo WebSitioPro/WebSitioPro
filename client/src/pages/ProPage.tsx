@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, MessageCircle, Menu } from 'lucide-react';
+import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, MessageCircle, Menu, Smartphone } from 'lucide-react';
 
 export default function ProPage() {
   const [language, setLanguage] = useState('es');
@@ -551,6 +551,10 @@ export default function ProPage() {
               // Get WhatsApp button for this template
               const whatsappButton = savedConfig?.proWhatsappButtons?.[templateIndex];
               
+              // Debug logging
+              console.log('Template', num, 'WhatsApp button:', whatsappButton);
+              console.log('All WhatsApp buttons:', savedConfig?.proWhatsappButtons);
+              
               return (
                 <div key={num} className="col-lg-6">
                   <div className="card h-100 border-0 shadow">
@@ -574,27 +578,24 @@ export default function ProPage() {
                               <Globe size={64} className="text-muted" />
                             )}
                           </div>
-                          {/* Mobile Preview */}
-                          <div className="mt-2 d-flex justify-content-center">
-                            {mobileImage ? (
-                              <img 
-                                src={mobileImage} 
-                                alt={`Template ${num} Mobile Preview`}
-                                style={{ 
-                                  width: '50px', 
-                                  height: '80px', 
-                                  objectFit: 'contain',
-                                  borderRadius: '4px',
-                                  border: '1px solid #e0e0e0'
-                                }}
-                              />
-                            ) : (
-                              <div>
-                                <div className="bg-light rounded mb-1" style={{ height: '10px' }}></div>
-                                <div className="bg-light rounded mb-1" style={{ height: '10px', width: '80%' }}></div>
-                                <div className="bg-light rounded" style={{ height: '10px', width: '60%' }}></div>
-                              </div>
-                            )}
+                          {/* Mobile Preview - Larger */}
+                          <div className="mt-3 d-flex justify-content-center">
+                            <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ width: '80px', height: '120px' }}>
+                              {mobileImage ? (
+                                <img 
+                                  src={mobileImage} 
+                                  alt={`Template ${num} Mobile Preview`}
+                                  style={{ 
+                                    maxWidth: '100%', 
+                                    maxHeight: '100%', 
+                                    objectFit: 'contain',
+                                    borderRadius: '4px'
+                                  }}
+                                />
+                              ) : (
+                                <Smartphone size={32} className="text-muted" />
+                              )}
+                            </div>
                           </div>
                         </div>
                         <div className="col-6">
@@ -615,16 +616,18 @@ export default function ProPage() {
                             >
                               {t('viewTemplate')}
                             </a>
-                            {whatsappButton && (
+                            {whatsappButton && whatsappButton.text ? (
                               <a 
-                                href={`https://wa.me/529831234567?text=${encodeURIComponent(whatsappButton.message[language] || whatsappButton.message.es)}`}
+                                href={`https://wa.me/529831234567?text=${encodeURIComponent(whatsappButton.message?.[language] || whatsappButton.message?.es || 'Hello!')}`}
                                 className="btn btn-sm text-white"
                                 style={{ backgroundColor: whatsappButton.color || '#00A859' }}
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                {whatsappButton.text[language] || whatsappButton.text.es}
+                                {whatsappButton.text?.[language] || whatsappButton.text?.es || 'Contact'}
                               </a>
+                            ) : (
+                              <div className="text-muted small">No WhatsApp button configured</div>
                             )}
                           </div>
                         </div>
