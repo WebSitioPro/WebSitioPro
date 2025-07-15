@@ -739,6 +739,12 @@ export default function EditorPage() {
               pricingBannerTextColor: config.pricingBannerTextColor || prev.pricingBannerTextColor,
               paymentBannerBgColor: config.paymentBannerBgColor || prev.paymentBannerBgColor,
               paymentBannerTextColor: config.paymentBannerTextColor || prev.paymentBannerTextColor,
+              // Load Pro banner data
+              proBannerText: config.proBannerText || prev.proBannerText,
+              proBannerBackgroundColor: config.proBannerBackgroundColor || prev.proBannerBackgroundColor,
+              proBannerTextColor: config.proBannerTextColor || prev.proBannerTextColor,
+              showProBanner: config.showProBanner !== undefined ? config.showProBanner : prev.showProBanner,
+              proWhatsappButtons: config.proWhatsappButtons || prev.proWhatsappButtons,
               // Parse address safely
               address: typeof config.address === 'string' ? 
                 (config.address.startsWith('{') ? 
@@ -1142,13 +1148,7 @@ export default function EditorPage() {
                   <Type size={16} className="me-2" />
                   Pro Page
                 </button>
-                <button 
-                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pro-editor' ? 'active fw-bold' : ''}`}
-                  onClick={() => window.location.href = '/editor/pro'}
-                >
-                  <Type size={16} className="me-2" />
-                  Pro Page Editor
-                </button>
+
 
               </nav>
             </div>
@@ -2491,6 +2491,96 @@ export default function EditorPage() {
                         onChange={(e) => handleInputChange('proHeroImageOpacity', e.target.value)}
                       />
                       <small className="text-muted">Visibility: {Math.round((parseFloat(websiteData.proHeroImageOpacity || '0.8')) * 100)}%</small>
+                    </div>
+                  </div>
+
+                  <h5 className="mb-3">Pro Page Banner</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Show Pro Banner</label>
+                      <select 
+                        className="form-select"
+                        value={websiteData.showProBanner ? 'true' : 'false'}
+                        onChange={(e) => handleInputChange('showProBanner', e.target.value === 'true')}
+                      >
+                        <option value="true">Show Banner</option>
+                        <option value="false">Hide Banner</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.proBannerText.es}
+                        onChange={(e) => handleInputChange('proBannerText', e.target.value, 'es')}
+                        placeholder="Sitios web profesionales para tu negocio - ¡Contáctanos hoy!"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.proBannerText.en}
+                        onChange={(e) => handleInputChange('proBannerText', e.target.value, 'en')}
+                        placeholder="Professional websites for your business - Contact us today!"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Background Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.proBannerBackgroundColor}
+                          onChange={(e) => handleInputChange('proBannerBackgroundColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.proBannerBackgroundColor}
+                          onChange={(e) => handleInputChange('proBannerBackgroundColor', e.target.value)}
+                          placeholder="#C8102E"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.proBannerTextColor}
+                          onChange={(e) => handleInputChange('proBannerTextColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.proBannerTextColor}
+                          onChange={(e) => handleInputChange('proBannerTextColor', e.target.value)}
+                          placeholder="#FFFFFF"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="form-label">Banner Preview</label>
+                    <div 
+                      className="p-3 rounded border text-center"
+                      style={{ 
+                        backgroundColor: websiteData.proBannerBackgroundColor,
+                        color: websiteData.proBannerTextColor
+                      }}
+                    >
+                      <strong>{websiteData.proBannerText.es}</strong>
                     </div>
                   </div>
 
