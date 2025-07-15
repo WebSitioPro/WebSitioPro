@@ -730,103 +730,72 @@ export default function HomePage() {
       <section id="offerings" className="py-5">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {savedConfig?.translations?.[language]?.offeringsTitle || t('offeringsTitle')}
+            {savedConfig?.solutionsTitle?.[language] || t('solutionsTitle')}
           </h2>
           <div className="row justify-content-center">
             <div className="col-lg-10">
               <div className="row g-4">
-                {(savedConfig?.templates || [
+                {(savedConfig?.solutionsOverview || [
                   { 
                     title: { es: 'Profesionales', en: 'Professionals' },
                     description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
-                    image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professionals'
+                    image: 'https://via.placeholder.com/200x150/00A859/FFFFFF?text=Professional'
                   },
                   { 
                     title: { es: 'Restaurantes', en: 'Restaurants' },
                     description: { es: 'Menús atractivos y sistemas de reservas', en: 'Attractive menus and reservation systems' },
-                    image: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Restaurants'
+                    image: 'https://via.placeholder.com/200x150/C8102E/FFFFFF?text=Restaurant'
                   },
                   { 
                     title: { es: 'Turismo', en: 'Tourism' },
-                    description: { es: 'Promociona tu negocio turístico con sitios web atractivos', en: 'Promote your tourism business with attractive websites' },
-                    image: 'https://via.placeholder.com/300x200/007ACC/FFFFFF?text=Tourism'
+                    description: { es: 'Promociona tours y experiencias locales', en: 'Promote local tours and experiences' },
+                    image: 'https://via.placeholder.com/200x150/007ACC/FFFFFF?text=Tourism'
+                  },
+                  { 
+                    title: { es: 'Retail', en: 'Retail' },
+                    description: { es: 'Tiendas en línea con carrito de compras', en: 'Online stores with shopping carts' },
+                    image: 'https://via.placeholder.com/200x150/FF6B35/FFFFFF?text=Retail'
+                  },
+                  { 
+                    title: { es: 'Servicios', en: 'Services' },
+                    description: { es: 'Plomeros, electricistas y más', en: 'Plumbers, electricians, and more' },
+                    image: 'https://via.placeholder.com/200x150/6C5CE7/FFFFFF?text=Services'
                   }
-                ]).map((template, index) => (
-                  <div key={index} className="col-12 mb-4">
-                    <div className="card border-0 shadow-sm">
-                      <div className="row g-0">
-                        <div className="col-md-5">
-                          <div className="bg-light h-100 d-flex align-items-center justify-content-center overflow-hidden rounded-start position-relative" style={{ minHeight: '300px' }}>
-                            {template.image ? (
-                              <>
-                                <img 
-                                  src={template.image} 
-                                  alt={template.title[language] || template.title.es}
-                                  className="w-100 h-100"
-                                  style={{ 
-                                    objectFit: 'cover',
-                                    display: 'block'
-                                  }}
-                                  onLoad={(e) => {
-                                    console.log('Image loaded successfully in preview:', template.image);
-                                    e.currentTarget.style.display = 'block';
-                                  }}
-                                  onError={(e) => {
-                                    console.log('Image failed to load in preview:', template.image);
-                                    e.currentTarget.style.display = 'none';
-                                    const fallback = e.currentTarget.parentElement?.querySelector('.fallback-preview') as HTMLElement;
-                                    if (fallback) fallback.style.display = 'flex';
-                                  }}
-                                />
-                                <div className="fallback-preview text-center text-muted position-absolute w-100 h-100 d-none align-items-center justify-content-center" style={{ top: 0, left: 0 }}>
-                                  <div>
-                                    <div className="mb-2">
-                                      <Globe size={48} />
-                                    </div>
-                                    <small>Website Preview</small>
-                                  </div>
-                                </div>
-                              </>
-                            ) : (
-                              <div className="text-center text-muted">
-                                <div className="mb-2">
-                                  <Globe size={48} />
-                                </div>
-                                <small>Website Preview</small>
-                              </div>
-                            )}
+                ]).map((solution, index) => {
+                  const title = solution.title[language] || solution.title.es;
+                  const description = solution.description[language] || solution.description.es;
+                  
+                  return (
+                    <div key={index} className="col-md-6 col-lg-4">
+                      <div className="card h-100 border-0 shadow-sm">
+                        <div className="card-body text-center p-4">
+                          <div className="mb-3">
+                            <img 
+                              src={solution.image} 
+                              alt={title}
+                              className="img-fluid rounded mb-3"
+                              style={{ height: '120px', width: '100%', objectFit: 'cover' }}
+                            />
                           </div>
-                        </div>
-                        <div className="col-md-7">
-                          <div className="card-body p-4 d-flex flex-column justify-content-center h-100">
-                            <h4 className="card-title fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                              {template.title[language] || template.title.es}
-                            </h4>
-                            <p className="card-text text-muted mb-4">
-                              {template.description[language] || template.description.es}
-                            </p>
-                            <div className="d-flex gap-2">
-                              <Link 
-                                href={template.demoUrl || '#'}
-                                className="btn btn-outline-primary btn-sm"
-                                onClick={() => window.scrollTo(0, 0)}
-                              >
-                                {language === 'es' ? 'Ver Demo' : 'View Demo'}
-                              </Link>
-                              <Link 
-                                href={template.getStartedUrl || '/pro'}
-                                className="btn btn-primary btn-sm"
-                                onClick={() => window.scrollTo(0, 0)}
-                              >
-                                {language === 'es' ? 'Comenzar' : 'Get Started'}
-                              </Link>
-                            </div>
-                          </div>
+                          <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                            {title}
+                          </h5>
+                          <p className="text-muted mb-3">
+                            {description}
+                          </p>
+                          <Link 
+                            href="/pro"
+                            className="btn btn-primary text-white"
+                            style={{ backgroundColor: 'hsl(var(--primary))' }}
+                            onClick={() => window.scrollTo(0, 0)}
+                          >
+                            {language === 'es' ? 'Ver Más' : 'Learn More'}
+                          </Link>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -838,7 +807,7 @@ export default function HomePage() {
               style={{ backgroundColor: 'hsl(var(--primary))' }}
               onClick={() => window.scrollTo(0, 0)}
             >
-              Get Your Pro Site
+              {language === 'es' ? 'Explorar Sitios Pro' : 'Explore Pro Sites'}
             </Link>
           </div>
         </div>

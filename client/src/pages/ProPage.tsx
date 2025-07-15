@@ -504,6 +504,28 @@ export default function ProPage() {
         </div>
       </section>
 
+      {/* Pro Page Banner */}
+      {savedConfig?.showProBanner && (
+        <div 
+          className="py-4"
+          style={{ 
+            backgroundColor: savedConfig.proBannerBackgroundColor || '#C8102E',
+            color: savedConfig.proBannerTextColor || '#FFFFFF'
+          }}
+        >
+          <div className="container">
+            <div className="row">
+              <div className="col-12 text-center">
+                <h4 className="fw-bold mb-0">
+                  {savedConfig.proBannerText?.[language] || 
+                   (language === 'es' ? 'Sitios web profesionales para tu negocio - ¡Contáctanos hoy!' : 'Professional websites for your business - Contact us today!')}
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Template Showcase */}
       <section className="py-5 bg-light">
         <div className="container">
@@ -526,14 +548,17 @@ export default function ProPage() {
               const desktopImage = templateImage?.desktop || '';
               const mobileImage = templateImage?.mobile || '';
               
+              // Get WhatsApp button for this template
+              const whatsappButton = savedConfig?.proWhatsappButtons?.[templateIndex];
+              
               return (
                 <div key={num} className="col-lg-6">
                   <div className="card h-100 border-0 shadow">
                     <div className="card-body p-4">
                       <div className="row g-3">
-                        <div className="col-4">
-                          {/* Desktop Preview */}
-                          <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '120px' }}>
+                        <div className="col-6">
+                          {/* Desktop Preview - Larger */}
+                          <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '180px' }}>
                             {desktopImage ? (
                               <img 
                                 src={desktopImage} 
@@ -546,7 +571,7 @@ export default function ProPage() {
                                 }}
                               />
                             ) : (
-                              <Globe size={48} className="text-muted" />
+                              <Globe size={64} className="text-muted" />
                             )}
                           </div>
                           {/* Mobile Preview */}
@@ -556,8 +581,8 @@ export default function ProPage() {
                                 src={mobileImage} 
                                 alt={`Template ${num} Mobile Preview`}
                                 style={{ 
-                                  width: '40px', 
-                                  height: '60px', 
+                                  width: '50px', 
+                                  height: '80px', 
                                   objectFit: 'contain',
                                   borderRadius: '4px',
                                   border: '1px solid #e0e0e0'
@@ -565,28 +590,41 @@ export default function ProPage() {
                               />
                             ) : (
                               <div>
-                                <div className="bg-light rounded mb-1" style={{ height: '8px' }}></div>
-                                <div className="bg-light rounded mb-1" style={{ height: '8px', width: '80%' }}></div>
-                                <div className="bg-light rounded" style={{ height: '8px', width: '60%' }}></div>
+                                <div className="bg-light rounded mb-1" style={{ height: '10px' }}></div>
+                                <div className="bg-light rounded mb-1" style={{ height: '10px', width: '80%' }}></div>
+                                <div className="bg-light rounded" style={{ height: '10px', width: '60%' }}></div>
                               </div>
                             )}
                           </div>
                         </div>
-                        <div className="col-8">
+                        <div className="col-6">
                           <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
                             {t(`template${num}` as any)}
                           </h5>
                           <p className="text-muted mb-3 small">
                             {t(`template${num}Desc` as any)}
                           </p>
-                          <a 
-                            href={templateLinks[num - 1]}
-                            className="btn btn-sm text-decoration-none text-white"
-                            style={{ backgroundColor: '#C8102E' }}
-                            onClick={() => window.scrollTo(0, 0)}
-                          >
-                            {t('viewTemplate')}
-                          </a>
+                          <div className="d-flex flex-column gap-2">
+                            <a 
+                              href={templateLinks[num - 1]}
+                              className="btn btn-sm text-decoration-none text-white"
+                              style={{ backgroundColor: '#C8102E' }}
+                              onClick={() => window.scrollTo(0, 0)}
+                            >
+                              {t('viewTemplate')}
+                            </a>
+                            {whatsappButton && (
+                              <a 
+                                href={`https://wa.me/529831234567?text=${encodeURIComponent(whatsappButton.message[language] || whatsappButton.message.es)}`}
+                                className="btn btn-sm text-white"
+                                style={{ backgroundColor: whatsappButton.color || '#00A859' }}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {whatsappButton.text[language] || whatsappButton.text.es}
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

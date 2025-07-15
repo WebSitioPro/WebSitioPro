@@ -33,14 +33,12 @@ interface WebsiteData {
   aboutTitle: { es: string; en: string };
   aboutText: { es: string; en: string };
   
-  // Services/Offerings
-  offeringsTitle: { es: string; en: string };
-  templates: Array<{
+  // Solutions Overview (Homepage)
+  solutionsTitle: { es: string; en: string };
+  solutionsOverview: Array<{
     title: { es: string; en: string };
     description: { es: string; en: string };
     image: string;
-    demoUrl?: string;
-    getStartedUrl?: string;
   }>;
   
   // Pricing
@@ -80,6 +78,19 @@ interface WebsiteData {
     mobile: string;
   }>;
   paymentText: { es: string; en: string };
+  
+  // Pro Page Banner
+  proBannerText: { es: string; en: string };
+  proBannerBackgroundColor: string;
+  proBannerTextColor: string;
+  showProBanner: boolean;
+  
+  // Pro Page WhatsApp Buttons
+  proWhatsappButtons: Array<{
+    text: { es: string; en: string };
+    color: string;
+    message: { es: string; en: string };
+  }>;
 }
 
 export default function EditorPage() {
@@ -156,46 +167,36 @@ export default function EditorPage() {
       en: 'Empowering Chetumal businesses with stunning websites'
     },
     
-    // Services/Offerings
-    offeringsTitle: {
-      es: 'Lo Que Ofrecemos',
-      en: 'What We Offer'
+    // Solutions Overview (Homepage)
+    solutionsTitle: {
+      es: 'Nuestras Soluciones',
+      en: 'Our Solutions'
     },
-    templates: [
+    solutionsOverview: [
       {
         title: { es: 'Profesionales', en: 'Professionals' },
         description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
-        image: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professional',
-        demoUrl: '/professionals-demo',
-        getStartedUrl: '/pro'
+        image: 'https://via.placeholder.com/200x150/00A859/FFFFFF?text=Professional'
       },
       {
         title: { es: 'Restaurantes', en: 'Restaurants' },
         description: { es: 'Menús atractivos y sistemas de reservas', en: 'Attractive menus and reservation systems' },
-        image: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Restaurant',
-        demoUrl: '/restaurants-demo',
-        getStartedUrl: '/pro'
+        image: 'https://via.placeholder.com/200x150/C8102E/FFFFFF?text=Restaurant'
       },
       {
-        title: { es: 'Negocios Turísticos', en: 'Tourist Businesses' },
+        title: { es: 'Turismo', en: 'Tourism' },
         description: { es: 'Promociona tours y experiencias locales', en: 'Promote local tours and experiences' },
-        image: 'https://via.placeholder.com/300x200/007ACC/FFFFFF?text=Tourism',
-        demoUrl: '/tourism-demo',
-        getStartedUrl: '/pro'
+        image: 'https://via.placeholder.com/200x150/007ACC/FFFFFF?text=Tourism'
       },
       {
         title: { es: 'Retail', en: 'Retail' },
         description: { es: 'Tiendas en línea con carrito de compras', en: 'Online stores with shopping carts' },
-        image: 'https://via.placeholder.com/300x200/FF6B35/FFFFFF?text=Retail',
-        demoUrl: '/retail-demo',
-        getStartedUrl: '/pro'
+        image: 'https://via.placeholder.com/200x150/FF6B35/FFFFFF?text=Retail'
       },
       {
         title: { es: 'Servicios', en: 'Services' },
         description: { es: 'Plomeros, electricistas y más', en: 'Plumbers, electricians, and more' },
-        image: 'https://via.placeholder.com/300x200/6C5CE7/FFFFFF?text=Services',
-        demoUrl: '/services-demo',
-        getStartedUrl: '/pro'
+        image: 'https://via.placeholder.com/200x150/6C5CE7/FFFFFF?text=Services'
       }
     ],
     
@@ -329,7 +330,45 @@ export default function EditorPage() {
     paymentBannerTextColor: '#333333',
     
     // Menu images for restaurant template
-    menuImages: []
+    menuImages: [],
+    
+    // Pro Page Banner
+    proBannerText: {
+      es: 'Sitios web profesionales para tu negocio - ¡Contáctanos hoy!',
+      en: 'Professional websites for your business - Contact us today!'
+    },
+    proBannerBackgroundColor: '#C8102E',
+    proBannerTextColor: '#FFFFFF',
+    showProBanner: true,
+    
+    // Pro Page WhatsApp Buttons
+    proWhatsappButtons: [
+      {
+        text: { es: 'Contacto Profesionales', en: 'Professional Contact' },
+        color: '#00A859',
+        message: { es: 'Hola! Me interesa un sitio web para profesionales', en: 'Hello! I\'m interested in a professional website' }
+      },
+      {
+        text: { es: 'Contacto Restaurantes', en: 'Restaurant Contact' },
+        color: '#C8102E',
+        message: { es: 'Hola! Me interesa un sitio web para restaurantes', en: 'Hello! I\'m interested in a restaurant website' }
+      },
+      {
+        text: { es: 'Contacto Turismo', en: 'Tourism Contact' },
+        color: '#007ACC',
+        message: { es: 'Hola! Me interesa un sitio web para turismo', en: 'Hello! I\'m interested in a tourism website' }
+      },
+      {
+        text: { es: 'Contacto Retail', en: 'Retail Contact' },
+        color: '#FF6B35',
+        message: { es: 'Hola! Me interesa un sitio web para retail', en: 'Hello! I\'m interested in a retail website' }
+      },
+      {
+        text: { es: 'Contacto Servicios', en: 'Services Contact' },
+        color: '#6C5CE7',
+        message: { es: 'Hola! Me interesa un sitio web para servicios', en: 'Hello! I\'m interested in a services website' }
+      }
+    ]
   });
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
@@ -352,24 +391,46 @@ export default function EditorPage() {
     });
   };
 
-  const handleTemplateChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+  const handleSolutionsOverviewChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
-      templates: prev.templates.map((template, i) => {
+      solutionsOverview: prev.solutionsOverview.map((solution, i) => {
         if (i === index) {
           if (language && (field === 'title' || field === 'description')) {
             return {
-              ...template,
+              ...solution,
               [field]: {
-                ...template[field as keyof typeof template],
+                ...solution[field as keyof typeof solution],
                 [language]: value
               }
             };
           } else {
-            return { ...template, [field]: value };
+            return { ...solution, [field]: value };
           }
         }
-        return template;
+        return solution;
+      })
+    }));
+  };
+
+  const handleProWhatsappButtonChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      proWhatsappButtons: prev.proWhatsappButtons.map((button, i) => {
+        if (i === index) {
+          if (language && (field === 'text' || field === 'message')) {
+            return {
+              ...button,
+              [field]: {
+                ...button[field as keyof typeof button],
+                [language]: value
+              }
+            };
+          } else {
+            return { ...button, [field]: value };
+          }
+        }
+        return button;
       })
     }));
   };
@@ -394,6 +455,98 @@ export default function EditorPage() {
     setWebsiteData(prev => ({
       ...prev,
       templates: prev.templates.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleAddSolutionOverview = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      solutionsOverview: [
+        ...prev.solutionsOverview,
+        {
+          title: { es: 'Nueva Solución', en: 'New Solution' },
+          description: { es: 'Descripción de la solución', en: 'Solution description' },
+          image: 'https://via.placeholder.com/150x100/00A859/FFFFFF?text=Solution'
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveSolutionOverview = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      solutionsOverview: prev.solutionsOverview.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSolutionOverviewChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      solutionsOverview: prev.solutionsOverview.map((solution, i) => {
+        if (i === index) {
+          if (language) {
+            return {
+              ...solution,
+              [field]: {
+                ...solution[field as keyof typeof solution],
+                [language]: value
+              }
+            };
+          } else {
+            return {
+              ...solution,
+              [field]: value
+            };
+          }
+        }
+        return solution;
+      })
+    }));
+  };
+
+  const handleAddWhatsAppButton = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      proWhatsappButtons: [
+        ...prev.proWhatsappButtons,
+        {
+          text: { es: 'Contáctanos por WhatsApp', en: 'Contact us via WhatsApp' },
+          color: '#00A859',
+          message: { es: 'Hola, estoy interesado en sus servicios', en: 'Hello, I\'m interested in your services' }
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveWhatsAppButton = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      proWhatsappButtons: prev.proWhatsappButtons.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleWhatsAppButtonChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      proWhatsappButtons: prev.proWhatsappButtons.map((button, i) => {
+        if (i === index) {
+          if (language) {
+            return {
+              ...button,
+              [field]: {
+                ...button[field as keyof typeof button],
+                [language]: value
+              }
+            };
+          } else {
+            return {
+              ...button,
+              [field]: value
+            };
+          }
+        }
+        return button;
+      })
     }));
   };
 
@@ -800,6 +953,8 @@ export default function EditorPage() {
             bannerText: websiteData.bannerText.en
           }
         },
+        // Store solutions overview data
+        solutionsOverview: websiteData.solutionsOverview,
         // Store templates data as well
         templates: websiteData.templates,
         whyPoints: websiteData.whyPoints,
@@ -812,6 +967,12 @@ export default function EditorPage() {
         pricingBannerTextColor: websiteData.pricingBannerTextColor,
         paymentBannerBgColor: websiteData.paymentBannerBgColor,
         paymentBannerTextColor: websiteData.paymentBannerTextColor,
+        // Store Pro banner fields
+        proBannerText: JSON.stringify(websiteData.proBannerText),
+        proBannerBackgroundColor: websiteData.proBannerBackgroundColor,
+        proBannerTextColor: websiteData.proBannerTextColor,
+        showProBanner: websiteData.showProBanner,
+        proWhatsappButtons: websiteData.proWhatsappButtons,
         // Chatbot fields
         chatbotIcon: websiteData.chatbotIcon,
         chatbotColor: websiteData.chatbotColor,
@@ -980,11 +1141,11 @@ export default function EditorPage() {
                   About Section
                 </button>
                 <button 
-                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'templates' ? 'active fw-bold' : ''}`}
-                  onClick={() => setActiveTab('templates')}
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'solutions' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('solutions')}
                 >
                   <Briefcase size={16} className="me-2" />
-                  Templates Section
+                  Solutions Overview
                 </button>
                 <button 
                   className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pricing' ? 'active fw-bold' : ''}`}
@@ -1020,6 +1181,13 @@ export default function EditorPage() {
                 >
                   <Type size={16} className="me-2" />
                   Pro Page
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pro-banner' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('pro-banner')}
+                >
+                  <Type size={16} className="me-2" />
+                  Pro Banner
                 </button>
 
               </nav>
@@ -1707,10 +1875,10 @@ export default function EditorPage() {
                 </div>
               )}
 
-              {/* Templates Tab */}
-              {activeTab === 'templates' && (
+              {/* Solutions Overview Tab */}
+              {activeTab === 'solutions' && (
                 <div>
-                  <h4 className="mb-4">Templates Section</h4>
+                  <h4 className="mb-4">Solutions Overview Section</h4>
                   
                   {/* Section Title */}
                   <div className="row g-3 mb-4">
@@ -1719,8 +1887,8 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        value={websiteData.offeringsTitle.es}
-                        onChange={(e) => handleInputChange('offeringsTitle', e.target.value, 'es')}
+                        value={websiteData.solutionsTitle.es}
+                        onChange={(e) => handleInputChange('solutionsTitle', e.target.value, 'es')}
                       />
                     </div>
                     <div className="col-md-6">
@@ -1728,47 +1896,47 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        value={websiteData.offeringsTitle.en}
-                        onChange={(e) => handleInputChange('offeringsTitle', e.target.value, 'en')}
+                        value={websiteData.solutionsTitle.en}
+                        onChange={(e) => handleInputChange('solutionsTitle', e.target.value, 'en')}
                       />
                     </div>
                   </div>
                   
-                  {/* Template Cards */}
+                  {/* Solutions Overview Cards */}
                   <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h5 className="mb-0">Template Cards</h5>
+                    <h5 className="mb-0">Solutions Overview Cards</h5>
                     <button 
                       type="button" 
                       className="btn btn-primary btn-sm"
-                      onClick={handleAddTemplate}
+                      onClick={handleAddSolutionOverview}
                     >
                       <Plus size={16} className="me-1" />
-                      Add Template
+                      Add Solution
                     </button>
                   </div>
                   
-                  {websiteData.templates.map((template, index) => (
+                  {websiteData.solutionsOverview.map((solution, index) => (
                     <div key={index} className="border rounded p-3 mb-3 bg-light">
                       <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h6 className="mb-0">Template {index + 1}</h6>
+                        <h6 className="mb-0">Solution {index + 1}</h6>
                         <button 
                           type="button" 
                           className="btn btn-danger btn-sm"
-                          onClick={() => handleRemoveTemplate(index)}
+                          onClick={() => handleRemoveSolutionOverview(index)}
                         >
                           Remove
                         </button>
                       </div>
                       
-                      {/* Template Title */}
+                      {/* Solution Title */}
                       <div className="row g-3 mb-3">
                         <div className="col-md-6">
                           <label className="form-label">Title (Spanish)</label>
                           <input 
                             type="text" 
                             className="form-control"
-                            value={template.title.es}
-                            onChange={(e) => handleTemplateChange(index, 'title', e.target.value, 'es')}
+                            value={solution.title.es}
+                            onChange={(e) => handleSolutionOverviewChange(index, 'title', e.target.value, 'es')}
                           />
                         </div>
                         <div className="col-md-6">
@@ -1776,21 +1944,21 @@ export default function EditorPage() {
                           <input 
                             type="text" 
                             className="form-control"
-                            value={template.title.en}
-                            onChange={(e) => handleTemplateChange(index, 'title', e.target.value, 'en')}
+                            value={solution.title.en}
+                            onChange={(e) => handleSolutionOverviewChange(index, 'title', e.target.value, 'en')}
                           />
                         </div>
                       </div>
                       
-                      {/* Template Description */}
+                      {/* Solution Description */}
                       <div className="row g-3 mb-3">
                         <div className="col-md-6">
                           <label className="form-label">Description (Spanish)</label>
                           <textarea 
                             className="form-control"
                             rows={3}
-                            value={template.description.es}
-                            onChange={(e) => handleTemplateChange(index, 'description', e.target.value, 'es')}
+                            value={solution.description.es}
+                            onChange={(e) => handleSolutionOverviewChange(index, 'description', e.target.value, 'es')}
                           />
                         </div>
                         <div className="col-md-6">
@@ -1798,31 +1966,31 @@ export default function EditorPage() {
                           <textarea 
                             className="form-control"
                             rows={3}
-                            value={template.description.en}
-                            onChange={(e) => handleTemplateChange(index, 'description', e.target.value, 'en')}
+                            value={solution.description.en}
+                            onChange={(e) => handleSolutionOverviewChange(index, 'description', e.target.value, 'en')}
                           />
                         </div>
                       </div>
                       
-                      {/* Template Image */}
+                      {/* Solution Image (Small) */}
                       <div className="row g-3 mb-3">
                         <div className="col-md-8">
-                          <label className="form-label">Template Image URL</label>
+                          <label className="form-label">Solution Image URL (Small)</label>
                           <input 
                             type="url" 
                             className="form-control"
-                            value={template.image}
-                            onChange={(e) => handleTemplateChange(index, 'image', e.target.value)}
-                            placeholder="https://example.com/template-image.jpg"
+                            value={solution.image}
+                            onChange={(e) => handleSolutionOverviewChange(index, 'image', e.target.value)}
+                            placeholder="https://example.com/solution-image.jpg"
                           />
                         </div>
                         <div className="col-md-4">
                           <label className="form-label">Image Preview</label>
-                          <div className="border rounded p-2 bg-white" style={{ height: '100px' }}>
-                            {template.image ? (
+                          <div className="border rounded p-2 bg-white" style={{ height: '60px' }}>
+                            {solution.image ? (
                               <img 
-                                src={template.image} 
-                                alt="Template preview"
+                                src={solution.image} 
+                                alt="Solution preview"
                                 className="w-100 h-100"
                                 style={{ objectFit: 'cover' }}
                                 onError={(e) => {
@@ -1834,38 +2002,14 @@ export default function EditorPage() {
                             ) : null}
                             <div 
                               className="w-100 h-100 d-flex align-items-center justify-content-center text-muted"
-                              style={{ display: template.image ? 'none' : 'flex' }}
+                              style={{ display: solution.image ? 'none' : 'flex' }}
                             >
                               <div className="text-center">
-                                <Image size={24} className="mb-1" />
+                                <Image size={16} className="mb-1" />
                                 <small>No image</small>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      
-                      {/* Template Links */}
-                      <div className="row g-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Demo URL</label>
-                          <input 
-                            type="url" 
-                            className="form-control"
-                            value={template.demoUrl || ''}
-                            onChange={(e) => handleTemplateChange(index, 'demoUrl', e.target.value)}
-                            placeholder="/professionals-demo"
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Get Started URL</label>
-                          <input 
-                            type="url" 
-                            className="form-control"
-                            value={template.getStartedUrl || ''}
-                            onChange={(e) => handleTemplateChange(index, 'getStartedUrl', e.target.value)}
-                            placeholder="/pro"
-                          />
                         </div>
                       </div>
                     </div>
@@ -2884,6 +3028,208 @@ export default function EditorPage() {
                         System Status
                       </button>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Pro Banner Tab */}
+              {activeTab === 'pro-banner' && (
+                <div>
+                  <h4 className="mb-4">Pro Page Banner</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Show Pro Banner</label>
+                      <select 
+                        className="form-select"
+                        value={websiteData.showProBanner ? 'true' : 'false'}
+                        onChange={(e) => handleInputChange('showProBanner', e.target.value === 'true')}
+                      >
+                        <option value="true">Show Banner</option>
+                        <option value="false">Hide Banner</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.proBannerText.es}
+                        onChange={(e) => handleInputChange('proBannerText', e.target.value, 'es')}
+                        placeholder="Sitios web profesionales para tu negocio - ¡Contáctanos hoy!"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.proBannerText.en}
+                        onChange={(e) => handleInputChange('proBannerText', e.target.value, 'en')}
+                        placeholder="Professional websites for your business - Contact us today!"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Background Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.proBannerBackgroundColor}
+                          onChange={(e) => handleInputChange('proBannerBackgroundColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.proBannerBackgroundColor}
+                          onChange={(e) => handleInputChange('proBannerBackgroundColor', e.target.value)}
+                          placeholder="#C8102E"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.proBannerTextColor}
+                          onChange={(e) => handleInputChange('proBannerTextColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.proBannerTextColor}
+                          onChange={(e) => handleInputChange('proBannerTextColor', e.target.value)}
+                          placeholder="#FFFFFF"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="form-label">Banner Preview</label>
+                    <div 
+                      className="p-3 rounded border text-center"
+                      style={{ 
+                        backgroundColor: websiteData.proBannerBackgroundColor,
+                        color: websiteData.proBannerTextColor
+                      }}
+                    >
+                      <strong>{websiteData.proBannerText.es}</strong>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4">
+                    <h5 className="mb-3">WhatsApp Contact Buttons</h5>
+                    <div className="mb-3">
+                      <button 
+                        type="button" 
+                        className="btn btn-primary btn-sm"
+                        onClick={handleAddWhatsAppButton}
+                      >
+                        <Plus size={16} className="me-1" />
+                        Add WhatsApp Button
+                      </button>
+                    </div>
+                    
+                    {websiteData.proWhatsappButtons.map((button, index) => (
+                      <div key={index} className="border rounded p-3 mb-3 bg-light">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <h6 className="mb-0">WhatsApp Button {index + 1}</h6>
+                          <button 
+                            type="button" 
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleRemoveWhatsAppButton(index)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        
+                        <div className="row g-3 mb-3">
+                          <div className="col-md-6">
+                            <label className="form-label">Button Text (Spanish)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={button.text.es}
+                              onChange={(e) => handleWhatsAppButtonChange(index, 'text', e.target.value, 'es')}
+                              placeholder="Contáctanos por WhatsApp"
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Button Text (English)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={button.text.en}
+                              onChange={(e) => handleWhatsAppButtonChange(index, 'text', e.target.value, 'en')}
+                              placeholder="Contact us via WhatsApp"
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="row g-3 mb-3">
+                          <div className="col-md-6">
+                            <label className="form-label">WhatsApp Message (Spanish)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={button.message.es}
+                              onChange={(e) => handleWhatsAppButtonChange(index, 'message', e.target.value, 'es')}
+                              placeholder="Hola, estoy interesado en sus servicios"
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">WhatsApp Message (English)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={button.message.en}
+                              onChange={(e) => handleWhatsAppButtonChange(index, 'message', e.target.value, 'en')}
+                              placeholder="Hello, I'm interested in your services"
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <label className="form-label">Button Color</label>
+                            <div className="d-flex gap-2">
+                              <input 
+                                type="color" 
+                                className="form-control form-control-color"
+                                value={button.color}
+                                onChange={(e) => handleWhatsAppButtonChange(index, 'color', e.target.value)}
+                              />
+                              <input 
+                                type="text" 
+                                className="form-control"
+                                value={button.color}
+                                onChange={(e) => handleWhatsAppButtonChange(index, 'color', e.target.value)}
+                                placeholder="#00A859"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Button Preview</label>
+                            <button 
+                              className="btn btn-sm text-white w-100"
+                              style={{ backgroundColor: button.color }}
+                              disabled
+                            >
+                              {button.text.es}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
