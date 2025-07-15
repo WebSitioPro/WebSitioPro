@@ -602,7 +602,9 @@ export default function ProPage() {
                             {t(`template${num}` as any)}
                           </h5>
                           <p className="text-muted mb-3 small">
-                            {t(`template${num}Desc` as any)}
+                            {savedConfig?.templates?.[templateIndex]?.description?.[language] || 
+                             savedConfig?.templates?.[templateIndex]?.description?.es || 
+                             t(`template${num}Desc` as any)}
                           </p>
                           <div className="d-flex flex-column gap-2">
                             <a 

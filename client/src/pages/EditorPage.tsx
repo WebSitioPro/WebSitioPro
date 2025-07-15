@@ -77,6 +77,13 @@ interface WebsiteData {
     desktop: string;
     mobile: string;
   }>;
+  templates: Array<{
+    title: { es: string; en: string };
+    description: { es: string; en: string };
+    image: string;
+    demoUrl?: string;
+    getStartedUrl?: string;
+  }>;
   paymentText: { es: string; en: string };
   
   // Pro Page Banner
@@ -318,6 +325,43 @@ export default function EditorPage() {
       { desktop: '', mobile: '' },
       { desktop: '', mobile: '' }
     ],
+    templates: [
+      {
+        title: { es: 'Profesionales', en: 'Professionals' },
+        description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
+        image: '',
+        demoUrl: '/professionals-demo',
+        getStartedUrl: '/pro'
+      },
+      {
+        title: { es: 'Restaurantes', en: 'Restaurants' },
+        description: { es: 'Menús atractivos y sistemas de reservas', en: 'Attractive menus and reservation systems' },
+        image: '',
+        demoUrl: '/restaurants-demo',
+        getStartedUrl: '/pro'
+      },
+      {
+        title: { es: 'Turismo', en: 'Tourism' },
+        description: { es: 'Promociona tours y experiencias locales', en: 'Promote local tours and experiences' },
+        image: '',
+        demoUrl: '/tourism-demo',
+        getStartedUrl: '/pro'
+      },
+      {
+        title: { es: 'Retail', en: 'Retail' },
+        description: { es: 'Tiendas en línea con carrito de compras', en: 'Online stores with shopping carts' },
+        image: '',
+        demoUrl: '/retail-demo',
+        getStartedUrl: '/pro'
+      },
+      {
+        title: { es: 'Servicios', en: 'Services' },
+        description: { es: 'Plomeros, electricistas y más', en: 'Plumbers, electricians, and more' },
+        image: '',
+        demoUrl: '/services-demo',
+        getStartedUrl: '/pro'
+      }
+    ],
     paymentText: {
       es: 'Paga mediante transferencia bancaria (detalles vía WhatsApp), tarjeta de crédito, o OXXO (código QR proporcionado).',
       en: 'Pay via bank transfer (details via WhatsApp), credit card, or OXXO (QR code provided).'
@@ -539,6 +583,36 @@ export default function EditorPage() {
     }));
   };
 
+  const handleTemplateDescriptionChange = (index: number, value: string, language: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      templates: prev.templates.map((template, i) => 
+        i === index ? { 
+          ...template, 
+          description: {
+            ...template.description,
+            [language]: value
+          }
+        } : template
+      )
+    }));
+  };
+
+  const handleWhatsAppButtonChange = (index: number, field: 'text' | 'color' | 'message', value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      proWhatsappButtons: prev.proWhatsappButtons.map((button, i) => 
+        i === index ? { 
+          ...button, 
+          [field]: language ? {
+            ...button[field],
+            [language]: value
+          } : value
+        } : button
+      )
+    }));
+  };
+
   const handleWhyPointChange = (index: number, value: string, language: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
@@ -745,6 +819,7 @@ export default function EditorPage() {
               proBannerTextColor: config.proBannerTextColor || prev.proBannerTextColor,
               showProBanner: config.showProBanner !== undefined ? config.showProBanner : prev.showProBanner,
               proWhatsappButtons: config.proWhatsappButtons || prev.proWhatsappButtons,
+
               // Parse address safely
               address: typeof config.address === 'string' ? 
                 (config.address.startsWith('{') ? 
@@ -2715,34 +2790,106 @@ export default function EditorPage() {
 
 
 
-                  <h5 className="mb-3">Template Showcase Images</h5>
+                  <h5 className="mb-3">Template Showcase Images & Descriptions</h5>
                   <div className="row g-3 mb-4">
                     <div className="col-12">
-                      <p className="text-muted">Add showcase images for your Pro templates that will be displayed on the Pro page.</p>
+                      <p className="text-muted">Add showcase images and descriptions for your Pro templates that will be displayed on the Pro page.</p>
                     </div>
-                    {websiteData.templateShowcaseImages.map((img, index) => (
-                      <div key={index} className="col-md-6">
-                        <div className="border rounded p-3">
-                          <h6>Template {index + 1} Showcase Image</h6>
-                          <label className="form-label">Template {index + 1} Preview Image URL</label>
-                          <input 
-                            type="url" 
-                            className="form-control"
-                            placeholder={`https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Template+${index + 1}+Preview`}
-                            value={img.desktop}
-                            onChange={(e) => handleTemplateShowcaseImageChange(index, 'desktop', e.target.value)}
-                          />
-                          <label className="form-label mt-2">Template {index + 1} Mobile Preview URL</label>
-                          <input 
-                            type="url" 
-                            className="form-control"
-                            placeholder={`https://via.placeholder.com/200x300/00A859/FFFFFF?text=Mobile+${index + 1}`}
-                            value={img.mobile}
-                            onChange={(e) => handleTemplateShowcaseImageChange(index, 'mobile', e.target.value)}
-                          />
+                    {websiteData.templateShowcaseImages.map((img, index) => {
+                      const templateNames = ['Professionals', 'Restaurants', 'Tourism', 'Retail', 'Services'];
+                      const templateName = templateNames[index] || `Template ${index + 1}`;
+                      return (
+                        <div key={index} className="col-lg-6">
+                          <div className="border rounded p-3">
+                            <h6>{templateName} Template</h6>
+                            
+                            <label className="form-label">Desktop Preview Image URL</label>
+                            <input 
+                              type="url" 
+                              className="form-control mb-2"
+                              placeholder={`https://via.placeholder.com/400x300/C8102E/FFFFFF?text=${templateName}+Desktop`}
+                              value={img.desktop}
+                              onChange={(e) => handleTemplateShowcaseImageChange(index, 'desktop', e.target.value)}
+                            />
+                            
+                            <label className="form-label">Mobile Preview Image URL</label>
+                            <input 
+                              type="url" 
+                              className="form-control mb-3"
+                              placeholder={`https://via.placeholder.com/200x300/00A859/FFFFFF?text=${templateName}+Mobile`}
+                              value={img.mobile}
+                              onChange={(e) => handleTemplateShowcaseImageChange(index, 'mobile', e.target.value)}
+                            />
+                            
+                            <label className="form-label">Description (Spanish)</label>
+                            <textarea 
+                              className="form-control mb-2"
+                              rows={2}
+                              value={websiteData.templates[index]?.description?.es || ''}
+                              onChange={(e) => handleTemplateDescriptionChange(index, e.target.value, 'es')}
+                              placeholder={`Descripción del template ${templateName}`}
+                            />
+                            
+                            <label className="form-label">Description (English)</label>
+                            <textarea 
+                              className="form-control mb-3"
+                              rows={2}
+                              value={websiteData.templates[index]?.description?.en || ''}
+                              onChange={(e) => handleTemplateDescriptionChange(index, e.target.value, 'en')}
+                              placeholder={`Description for ${templateName} template`}
+                            />
+                            
+                            <label className="form-label">WhatsApp Contact Button</label>
+                            <div className="row g-2">
+                              <div className="col-md-6">
+                                <input 
+                                  type="text" 
+                                  className="form-control"
+                                  placeholder="Button Text (Spanish)"
+                                  value={websiteData.proWhatsappButtons[index]?.text?.es || ''}
+                                  onChange={(e) => handleWhatsAppButtonChange(index, 'text', e.target.value, 'es')}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <input 
+                                  type="text" 
+                                  className="form-control"
+                                  placeholder="Button Text (English)"
+                                  value={websiteData.proWhatsappButtons[index]?.text?.en || ''}
+                                  onChange={(e) => handleWhatsAppButtonChange(index, 'text', e.target.value, 'en')}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <input 
+                                  type="color" 
+                                  className="form-control form-control-color"
+                                  value={websiteData.proWhatsappButtons[index]?.color || '#00A859'}
+                                  onChange={(e) => handleWhatsAppButtonChange(index, 'color', e.target.value)}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <input 
+                                  type="text" 
+                                  className="form-control"
+                                  placeholder="WhatsApp Message (Spanish)"
+                                  value={websiteData.proWhatsappButtons[index]?.message?.es || ''}
+                                  onChange={(e) => handleWhatsAppButtonChange(index, 'message', e.target.value, 'es')}
+                                />
+                              </div>
+                              <div className="col-12">
+                                <input 
+                                  type="text" 
+                                  className="form-control"
+                                  placeholder="WhatsApp Message (English)"
+                                  value={websiteData.proWhatsappButtons[index]?.message?.en || ''}
+                                  onChange={(e) => handleWhatsAppButtonChange(index, 'message', e.target.value, 'en')}
+                                />
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   <h5 className="mb-3">Pricing & Domain Section</h5>
