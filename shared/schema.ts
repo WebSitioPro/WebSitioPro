@@ -189,6 +189,30 @@ export const websiteConfigs = pgTable("website_configs", {
     demoUrl?: string;
     getStartedUrl?: string;
   }>>().default([]),
+  // Solutions overview for homepage
+  solutionsTitle: json("solutions_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  solutionsOverview: json("solutions_overview").$type<Array<{
+    title: { es: string; en: string };
+    description: { es: string; en: string };
+    image: string;
+  }>>().default([]),
+  // Pro page banner fields
+  proBannerText: json("pro_banner_text").$type<{
+    es: string;
+    en: string;
+  }>(),
+  proBannerBackgroundColor: text("pro_banner_background_color").default("#C8102E"),
+  proBannerTextColor: text("pro_banner_text_color").default("#FFFFFF"),
+  showProBanner: boolean("show_pro_banner").default(true),
+  // Pro page WhatsApp buttons
+  proWhatsappButtons: json("pro_whatsapp_buttons").$type<Array<{
+    text: { es: string; en: string };
+    color: string;
+    message: { es: string; en: string };
+  }>>().default([]),
   // Timestamp fields
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
