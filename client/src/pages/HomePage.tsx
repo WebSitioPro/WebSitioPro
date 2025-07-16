@@ -604,7 +604,8 @@ export default function HomePage() {
         id="hero" 
         className={`hero-section position-relative d-flex`}
         style={{
-          height: savedConfig?.heroSectionHeight || '70vh',
+          height: window.innerWidth <= 768 ? '60vh' : (savedConfig?.heroSectionHeight || '70vh'),
+          minHeight: window.innerWidth <= 768 ? '400px' : '500px',
           backgroundColor: '#f8f9fa', // Light background for when image is transparent
           alignItems: savedConfig?.heroVerticalAlignment === 'start' ? 'flex-start' : 
                      savedConfig?.heroVerticalAlignment === 'end' ? 'flex-end' : 'center'
@@ -630,23 +631,25 @@ export default function HomePage() {
               className={`col-12 ${savedConfig?.heroTextAlignment || 'text-center'}`}
             >
               <h1 
-                className="display-4 fw-bold mb-4"
+                className="fw-bold mb-3 mb-md-4"
                 style={{
                   color: savedConfig?.heroTextColor || '#ffffff',
-                  fontSize: savedConfig?.heroTitleSize || '3.5rem',
+                  fontSize: window.innerWidth <= 768 ? '2rem' : (savedConfig?.heroTitleSize || '3.5rem'),
                   textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-                  whiteSpace: 'pre-line'
+                  whiteSpace: 'pre-line',
+                  lineHeight: window.innerWidth <= 768 ? '1.2' : '1.1'
                 }}
               >
                 {savedConfig?.translations?.[language]?.heroHeadline || t('heroHeadline')}
               </h1>
               <p 
-                className="lead mb-4"
+                className="mb-3 mb-md-4"
                 style={{
                   color: savedConfig?.heroSubtextColor || '#ffffff',
-                  fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
+                  fontSize: window.innerWidth <= 768 ? '1rem' : (savedConfig?.heroSubtitleSize || '1.25rem'),
                   textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                  whiteSpace: 'pre-line'
+                  whiteSpace: 'pre-line',
+                  lineHeight: '1.4'
                 }}
               >
                 {savedConfig?.translations?.[language]?.heroSubheadline || t('heroSubheadline')}
