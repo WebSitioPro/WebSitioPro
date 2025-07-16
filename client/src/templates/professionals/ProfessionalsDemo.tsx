@@ -351,7 +351,7 @@ export default function ProfessionalsDemo() {
                     }}
                   />
                 </div>
-                <p className="text-muted">{previewData?.specialty?.es || previewData?.subcategory || "Especialista en Medicina Familiar"}</p>
+                
               </div>
             </div>
           </div>
