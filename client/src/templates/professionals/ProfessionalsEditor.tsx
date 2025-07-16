@@ -286,6 +286,11 @@ export default function ProfessionalsEditor() {
         current[keys[keys.length - 1]] = value;
       }
       
+      // Debug logging for social media URLs
+      if (path === 'instagramUrl' || path === 'facebookUrl') {
+        console.log(`Setting ${path} to:`, value);
+      }
+      
       return newData;
     });
   };
@@ -1096,7 +1101,7 @@ export default function ProfessionalsEditor() {
                           <input
                             type="tel"
                             className="form-control"
-                            value={websiteData.whatsappNumber}
+                            value={websiteData.whatsappNumber || ''}
                             onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
                             placeholder="529831234567"
                           />
@@ -1106,7 +1111,7 @@ export default function ProfessionalsEditor() {
                           <input
                             type="url"
                             className="form-control"
-                            value={websiteData.facebookUrl}
+                            value={websiteData.facebookUrl || ''}
                             onChange={(e) => handleInputChange('facebookUrl', e.target.value)}
                             placeholder="https://facebook.com/yourpage"
                           />
@@ -1116,7 +1121,7 @@ export default function ProfessionalsEditor() {
                           <input
                             type="url"
                             className="form-control"
-                            value={websiteData.instagramUrl}
+                            value={websiteData.instagramUrl || ''}
                             onChange={(e) => handleInputChange('instagramUrl', e.target.value)}
                             placeholder="https://instagram.com/yourprofile"
                           />
@@ -1148,7 +1153,7 @@ export default function ProfessionalsEditor() {
                           <textarea
                             className="form-control"
                             rows={3}
-                            value={websiteData.googleMapsEmbed}
+                            value={websiteData.googleMapsEmbed || ''}
                             onChange={(e) => handleInputChange('googleMapsEmbed', e.target.value)}
                             placeholder="Google Maps embed code"
                           />
