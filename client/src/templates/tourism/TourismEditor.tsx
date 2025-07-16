@@ -100,7 +100,24 @@ export default function TourismEditor() {
               servicesTitle: savedConfig.servicesTitle || { es: 'Nuestros Tours', en: 'Our Tours' },
               services: savedConfig.services || [],
               photos: savedConfig.photos || [],
-              reviews: savedConfig.reviews || []
+              reviews: savedConfig.reviews || [],
+              // Handle address field properly
+              address: savedConfig.address && typeof savedConfig.address === 'object' 
+                ? savedConfig.address 
+                : typeof savedConfig.address === 'string' 
+                  ? { es: savedConfig.address, en: savedConfig.address }
+                  : { es: 'Av. Tulum 123, Playa del Carmen, QR', en: 'Av. Tulum 123, Playa del Carmen, QR' },
+              // Handle whatsappMessage field properly
+              whatsappMessage: savedConfig.whatsappMessage && typeof savedConfig.whatsappMessage === 'object' 
+                ? savedConfig.whatsappMessage 
+                : typeof savedConfig.whatsappMessage === 'string' 
+                  ? { es: savedConfig.whatsappMessage, en: savedConfig.whatsappMessage }
+                  : { es: 'Hola, me interesa un tour', en: 'Hello, I am interested in a tour' },
+              // Handle officeHours field properly
+              officeHours: savedConfig.officeHours || {
+                mondayFriday: { es: 'Lunes a Viernes: 9:00 AM - 6:00 PM', en: 'Monday to Friday: 9:00 AM - 6:00 PM' },
+                saturday: { es: 'Sábado: 10:00 AM - 4:00 PM', en: 'Saturday: 10:00 AM - 4:00 PM' }
+              }
             }));
           }
         }
