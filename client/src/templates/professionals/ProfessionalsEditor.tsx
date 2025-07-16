@@ -57,6 +57,10 @@ interface ProfessionalsConfig {
   whatsappNumber: string;
   whatsappMessage: { es: string; en: string };
   
+  // Social Media Links
+  facebookUrl: string;
+  instagramUrl: string;
+  
   // Office Hours
   officeHours: {
     mondayFriday: { es: string; en: string };
@@ -128,6 +132,10 @@ export default function ProfessionalsEditor() {
     whatsappNumber: '529831234567',
     whatsappMessage: { es: 'Hola, me gustaría agendar una cita', en: 'Hello, I would like to schedule an appointment' },
     
+    // Social Media Links
+    facebookUrl: '',
+    instagramUrl: '',
+    
     // Office Hours
     officeHours: {
       mondayFriday: { es: 'Lunes a viernes: 9:00 AM - 6:00 PM', en: 'Monday to Friday: 9:00 AM - 6:00 PM' },
@@ -170,6 +178,10 @@ export default function ProfessionalsEditor() {
             servicesTitle: config.servicesTitle || websiteData.servicesTitle,
             address: config.address || websiteData.address,
             whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
+            
+            // Social Media Links
+            facebookUrl: config.facebookUrl || websiteData.facebookUrl,
+            instagramUrl: config.instagramUrl || websiteData.instagramUrl,
             
             // Ensure image fields are preserved
             heroImage: config.heroImage || websiteData.heroImage,
@@ -1087,6 +1099,26 @@ export default function ProfessionalsEditor() {
                             value={websiteData.whatsappNumber}
                             onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
                             placeholder="529831234567"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Facebook URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.facebookUrl}
+                            onChange={(e) => handleInputChange('facebookUrl', e.target.value)}
+                            placeholder="https://facebook.com/yourpage"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Instagram URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.instagramUrl}
+                            onChange={(e) => handleInputChange('instagramUrl', e.target.value)}
+                            placeholder="https://instagram.com/yourprofile"
                           />
                         </div>
                       </div>

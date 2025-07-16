@@ -63,6 +63,10 @@ export interface ProfessionalsTemplateConfig {
   whatsappNumber: string;
   whatsappMessage: { es: string; en: string };
   
+  // Social Media Links
+  facebookUrl: string;
+  instagramUrl: string;
+  
   // Office Hours
   officeHours: {
     mondayFriday: { es: string; en: string };

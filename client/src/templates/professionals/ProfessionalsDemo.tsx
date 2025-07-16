@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
-import { Phone, Mail, MapPin, Clock, Star, Shield, Award, Menu, X } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Star, Shield, Award, Menu, X, Facebook, Instagram } from 'lucide-react';
 
 export default function ProfessionalsDemo() {
   const [language, setLanguage] = useState('es');
@@ -593,6 +593,40 @@ export default function ProfessionalsDemo() {
                       {t('whatsappButton')}
                     </a>
                   </div>
+                  
+                  {/* Social Media Links */}
+                  {(((previewData?.facebookUrl || savedConfig?.facebookUrl) && (previewData?.facebookUrl || savedConfig?.facebookUrl).trim()) || 
+                    ((previewData?.instagramUrl || savedConfig?.instagramUrl) && (previewData?.instagramUrl || savedConfig?.instagramUrl).trim())) && (
+                    <div className="mt-4">
+                      <h6 className="mb-3">{language === 'es' ? 'Síguenos en Redes Sociales' : 'Follow Us on Social Media'}</h6>
+                      <div className="d-flex gap-3">
+                        {((previewData?.facebookUrl || savedConfig?.facebookUrl) && (previewData?.facebookUrl || savedConfig?.facebookUrl).trim()) && (
+                          <a
+                            href={previewData?.facebookUrl || savedConfig?.facebookUrl}
+                            className="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: '50px', height: '50px' }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Facebook"
+                          >
+                            <Facebook size={24} />
+                          </a>
+                        )}
+                        {((previewData?.instagramUrl || savedConfig?.instagramUrl) && (previewData?.instagramUrl || savedConfig?.instagramUrl).trim()) && (
+                          <a
+                            href={previewData?.instagramUrl || savedConfig?.instagramUrl}
+                            className="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: '50px', height: '50px' }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Instagram"
+                          >
+                            <Instagram size={24} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
