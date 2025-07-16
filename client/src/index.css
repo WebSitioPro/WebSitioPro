@@ -9,29 +9,50 @@
 /* Mobile hero section improvements */
 @media (max-width: 768px) {
   .hero-section {
-    padding: 20px 0 !important;
+    height: 50vh !important;
+    min-height: 400px !important;
+    flex-direction: column !important;
+    padding: 15px 0 !important;
   }
-  
+
+  .hero-section .position-absolute {
+    position: relative !important;
+    height: 60% !important;
+    width: 100% !important;
+    margin-bottom: 15px !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+
   .hero-section .container {
-    height: 100%;
-    display: flex;
-    align-items: center;
+    position: relative !important;
+    z-index: 1 !important;
+    height: auto !important;
   }
-  
-  .hero-section h1 {
-    font-size: 2rem !important;
+
+  .hero-section .col-12 {
+    padding: 10px 0 !important;
+    height: auto !important;
+  }
+
+  .hero-title {
+    font-size: 1.75rem !important;
     line-height: 1.2 !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.75rem !important;
+    color: #333 !important;
+    text-shadow: none !important;
   }
-  
-  .hero-section p {
+
+  .hero-subtitle {
     font-size: 1rem !important;
     line-height: 1.4 !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.75rem !important;
+    color: #666 !important;
+    text-shadow: none !important;
   }
 }
 
-/* Ensure hero content doesn't overflow */
+/* Desktop hero content styling - restored to original */
 .hero-section .col-12 {
   display: flex;
   flex-direction: column;
@@ -44,7 +65,7 @@
   --primary-foreground: 0 0% 100%; /* #FFFFFF */
   --secondary: 350 84% 42%; /* #C8102E */
   --secondary-foreground: 0 0% 100%; /* #FFFFFF */
-  
+
   /* Default shadcn colors */
   --background: 0 0% 100%;
   --foreground: 20 14.3% 4.1%;
@@ -239,7 +260,7 @@ header .btn {
     background-size: contain !important;
     background-position: center top !important;
   }
-  
+
   .hero-section {
     min-height: 50vh !important;
   }
@@ -340,7 +361,7 @@ header .btn {
   .section-padding {
     padding: 50px 0;
   }
-  
+
   .header-image {
     height: 70vh;
   }

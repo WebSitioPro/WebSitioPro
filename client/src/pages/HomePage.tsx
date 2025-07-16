@@ -56,13 +56,13 @@ export default function HomePage() {
             phone: '+52 983 123 4567',
             email: 'info@websitiopro.com'
           };
-          
+
           const createResponse = await fetch('/api/config', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...defaultConfig, id: 'homepage', name: 'Homepage Configuration' })
           });
-          
+
           if (createResponse.ok) {
             setSavedConfig(defaultConfig);
           }
@@ -71,18 +71,18 @@ export default function HomePage() {
         console.log('Config not loaded:', err);
       }
     };
-    
+
     loadConfig();
-    
+
     // Reload config when returning to homepage
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         loadConfig();
       }
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
@@ -94,17 +94,17 @@ export default function HomePage() {
 
   const checkDomain = async () => {
     if (!domainInput.trim()) return;
-    
+
     setDomainStatus('checking');
-    
+
     try {
       // Simulate domain checking - in a real application, this would call a domain checking API
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // For demonstration, randomly determine availability
       const isAvailable = Math.random() > 0.5;
       setDomainStatus(isAvailable ? 'available' : 'taken');
-      
+
       // Reset status after 5 seconds
       setTimeout(() => setDomainStatus('idle'), 5000);
     } catch (error) {
@@ -118,14 +118,14 @@ export default function HomePage() {
   // Chatbot Q&A data - use saved configuration or fallback
   const getChatbotResponses = () => {
     const responses = { es: {}, en: {} };
-    
+
     if (savedConfig?.chatbotQuestions) {
       savedConfig.chatbotQuestions.forEach(item => {
         responses.es[item.question.es] = item.answer.es;
         responses.en[item.question.en] = item.answer.en;
       });
     }
-    
+
     // Fallback responses if no saved responses
     if (Object.keys(responses.es).length === 0) {
       responses.es = {
@@ -147,10 +147,10 @@ export default function HomePage() {
         'default': 'Thanks for your question. For a personalized answer, please contact us via WhatsApp at +52 983 123 4567'
       };
     }
-    
+
     return responses;
   };
-  
+
   const chatbotResponses = getChatbotResponses();
 
   const handleChatSubmit = (e: React.FormEvent) => {
@@ -261,7 +261,7 @@ export default function HomePage() {
         officeHours: 'Horarios de Oficina',
         mondayFriday: 'Lun-Vie: 9:00 AM - 6:00 PM',
         saturday: 'Sáb: 10:00 AM - 2:00 PM',
-        
+
         // Chatbot
         chatbotTitle: 'Chat con WebSitioPro',
         chatbotWelcome: '¡Hola! ¿En qué puedo ayudarte con tu sitio web?',
@@ -336,7 +336,7 @@ export default function HomePage() {
         officeHours: 'Office Hours',
         mondayFriday: 'Mon-Fri: 9:00 AM - 6:00 PM',
         saturday: 'Sat: 10:00 AM - 2:00 PM',
-        
+
         // Chatbot
         chatbotTitle: 'Chat with WebSitioPro',
         chatbotWelcome: 'Hello! How can I help you with your website?',
@@ -604,8 +604,8 @@ export default function HomePage() {
         id="hero" 
         className={`hero-section position-relative d-flex`}
         style={{
-          height: window.innerWidth <= 768 ? '60vh' : (savedConfig?.heroSectionHeight || '70vh'),
-          minHeight: window.innerWidth <= 768 ? '400px' : '500px',
+          height: savedConfig?.heroSectionHeight || '70vh',
+          minHeight: '500px',
           backgroundColor: '#f8f9fa', // Light background for when image is transparent
           alignItems: savedConfig?.heroVerticalAlignment === 'start' ? 'flex-start' : 
                      savedConfig?.heroVerticalAlignment === 'end' ? 'flex-end' : 'center'
@@ -624,29 +624,29 @@ export default function HomePage() {
             zIndex: 1
           }}
         ></div>
-        
+
         <div className="container position-relative" style={{ zIndex: 2 }}>
           <div className="row">
             <div 
               className={`col-12 ${savedConfig?.heroTextAlignment || 'text-center'}`}
             >
               <h1 
-                className="fw-bold mb-3 mb-md-4"
+                className="hero-title fw-bold mb-3 mb-md-4"
                 style={{
                   color: savedConfig?.heroTextColor || '#ffffff',
-                  fontSize: window.innerWidth <= 768 ? '2rem' : (savedConfig?.heroTitleSize || '3.5rem'),
+                  fontSize: savedConfig?.heroTitleSize || '3.5rem',
                   textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
                   whiteSpace: 'pre-line',
-                  lineHeight: window.innerWidth <= 768 ? '1.2' : '1.1'
+                  lineHeight: '1.1'
                 }}
               >
                 {savedConfig?.translations?.[language]?.heroHeadline || t('heroHeadline')}
               </h1>
               <p 
-                className="mb-3 mb-md-4"
+                className="hero-subtitle mb-3 mb-md-4"
                 style={{
                   color: savedConfig?.heroSubtextColor || '#ffffff',
-                  fontSize: window.innerWidth <= 768 ? '1rem' : (savedConfig?.heroSubtitleSize || '1.25rem'),
+                  fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
                   textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
                   whiteSpace: 'pre-line',
                   lineHeight: '1.4'
@@ -697,7 +697,7 @@ export default function HomePage() {
                   default: return <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />;
                 }
               };
-              
+
               return (
                 <div key={index} className="col-md-4 text-center">
                   <div className="mb-3">
@@ -751,8 +751,7 @@ export default function HomePage() {
                   },
                   { 
                     title: { es: 'Turismo', en: 'Tourism' },
-                    description: { es: 'Promociona tours y experiencias locales', en: 'Promote local tours and experiences' },
-                    image: 'https://via.placeholder.com/200x150/007ACC/FFFFFF?text=Tourism'
+                    description: { es: 'Promociona tours y experiencias locales', en: 'Promote local tours and experiences' },                    image: 'https://via.placeholder.com/200x150/007ACC/FFFFFF?text=Tourism'
                   },
                   { 
                     title: { es: 'Retail', en: 'Retail' },
@@ -767,7 +766,7 @@ export default function HomePage() {
                 ]).map((solution, index) => {
                   const title = solution.title[language] || solution.title.es;
                   const description = solution.description[language] || solution.description.es;
-                  
+
                   return (
                     <div key={index} className="col-md-6 col-lg-4">
                       <div className="card h-100 border-0 shadow-sm">
@@ -827,7 +826,7 @@ export default function HomePage() {
               <p className="lead text-muted">
                 {savedConfig?.translations?.[language]?.pricingText || t('pricingText')}
               </p>
-              
+
               {/* Display saved pricing information if available */}
               {savedConfig?.translations?.[language]?.bannerText && (
                 <div className="mt-4 p-4 rounded shadow-sm" style={{
@@ -844,7 +843,7 @@ export default function HomePage() {
                   )}
                 </div>
               )}
-              
+
               {savedConfig?.translations?.[language]?.paymentText && (
                 <div className="mt-4 p-4 rounded shadow-sm" style={{
                   backgroundColor: savedConfig.paymentBannerBgColor || '#FFFFFF',
@@ -892,7 +891,7 @@ export default function HomePage() {
                   {domainStatus === 'checking' ? 'Verificando...' : t('checkDomain')}
                 </button>
               </div>
-              
+
               {/* Domain Status Display */}
               {domainStatus !== 'idle' && (
                 <div className="mt-3 text-center">
