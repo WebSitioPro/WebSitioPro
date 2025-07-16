@@ -102,7 +102,24 @@ export default function RetailEditor() {
               servicesTitle: savedConfig.servicesTitle || { es: 'Nuestros Productos', en: 'Our Products' },
               products: savedConfig.products || [],
               photos: savedConfig.photos || [],
-              reviews: savedConfig.reviews || []
+              reviews: savedConfig.reviews || [],
+              // Handle address field properly
+              address: savedConfig.address && typeof savedConfig.address === 'object' 
+                ? savedConfig.address 
+                : typeof savedConfig.address === 'string' 
+                  ? { es: savedConfig.address, en: savedConfig.address }
+                  : { es: 'Av. Juárez 456, Chetumal, QR', en: 'Av. Juárez 456, Chetumal, QR' },
+              // Handle whatsappMessage field properly
+              whatsappMessage: savedConfig.whatsappMessage && typeof savedConfig.whatsappMessage === 'object' 
+                ? savedConfig.whatsappMessage 
+                : typeof savedConfig.whatsappMessage === 'string' 
+                  ? { es: savedConfig.whatsappMessage, en: savedConfig.whatsappMessage }
+                  : { es: 'Hola, me interesa sus productos', en: 'Hello, I am interested in your products' },
+              // Handle officeHours field properly
+              officeHours: savedConfig.officeHours || {
+                mondayFriday: { es: 'Lunes a Viernes: 10:00 AM - 8:00 PM', en: 'Monday to Friday: 10:00 AM - 8:00 PM' },
+                saturday: { es: 'Sábado: 10:00 AM - 6:00 PM', en: 'Saturday: 10:00 AM - 6:00 PM' }
+              }
             }));
           }
         }
@@ -527,27 +544,27 @@ export default function RetailEditor() {
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Product Name (Spanish)</label>
-                                <input type="text" className="form-control" value={product.name.es} onChange={(e) => handleProductChange(index, 'name', e.target.value, 'es')} />
+                                <input type="text" className="form-control" value={product.title?.es || ''} onChange={(e) => handleProductChange(index, 'title', e.target.value, 'es')} />
                               </div>
                               <div className="mb-3">
                                 <label className="form-label">Product Name (English)</label>
-                                <input type="text" className="form-control" value={product.name.en} onChange={(e) => handleProductChange(index, 'name', e.target.value, 'en')} />
+                                <input type="text" className="form-control" value={product.title?.en || ''} onChange={(e) => handleProductChange(index, 'title', e.target.value, 'en')} />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Description (Spanish)</label>
-                                <textarea className="form-control" rows={3} value={product.description.es} onChange={(e) => handleProductChange(index, 'description', e.target.value, 'es')} />
+                                <textarea className="form-control" rows={3} value={product.description?.es || ''} onChange={(e) => handleProductChange(index, 'description', e.target.value, 'es')} />
                               </div>
                               <div className="mb-3">
                                 <label className="form-label">Description (English)</label>
-                                <textarea className="form-control" rows={3} value={product.description.en} onChange={(e) => handleProductChange(index, 'description', e.target.value, 'en')} />
+                                <textarea className="form-control" rows={3} value={product.description?.en || ''} onChange={(e) => handleProductChange(index, 'description', e.target.value, 'en')} />
                               </div>
                             </div>
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Price</label>
-                                <input type="text" className="form-control" value={product.price} onChange={(e) => handleProductChange(index, 'price', e.target.value)} />
+                                <input type="text" className="form-control" value={product.price || ''} onChange={(e) => handleProductChange(index, 'price', e.target.value)} />
                               </div>
                               <div className="d-grid">
                                 <button className="btn btn-danger" onClick={() => removeProduct(index)}>Remove Product</button>
