@@ -9,26 +9,31 @@ interface ProfessionalsConfig {
   secondaryColor: string;
   accentColor: string;
   logo: string;
-  
+
   // Template Type
   templateType: 'professionals';
-  
+
   // Hero Section
   heroImage: string;
   heroTitle: { es: string; en: string };
   heroSubtitle: { es: string; en: string };
   heroDescription: { es: string; en: string };
-  
+
   // Business Information
   businessName: string;
   doctorName: string;
   specialty: { es: string; en: string };
   profileImage: string;
-  
+
   // About Section
   aboutTitle: { es: string; en: string };
   aboutText: { es: string; en: string };
-  
+  aboutStats?: Array<{
+    icon: string;
+    value: { es: string; en: string };
+    label: { es: string; en: string };
+  }>;
+
   // Services
   servicesTitle: { es: string; en: string };
   services: Array<{
@@ -36,40 +41,40 @@ interface ProfessionalsConfig {
     description: { es: string; en: string };
     icon: string;
   }>;
-  
+
   // Photos
   photos: Array<{
     url: string;
     caption: { es: string; en: string };
   }>;
-  
+
   // Reviews
   reviews: Array<{
     name: string;
     rating: number;
     text: { es: string; en: string };
   }>;
-  
+
   // Contact Information
   phone: string;
   email: string;
   address: { es: string; en: string };
   whatsappNumber: string;
   whatsappMessage: { es: string; en: string };
-  
+
   // Social Media Links
   facebookUrl: string;
   instagramUrl: string;
-  
+
   // Office Hours
   officeHours: {
     mondayFriday: { es: string; en: string };
     saturday: { es: string; en: string };
   };
-  
+
   // Google Maps
   googleMapsEmbed: string;
-  
+
   // Settings
   showWhatsappButton: boolean;
   showChatbot: boolean;
@@ -81,7 +86,7 @@ export default function ProfessionalsEditor() {
   const urlParams = new URLSearchParams(window.location.search);
   const clientId = urlParams.get('client') || params.clientId || 'professionals-demo';
   const { toast } = useToast();
-  
+
   const [activeTab, setActiveTab] = useState('hero');
   const [websiteData, setWebsiteData] = useState<ProfessionalsConfig>({
     // Colors & Branding
@@ -89,26 +94,43 @@ export default function ProfessionalsEditor() {
     secondaryColor: '#00A859',
     accentColor: '#007ACC',
     logo: 'https://via.placeholder.com/150x50/C8102E/FFFFFF?text=Logo',
-    
+
     // Template Type
     templateType: 'professionals',
-    
+
     // Hero Section
     heroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Hero+Image',
     heroTitle: { es: 'Dr. María González', en: 'Dr. María González' },
     heroSubtitle: { es: 'Especialista en Medicina Interna', en: 'Internal Medicine Specialist' },
     heroDescription: { es: 'Más de 15 años de experiencia brindando atención médica de calidad', en: 'Over 15 years of experience providing quality medical care' },
-    
+
     // Business Information
     businessName: 'Consultorio Médico Dr. González',
     doctorName: 'Dr. María González',
     specialty: { es: 'Medicina Interna', en: 'Internal Medicine' },
     profileImage: 'https://via.placeholder.com/300x300/C8102E/FFFFFF?text=Profile',
-    
+
     // About Section
     aboutTitle: { es: 'Acerca de Mí', en: 'About Me' },
     aboutText: { es: 'Soy una médica dedicada con más de 15 años de experiencia...', en: 'I am a dedicated physician with over 15 years of experience...' },
-    
+    aboutStats: [
+      {
+        icon: 'Award',
+        value: { es: '15+', en: '15+' },
+        label: { es: 'Años de experiencia', en: 'Years of experience' }
+      },
+      {
+        icon: 'Star',
+        value: { es: '9.5', en: '9.5' },
+        label: { es: 'Calificación promedio', en: 'Average rating' }
+      },
+      {
+        icon: 'Shield',
+        value: { es: '1000+', en: '1000+' },
+        label: { es: 'Pacientes atendidos', en: 'Patients treated' }
+      }
+    ],
+
     // Services
     servicesTitle: { es: 'Servicios Médicos', en: 'Medical Services' },
     services: [
@@ -118,38 +140,38 @@ export default function ProfessionalsEditor() {
         icon: 'stethoscope'
       }
     ],
-    
+
     // Photos
     photos: [],
-    
+
     // Reviews
     reviews: [],
-    
+
     // Contact Information
     phone: '+52 983 123 4567',
     email: 'info@drgonzalez.com',
     address: { es: 'Av. Insurgentes 123, Chetumal, QR', en: 'Av. Insurgentes 123, Chetumal, QR' },
     whatsappNumber: '529831234567',
     whatsappMessage: { es: 'Hola, me gustaría agendar una cita', en: 'Hello, I would like to schedule an appointment' },
-    
+
     // Social Media Links
     facebookUrl: '',
     instagramUrl: '',
-    
+
     // Office Hours
     officeHours: {
       mondayFriday: { es: 'Lunes a viernes: 9:00 AM - 6:00 PM', en: 'Monday to Friday: 9:00 AM - 6:00 PM' },
       saturday: { es: 'Sábado: 9:00 AM - 2:00 PM', en: 'Saturday: 9:00 AM - 2:00 PM' }
     },
-    
+
     // Google Maps
     googleMapsEmbed: '',
-    
+
     // Settings
     showWhatsappButton: true,
     showChatbot: true
   });
-  
+
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -161,13 +183,13 @@ export default function ProfessionalsEditor() {
         const response = await fetch(`/api/config/${clientId}`);
         if (response.ok) {
           const config = await response.json();
-          
+
           // Ensure proper data structure for professionals template
           const professionalConfig = {
             ...websiteData, // Use defaults first
             ...config, // Then override with saved config
             templateType: 'professionals' as const,
-            
+
             // Ensure nested objects exist with proper structure
             heroTitle: config.heroTitle || websiteData.heroTitle,
             heroSubtitle: config.heroSubtitle || websiteData.heroSubtitle,
@@ -178,15 +200,15 @@ export default function ProfessionalsEditor() {
             servicesTitle: config.servicesTitle || websiteData.servicesTitle,
             address: config.address || websiteData.address,
             whatsappMessage: config.whatsappMessage || websiteData.whatsappMessage,
-            
+
             // Social Media Links
             facebookUrl: config.facebookUrl || websiteData.facebookUrl,
             instagramUrl: config.instagramUrl || websiteData.instagramUrl,
-            
+
             // Ensure image fields are preserved
             heroImage: config.heroImage || websiteData.heroImage,
             profileImage: config.profileImage || websiteData.profileImage,
-            
+            aboutStats: config.aboutStats || websiteData.aboutStats,
             // Services are already in bilingual format in database
             services: Array.isArray(config.services) ? config.services.map(service => ({
               title: service.title || { es: service.name || '', en: service.name || '' },
@@ -200,14 +222,14 @@ export default function ProfessionalsEditor() {
                   photo
               ) : websiteData.photos,
             reviews: Array.isArray(config.reviews) ? config.reviews : websiteData.reviews,
-            
+
             // Ensure office hours structure
             officeHours: {
               mondayFriday: config.officeHours?.mondayFriday || websiteData.officeHours.mondayFriday,
               saturday: config.officeHours?.saturday || websiteData.officeHours.saturday
             }
           };
-          
+
           setWebsiteData(professionalConfig);
         }
       } catch (error) {
@@ -222,11 +244,11 @@ export default function ProfessionalsEditor() {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      
+
       // Debug logging
       console.log('Saving professionals template data:', websiteData);
       console.log('Profile image field:', websiteData.profileImage);
-      
+
       // Keep services in bilingual format for database storage
       const dataToSave = {
         ...websiteData,
@@ -236,7 +258,7 @@ export default function ProfessionalsEditor() {
           icon: service.icon || 'service'
         }))
       };
-      
+
       // Save to config endpoint (same as homepage editor)
       const response = await fetch(`/api/config/${clientId}`, {
         method: 'PUT',
@@ -275,22 +297,22 @@ export default function ProfessionalsEditor() {
       const newData = { ...prev };
       const keys = path.split('.');
       let current: any = newData;
-      
+
       for (let i = 0; i < keys.length - 1; i++) {
         current = current[keys[i]];
       }
-      
+
       if (language) {
         current[keys[keys.length - 1]][language] = value;
       } else {
         current[keys[keys.length - 1]] = value;
       }
-      
+
       // Debug logging for social media URLs
       if (path === 'instagramUrl' || path === 'facebookUrl') {
         console.log(`Setting ${path} to:`, value);
       }
-      
+
       return newData;
     });
   };
@@ -414,6 +436,51 @@ export default function ProfessionalsEditor() {
     }));
   };
 
+  const handleAddAboutStat = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      aboutStats: [...(prev.aboutStats || []), {
+        icon: 'Award',
+        value: { es: '', en: '' },
+        label: { es: '', en: '' }
+      }]
+    }));
+  };
+
+  const handleRemoveAboutStat = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      aboutStats: prev.aboutStats ? prev.aboutStats.filter((_, i) => i !== index) : []
+    }));
+  };
+
+  const handleAboutStatChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => {
+      if (!prev.aboutStats) {
+        return prev;
+      }
+      return {
+        ...prev,
+        aboutStats: prev.aboutStats.map((stat, i) => {
+          if (i === index) {
+            if (language && (field === 'value' || field === 'label')) {
+              return {
+                ...stat,
+                [field]: {
+                  ...stat[field as keyof typeof stat],
+                  [language]: value
+                }
+              };
+            } else {
+              return { ...stat, [field]: value };
+            }
+          }
+          return stat;
+        })
+      };
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center">
@@ -454,14 +521,14 @@ export default function ProfessionalsEditor() {
                   businessName: doctorName,
                   templateType: 'professionals'
                 };
-                
+
                 try {
                   const response = await fetch('/api/config', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(clientData)
                   });
-                  
+
                   if (response.ok) {
                     const result = await response.json();
                     toast({
@@ -582,14 +649,14 @@ export default function ProfessionalsEditor() {
               <strong>Professionals Template Editor:</strong> This editor controls the content that appears in your professional template. 
               Changes are saved to your configuration and immediately reflected in the template design.
             </div>
-            
+
             <div className="card">
               <div className="card-body">
                 {/* Hero & Profile Section */}
                 {activeTab === 'hero' && (
                   <div>
                     <h5 className="mb-4">Hero & Profile Section</h5>
-                    
+
                     <div className="row">
                       <div className="col-md-6">
                         <div className="mb-3">
@@ -738,7 +805,7 @@ export default function ProfessionalsEditor() {
                 {activeTab === 'about' && (
                   <div>
                     <h5 className="mb-4">About Section</h5>
-                    
+
                     <div className="row">
                       <div className="col-md-6">
                         <h6>Spanish Content</h6>
@@ -786,6 +853,100 @@ export default function ProfessionalsEditor() {
                           />
                         </div>
                       </div>
+                    </div>
+
+                    <div className="mt-5">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="mb-0">About Statistics</h6>
+                        <button 
+                          className="btn btn-primary btn-sm"
+                          onClick={handleAddAboutStat}
+                        >
+                          <Plus size={16} className="me-1" />
+                          Add Stat
+                        </button>
+                      </div>
+
+                      {websiteData.aboutStats?.map((stat, index) => (
+                        <div key={index} className="card mb-3">
+                          <div className="card-header d-flex justify-content-between align-items-center">
+                            <h6 className="mb-0">Statistic #{index + 1}</h6>
+                            <button 
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => handleRemoveAboutStat(index)}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                          <div className="card-body">
+                            <div className="row">
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Icon</label>
+                                  <select
+                                    className="form-control"
+                                    value={stat.icon}
+                                    onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
+                                  >
+                                    <option value="Award">Award</option>
+                                    <option value="Star">Star</option>
+                                    <option value="Shield">Shield</option>
+                                    <option value="Heart">Heart</option>
+                                    <option value="Users">Users</option>
+                                    <option value="Clock">Clock</option>
+                                    <option value="CheckCircle">CheckCircle</option>
+                                    <option value="Target">Target</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Value (Spanish)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.value.es}
+                                    onChange={(e) => handleAboutStatChange(index, 'value', e.target.value, 'es')}
+                                    placeholder="15+"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Label (Spanish)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.label.es}
+                                    onChange={(e) => handleAboutStatChange(index, 'label', e.target.value, 'es')}
+                                    placeholder="Años de experiencia"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Value (English)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.value.en}
+                                    onChange={(e) => handleAboutStatChange(index, 'value', e.target.value, 'en')}
+                                    placeholder="15+"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Label (English)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.label.en}
+                                    onChange={(e) => handleAboutStatChange(index, 'label', e.target.value, 'en')}
+                                    placeholder="Years of experience"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -1073,7 +1234,7 @@ export default function ProfessionalsEditor() {
                 {activeTab === 'contact' && (
                   <div>
                     <h5 className="mb-4">Contact Information & Office Hours</h5>
-                    
+
                     <div className="row">
                       <div className="col-md-6">
                         <div className="mb-3">
@@ -1243,7 +1404,7 @@ export default function ProfessionalsEditor() {
                 {activeTab === 'colors' && (
                   <div>
                     <h5 className="mb-4">Colors & Branding</h5>
-                    
+
                     <div className="row">
                       <div className="col-md-4">
                         <div className="mb-3">

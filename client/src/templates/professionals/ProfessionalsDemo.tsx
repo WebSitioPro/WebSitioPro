@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
-import { Phone, Mail, MapPin, Clock, Star, Shield, Award, Menu, X, Facebook, Instagram } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Star, Shield, Award, Menu, X, Facebook, Instagram, Heart, Users, CheckCircle, Target } from 'lucide-react';
 
 export default function ProfessionalsDemo() {
   const [language, setLanguage] = useState('es');
@@ -370,21 +370,49 @@ export default function ProfessionalsDemo() {
                 {t('aboutText')}
               </p>
               <div className="row mt-5">
-                <div className="col-md-4">
-                  <Award size={48} className="mb-3" style={{ color: 'hsl(var(--secondary))' }} />
-                  <h5>15+ Años</h5>
-                  <p className="text-muted">Experiencia</p>
-                </div>
-                <div className="col-md-4">
-                  <Star size={48} className="mb-3" style={{ color: 'hsl(var(--secondary))' }} />
-                  <h5>500+</h5>
-                  <p className="text-muted">Pacientes Satisfechos</p>
-                </div>
-                <div className="col-md-4">
-                  <Shield size={48} className="mb-3" style={{ color: 'hsl(var(--secondary))' }} />
-                  <h5>24/7</h5>
-                  <p className="text-muted">Emergencias</p>
-                </div>
+                {(() => {
+                  // Get about stats from saved config, or use defaults
+                  const aboutStats = savedConfig?.aboutStats || [
+                    {
+                      icon: 'Award',
+                      value: { es: '15+', en: '15+' },
+                      label: { es: 'Años', en: 'Years' }
+                    },
+                    {
+                      icon: 'Star',
+                      value: { es: '500+', en: '500+' },
+                      label: { es: 'Pacientes Satisfechos', en: 'Satisfied Patients' }
+                    },
+                    {
+                      icon: 'Shield',
+                      value: { es: '24/7', en: '24/7' },
+                      label: { es: 'Emergencias', en: 'Emergency Care' }
+                    }
+                  ];
+                  
+                  // Icon mapping
+                  const iconMap = {
+                    Award: Award,
+                    Star: Star,
+                    Shield: Shield,
+                    Heart: Heart,
+                    Users: Users,
+                    Clock: Clock,
+                    CheckCircle: CheckCircle,
+                    Target: Target
+                  };
+                  
+                  return aboutStats.map((stat, index) => {
+                    const IconComponent = iconMap[stat.icon as keyof typeof iconMap] || Award;
+                    return (
+                      <div key={index} className="col-md-4">
+                        <IconComponent size={48} className="mb-3" style={{ color: 'hsl(var(--secondary))' }} />
+                        <h5>{language === 'es' ? stat.value.es : stat.value.en}</h5>
+                        <p className="text-muted">{language === 'es' ? stat.label.es : stat.label.en}</p>
+                      </div>
+                    );
+                  });
+                })()}
               </div>
             </div>
           </div>
