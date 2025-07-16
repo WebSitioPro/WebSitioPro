@@ -100,7 +100,24 @@ export default function ServicesEditor() {
               servicesTitle: savedConfig.servicesTitle || { es: 'Nuestros Servicios', en: 'Our Services' },
               services: savedConfig.services || [],
               photos: savedConfig.photos || [],
-              reviews: savedConfig.reviews || []
+              reviews: savedConfig.reviews || [],
+              // Handle address field properly
+              address: savedConfig.address && typeof savedConfig.address === 'object' 
+                ? savedConfig.address 
+                : typeof savedConfig.address === 'string' 
+                  ? { es: savedConfig.address, en: savedConfig.address }
+                  : { es: 'Calle Principal 789, Chetumal, QR', en: 'Calle Principal 789, Chetumal, QR' },
+              // Handle whatsappMessage field properly
+              whatsappMessage: savedConfig.whatsappMessage && typeof savedConfig.whatsappMessage === 'object' 
+                ? savedConfig.whatsappMessage 
+                : typeof savedConfig.whatsappMessage === 'string' 
+                  ? { es: savedConfig.whatsappMessage, en: savedConfig.whatsappMessage }
+                  : { es: 'Hola, necesito un servicio técnico', en: 'Hello, I need a technical service' },
+              // Handle officeHours field properly
+              officeHours: savedConfig.officeHours || {
+                mondayFriday: { es: 'Lunes a Viernes: 8:00 AM - 6:00 PM', en: 'Monday to Friday: 8:00 AM - 6:00 PM' },
+                saturday: { es: 'Sábado: 9:00 AM - 3:00 PM', en: 'Saturday: 9:00 AM - 3:00 PM' }
+              }
             }));
           }
         }
