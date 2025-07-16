@@ -29,6 +29,10 @@ export default function ServicesEditor() {
     address: { es: 'Av. Insurgentes 123, Chetumal, QR', en: 'Av. Insurgentes 123, Chetumal, QR' },
     whatsappNumber: '529831234567',
     whatsappMessage: { es: 'Hola, necesito un servicio técnico', en: 'Hello, I need technical service' },
+    
+    // Social Media Links
+    facebookUrl: '',
+    instagramUrl: '',
     logo: 'https://via.placeholder.com/150x50/6C5CE7/FFFFFF?text=Logo',
     servicesTitle: { es: 'Nuestros Servicios', en: 'Our Services' },
     services: [
@@ -681,6 +685,36 @@ export default function ServicesEditor() {
                         <div className="mb-3">
                           <label className="form-label">Email</label>
                           <input type="email" className="form-control" value={websiteData.email} onChange={(e) => handleInputChange('email', e.target.value)} />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">WhatsApp Number</label>
+                          <input
+                            type="tel"
+                            className="form-control"
+                            value={websiteData.whatsappNumber || ''}
+                            onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
+                            placeholder="529831234567"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Facebook URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.facebookUrl || ''}
+                            onChange={(e) => handleInputChange('facebookUrl', e.target.value)}
+                            placeholder="https://facebook.com/yourpage"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Instagram URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.instagramUrl || ''}
+                            onChange={(e) => handleInputChange('instagramUrl', e.target.value)}
+                            placeholder="https://instagram.com/yourprofile"
+                          />
                         </div>
                       </div>
                       <div className="col-md-6">

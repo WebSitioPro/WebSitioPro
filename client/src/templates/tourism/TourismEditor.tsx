@@ -29,6 +29,10 @@ export default function TourismEditor() {
     address: { es: 'Av. Tulum 123, Playa del Carmen, QR', en: 'Av. Tulum 123, Playa del Carmen, QR' },
     whatsappNumber: '529831234567',
     whatsappMessage: { es: 'Hola, me interesa un tour', en: 'Hello, I am interested in a tour' },
+    
+    // Social Media Links
+    facebookUrl: '',
+    instagramUrl: '',
     logo: 'https://via.placeholder.com/150x50/00A859/FFFFFF?text=Logo',
     servicesTitle: { es: 'Nuestros Tours', en: 'Our Tours' },
     services: [
@@ -859,6 +863,36 @@ export default function TourismEditor() {
                             className="form-control"
                             value={websiteData.email}
                             onChange={(e) => handleInputChange('email', e.target.value)}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">WhatsApp Number</label>
+                          <input
+                            type="tel"
+                            className="form-control"
+                            value={websiteData.whatsappNumber || ''}
+                            onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
+                            placeholder="529831234567"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Facebook URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.facebookUrl || ''}
+                            onChange={(e) => handleInputChange('facebookUrl', e.target.value)}
+                            placeholder="https://facebook.com/yourpage"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Instagram URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.instagramUrl || ''}
+                            onChange={(e) => handleInputChange('instagramUrl', e.target.value)}
+                            placeholder="https://instagram.com/yourprofile"
                           />
                         </div>
                       </div>

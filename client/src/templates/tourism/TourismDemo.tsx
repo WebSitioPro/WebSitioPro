@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Clock, Star, Menu, X, DollarSign } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Star, Menu, X, DollarSign, Facebook, Instagram } from 'lucide-react';
 
 // Mock data for tourism template
 const mockTourismData = {
@@ -490,6 +490,41 @@ export default function TourismDemo() {
                         </div>
                       </div>
                     </div>
+                    
+                    {/* Social Media Links */}
+                    {(savedConfig?.facebookUrl || savedConfig?.instagramUrl) && (
+                      <div className="col-12">
+                        <div className="d-flex align-items-center mb-3">
+                          <div className="me-3 d-flex">
+                            {savedConfig?.facebookUrl && (
+                              <a
+                                href={savedConfig.facebookUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="me-2"
+                                style={{ color: 'hsl(var(--primary))' }}
+                              >
+                                <Facebook size={24} />
+                              </a>
+                            )}
+                            {savedConfig?.instagramUrl && (
+                              <a
+                                href={savedConfig.instagramUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ color: 'hsl(var(--primary))' }}
+                              >
+                                <Instagram size={24} />
+                              </a>
+                            )}
+                          </div>
+                          <div>
+                            <h6 className="mb-0">Redes Sociales</h6>
+                            <p className="mb-0 text-muted">Síguenos en redes sociales</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="mt-4">

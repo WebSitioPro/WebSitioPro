@@ -48,6 +48,10 @@ export default function RestaurantsEditor() {
     address: { es: 'Av. Juárez 123, Centro, Chetumal, QR', en: 'Av. Juárez 123, Centro, Chetumal, QR' },
     whatsappNumber: '529831234567',
     whatsappMessage: { es: 'Hola, me gustaría hacer una reservación', en: 'Hello, I would like to make a reservation' },
+    
+    // Social Media Links
+    facebookUrl: '',
+    instagramUrl: '',
     officeHours: {
       mondayFriday: { es: 'Lunes a viernes: 11:00 AM - 10:00 PM', en: 'Monday to Friday: 11:00 AM - 10:00 PM' },
       saturday: { es: 'Sábado: 11:00 AM - 11:00 PM', en: 'Saturday: 11:00 AM - 11:00 PM' }
@@ -852,8 +856,29 @@ export default function RestaurantsEditor() {
                           <input
                             type="tel"
                             className="form-control"
-                            value={websiteData.whatsappNumber}
+                            value={websiteData.whatsappNumber || ''}
                             onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
+                            placeholder="529831234567"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Facebook URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.facebookUrl || ''}
+                            onChange={(e) => handleInputChange('facebookUrl', e.target.value)}
+                            placeholder="https://facebook.com/yourpage"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Instagram URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.instagramUrl || ''}
+                            onChange={(e) => handleInputChange('instagramUrl', e.target.value)}
+                            placeholder="https://instagram.com/yourprofile"
                           />
                         </div>
                       </div>
