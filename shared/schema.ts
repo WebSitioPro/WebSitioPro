@@ -20,6 +20,7 @@ export const websiteConfigs = pgTable("website_configs", {
     en: string;
   }>(),
   facebookUrl: text("facebook_url"),
+  instagramUrl: text("instagram_url"),
   socialLink: text("social_link"),
   googleMapsEmbed: text("google_maps_embed"),
   address: json("address").$type<{
