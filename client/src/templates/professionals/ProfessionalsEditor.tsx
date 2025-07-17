@@ -55,6 +55,13 @@ interface ProfessionalsConfig {
     text: { es: string; en: string };
   }>;
 
+  // Expandable Banner
+  showBanner: boolean;
+  bannerText: { es: string; en: string };
+  bannerBackgroundColor: string;
+  bannerTextColor: string;
+  bannerTextSize: string;
+
   // Contact Information
   phone: string;
   email: string;
@@ -147,6 +154,13 @@ export default function ProfessionalsEditor() {
     // Reviews
     reviews: [],
 
+    // Expandable Banner
+    showBanner: false,
+    bannerText: { es: 'Anuncio especial o información importante', en: 'Special announcement or important information' },
+    bannerBackgroundColor: '#FFC107',
+    bannerTextColor: '#000000',
+    bannerTextSize: '16px',
+
     // Contact Information
     phone: '+52 983 123 4567',
     email: 'info@drgonzalez.com',
@@ -227,7 +241,14 @@ export default function ProfessionalsEditor() {
             officeHours: {
               mondayFriday: config.officeHours?.mondayFriday || websiteData.officeHours.mondayFriday,
               saturday: config.officeHours?.saturday || websiteData.officeHours.saturday
-            }
+            },
+
+            // Banner configuration
+            showBanner: config.showBanner || websiteData.showBanner,
+            bannerText: config.bannerText || websiteData.bannerText,
+            bannerBackgroundColor: config.bannerBackgroundColor || websiteData.bannerBackgroundColor,
+            bannerTextColor: config.bannerTextColor || websiteData.bannerTextColor,
+            bannerTextSize: config.bannerTextSize || websiteData.bannerTextSize
           };
 
           setWebsiteData(professionalConfig);
@@ -624,6 +645,13 @@ export default function ProfessionalsEditor() {
                 >
                   <Star size={16} className="me-2" />
                   Reviews
+                </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'banner' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('banner')}
+                >
+                  <Settings size={16} className="me-2" />
+                  Announcement Banner
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'contact' ? 'active' : ''}`}
@@ -1227,6 +1255,124 @@ export default function ProfessionalsEditor() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                )}
+
+                {/* Banner Section */}
+                {activeTab === 'banner' && (
+                  <div>
+                    <h5 className="mb-4">Announcement Banner</h5>
+                    <div className="alert alert-info">
+                      <strong>Banner Feature:</strong> This expandable banner will appear above the reviews section and can be used for special announcements, promotions, or important information.
+                    </div>
+                    
+                    <div className="mb-4">
+                      <div className="form-check form-switch">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="showBanner"
+                          checked={websiteData.showBanner}
+                          onChange={(e) => setWebsiteData(prev => ({ ...prev, showBanner: e.target.checked }))}
+                        />
+                        <label className="form-check-label" htmlFor="showBanner">
+                          Show Banner
+                        </label>
+                      </div>
+                    </div>
+
+                    {websiteData.showBanner && (
+                      <div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label className="form-label">Banner Text (Spanish)</label>
+                              <textarea
+                                className="form-control"
+                                rows={3}
+                                value={websiteData.bannerText.es}
+                                onChange={(e) => setWebsiteData(prev => ({
+                                  ...prev,
+                                  bannerText: { ...prev.bannerText, es: e.target.value }
+                                }))}
+                                placeholder="Anuncio especial o información importante"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label className="form-label">Banner Text (English)</label>
+                              <textarea
+                                className="form-control"
+                                rows={3}
+                                value={websiteData.bannerText.en}
+                                onChange={(e) => setWebsiteData(prev => ({
+                                  ...prev,
+                                  bannerText: { ...prev.bannerText, en: e.target.value }
+                                }))}
+                                placeholder="Special announcement or important information"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-md-4">
+                            <div className="mb-3">
+                              <label className="form-label">Background Color</label>
+                              <input
+                                type="color"
+                                className="form-control form-control-color"
+                                value={websiteData.bannerBackgroundColor}
+                                onChange={(e) => setWebsiteData(prev => ({ ...prev, bannerBackgroundColor: e.target.value }))}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className="mb-3">
+                              <label className="form-label">Text Color</label>
+                              <input
+                                type="color"
+                                className="form-control form-control-color"
+                                value={websiteData.bannerTextColor}
+                                onChange={(e) => setWebsiteData(prev => ({ ...prev, bannerTextColor: e.target.value }))}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className="mb-3">
+                              <label className="form-label">Text Size</label>
+                              <select
+                                className="form-control"
+                                value={websiteData.bannerTextSize}
+                                onChange={(e) => setWebsiteData(prev => ({ ...prev, bannerTextSize: e.target.value }))}
+                              >
+                                <option value="12px">Small (12px)</option>
+                                <option value="14px">Medium (14px)</option>
+                                <option value="16px">Large (16px)</option>
+                                <option value="18px">Extra Large (18px)</option>
+                                <option value="20px">XXL (20px)</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-4">
+                          <label className="form-label">Banner Preview</label>
+                          <div 
+                            className="p-3 rounded border"
+                            style={{
+                              backgroundColor: websiteData.bannerBackgroundColor,
+                              color: websiteData.bannerTextColor,
+                              fontSize: websiteData.bannerTextSize,
+                              textAlign: 'center'
+                            }}
+                          >
+                            {websiteData.bannerText.es || 'Banner text will appear here'}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
