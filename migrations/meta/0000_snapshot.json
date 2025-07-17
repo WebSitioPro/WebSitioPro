@@ -1,0 +1,618 @@
+{
+  "id": "5133f549-5a8f-4140-894c-2f018c6ef8da",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_username_unique": {
+          "name": "users_username_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "username"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.website_configs": {
+      "name": "website_configs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "template_type": {
+          "name": "template_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'professionals'"
+        },
+        "logo": {
+          "name": "logo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hero_image": {
+          "name": "hero_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "profile_image": {
+          "name": "profile_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "default_language": {
+          "name": "default_language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'es'"
+        },
+        "show_why_website_button": {
+          "name": "show_why_website_button",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "show_domain_button": {
+          "name": "show_domain_button",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "show_chatbot": {
+          "name": "show_chatbot",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "whatsapp_number": {
+          "name": "whatsapp_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "whatsapp_message": {
+          "name": "whatsapp_message",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "facebook_url": {
+          "name": "facebook_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "instagram_url": {
+          "name": "instagram_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "social_link": {
+          "name": "social_link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "google_maps_embed": {
+          "name": "google_maps_embed",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "address": {
+          "name": "address",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone": {
+          "name": "phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "office_hours": {
+          "name": "office_hours",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "analytics_code": {
+          "name": "analytics_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "primary_color": {
+          "name": "primary_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#C8102E'"
+        },
+        "secondary_color": {
+          "name": "secondary_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#00A859'"
+        },
+        "background_color": {
+          "name": "background_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#FFFFFF'"
+        },
+        "ai_optimized_note": {
+          "name": "ai_optimized_note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'AI-optimized for speed and search'"
+        },
+        "banner_text": {
+          "name": "banner_text",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "banner_background_color": {
+          "name": "banner_background_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#FFC107'"
+        },
+        "banner_text_color": {
+          "name": "banner_text_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#000000'"
+        },
+        "banner_text_size": {
+          "name": "banner_text_size",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'16px'"
+        },
+        "show_banner": {
+          "name": "show_banner",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "pricing_banner_bg_color": {
+          "name": "pricing_banner_bg_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#17A2B8'"
+        },
+        "pricing_banner_text_color": {
+          "name": "pricing_banner_text_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#FFFFFF'"
+        },
+        "payment_banner_bg_color": {
+          "name": "payment_banner_bg_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#FFFFFF'"
+        },
+        "payment_banner_text_color": {
+          "name": "payment_banner_text_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#333333'"
+        },
+        "hero_image_opacity": {
+          "name": "hero_image_opacity",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0.5'"
+        },
+        "hero_image_position": {
+          "name": "hero_image_position",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'center'"
+        },
+        "hero_section_height": {
+          "name": "hero_section_height",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'70vh'"
+        },
+        "hero_text_alignment": {
+          "name": "hero_text_alignment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'text-center'"
+        },
+        "hero_text_color": {
+          "name": "hero_text_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#ffffff'"
+        },
+        "hero_subtext_color": {
+          "name": "hero_subtext_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#ffffff'"
+        },
+        "hero_title_size": {
+          "name": "hero_title_size",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'3.5rem'"
+        },
+        "hero_subtitle_size": {
+          "name": "hero_subtitle_size",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'1.25rem'"
+        },
+        "hero_vertical_alignment": {
+          "name": "hero_vertical_alignment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'center'"
+        },
+        "pro_hero_image": {
+          "name": "pro_hero_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pro_hero_image_opacity": {
+          "name": "pro_hero_image_opacity",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0.8'"
+        },
+        "translations": {
+          "name": "translations",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doctor_name": {
+          "name": "doctor_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "business_name": {
+          "name": "business_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "specialty": {
+          "name": "specialty",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hero_title": {
+          "name": "hero_title",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hero_subtitle": {
+          "name": "hero_subtitle",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hero_description": {
+          "name": "hero_description",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "about_title": {
+          "name": "about_title",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "about_text": {
+          "name": "about_text",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "about_stats": {
+          "name": "about_stats",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "services_title": {
+          "name": "services_title",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "services": {
+          "name": "services",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "menu_images": {
+          "name": "menu_images",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "menu_pages": {
+          "name": "menu_pages",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "tours": {
+          "name": "tours",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "products": {
+          "name": "products",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "service_areas": {
+          "name": "service_areas",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reviews": {
+          "name": "reviews",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "photos": {
+          "name": "photos",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chatbot_questions": {
+          "name": "chatbot_questions",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "chatbot_icon": {
+          "name": "chatbot_icon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'📞'"
+        },
+        "chatbot_color": {
+          "name": "chatbot_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#007BFF'"
+        },
+        "chatbot_title": {
+          "name": "chatbot_title",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chatbot_welcome": {
+          "name": "chatbot_welcome",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "why_points": {
+          "name": "why_points",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "service_steps_title": {
+          "name": "service_steps_title",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "service_steps_description": {
+          "name": "service_steps_description",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "service_steps": {
+          "name": "service_steps",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "template_showcase_images": {
+          "name": "template_showcase_images",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "templates": {
+          "name": "templates",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "solutions_title": {
+          "name": "solutions_title",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "solutions_overview": {
+          "name": "solutions_overview",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "pro_banner_text": {
+          "name": "pro_banner_text",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pro_banner_background_color": {
+          "name": "pro_banner_background_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#C8102E'"
+        },
+        "pro_banner_text_color": {
+          "name": "pro_banner_text_color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'#FFFFFF'"
+        },
+        "show_pro_banner": {
+          "name": "show_pro_banner",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "pro_whatsapp_buttons": {
+          "name": "pro_whatsapp_buttons",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'[]'::json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
