@@ -415,6 +415,34 @@ export default function ServicesDemo() {
         </div>
       </section>
 
+      {/* Banner Section */}
+      {savedConfig?.showBanner && savedConfig.bannerText && (
+        <section className="py-4" style={{ backgroundColor: savedConfig.bannerBackgroundColor || '#f8f9fa' }}>
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-md-10">
+                <div className="text-center">
+                  {savedConfig.bannerTitle && (
+                    <h5 className="mb-3 fw-bold" style={{ 
+                      color: savedConfig.bannerTextColor || '#333333',
+                      fontSize: savedConfig.bannerTextSize || '18px'
+                    }}>
+                      {getLocalizedValue(savedConfig.bannerTitle)}
+                    </h5>
+                  )}
+                  <p className="mb-0" style={{ 
+                    color: savedConfig.bannerTextColor || '#333333',
+                    fontSize: savedConfig.bannerTextSize || '16px'
+                  }}>
+                    {getLocalizedValue(savedConfig.bannerText)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Reviews Section */}
       <section id="reviews" className="py-4 bg-light">
         <div className="container">

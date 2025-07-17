@@ -43,6 +43,13 @@ export interface TourismTemplateConfig {
   googleMapsEmbed: string;
   showWhatsappButton: boolean;
   showChatbot: boolean;
+  // Banner fields
+  showBanner: boolean;
+  bannerTitle: { es: string; en: string };
+  bannerText: { es: string; en: string };
+  bannerBackgroundColor: string;
+  bannerTextColor: string;
+  bannerTextSize: string;
 }
 
 export const tourismTemplateMetadata = {
