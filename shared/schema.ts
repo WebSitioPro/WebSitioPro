@@ -45,6 +45,10 @@ export const websiteConfigs = pgTable("website_configs", {
   backgroundColor: text("background_color").default("#FFFFFF"),
   aiOptimizedNote: text("ai_optimized_note").default("AI-optimized for speed and search"),
   // Banner fields
+  bannerTitle: json("banner_title").$type<{
+    es: string;
+    en: string;
+  }>(),
   bannerText: json("banner_text").$type<{
     es: string;
     en: string;

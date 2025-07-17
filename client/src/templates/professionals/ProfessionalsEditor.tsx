@@ -57,6 +57,7 @@ interface ProfessionalsConfig {
 
   // Expandable Banner
   showBanner: boolean;
+  bannerTitle: { es: string; en: string };
   bannerText: { es: string; en: string };
   bannerBackgroundColor: string;
   bannerTextColor: string;
@@ -156,6 +157,7 @@ export default function ProfessionalsEditor() {
 
     // Expandable Banner
     showBanner: false,
+    bannerTitle: { es: 'Anuncio Especial', en: 'Special Announcement' },
     bannerText: { es: 'Anuncio especial o información importante', en: 'Special announcement or important information' },
     bannerBackgroundColor: '#FFC107',
     bannerTextColor: '#000000',
@@ -245,6 +247,7 @@ export default function ProfessionalsEditor() {
 
             // Banner configuration
             showBanner: config.showBanner || websiteData.showBanner,
+            bannerTitle: config.bannerTitle || websiteData.bannerTitle,
             bannerText: config.bannerText || websiteData.bannerText,
             bannerBackgroundColor: config.bannerBackgroundColor || websiteData.bannerBackgroundColor,
             bannerTextColor: config.bannerTextColor || websiteData.bannerTextColor,
@@ -1263,7 +1266,7 @@ export default function ProfessionalsEditor() {
                   <div>
                     <h5 className="mb-4">Announcement Banner</h5>
                     <div className="alert alert-info">
-                      <strong>Banner Feature:</strong> This expandable banner will appear above the reviews section and can be used for special announcements, promotions, or important information.
+                      <strong>Banner Feature:</strong> This banner will appear above the reviews section and grows naturally with your content. Use it for special announcements, promotions, or important information.
                     </div>
                     
                     <div className="mb-4">
@@ -1286,6 +1289,19 @@ export default function ProfessionalsEditor() {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="mb-3">
+                              <label className="form-label">Banner Title (Spanish)</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={websiteData.bannerTitle.es}
+                                onChange={(e) => setWebsiteData(prev => ({
+                                  ...prev,
+                                  bannerTitle: { ...prev.bannerTitle, es: e.target.value }
+                                }))}
+                                placeholder="Anuncio Especial"
+                              />
+                            </div>
+                            <div className="mb-3">
                               <label className="form-label">Banner Text (Spanish)</label>
                               <textarea
                                 className="form-control"
@@ -1300,6 +1316,19 @@ export default function ProfessionalsEditor() {
                             </div>
                           </div>
                           <div className="col-md-6">
+                            <div className="mb-3">
+                              <label className="form-label">Banner Title (English)</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={websiteData.bannerTitle.en}
+                                onChange={(e) => setWebsiteData(prev => ({
+                                  ...prev,
+                                  bannerTitle: { ...prev.bannerTitle, en: e.target.value }
+                                }))}
+                                placeholder="Special Announcement"
+                              />
+                            </div>
                             <div className="mb-3">
                               <label className="form-label">Banner Text (English)</label>
                               <textarea
@@ -1368,7 +1397,12 @@ export default function ProfessionalsEditor() {
                               textAlign: 'center'
                             }}
                           >
-                            {websiteData.bannerText.es || 'Banner text will appear here'}
+                            <div className="mb-2">
+                              <strong>{websiteData.bannerTitle.es || 'Banner title will appear here'}</strong>
+                            </div>
+                            <div>
+                              {websiteData.bannerText.es || 'Banner text will appear here'}
+                            </div>
                           </div>
                         </div>
                       </div>

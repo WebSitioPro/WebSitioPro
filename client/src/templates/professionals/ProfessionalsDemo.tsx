@@ -9,7 +9,7 @@ export default function ProfessionalsDemo() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [previewData, setPreviewData] = useState<any>(null);
-  const [showBanner, setShowBanner] = useState(false);
+
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -523,46 +523,27 @@ export default function ProfessionalsDemo() {
       {/* Expandable Banner */}
       {(() => {
         const bannerConfig = previewData || savedConfig;
-        const showBannerSection = bannerConfig?.showBanner && bannerConfig?.bannerText;
+        const showBannerSection = bannerConfig?.showBanner && (bannerConfig?.bannerText || bannerConfig?.bannerTitle);
         
         if (!showBannerSection) return null;
         
         return (
-          <section className="py-2" style={{ backgroundColor: bannerConfig.bannerBackgroundColor || '#FFC107' }}>
+          <section className="py-3" style={{ backgroundColor: bannerConfig.bannerBackgroundColor || '#FFC107' }}>
             <div className="container">
-              <div className="row align-items-center">
-                <div className="col">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div 
-                      className="flex-grow-1 text-center"
-                      style={{ 
-                        color: bannerConfig.bannerTextColor || '#000000',
-                        fontSize: bannerConfig.bannerTextSize || '16px'
-                      }}
-                    >
-                      {showBanner ? (
-                        <div className="py-2">
-                          {language === 'es' ? bannerConfig.bannerText.es : bannerConfig.bannerText.en}
-                        </div>
-                      ) : (
-                        <div className="py-2">
-                          {language === 'es' ? 'Anuncio Especial' : 'Special Announcement'}
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      className="btn btn-sm ms-2"
-                      onClick={() => setShowBanner(!showBanner)}
-                      style={{ 
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        color: bannerConfig.bannerTextColor || '#000000'
-                      }}
-                    >
-                      {showBanner ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                    </button>
+              <div className="text-center" style={{ 
+                color: bannerConfig.bannerTextColor || '#000000',
+                fontSize: bannerConfig.bannerTextSize || '16px'
+              }}>
+                {bannerConfig.bannerTitle && (
+                  <div className="mb-2">
+                    <strong>{language === 'es' ? bannerConfig.bannerTitle.es : bannerConfig.bannerTitle.en}</strong>
                   </div>
-                </div>
+                )}
+                {bannerConfig.bannerText && (
+                  <div>
+                    {language === 'es' ? bannerConfig.bannerText.es : bannerConfig.bannerText.en}
+                  </div>
+                )}
               </div>
             </div>
           </section>
