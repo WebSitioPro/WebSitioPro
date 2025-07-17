@@ -26,6 +26,23 @@ export default function RestaurantsEditor() {
     businessName: 'Restaurante La Bella',
     aboutTitle: { es: 'Nuestra Historia', en: 'Our Story' },
     aboutText: { es: 'Desde 1985, ofrecemos la mejor comida mexicana...', en: 'Since 1985, we have been offering the best Mexican food...' },
+    aboutStats: [
+      {
+        icon: 'Award',
+        value: { es: '35+', en: '35+' },
+        label: { es: 'Años de experiencia', en: 'Years of experience' }
+      },
+      {
+        icon: 'Users',
+        value: { es: '5,000+', en: '5,000+' },
+        label: { es: 'Clientes satisfechos', en: 'Satisfied customers' }
+      },
+      {
+        icon: 'Star',
+        value: { es: '4.9', en: '4.9' },
+        label: { es: 'Calificación promedio', en: 'Average rating' }
+      }
+    ],
     servicesTitle: { es: 'Nuestro Menú', en: 'Our Menu' },
     menuPages: [
       {
@@ -281,6 +298,52 @@ export default function RestaurantsEditor() {
     setWebsiteData(prev => ({
       ...prev,
       reviews: prev.reviews.filter((_, i) => i !== index)
+    }));
+  };
+
+  // About Stats handlers
+  const handleAboutStatChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => {
+      if (!prev.aboutStats) {
+        return prev;
+      }
+      return {
+        ...prev,
+        aboutStats: prev.aboutStats.map((stat, i) => {
+          if (i === index) {
+            if (language && (field === 'value' || field === 'label')) {
+              return {
+                ...stat,
+                [field]: {
+                  ...stat[field as keyof typeof stat],
+                  [language]: value
+                }
+              };
+            } else {
+              return { ...stat, [field]: value };
+            }
+          }
+          return stat;
+        })
+      };
+    });
+  };
+
+  const handleAddAboutStat = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      aboutStats: [...(prev.aboutStats || []), {
+        icon: 'Award',
+        value: { es: '', en: '' },
+        label: { es: '', en: '' }
+      }]
+    }));
+  };
+
+  const handleRemoveAboutStat = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      aboutStats: prev.aboutStats ? prev.aboutStats.filter((_, i) => i !== index) : []
     }));
   };
 
@@ -585,6 +648,100 @@ export default function RestaurantsEditor() {
                           />
                         </div>
                       </div>
+                    </div>
+
+                    <div className="mt-5">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="mb-0">About Statistics</h6>
+                        <button 
+                          className="btn btn-primary btn-sm"
+                          onClick={handleAddAboutStat}
+                        >
+                          <Plus size={16} className="me-1" />
+                          Add Stat
+                        </button>
+                      </div>
+
+                      {websiteData.aboutStats?.map((stat, index) => (
+                        <div key={index} className="card mb-3">
+                          <div className="card-header d-flex justify-content-between align-items-center">
+                            <h6 className="mb-0">Statistic #{index + 1}</h6>
+                            <button 
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => handleRemoveAboutStat(index)}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                          <div className="card-body">
+                            <div className="row">
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Icon</label>
+                                  <select
+                                    className="form-control"
+                                    value={stat.icon}
+                                    onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
+                                  >
+                                    <option value="Award">Award</option>
+                                    <option value="Star">Star</option>
+                                    <option value="Shield">Shield</option>
+                                    <option value="Heart">Heart</option>
+                                    <option value="Users">Users</option>
+                                    <option value="Clock">Clock</option>
+                                    <option value="CheckCircle">CheckCircle</option>
+                                    <option value="Target">Target</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Value (Spanish)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.value.es}
+                                    onChange={(e) => handleAboutStatChange(index, 'value', e.target.value, 'es')}
+                                    placeholder="35+"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Label (Spanish)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.label.es}
+                                    onChange={(e) => handleAboutStatChange(index, 'label', e.target.value, 'es')}
+                                    placeholder="Años de experiencia"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Value (English)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.value.en}
+                                    onChange={(e) => handleAboutStatChange(index, 'value', e.target.value, 'en')}
+                                    placeholder="35+"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Label (English)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.label.en}
+                                    onChange={(e) => handleAboutStatChange(index, 'label', e.target.value, 'en')}
+                                    placeholder="Years of experience"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}

@@ -11,6 +11,11 @@ export interface RestaurantsTemplateConfig {
   businessName: string;
   aboutTitle: { es: string; en: string };
   aboutText: { es: string; en: string };
+  aboutStats?: Array<{
+    icon: string;
+    value: { es: string; en: string };
+    label: { es: string; en: string };
+  }>;
   servicesTitle: { es: string; en: string };
   menuPages: Array<{
     url: string;

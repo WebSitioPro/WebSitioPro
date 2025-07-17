@@ -24,6 +24,23 @@ export default function TourismEditor() {
     businessName: 'Tours Riviera Maya',
     aboutTitle: { es: 'Acerca de Nosotros', en: 'About Us' },
     aboutText: { es: 'Ofrecemos tours únicos...', en: 'We offer unique tours...' },
+    aboutStats: [
+      {
+        icon: 'MapPin',
+        value: { es: '10+', en: '10+' },
+        label: { es: 'Destinos únicos', en: 'Unique destinations' }
+      },
+      {
+        icon: 'Users',
+        value: { es: '2,000+', en: '2,000+' },
+        label: { es: 'Turistas felices', en: 'Happy tourists' }
+      },
+      {
+        icon: 'Star',
+        value: { es: '4.8', en: '4.8' },
+        label: { es: 'Calificación promedio', en: 'Average rating' }
+      }
+    ],
     phone: '+52 983 123 4567',
     email: 'info@toursrivieramaya.com',
     address: { es: 'Av. Tulum 123, Playa del Carmen, QR', en: 'Av. Tulum 123, Playa del Carmen, QR' },
@@ -298,6 +315,52 @@ export default function TourismEditor() {
     }));
   };
 
+  // About Stats handlers
+  const handleAboutStatChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => {
+      if (!prev.aboutStats) {
+        return prev;
+      }
+      return {
+        ...prev,
+        aboutStats: prev.aboutStats.map((stat, i) => {
+          if (i === index) {
+            if (language && (field === 'value' || field === 'label')) {
+              return {
+                ...stat,
+                [field]: {
+                  ...stat[field as keyof typeof stat],
+                  [language]: value
+                }
+              };
+            } else {
+              return { ...stat, [field]: value };
+            }
+          }
+          return stat;
+        })
+      };
+    });
+  };
+
+  const handleAddAboutStat = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      aboutStats: [...(prev.aboutStats || []), {
+        icon: 'MapPin',
+        value: { es: '', en: '' },
+        label: { es: '', en: '' }
+      }]
+    }));
+  };
+
+  const handleRemoveAboutStat = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      aboutStats: prev.aboutStats ? prev.aboutStats.filter((_, i) => i !== index) : []
+    }));
+  };
+
   return (
     <div className="min-vh-100" style={{ backgroundColor: '#f8f9fa' }}>
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
@@ -568,6 +631,101 @@ export default function TourismEditor() {
                           />
                         </div>
                       </div>
+                    </div>
+
+                    <div className="mt-5">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="mb-0">About Statistics</h6>
+                        <button 
+                          className="btn btn-primary btn-sm"
+                          onClick={handleAddAboutStat}
+                        >
+                          <Plus size={16} className="me-1" />
+                          Add Stat
+                        </button>
+                      </div>
+
+                      {websiteData.aboutStats?.map((stat, index) => (
+                        <div key={index} className="card mb-3">
+                          <div className="card-header d-flex justify-content-between align-items-center">
+                            <h6 className="mb-0">Statistic #{index + 1}</h6>
+                            <button 
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => handleRemoveAboutStat(index)}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                          <div className="card-body">
+                            <div className="row">
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Icon</label>
+                                  <select
+                                    className="form-control"
+                                    value={stat.icon}
+                                    onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
+                                  >
+                                    <option value="MapPin">MapPin</option>
+                                    <option value="Award">Award</option>
+                                    <option value="Star">Star</option>
+                                    <option value="Shield">Shield</option>
+                                    <option value="Heart">Heart</option>
+                                    <option value="Users">Users</option>
+                                    <option value="Clock">Clock</option>
+                                    <option value="CheckCircle">CheckCircle</option>
+                                    <option value="Target">Target</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Value (Spanish)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.value.es}
+                                    onChange={(e) => handleAboutStatChange(index, 'value', e.target.value, 'es')}
+                                    placeholder="10+"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Label (Spanish)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.label.es}
+                                    onChange={(e) => handleAboutStatChange(index, 'label', e.target.value, 'es')}
+                                    placeholder="Destinos únicos"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Value (English)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.value.en}
+                                    onChange={(e) => handleAboutStatChange(index, 'value', e.target.value, 'en')}
+                                    placeholder="10+"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Label (English)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.label.en}
+                                    onChange={(e) => handleAboutStatChange(index, 'label', e.target.value, 'en')}
+                                    placeholder="Unique destinations"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
