@@ -371,14 +371,6 @@ export default function ProfessionalsDemo() {
               </p>
               <div className="row mt-5">
                 {(() => {
-                  // Debug logging for aboutStats
-                  console.log('About stats debugging:', {
-                    savedConfig,
-                    aboutStats: savedConfig?.aboutStats,
-                    isArray: Array.isArray(savedConfig?.aboutStats),
-                    length: savedConfig?.aboutStats?.length
-                  });
-                  
                   // Get about stats from saved config, or use defaults
                   const aboutStats = (savedConfig?.aboutStats && Array.isArray(savedConfig.aboutStats) && savedConfig.aboutStats.length > 0) ? 
                     savedConfig.aboutStats : [

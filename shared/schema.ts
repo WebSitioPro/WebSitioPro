@@ -99,6 +99,17 @@ export const websiteConfigs = pgTable("website_configs", {
     es: string;
     en: string;
   }>(),
+  aboutStats: json("about_stats").$type<Array<{
+    icon: string;
+    value: {
+      es: string;
+      en: string;
+    };
+    label: {
+      es: string;
+      en: string;
+    };
+  }>>(),
   servicesTitle: json("services_title").$type<{
     es: string;
     en: string;
