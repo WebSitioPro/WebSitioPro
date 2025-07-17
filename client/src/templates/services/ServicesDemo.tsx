@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Clock, Star, Menu, X, Wrench, Facebook, Instagram } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Star, Menu, X, Wrench, Facebook, Instagram, Award, Shield, Heart, Users, CheckCircle, Target } from 'lucide-react';
 
 // Mock data for services template
 const mockServicesData = {
@@ -325,36 +325,56 @@ export default function ServicesDemo() {
                 )}
               </p>
               <div className="row mt-5">
-                <div className="col-md-4">
-                  <div className="text-center">
-                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                      <Clock size={32} style={{ color: 'hsl(var(--primary))' }} />
-                    </div>
-                    <h5>15+ Años</h5>
-                    <p className="text-muted">Experiencia</p>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="text-center">
-                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                      <Star size={32} style={{ color: 'hsl(var(--primary))' }} />
-                    </div>
-                    <h5>24/7</h5>
-                    <p className="text-muted">Disponibles</p>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="text-center">
-                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                      <Wrench size={32} style={{ color: 'hsl(var(--primary))' }} />
-                    </div>
-                    <h5>Técnicos</h5>
-                    <p className="text-muted">Certificados</p>
-                  </div>
-                </div>
+                {(() => {
+                  // Get about stats from saved config, or use defaults
+                  const aboutStats = (savedConfig?.aboutStats && Array.isArray(savedConfig.aboutStats) && savedConfig.aboutStats.length > 0) ? 
+                    savedConfig.aboutStats : [
+                    {
+                      icon: 'Wrench',
+                      value: { es: '24/7', en: '24/7' },
+                      label: { es: 'Servicio de emergencia', en: 'Emergency service' }
+                    },
+                    {
+                      icon: 'Users',
+                      value: { es: '500+', en: '500+' },
+                      label: { es: 'Clientes atendidos', en: 'Clients served' }
+                    },
+                    {
+                      icon: 'CheckCircle',
+                      value: { es: '98%', en: '98%' },
+                      label: { es: 'Satisfacción garantizada', en: 'Satisfaction guaranteed' }
+                    }
+                  ];
+                  
+                  // Icon mapping
+                  const iconMap = {
+                    Award: Award,
+                    Star: Star,
+                    Shield: Shield,
+                    Heart: Heart,
+                    Users: Users,
+                    Clock: Clock,
+                    CheckCircle: CheckCircle,
+                    Target: Target,
+                    Wrench: Wrench
+                  };
+                  
+                  return aboutStats.map((stat, index) => {
+                    const IconComponent = iconMap[stat.icon as keyof typeof iconMap] || Wrench;
+                    return (
+                      <div key={index} className="col-md-4">
+                        <div className="text-center">
+                          <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                               style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                            <IconComponent size={32} style={{ color: 'hsl(var(--primary))' }} />
+                          </div>
+                          <h5>{language === 'es' ? stat.value.es : stat.value.en}</h5>
+                          <p className="text-muted">{language === 'es' ? stat.label.es : stat.label.en}</p>
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
               </div>
             </div>
           </div>

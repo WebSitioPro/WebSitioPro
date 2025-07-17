@@ -24,6 +24,23 @@ export default function ServicesEditor() {
     businessName: 'Servicios Técnicos Pro',
     aboutTitle: { es: 'Acerca de Nosotros', en: 'About Us' },
     aboutText: { es: 'Ofrecemos servicios técnicos...', en: 'We offer technical services...' },
+    aboutStats: [
+      {
+        icon: 'Wrench',
+        value: { es: '24/7', en: '24/7' },
+        label: { es: 'Servicio de emergencia', en: 'Emergency service' }
+      },
+      {
+        icon: 'Users',
+        value: { es: '500+', en: '500+' },
+        label: { es: 'Clientes atendidos', en: 'Clients served' }
+      },
+      {
+        icon: 'CheckCircle',
+        value: { es: '98%', en: '98%' },
+        label: { es: 'Satisfacción garantizada', en: 'Satisfaction guaranteed' }
+      }
+    ],
     phone: '+52 983 123 4567',
     email: 'info@serviciostecnicos.com',
     address: { es: 'Av. Insurgentes 123, Chetumal, QR', en: 'Av. Insurgentes 123, Chetumal, QR' },
@@ -266,6 +283,47 @@ export default function ServicesEditor() {
     setWebsiteData(prev => ({
       ...prev,
       reviews: prev.reviews.filter((_, i) => i !== index)
+    }));
+  };
+
+  // About Stats handlers
+  const handleAboutStatChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => {
+      if (!prev.aboutStats) return prev;
+      return {
+        ...prev,
+        aboutStats: prev.aboutStats.map((stat, i) => {
+          if (i === index) {
+            if (language && (field === 'value' || field === 'label')) {
+              return {
+                ...stat,
+                [field]: { ...stat[field as keyof typeof stat], [language]: value }
+              };
+            } else {
+              return { ...stat, [field]: value };
+            }
+          }
+          return stat;
+        })
+      };
+    });
+  };
+
+  const handleAddAboutStat = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      aboutStats: [...(prev.aboutStats || []), {
+        icon: 'Wrench',
+        value: { es: '', en: '' },
+        label: { es: '', en: '' }
+      }]
+    }));
+  };
+
+  const handleRemoveAboutStat = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      aboutStats: prev.aboutStats ? prev.aboutStats.filter((_, i) => i !== index) : []
     }));
   };
 
@@ -532,6 +590,101 @@ export default function ServicesEditor() {
                           <textarea className="form-control" rows={6} value={websiteData.aboutText.en} onChange={(e) => handleInputChange('aboutText', e.target.value, 'en')} />
                         </div>
                       </div>
+                    </div>
+
+                    <div className="mt-5">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6 className="mb-0">About Statistics</h6>
+                        <button 
+                          className="btn btn-primary btn-sm"
+                          onClick={handleAddAboutStat}
+                        >
+                          <Plus size={16} className="me-1" />
+                          Add Stat
+                        </button>
+                      </div>
+
+                      {websiteData.aboutStats?.map((stat, index) => (
+                        <div key={index} className="card mb-3">
+                          <div className="card-header d-flex justify-content-between align-items-center">
+                            <h6 className="mb-0">Statistic #{index + 1}</h6>
+                            <button 
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => handleRemoveAboutStat(index)}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                          <div className="card-body">
+                            <div className="row">
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Icon</label>
+                                  <select
+                                    className="form-control"
+                                    value={stat.icon}
+                                    onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
+                                  >
+                                    <option value="Wrench">Wrench</option>
+                                    <option value="Award">Award</option>
+                                    <option value="Star">Star</option>
+                                    <option value="Shield">Shield</option>
+                                    <option value="Heart">Heart</option>
+                                    <option value="Users">Users</option>
+                                    <option value="Clock">Clock</option>
+                                    <option value="CheckCircle">CheckCircle</option>
+                                    <option value="Target">Target</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Value (Spanish)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.value.es}
+                                    onChange={(e) => handleAboutStatChange(index, 'value', e.target.value, 'es')}
+                                    placeholder="24/7"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Label (Spanish)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.label.es}
+                                    onChange={(e) => handleAboutStatChange(index, 'label', e.target.value, 'es')}
+                                    placeholder="Servicio de emergencia"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-3">
+                                <div className="mb-3">
+                                  <label className="form-label">Value (English)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.value.en}
+                                    onChange={(e) => handleAboutStatChange(index, 'value', e.target.value, 'en')}
+                                    placeholder="24/7"
+                                  />
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Label (English)</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={stat.label.en}
+                                    onChange={(e) => handleAboutStatChange(index, 'label', e.target.value, 'en')}
+                                    placeholder="Emergency service"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}

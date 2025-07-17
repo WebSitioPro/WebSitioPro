@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Clock, Star, Menu, X, ShoppingBag, Facebook, Instagram } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Star, Menu, X, ShoppingBag, Facebook, Instagram, Award, Shield, Heart, Users, CheckCircle, Target } from 'lucide-react';
 
 // Mock data for retail template
 const mockRetailData = {
@@ -324,36 +324,56 @@ export default function RetailDemo() {
                 )}
               </p>
               <div className="row mt-5">
-                <div className="col-md-4">
-                  <div className="text-center">
-                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                      <Clock size={32} style={{ color: 'hsl(var(--primary))' }} />
-                    </div>
-                    <h5>15+ Años</h5>
-                    <p className="text-muted">Experiencia</p>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="text-center">
-                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                      <Star size={32} style={{ color: 'hsl(var(--primary))' }} />
-                    </div>
-                    <h5>100%</h5>
-                    <p className="text-muted">Auténticas</p>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="text-center">
-                    <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                      <ShoppingBag size={32} style={{ color: 'hsl(var(--primary))' }} />
-                    </div>
-                    <h5>Productos</h5>
-                    <p className="text-muted">Únicos</p>
-                  </div>
-                </div>
+                {(() => {
+                  // Get about stats from saved config, or use defaults
+                  const aboutStats = (savedConfig?.aboutStats && Array.isArray(savedConfig.aboutStats) && savedConfig.aboutStats.length > 0) ? 
+                    savedConfig.aboutStats : [
+                    {
+                      icon: 'ShoppingBag',
+                      value: { es: '500+', en: '500+' },
+                      label: { es: 'Productos únicos', en: 'Unique products' }
+                    },
+                    {
+                      icon: 'Users',
+                      value: { es: '1,000+', en: '1,000+' },
+                      label: { es: 'Clientes satisfechos', en: 'Satisfied customers' }
+                    },
+                    {
+                      icon: 'Star',
+                      value: { es: '4.9', en: '4.9' },
+                      label: { es: 'Calificación promedio', en: 'Average rating' }
+                    }
+                  ];
+                  
+                  // Icon mapping
+                  const iconMap = {
+                    Award: Award,
+                    Star: Star,
+                    Shield: Shield,
+                    Heart: Heart,
+                    Users: Users,
+                    Clock: Clock,
+                    CheckCircle: CheckCircle,
+                    Target: Target,
+                    ShoppingBag: ShoppingBag
+                  };
+                  
+                  return aboutStats.map((stat, index) => {
+                    const IconComponent = iconMap[stat.icon as keyof typeof iconMap] || ShoppingBag;
+                    return (
+                      <div key={index} className="col-md-4">
+                        <div className="text-center">
+                          <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                               style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                            <IconComponent size={32} style={{ color: 'hsl(var(--primary))' }} />
+                          </div>
+                          <h5>{language === 'es' ? stat.value.es : stat.value.en}</h5>
+                          <p className="text-muted">{language === 'es' ? stat.label.es : stat.label.en}</p>
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
               </div>
             </div>
           </div>
