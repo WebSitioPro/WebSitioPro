@@ -372,7 +372,7 @@ export default function ProfessionalsDemo() {
               <div className="row mt-5">
                 {(() => {
                   // Get about stats from saved config, or use defaults
-                  const aboutStats = (savedConfig?.aboutStats && savedConfig.aboutStats.length > 0) ? 
+                  const aboutStats = (savedConfig?.aboutStats && Array.isArray(savedConfig.aboutStats) && savedConfig.aboutStats.length > 0) ? 
                     savedConfig.aboutStats : [
                     {
                       icon: 'Award',
