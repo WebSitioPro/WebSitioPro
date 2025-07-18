@@ -732,12 +732,14 @@ export default function ProfessionalsDemo() {
         <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <p className="mb-0">{t('copyright')}</p>
+              <p className="mb-0">
+                © {new Date().getFullYear()} {(previewData?.businessName || savedConfig?.businessName) || 'Consultorio Profesional'}. {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+              </p>
             </div>
             <div className="col-md-6 text-md-end">
               <p className="mb-0">
                 <Link href="/" className="text-warning text-decoration-none">
-                  {t('poweredBy')}
+                  {language === 'es' ? 'Desarrollado por' : 'Powered by'} WebSitioPro
                 </Link>
               </p>
             </div>

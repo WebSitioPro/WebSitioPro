@@ -642,11 +642,14 @@ export default function RestaurantsDemo() {
         <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <h5>{savedConfig?.businessName || mockRestaurantData.businessName}</h5>
-              <p className="mb-0">AI-optimized for speed and search</p>
+              <p className="mb-0">
+                © {new Date().getFullYear()} {(previewData?.businessName || savedConfig?.businessName) || mockRestaurantData.businessName}. {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+              </p>
             </div>
             <div className="col-md-6 text-md-end">
-              <p className="mb-0">© 2024 WebSitioPro - Todos los derechos reservados</p>
+              <p className="mb-0">
+                {language === 'es' ? 'Desarrollado por' : 'Powered by'} WebSitioPro
+              </p>
             </div>
           </div>
         </div>

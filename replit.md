@@ -115,6 +115,18 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 18, 2025. Fixed Footer Business Name Display Issue Across All Templates
+  - RESOLVED: Fixed critical footer issue where template previews displayed incorrect/old business names from previous test data
+  - Updated all 5 template footers to use dynamic business information from saved configuration instead of hardcoded translation values
+  - Professionals template: Footer now displays client's actual business name from savedConfig/previewData
+  - Restaurants template: Footer now displays client's actual business name from savedConfig/previewData
+  - Tourism template: Footer now displays client's actual business name from savedConfig/previewData
+  - Retail template: Footer now displays client's actual business name from savedConfig/previewData
+  - Services template: Footer now displays client's actual business name from savedConfig/previewData
+  - All footers now use current year dynamically and proper bilingual copyright text
+  - Replaced hardcoded "© 2024 WebSitioPro" with dynamic "© {year} {businessName}. All rights reserved."
+  - Footer now properly reflects each client's business information in template previews
+  - Fixed translation system dependency issue where footers were using generic placeholder text
 - July 17, 2025. Completed Expandable Banner Feature for All 5 Templates
   - Successfully extended banner functionality to all 5 templates (Professionals, Restaurants, Tourism, Retail, Services)
   - Added bilingual bannerTitle and bannerText fields to database schema and editor interface
