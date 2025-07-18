@@ -740,7 +740,7 @@ export default function TourismDemo() {
           <div className="row">
             <div className="col-md-6">
               <p className="mb-0">
-                © {new Date().getFullYear()} {(previewData?.businessName || savedConfig?.businessName) || mockTourismData.businessName}. {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                © {new Date().getFullYear()} {savedConfig?.businessName || mockTourismData.businessName}. {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
               </p>
             </div>
             <div className="col-md-6 text-md-end">
