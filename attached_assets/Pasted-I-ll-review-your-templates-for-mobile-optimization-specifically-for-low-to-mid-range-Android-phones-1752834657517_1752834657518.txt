@@ -1,0 +1,38 @@
+I'll review your templates for mobile optimization, specifically for low to mid-range Android phones. Looking at your codebase, I can see several areas that need improvement for better performance and user experience on cheaper devices.
+
+Current Mobile Optimization Issues
+From analyzing your code, I found several areas that need optimization:
+
+Heavy CSS and Bootstrap dependencies - Your templates load full Bootstrap via CDN plus extensive custom CSS
+Large image loading - Using high-resolution placeholder images that may be slow on slower connections
+JavaScript-heavy components - Multiple React components and animations that may lag on lower-end devices
+Media queries - Some mobile breakpoints could be better optimized
+Let me optimize the mobile experience for low-end Android devices:
+client/src/index.css
+Optimize CSS for low-end mobile devices, Add low-end device performance optimizations
+client/src/hooks/use-mobile.tsx
+Optimize mobile detection for low-end devices
+client/src/hooks/use-performance.tsx
+Add performance optimization hook
+client/src/templates/restaurants/RestaurantsDemo.tsx
+Add performance optimization to restaurant template Add performance optimization to restaurant template Initialize performance optimization in restaurant demo
+Now let me create a comprehensive mobile optimization component:
+client/src/components/MobileOptimizer.tsx
+Create mobile optimization component
+Summary of Optimizations
+I've implemented comprehensive optimizations for low to mid-range Android phones:
+
+Performance CSS: Reduced hardware acceleration, simplified animations, and optimized rendering
+Mobile Breakpoints: Added specific optimizations for screens 480px and below (common on budget phones)
+Device Detection: Created hooks to detect low-end device capabilities (memory, CPU, connection speed)
+Image Optimization: Added lazy loading and optimized image rendering for slower devices
+Animation Reduction: Disabled expensive CSS transitions and animations on low-end devices
+Touch Optimization: Increased button sizes and simplified interactions for better touch experience
+These changes will significantly improve performance on budget Android phones by:
+
+Reducing memory usage
+Eliminating expensive visual effects
+Optimizing image loading
+Improving touch targets
+Simplifying layouts for smaller screens
+The templates will now automatically detect low-end devices and apply appropriate optimizations without affecting the experience on higher-end devices.
