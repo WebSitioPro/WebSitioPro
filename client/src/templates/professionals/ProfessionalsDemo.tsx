@@ -24,6 +24,8 @@ export default function ProfessionalsDemo() {
         .then(res => res.json())
         .then(data => {
           setPreviewData(data);
+          console.log('Preview data loaded:', data);
+          console.log('Google Maps embed from preview:', data.googleMapsEmbed);
         })
         .catch(err => console.error('Preview data not loaded:', err));
     } else {
@@ -32,6 +34,8 @@ export default function ProfessionalsDemo() {
         .then(res => res.json())
         .then(data => {
           setSavedConfig(data);
+          console.log('Saved config loaded:', data);
+          console.log('Google Maps embed from config:', data.googleMapsEmbed);
         })
         .catch(err => console.error('Config not loaded:', err));
     }
@@ -701,22 +705,64 @@ export default function ProfessionalsDemo() {
                     Ubicación
                   </h6>
                   <div className="ratio ratio-16x9">
-                    {(previewData?.googleMapsEmbed || savedConfig?.googleMapsEmbed) ? (
-                      <iframe
-                        src={previewData?.googleMapsEmbed || savedConfig?.googleMapsEmbed}
-                        style={{ border: 0, borderRadius: '8px' }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                      ></iframe>
-                    ) : (
-                      <div className="d-flex align-items-center justify-content-center bg-light rounded" style={{ height: '100%' }}>
-                        <div className="text-center text-muted">
-                          <MapPin size={48} className="mb-3" />
-                          <p>Google Maps embed not configured</p>
+                    {(() => {
+                      const embedCode = previewData?.googleMapsEmbed || savedConfig?.googleMapsEmbed;
+                      let embedUrl = '';
+                      
+                      if (embedCode) {
+                        // Check if it's an HTML iframe embed code
+                        if (embedCode.includes('<iframe')) {
+                          // Extract the src URL from the iframe
+                          const srcMatch = embedCode.match(/src="([^"]+)"/);
+                          if (srcMatch) {
+                            embedUrl = srcMatch[1];
+                          }
+                        } else if (embedCode.includes('google.com/maps/embed')) {
+                          // Direct embed URL
+                          embedUrl = embedCode;
+                        } else if (embedCode.includes('maps.app.goo.gl') || embedCode.includes('goo.gl/maps')) {
+                          // Short Google Maps URL - not directly embeddable
+                          // Show message to user about using proper embed code
+                          return (
+                            <div className="d-flex align-items-center justify-content-center bg-light rounded" style={{ height: '100%' }}>
+                              <div className="text-center text-muted">
+                                <MapPin size={48} className="mb-3" />
+                                <p>Google Maps Link Detected</p>
+                                <small>Short Google Maps links cannot be embedded.<br/>Please use the "Share → Embed a map" option from Google Maps to get the proper embed code.</small>
+                              </div>
+                            </div>
+                          );
+                        } else if (embedCode.includes('google.com/maps')) {
+                          // Regular Google Maps URL - try to convert to embed
+                          try {
+                            const url = new URL(embedCode);
+                            if (url.hostname === 'www.google.com' || url.hostname === 'maps.google.com') {
+                              embedUrl = embedCode.replace(/^https?:\/\/(www\.)?google\.com\/maps/, 'https://www.google.com/maps/embed');
+                            }
+                          } catch (e) {
+                            // Invalid URL, fall through to error
+                          }
+                        }
+                      }
+                      
+                      return embedUrl ? (
+                        <iframe
+                          src={embedUrl}
+                          style={{ border: 0, borderRadius: '8px' }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                      ) : (
+                        <div className="d-flex align-items-center justify-content-center bg-light rounded" style={{ height: '100%' }}>
+                          <div className="text-center text-muted">
+                            <MapPin size={48} className="mb-3" />
+                            <p>Google Maps embed not configured</p>
+                            <small>Add Google Maps embed code in editor</small>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
                   </div>
                   <div className="mt-3">
                     <small className="text-muted">

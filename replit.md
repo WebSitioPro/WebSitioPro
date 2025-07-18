@@ -123,6 +123,15 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 18, 2025. Fixed Google Maps Embed Functionality in Professionals Template
+  - RESOLVED: Google Maps embed code now properly handles multiple URL formats (iframe embed, direct embed URLs, short URLs)
+  - Enhanced Google Maps display logic to extract proper embed URLs from iframe codes
+  - Added intelligent detection for different Google Maps URL formats (maps.app.goo.gl, google.com/maps/embed)
+  - Improved editor interface with real-time validation of Google Maps embed codes
+  - Added clear instructions for users on how to get proper Google Maps embed codes
+  - Template now shows helpful messages when short URLs are detected instead of failing silently
+  - Fixed issue where saved Google Maps embed codes weren't displaying in template preview
+  - Added debugging console logs to help identify Google Maps embed issues
 - July 18, 2025. Fixed Footer Business Name Display Issue Across All Templates
   - RESOLVED: Fixed critical footer issue where template previews displayed incorrect/old business names from previous test data
   - Updated all 5 template footers to use dynamic business information from saved configuration instead of hardcoded translation values
