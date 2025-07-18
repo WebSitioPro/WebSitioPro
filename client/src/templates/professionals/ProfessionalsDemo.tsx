@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Phone, Mail, MapPin, Clock, Star, Shield, Award, Menu, X, Facebook, Instagram, Heart, Users, CheckCircle, Target, ChevronDown, ChevronUp } from 'lucide-react';
+import { OptimizedImage } from '../../components/OptimizedImage';
+import { usePerformance } from '../../hooks/use-performance';
+import { useIsSmallMobile } from '../../hooks/use-mobile';
 
 export default function ProfessionalsDemo() {
   const [language, setLanguage] = useState('es');

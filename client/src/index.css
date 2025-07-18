@@ -4,7 +4,61 @@
 
 :root {
   /* Mexican-inspired color scheme */
+  --primary: 142 100% 33%; /* #00A859 */
+  --primary-foreground: 0 0% 100%; /* #FFFFFF */
+  --secondary: 350 84% 42%; /* #C8102E */
+  --secondary-foreground: 0 0% 100%; /* #FFFFFF */
 
+  /* Default shadcn colors */
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 142 100% 33%; /* Same as primary */
+  --radius: 0.5rem;
+}
+
+/* Performance optimizations for low-end devices */
+.low-end-device {
+  --performance-mode: low-end;
+}
+
+.low-end-device * {
+  /* Disable hardware acceleration on low-end devices */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* Reduce animations on low-end devices and for accessibility */
+.reduce-animations *,
+.reduce-animations *::before,
+.reduce-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Image optimization for low-end devices */
+.optimize-images img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  image-rendering: crisp-edges;
+}
 
 /* Mobile hero section improvements */
 @media (max-width: 768px) {
@@ -52,6 +106,64 @@
   }
 }
 
+/* Small mobile optimizations (480px and below) */
+@media (max-width: 480px) {
+  /* Larger touch targets for budget phones */
+  button, .btn, a[role="button"] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important; /* Prevent zoom on iOS */
+  }
+
+  /* Simplified layouts */
+  .container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Reduce spacing on small screens */
+  .hero-section {
+    height: 40vh !important;
+    min-height: 350px !important;
+    padding: 10px 0 !important;
+  }
+
+  .hero-title {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Optimize images for small screens */
+  .optimize-images img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+  }
+}
+
+/* Network-specific optimizations */
+@media (max-width: 768px) and (prefers-reduced-data: reduce) {
+  .optimize-images img {
+    filter: blur(0.5px) !important;
+    image-rendering: pixelated !important;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Desktop hero content styling - restored to original */
 .hero-section .col-12 {
   display: flex;
@@ -61,29 +173,7 @@
   padding: 20px 0;
 }
 
-  --primary: 142 100% 33%; /* #00A859 */
-  --primary-foreground: 0 0% 100%; /* #FFFFFF */
-  --secondary: 350 84% 42%; /* #C8102E */
-  --secondary-foreground: 0 0% 100%; /* #FFFFFF */
 
-  /* Default shadcn colors */
-  --background: 0 0% 100%;
-  --foreground: 20 14.3% 4.1%;
-  --muted: 60 4.8% 95.9%;
-  --muted-foreground: 25 5.3% 44.7%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 20 14.3% 4.1%;
-  --card: 0 0% 100%;
-  --card-foreground: 20 14.3% 4.1%;
-  --border: 20 5.9% 90%;
-  --input: 20 5.9% 90%;
-  --accent: 60 4.8% 95.9%;
-  --accent-foreground: 24 9.8% 10%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 60 9.1% 97.8%;
-  --ring: 142 100% 33%; /* Same as primary */
-  --radius: 0.5rem;
-}
 
 .dark {
   --background: 240 10% 3.9%;

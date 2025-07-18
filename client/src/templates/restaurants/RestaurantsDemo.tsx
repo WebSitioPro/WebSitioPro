@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Clock, Star, Menu, X, Facebook, Instagram, Award, Shield, Heart, Users, CheckCircle, Target } from 'lucide-react';
+import { OptimizedImage } from '../../components/OptimizedImage';
+import { usePerformance } from '../../hooks/use-performance';
+import { useIsSmallMobile } from '../../hooks/use-mobile';
 
 // Mock data for restaurant template
 const mockRestaurantData = {
@@ -101,6 +104,10 @@ export default function RestaurantsDemo() {
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  
+  // Performance optimizations
+  const { shouldReduceAnimations } = usePerformance();
+  const isSmallMobile = useIsSmallMobile();
 
   // Load saved configuration
   useEffect(() => {
@@ -366,7 +373,7 @@ export default function RestaurantsDemo() {
               return menuPages.map((page, index) => (
                 <div key={index} className="col-md-4 col-sm-6">
                   <div className="card border-0 shadow-sm">
-                    <img 
+                    <OptimizedImage 
                       src={page.url || `https://via.placeholder.com/400x600/00A859/FFFFFF?text=Menu+Page+${index + 1}`} 
                       alt={page.title?.[language] || `Menu page ${index + 1}`} 
                       className="card-img-top menu-image"
@@ -472,7 +479,7 @@ export default function RestaurantsDemo() {
               
               return photos.map((photoUrl, index) => (
                 <div key={index} className="col-md-4 col-sm-6">
-                  <img 
+                  <OptimizedImage 
                     src={photoUrl} 
                     alt={`Restaurant photo ${index + 1}`} 
                     className="img-fluid rounded shadow-sm"

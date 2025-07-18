@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send, Menu, Settings, Eye, Briefcase, UtensilsCrossed, ShoppingBag, Wrench, Users, ChevronRight, Plus } from 'lucide-react';
+import { OptimizedImage } from '../components/OptimizedImage';
+import { usePerformance } from '../hooks/use-performance';
+import { useIsSmallMobile } from '../hooks/use-mobile';
 
 export default function HomePage() {
   const [language, setLanguage] = useState('es');
@@ -12,6 +15,10 @@ export default function HomePage() {
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  
+  // Performance optimizations
+  const { shouldReduceAnimations } = usePerformance();
+  const isSmallMobile = useIsSmallMobile();
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };

@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import { MobileOptimizer } from "./components/MobileOptimizer";
 
 // Add Google Fonts
 const link = document.createElement("link");
@@ -33,4 +34,8 @@ document.head.appendChild(bootstrapScript);
 // Set page title
 document.title = "Professional Website Template";
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <MobileOptimizer>
+    <App />
+  </MobileOptimizer>
+);
