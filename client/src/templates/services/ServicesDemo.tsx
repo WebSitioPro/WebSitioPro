@@ -391,19 +391,23 @@ export default function ServicesDemo() {
             {t('servicesTitle')}
           </h2>
           <div className="row g-4">
-            {mockServicesData.serviceAreas.map((service, index) => (
+            {(() => {
+              const services = (savedConfig && savedConfig.services && savedConfig.services.length > 0) 
+                ? savedConfig.services 
+                : mockServicesData.serviceAreas;
+              return services.map((service, index) => (
               <div key={index} className="col-md-6 col-lg-4">
                 <div className="card border-0 shadow-sm h-100">
                   <div className="card-body p-4">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
                       <Wrench size={20} className="me-2" />
-                      {service.name}
+                      {service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}
                     </h5>
                     <p className="text-muted mb-4">
-                      {service.description}
+                      {service.description ? (language === 'es' ? service.description.es : service.description.en) : service.description}
                     </p>
                     <a 
-                      href={`https://wa.me/${mockServicesData.whatsappNumber}?text=Me interesa el servicio de ${service.name}`}
+                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockServicesData.whatsappNumber}?text=Me interesa el servicio de ${service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -413,7 +417,8 @@ export default function ServicesDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -453,7 +458,11 @@ export default function ServicesDemo() {
             {t('reviewsTitle')}
           </h2>
           <div className="row g-4 justify-content-center">
-            {mockServicesData.reviews.map((review, index) => (
+            {(() => {
+              const reviews = (savedConfig && savedConfig.reviews && savedConfig.reviews.length > 0) 
+                ? savedConfig.reviews 
+                : mockServicesData.reviews;
+              return reviews.map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
@@ -473,7 +482,8 @@ export default function ServicesDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -485,11 +495,15 @@ export default function ServicesDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-3">
-            {mockServicesData.photos.slice(0, 12).map((photo, index) => (
+            {(() => {
+              const photos = (savedConfig && savedConfig.photos && savedConfig.photos.length > 0) 
+                ? savedConfig.photos 
+                : mockServicesData.photos;
+              return photos.slice(0, 12).map((photo, index) => (
               <div key={index} className="col-md-4 col-sm-6">
                 <img 
-                  src={photo} 
-                  alt={`Service photo ${index + 1}`} 
+                  src={typeof photo === 'string' ? photo : photo.url} 
+                  alt={typeof photo === 'string' ? `Service photo ${index + 1}` : (photo.caption ? getLocalizedValue(photo.caption) : `Service photo ${index + 1}`)} 
                   className="img-fluid rounded shadow-sm"
                   style={{ 
                     width: '100%',
@@ -498,7 +512,8 @@ export default function ServicesDemo() {
                   }}
                 />
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>

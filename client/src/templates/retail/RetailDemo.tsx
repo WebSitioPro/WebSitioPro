@@ -390,24 +390,28 @@ export default function RetailDemo() {
             {t('productsTitle')}
           </h2>
           <div className="row g-4">
-            {mockRetailData.products.map((product, index) => (
+            {(() => {
+              const products = (savedConfig && savedConfig.products && savedConfig.products.length > 0) 
+                ? savedConfig.products 
+                : mockRetailData.products;
+              return products.map((product, index) => (
               <div key={index} className="col-md-6 col-lg-4">
                 <div className="card border-0 shadow-sm h-100">
                   <div className="card-body p-4">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
                       <ShoppingBag size={20} className="me-2" />
-                      {product.name}
+                      {product.title ? (language === 'es' ? product.title.es : product.title.en) : product.name}
                     </h5>
                     <p className="text-muted mb-3">
-                      {product.description}
+                      {product.description ? (language === 'es' ? product.description.es : product.description.en) : product.description}
                     </p>
                     <div className="mb-3">
                       <span className="badge fs-6 px-3 py-2" style={{ backgroundColor: 'hsl(var(--secondary))', color: 'white' }}>
-                        {product.price}
+                        {product.price || 'Consultar precio'}
                       </span>
                     </div>
                     <a 
-                      href={`https://wa.me/${mockRetailData.whatsappNumber}?text=Me interesa ${product.name}`}
+                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRetailData.whatsappNumber}?text=Me interesa ${product.title ? (language === 'es' ? product.title.es : product.title.en) : product.name}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -417,7 +421,8 @@ export default function RetailDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -457,7 +462,11 @@ export default function RetailDemo() {
             {t('reviewsTitle')}
           </h2>
           <div className="row g-4 justify-content-center">
-            {mockRetailData.reviews.map((review, index) => (
+            {(() => {
+              const reviews = (savedConfig && savedConfig.reviews && savedConfig.reviews.length > 0) 
+                ? savedConfig.reviews 
+                : mockRetailData.reviews;
+              return reviews.map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
@@ -477,7 +486,8 @@ export default function RetailDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -489,11 +499,15 @@ export default function RetailDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-3">
-            {mockRetailData.photos.slice(0, 12).map((photo, index) => (
+            {(() => {
+              const photos = (savedConfig && savedConfig.photos && savedConfig.photos.length > 0) 
+                ? savedConfig.photos 
+                : mockRetailData.photos;
+              return photos.slice(0, 12).map((photo, index) => (
               <div key={index} className="col-md-4 col-sm-6">
                 <img 
-                  src={photo} 
-                  alt={`Store photo ${index + 1}`} 
+                  src={typeof photo === 'string' ? photo : photo.url} 
+                  alt={typeof photo === 'string' ? `Store photo ${index + 1}` : (photo.caption ? getLocalizedValue(photo.caption) : `Store photo ${index + 1}`)} 
                   className="img-fluid rounded shadow-sm"
                   style={{ 
                     width: '100%',
@@ -502,7 +516,8 @@ export default function RetailDemo() {
                   }}
                 />
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>

@@ -377,21 +377,25 @@ export default function TourismDemo() {
             {t('toursTitle')}
           </h2>
           <div className="row g-4">
-            {mockTourismData.tours.map((tour, index) => (
+            {(() => {
+              const services = (savedConfig && savedConfig.services && savedConfig.services.length > 0) 
+                ? savedConfig.services 
+                : mockTourismData.tours;
+              return services.map((service, index) => (
               <div key={index} className="col-md-6 col-lg-3">
                 <div className="card border-0 shadow-sm h-100">
                   <div className="card-body p-4 text-center">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                      {tour.name}
+                      {service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}
                     </h5>
                     <div className="mb-3">
                       <span className="badge fs-6 px-3 py-2" style={{ backgroundColor: 'hsl(var(--secondary))', color: 'white' }}>
                         <DollarSign size={16} className="me-1" />
-                        {tour.price}
+                        {service.price || 'Consultar precio'}
                       </span>
                     </div>
                     <a 
-                      href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Me interesa el ${tour.name}`}
+                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockTourismData.whatsappNumber}?text=Me interesa el ${service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -401,7 +405,8 @@ export default function TourismDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -441,7 +446,11 @@ export default function TourismDemo() {
             {t('reviewsTitle')}
           </h2>
           <div className="row g-4 justify-content-center">
-            {mockTourismData.reviews.map((review, index) => (
+            {(() => {
+              const reviews = (savedConfig && savedConfig.reviews && savedConfig.reviews.length > 0) 
+                ? savedConfig.reviews 
+                : mockTourismData.reviews;
+              return reviews.map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
@@ -461,7 +470,8 @@ export default function TourismDemo() {
                   </div>
                 </div>
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
@@ -473,11 +483,15 @@ export default function TourismDemo() {
             {t('photosTitle')}
           </h2>
           <div className="row g-3">
-            {mockTourismData.photos.slice(0, 12).map((photo, index) => (
+            {(() => {
+              const photos = (savedConfig && savedConfig.photos && savedConfig.photos.length > 0) 
+                ? savedConfig.photos 
+                : mockTourismData.photos;
+              return photos.slice(0, 12).map((photo, index) => (
               <div key={index} className="col-md-4 col-sm-6">
                 <img 
-                  src={photo} 
-                  alt={`Tourism photo ${index + 1}`} 
+                  src={typeof photo === 'string' ? photo : photo.url} 
+                  alt={typeof photo === 'string' ? `Tourism photo ${index + 1}` : (photo.caption ? getLocalizedValue(photo.caption) : `Tourism photo ${index + 1}`)} 
                   className="img-fluid rounded shadow-sm"
                   style={{ 
                     width: '100%',
@@ -486,7 +500,8 @@ export default function TourismDemo() {
                   }}
                 />
               </div>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       </section>
