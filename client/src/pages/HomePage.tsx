@@ -780,10 +780,10 @@ export default function HomePage() {
                         <div className="card-body text-center p-4">
                           <div className="mb-3">
                             <img 
-                              src={solution.image || 'https://via.placeholder.com/200x150/C8102E/FFFFFF?text=Template'} 
+                              src={solution.image || 'https://via.placeholder.com/200x300/C8102E/FFFFFF?text=Template'} 
                               alt={title}
                               className="img-fluid rounded mb-3"
-                              style={{ height: '120px', width: '100%', objectFit: 'cover' }}
+                              style={{ height: '180px', width: '120px', objectFit: 'cover', margin: '0 auto', display: 'block' }}
                             />
                           </div>
                           <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
