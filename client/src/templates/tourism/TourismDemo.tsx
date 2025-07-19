@@ -613,7 +613,7 @@ export default function TourismDemo() {
                   </h6>
                   <div className="ratio ratio-16x9">
                     {(() => {
-                      const embedCode = previewData?.googleMapsEmbed || savedConfig?.googleMapsEmbed;
+                      const embedCode = savedConfig?.googleMapsEmbed;
                       let embedUrl = '';
                       
                       if (embedCode) {
