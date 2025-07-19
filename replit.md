@@ -123,6 +123,14 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 19, 2025. Fixed Google Maps Hardcoded Data Issues Across All Templates
+  - RESOLVED: Fixed hardcoded "Av. Héroes" appearing in Google Maps when custom embed codes were added
+  - RESOLVED: Fixed hardcoded address text at bottom of Maps section that didn't update with saved configuration
+  - Replaced hardcoded fallback Google Maps URL with proper "not configured" placeholder message
+  - Updated address display logic to show actual saved addresses instead of static translation text
+  - Address text now properly supports both multilingual address objects and simple string formats
+  - All 5 templates now display dynamic address information that updates when configuration changes
+  - Custom Google Maps embed codes now properly replace all default content without residual hardcoded data
 - July 19, 2025. Completed Enhanced Google Maps Display Logic Across All 5 Templates
   - FULLY IMPLEMENTED: Enhanced Google Maps display logic across all 5 templates (Professionals, Restaurants, Tourism, Retail, Services)
   - All templates now properly process iframe embed codes and extract proper Google Maps URLs

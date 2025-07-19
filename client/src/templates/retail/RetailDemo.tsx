@@ -658,19 +658,25 @@ export default function RetailDemo() {
                           referrerPolicy="no-referrer-when-downgrade"
                         ></iframe>
                       ) : (
-                        <iframe
-                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
-                          style={{ border: 0, borderRadius: '8px' }}
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                        ></iframe>
+                        <div className="d-flex align-items-center justify-content-center bg-light rounded" style={{ height: '100%' }}>
+                          <div className="text-center text-muted">
+                            <MapPin size={48} className="mb-3" />
+                            <p>Google Maps embed not configured</p>
+                            <small>Add Google Maps embed code in editor</small>
+                          </div>
+                        </div>
                       );
                     })()}
                   </div>
                   <div className="mt-3">
                     <small className="text-muted">
-                      {t('address')}
+                      {(() => {
+                        const address = savedConfig?.address;
+                        if (typeof address === 'object' && address !== null) {
+                          return address[language] || address.es || address.en;
+                        }
+                        return address || t('address');
+                      })()}
                     </small>
                   </div>
                 </div>

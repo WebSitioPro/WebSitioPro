@@ -766,7 +766,13 @@ export default function ProfessionalsDemo() {
                   </div>
                   <div className="mt-3">
                     <small className="text-muted">
-                      {t('address')}
+                      {(() => {
+                        const address = previewData?.address || savedConfig?.address;
+                        if (typeof address === 'object' && address !== null) {
+                          return address[language] || address.es || address.en;
+                        }
+                        return address || t('address');
+                      })()}
                     </small>
                   </div>
                 </div>
