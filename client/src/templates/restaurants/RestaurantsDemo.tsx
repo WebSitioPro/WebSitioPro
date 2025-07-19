@@ -657,17 +657,6 @@ export default function RestaurantsDemo() {
                       );
                     })()}
                   </div>
-                  <div className="mt-3">
-                    <small className="text-muted">
-                      {(() => {
-                        const address = savedConfig?.address;
-                        if (typeof address === 'object' && address !== null) {
-                          return address[language] || address.es || address.en;
-                        }
-                        return address || t('address');
-                      })()}
-                    </small>
-                  </div>
                 </div>
               </div>
             </div>
