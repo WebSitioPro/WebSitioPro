@@ -123,6 +123,14 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 19, 2025. Completed Enhanced Google Maps Display Logic Across All 5 Templates
+  - FULLY IMPLEMENTED: Enhanced Google Maps display logic across all 5 templates (Professionals, Restaurants, Tourism, Retail, Services)
+  - All templates now properly process iframe embed codes and extract proper Google Maps URLs
+  - Universal support for both full iframe HTML embed codes and direct embed URLs
+  - Intelligent fallback to default maps when no custom embed code is provided
+  - Templates now prioritize preview data over saved config for real-time editing experience
+  - Consistent Google Maps implementation across all business types with proper error handling
+  - All templates now support the same advanced embed code processing as the Professionals template
 - July 18, 2025. Fixed Google Maps Embed Functionality in Professionals Template
   - RESOLVED: Google Maps embed code now properly handles multiple URL formats (iframe embed, direct embed URLs, short URLs)
   - Enhanced Google Maps display logic to extract proper embed URLs from iframe codes

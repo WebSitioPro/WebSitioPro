@@ -612,13 +612,45 @@ export default function TourismDemo() {
                     Ubicación
                   </h6>
                   <div className="ratio ratio-16x9">
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
-                      style={{ border: 0, borderRadius: '8px' }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
+                    {(() => {
+                      const embedCode = previewData?.googleMapsEmbed || savedConfig?.googleMapsEmbed;
+                      let embedUrl = '';
+                      
+                      if (embedCode) {
+                        // Check if it's an HTML iframe embed code
+                        if (embedCode.includes('<iframe')) {
+                          // Extract the src URL from the iframe
+                          const srcMatch = embedCode.match(/src="([^"]+)"/);
+                          if (srcMatch) {
+                            embedUrl = srcMatch[1];
+                          }
+                        } else if (embedCode.includes('google.com/maps/embed')) {
+                          // Direct embed URL
+                          embedUrl = embedCode;
+                        } else {
+                          // Fallback for other cases
+                          embedUrl = embedCode;
+                        }
+                      }
+                      
+                      return embedUrl ? (
+                        <iframe
+                          src={embedUrl}
+                          style={{ border: 0, borderRadius: '8px' }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                      ) : (
+                        <iframe
+                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.1806654916!2d-88.30593!3d18.50569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba7b40e0da1ad%3A0x1234567890abcdef!2sAv.%20Héroes%2C%20Centro%2C%20Chetumal%2C%20Q.R.%2C%20México!5e0!3m2!1ses!2smx!4v1234567890123!5m2!1ses!2smx"
+                          style={{ border: 0, borderRadius: '8px' }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                      );
+                    })()}
                   </div>
                   <div className="mt-3">
                     <small className="text-muted">

@@ -1235,6 +1235,49 @@ export default function RestaurantsEditor() {
                             onChange={(e) => handleInputChange('address', e.target.value, 'en')}
                           />
                         </div>
+                        <div className="mb-3">
+                          <label className="form-label">Google Maps Embed</label>
+                          <textarea
+                            className="form-control"
+                            rows={4}
+                            value={websiteData.googleMapsEmbed || ''}
+                            onChange={(e) => handleInputChange('googleMapsEmbed', e.target.value)}
+                            placeholder="Paste your Google Maps embed code here. You can use either:
+1. The full iframe embed code from Google Maps
+2. Just the embed URL (https://www.google.com/maps/embed?pb=...)"
+                          />
+                          <small className="form-text text-muted">
+                            <strong>How to get the embed code:</strong><br/>
+                            1. Go to Google Maps and find your location<br/>
+                            2. Click "Share" → "Embed a map" → Copy the HTML code<br/>
+                            3. Paste the entire iframe code here<br/>
+                            <em>Note: Short URLs (like maps.app.goo.gl) won't work for embedding</em>
+                          </small>
+                        </div>
+                        
+                        {websiteData.googleMapsEmbed && (
+                          <div className="mb-3">
+                            <div className="card bg-light">
+                              <div className="card-body">
+                                <h6 className="card-title">Maps Preview Status</h6>
+                                {(() => {
+                                  const embedCode = websiteData.googleMapsEmbed;
+                                  if (embedCode.includes('<iframe') && embedCode.includes('google.com/maps/embed')) {
+                                    return <p className="text-success mb-0">✓ Valid Google Maps embed code detected</p>;
+                                  } else if (embedCode.includes('google.com/maps/embed')) {
+                                    return <p className="text-success mb-0">✓ Valid Google Maps embed URL detected</p>;
+                                  } else if (embedCode.includes('maps.app.goo.gl') || embedCode.includes('goo.gl/maps')) {
+                                    return <p className="text-warning mb-0">⚠ Short URL detected - this won't display properly. Please use the full embed code.</p>;
+                                  } else if (embedCode.includes('google.com/maps')) {
+                                    return <p className="text-warning mb-0">⚠ Regular Google Maps URL detected - may not embed properly. Use the "Embed a map" option.</p>;
+                                  } else {
+                                    return <p className="text-danger mb-0">✗ Invalid or unrecognized Google Maps code</p>;
+                                  }
+                                })()}
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
