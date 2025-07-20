@@ -303,7 +303,7 @@ export default function ServicesDemo() {
       }}>
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-lg-8">
+            <div className="col-lg-12 text-center">
               <h1 className="display-4 fw-bold mb-4" style={{ 
                 color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--primary))' 
               }}>
@@ -330,47 +330,7 @@ export default function ServicesDemo() {
                 {t('whatsappButton')}
               </a>
             </div>
-            <div className="col-lg-4">
-              <div className="text-center">
-                {(() => {
-                  // Check for profile image or first photo in gallery
-                  const profileImg = (previewData?.profileImage || savedConfig?.profileImage);
-                  const firstPhoto = (previewData?.photos && previewData.photos.length > 0) ? 
-                    (typeof previewData.photos[0] === 'string' ? previewData.photos[0] : previewData.photos[0].url) :
-                    (savedConfig?.photos && savedConfig.photos.length > 0) ?
-                    (typeof savedConfig.photos[0] === 'string' ? savedConfig.photos[0] : savedConfig.photos[0].url) : null;
-                  
-                  const imageToShow = profileImg || firstPhoto;
-                  
-                  if (imageToShow) {
-                    return (
-                      <div 
-                        className="rounded-circle mx-auto mb-3 overflow-hidden border border-3"
-                        style={{ 
-                          width: '300px', 
-                          height: '300px', 
-                          backgroundColor: 'hsl(var(--primary) / 0.1)',
-                          borderColor: 'hsl(var(--primary)) !important'
-                        }}
-                      >
-                        <OptimizedImage 
-                          src={imageToShow}
-                          alt={t('businessName')}
-                          className="w-100 h-100"
-                          style={{ objectFit: 'cover' }}
-                          isCritical={isCriticalDevice}
-                          onError={(e) => {
-                            e.target.src = "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Services";
-                          }}
-                        />
-                      </div>
-                    );
-                  }
-                  
-                  return null; // Don't show anything if no image
-                })()}
-              </div>
-            </div>
+
           </div>
         </div>
       </section>
