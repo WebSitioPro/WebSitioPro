@@ -226,7 +226,7 @@ export default function ServicesDemo() {
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
           <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
-            Plomería Confiable
+            {t('businessName')}
           </a>
           
           <button 
@@ -241,16 +241,19 @@ export default function ServicesDemo() {
           <div className={`navbar-collapse ${showMobileMenu ? 'show' : 'collapse'}`}>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <a className="nav-link" href="#home">Inicio</a>
+                <a className="nav-link" href="#home">{t('home')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#about">Acerca</a>
+                <a className="nav-link" href="#about">{t('about')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#services">Servicios</a>
+                <a className="nav-link" href="#services">{t('services')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#contact">Contacto</a>
+                <a className="nav-link" href="#reviews">{t('reviews')}</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#contact">{t('contact')}</a>
               </li>
               <li className="nav-item">
                 <button 
@@ -264,6 +267,29 @@ export default function ServicesDemo() {
           </div>
         </div>
       </nav>
+
+      {/* Announcement Banner */}
+      {((previewData && previewData.showBanner) || (savedConfig && savedConfig.showBanner)) && (
+        <div 
+          className="py-2 text-center"
+          style={{ 
+            backgroundColor: (previewData && previewData.bannerBackgroundColor) || (savedConfig && savedConfig.bannerBackgroundColor) || '#FFC107',
+            color: (previewData && previewData.bannerTextColor) || (savedConfig && savedConfig.bannerTextColor) || '#000000',
+            fontSize: (previewData && previewData.bannerTextSize) || (savedConfig && savedConfig.bannerTextSize) || '16px'
+          }}
+        >
+          <div className="container">
+            {((previewData && previewData.bannerTitle) || (savedConfig && savedConfig.bannerTitle)) && (
+              <h6 className="mb-1 fw-bold">
+                {getLocalizedValue((previewData && previewData.bannerTitle) || (savedConfig && savedConfig.bannerTitle))}
+              </h6>
+            )}
+            <p className="mb-0">
+              {getLocalizedValue((previewData && previewData.bannerText) || (savedConfig && savedConfig.bannerText))}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section 
@@ -314,19 +340,39 @@ export default function ServicesDemo() {
               </div>
             </div>
             <div className="col-lg-4 text-center">
-              {((previewData && previewData.profileImage) || (savedConfig && savedConfig.profileImage)) ? (
-                <OptimizedImage 
-                  src={(previewData && previewData.profileImage) || (savedConfig && savedConfig.profileImage)}
-                  alt={t('businessName')}
-                  className="img-fluid rounded shadow"
-                  style={{ maxHeight: '300px', width: 'auto' }}
-                  isCritical={isCriticalDevice}
-                />
-              ) : (
-                <div className="bg-light rounded shadow d-flex align-items-center justify-content-center" style={{ height: '300px' }}>
-                  <Wrench size={80} style={{ color: 'hsl(var(--primary))' }} />
-                </div>
-              )}
+              {(() => {
+                // Check for profile image or first photo in gallery
+                const profileImg = (previewData && previewData.profileImage) || (savedConfig && savedConfig.profileImage);
+                const firstPhoto = (previewData && previewData.photos && previewData.photos.length > 0) ? 
+                  (typeof previewData.photos[0] === 'string' ? previewData.photos[0] : previewData.photos[0].url) :
+                  (savedConfig && savedConfig.photos && savedConfig.photos.length > 0) ?
+                  (typeof savedConfig.photos[0] === 'string' ? savedConfig.photos[0] : savedConfig.photos[0].url) : null;
+                
+                const imageToShow = profileImg || firstPhoto;
+                
+                if (imageToShow) {
+                  return (
+                    <OptimizedImage 
+                      src={imageToShow}
+                      alt={t('businessName')}
+                      className="img-fluid rounded shadow"
+                      style={{ maxHeight: '300px', width: 'auto' }}
+                      isCritical={isCriticalDevice}
+                    />
+                  );
+                }
+                
+                // Only show fallback if no hero background image exists
+                if (!((previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage))) {
+                  return (
+                    <div className="d-flex align-items-center justify-content-center" style={{ height: '300px' }}>
+                      <Wrench size={80} style={{ color: 'hsl(var(--primary))', opacity: 0.3 }} />
+                    </div>
+                  );
+                }
+                
+                return null; // Don't show anything if background image exists
+              })()}
             </div>
           </div>
         </div>
