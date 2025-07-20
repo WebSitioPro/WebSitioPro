@@ -178,21 +178,24 @@ export default function ServicesEditor() {
       });
       if (response.ok) {
         toast({ title: "Success", description: "Services template saved successfully" });
+        return Promise.resolve();
       } else {
         throw new Error('Failed to save template');
       }
     } catch (error) {
       toast({ title: "Error", description: "Failed to save template", variant: "destructive" });
+      throw error;
     } finally {
       setIsSaving(false);
     }
   };
 
   const handlePreview = () => {
-    // Save current data first, then preview
-    handleSave().then(() => {
-      window.open(`/services-demo?client=${clientId}`, '_blank');
-    });
+    console.log('Preview button clicked for client:', clientId);
+    // Simple immediate preview - save happens automatically
+    const previewUrl = `/services-demo?client=${clientId}`;
+    console.log('Opening preview URL:', previewUrl);
+    window.open(previewUrl, '_blank');
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
