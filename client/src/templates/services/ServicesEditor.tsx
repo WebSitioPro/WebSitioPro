@@ -191,11 +191,7 @@ export default function ServicesEditor() {
   };
 
   const handlePreview = () => {
-    console.log('Preview button clicked for client:', clientId);
-    // Simple immediate preview - save happens automatically
-    const previewUrl = `/services-demo?client=${clientId}`;
-    console.log('Opening preview URL:', previewUrl);
-    window.open(previewUrl, '_blank');
+    window.location.href = '/services-demo';
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {

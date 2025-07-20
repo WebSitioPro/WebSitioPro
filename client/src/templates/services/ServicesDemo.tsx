@@ -127,20 +127,16 @@ export default function ServicesDemo() {
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [savedConfig, setSavedConfig] = useState<any>(null);
 
-  // Get client ID from query parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const clientId = urlParams.get('client') || 'services-demo';
-
   // Load saved configuration
   useEffect(() => {
-    fetch(`/api/config/${clientId}`)
+    fetch('/api/config/services-demo')
       .then(res => res.json())
       .then(data => {
         setSavedConfig(data);
         console.log('Services demo loaded config:', data);
       })
       .catch(err => console.log('Config not loaded:', err));
-  }, [clientId]);
+  }, []);
 
   const t = (key: string) => {
     const useSavedConfig = savedConfig && Object.keys(savedConfig).length > 0;
