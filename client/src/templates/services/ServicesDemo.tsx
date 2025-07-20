@@ -271,7 +271,7 @@ export default function ServicesDemo() {
         className="py-5" 
         style={{ 
           minHeight: '60vh',
-          background: (previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage) ?
+          backgroundImage: (previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage) ?
             `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${(previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)})` :
             'linear-gradient(135deg, #C8102E 0%, #00A859 100%)',
           backgroundSize: 'cover',
@@ -676,7 +676,9 @@ export default function ServicesDemo() {
             </div>
             <div className="col-md-6 text-md-end">
               <p className="mb-0">
-                {t('poweredBy')}
+                <Link href="/" className="text-white text-decoration-none">
+                  {t('poweredBy')}
+                </Link>
               </p>
             </div>
           </div>
