@@ -189,7 +189,10 @@ export default function ServicesEditor() {
   };
 
   const handlePreview = () => {
-    window.location.href = '/services-demo';
+    // Save current data first, then preview
+    handleSave().then(() => {
+      window.open(`/services-demo?client=${clientId}`, '_blank');
+    });
   };
 
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {

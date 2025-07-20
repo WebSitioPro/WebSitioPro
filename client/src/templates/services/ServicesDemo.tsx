@@ -127,16 +127,20 @@ export default function ServicesDemo() {
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [savedConfig, setSavedConfig] = useState<any>(null);
 
+  // Get client ID from query parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const clientId = urlParams.get('client') || 'services-demo';
+
   // Load saved configuration
   useEffect(() => {
-    fetch('/api/config/services-demo')
+    fetch(`/api/config/${clientId}`)
       .then(res => res.json())
       .then(data => {
         setSavedConfig(data);
         console.log('Services demo loaded config:', data);
       })
       .catch(err => console.log('Config not loaded:', err));
-  }, []);
+  }, [clientId]);
 
   const t = (key: string) => {
     const useSavedConfig = savedConfig && Object.keys(savedConfig).length > 0;
@@ -371,8 +375,16 @@ export default function ServicesDemo() {
                                style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
                             <IconComponent size={32} style={{ color: 'hsl(var(--primary))' }} />
                           </div>
-                          <h5>{language === 'es' ? stat.value.es : stat.value.en}</h5>
-                          <p className="text-muted">{language === 'es' ? stat.label.es : stat.label.en}</p>
+                          <h5>
+                            {stat.value && typeof stat.value === 'object' 
+                              ? (language === 'es' ? stat.value.es : stat.value.en)
+                              : stat.value || ''}
+                          </h5>
+                          <p className="text-muted">
+                            {stat.label && typeof stat.label === 'object' 
+                              ? (language === 'es' ? stat.label.es : stat.label.en)
+                              : stat.label || ''}
+                          </p>
                         </div>
                       </div>
                     );
