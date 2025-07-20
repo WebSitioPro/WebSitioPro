@@ -1,163 +1,66 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'wouter';
 import { Phone, Mail, MapPin, Clock, Star, Menu, X, Wrench, Facebook, Instagram, Award, Shield, Heart, Users, CheckCircle, Target } from 'lucide-react';
-
-// Mock data for services template
-const mockServicesData = {
-  businessName: "Plomería Confiable",
-  intro: {
-    es: "Servicios de plomería profesional en Chetumal. Más de 15 años de experiencia. Disponible 24/7 para emergencias",
-    en: "Professional plumbing services in Chetumal. Over 15 years of experience. Available 24/7 for emergencies"
-  },
-  serviceAreas: [
-    {
-      name: "Reparaciones de Emergencia",
-      description: "Fugas, tuberías rotas, desagües tapados"
-    },
-    {
-      name: "Instalaciones Nuevas",
-      description: "Baños completos, cocinas, calentadores"
-    },
-    {
-      name: "Mantenimiento Preventivo",
-      description: "Inspecciones, limpieza de tuberías"
-    },
-    {
-      name: "Servicios Comerciales",
-      description: "Oficinas, restaurantes, hoteles"
-    },
-    {
-      name: "Detección de Fugas",
-      description: "Equipos especializados para localizar fugas"
-    },
-    {
-      name: "Destapado de Drenajes",
-      description: "Maquinaria profesional para todo tipo de obstrucciones"
-    }
-  ],
-  photos: [
-    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Plumbing+Work+1",
-    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Tools+Equipment",
-    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Bathroom+Install",
-    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Kitchen+Repair",
-    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Emergency+Service",
-    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Professional+Team"
-  ],
-  reviews: [
-    {
-      name: "Luis Hernández",
-      rating: 5,
-      text: { es: "Excelente servicio, llegaron rápido en una emergencia. Trabajo limpio y profesional.", en: "Excellent service, arrived quickly in an emergency. Clean and professional work." }
-    },
-    {
-      name: "Sandra López",
-      rating: 5,
-      text: { es: "Instalaron mi baño completo. Muy puntuales y precio justo. Altamente recomendados.", en: "Installed my complete bathroom. Very punctual and fair price. Highly recommended." }
-    },
-    {
-      name: "Ricardo Morales",
-      rating: 5,
-      text: { es: "Solucionaron una fuga complicada que otros no pudieron. Muy profesionales.", en: "Solved a complicated leak that others couldn't. Very professional." }
-    }
-  ],
-  address: "Av. Héroes 321, Centro, Chetumal, Q.R.",
-  phone: "+52 983 321 6540",
-  email: "info@plomeriaconfiable.com",
-  socialLink: "https://facebook.com/plomeriaconfiable",
-  whatsappNumber: "529833216540"
-};
-
-const translations = {
-  es: {
-    home: "Inicio",
-    about: "Acerca de",
-    services: "Servicios",
-    photos: "Fotos",
-    reviews: "Reseñas",
-    contact: "Contacto",
-    whatsappButton: "WhatsApp",
-    aboutTitle: "Nuestra Experiencia",
-    servicesTitle: "Nuestros Servicios",
-    photosTitle: "Galería de Trabajos",
-    reviewsTitle: "Lo que dicen nuestros clientes",
-    contactTitle: "Contáctanos",
-    contactInfo: "Información de Contacto",
-    hours: "Horarios",
-    mondayFriday: "Lunes a Viernes: 7:00 AM - 7:00 PM",
-    saturday: "Sábado: 8:00 AM - 5:00 PM",
-    phone: "+52 983 321 6540",
-    email: "info@plomeriaconfiable.com",
-    address: "Av. Héroes 321, Centro, Chetumal, Q.R.",
-    followUs: "Síguenos",
-    requestService: "Solicitar Servicio",
-    emergency24h: "Emergencias 24/7"
-  },
-  en: {
-    home: "Home",
-    about: "About",
-    services: "Services",
-    photos: "Photos",
-    reviews: "Reviews",
-    contact: "Contact",
-    whatsappButton: "WhatsApp",
-    aboutTitle: "Our Experience",
-    servicesTitle: "Our Services",
-    photosTitle: "Work Gallery",
-    reviewsTitle: "What our customers say",
-    contactTitle: "Contact Us",
-    contactInfo: "Contact Information",
-    hours: "Hours",
-    mondayFriday: "Monday to Friday: 7:00 AM - 7:00 PM",
-    saturday: "Saturday: 8:00 AM - 5:00 PM",
-    phone: "+52 983 321 6540",
-    email: "info@plomeriaconfiable.com",
-    address: "Av. Héroes 321, Centro, Chetumal, Q.R.",
-    followUs: "Follow Us",
-    requestService: "Request Service",
-    emergency24h: "24/7 Emergency"
-  }
-};
+import { OptimizedImage } from '../../components/OptimizedImage';
+import { usePerformance } from '../../hooks/use-performance';
+import { useIsSmallMobile } from '../../hooks/use-mobile';
 
 export default function ServicesDemo() {
-  const [language, setLanguage] = useState<'es' | 'en'>('es');
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [language, setLanguage] = useState('es');
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [previewData, setPreviewData] = useState<any>(null);
 
-  // Temporarily disable loading config to isolate React error
+  const { isCriticalDevice } = usePerformance();
+  const isSmallMobile = useIsSmallMobile();
+
   useEffect(() => {
-    // setSavedConfig({});
-    console.log('Config loading temporarily disabled for debugging');
+    const urlParams = new URLSearchParams(window.location.search);
+    const previewId = urlParams.get('preview');
+    
+    if (previewId) {
+      // Load specific template data for preview
+      fetch(`/api/templates/${previewId}`)
+        .then(res => res.json())
+        .then(data => {
+          setPreviewData(data);
+          console.log('Services preview data loaded:', data);
+        })
+        .catch(err => console.error('Services preview data not loaded:', err));
+    } else {
+      // Load services demo configuration
+      fetch('/api/config/services-demo')
+        .then(res => res.json())
+        .then(data => {
+          setSavedConfig(data);
+          console.log('Services demo config loaded:', data);
+        })
+        .catch(err => console.error('Services config not loaded:', err));
+    }
   }, []);
 
-  const t = (key: string) => {
-    const useSavedConfig = savedConfig && Object.keys(savedConfig).length > 0;
-    
-    // Update translations to use saved configuration
-    const updatedTranslations = {
-      ...translations,
-      es: {
-        ...translations.es,
-        businessName: (useSavedConfig && savedConfig.businessName) || mockServicesData.businessName,
-        phone: (useSavedConfig && savedConfig.phone) || mockServicesData.phone,
-        email: (useSavedConfig && savedConfig.email) || mockServicesData.email,
-        address: (useSavedConfig && savedConfig.address?.es) || mockServicesData.address,
-        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.es) || translations.es.mondayFriday,
-        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.es) || translations.es.saturday,
-      },
-      en: {
-        ...translations.en,
-        businessName: (useSavedConfig && savedConfig.businessName) || mockServicesData.businessName,
-        phone: (useSavedConfig && savedConfig.phone) || mockServicesData.phone,
-        email: (useSavedConfig && savedConfig.email) || mockServicesData.email,
-        address: (useSavedConfig && savedConfig.address?.en) || mockServicesData.address,
-        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.en) || translations.en.mondayFriday,
-        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.en) || translations.en.saturday,
-      }
-    };
-
-    return updatedTranslations[language][key as keyof typeof updatedTranslations['es']] || key;
+  const toggleLanguage = () => {
+    setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
+
+  const handleChatSubmit = (question: string) => {
+    setChatMessages(prev => [...prev, { text: question, isUser: true }]);
+    
+    setTimeout(() => {
+      let response = "Gracias por contactarnos. ¿En qué puedo ayudarte?";
+      if (question.toLowerCase().includes('reparación') || question.toLowerCase().includes('repair')) {
+        response = "Para servicios de reparación de emergencia, puedes contactarnos las 24/7 por WhatsApp o llamada.";
+      } else if (question.toLowerCase().includes('precio') || question.toLowerCase().includes('price')) {
+        response = "Nuestros precios varían según el tipo de servicio. Contactanos para una cotización gratuita.";
+      } else if (question.toLowerCase().includes('horario') || question.toLowerCase().includes('hours')) {
+        response = "Atendemos de Lunes a Viernes de 8:00 AM a 6:00 PM, y Sábados de 9:00 AM a 3:00 PM. Emergencias 24/7.";
+      }
+      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
+    }, 1000);
+  };
+
   const getLocalizedValue = (obj: any): string => {
     if (!obj) return '';
     if (typeof obj === 'string') return obj;
@@ -170,93 +73,192 @@ export default function ServicesDemo() {
     return '';
   };
 
-  const toggleLanguage = () => {
-    setLanguage(language === 'es' ? 'en' : 'es');
-  };
-
-  const handleChatSubmit = (question: string) => {
-    setChatMessages(prev => [...prev, { text: question, isUser: true }]);
+  const t = (key: string) => {
+    // Priority order: 1. Preview data (templates), 2. Saved config (editor), 3. Default values
+    const usePreviewData = previewData && Object.keys(previewData).length > 0;
+    const useSavedConfig = savedConfig && Object.keys(savedConfig).length > 0;
     
-    setTimeout(() => {
-      let response = "Gracias por contactarnos. ¿En qué podemos ayudarte hoy?";
-      if (question.toLowerCase().includes('precio') || question.toLowerCase().includes('costo')) {
-        response = "Nuestros precios varían según el servicio. ¡Contáctanos por WhatsApp para una cotización gratuita!";
-      } else if (question.toLowerCase().includes('emergencia')) {
-        response = "Ofrecemos servicio de emergencia 24/7. Llámanos al +52 983 321 6540 para asistencia inmediata.";
-      } else if (question.toLowerCase().includes('hora')) {
-        response = "Trabajamos de lunes a viernes de 7:00 AM a 7:00 PM, y sábados de 8:00 AM a 5:00 PM.";
+    const translations = {
+      es: {
+        // Header
+        home: 'Inicio',
+        about: 'Acerca de',
+        services: 'Servicios',
+        reviews: 'Reseñas',
+        contact: 'Contacto',
+        language: 'English',
+        
+        // Hero - Use preview data, then saved config, then defaults
+        businessName: usePreviewData ? previewData.businessName : 
+                     (useSavedConfig && savedConfig.businessName) || 
+                     'Servicios Técnicos Pro',
+        heroTitle: usePreviewData ? getLocalizedValue(previewData.heroTitle) : 
+                  (useSavedConfig && getLocalizedValue(savedConfig.heroTitle)) || 
+                  'Servicios Técnicos Pro',
+        heroSubtitle: usePreviewData ? getLocalizedValue(previewData.heroSubtitle) : 
+                     (useSavedConfig && getLocalizedValue(savedConfig.heroSubtitle)) || 
+                     'Reparaciones y Mantenimiento',
+        heroDescription: usePreviewData ? getLocalizedValue(previewData.heroDescription) : 
+                        (useSavedConfig && getLocalizedValue(savedConfig.heroDescription)) || 
+                        'Servicios técnicos profesionales disponibles 24/7',
+        scheduleService: 'Contactar por WhatsApp',
+        
+        // About - Use preview data, then saved config, then defaults
+        aboutTitle: usePreviewData ? getLocalizedValue(previewData.aboutTitle) : 
+                   (useSavedConfig && getLocalizedValue(savedConfig.aboutTitle)) || 
+                   'Nuestra Experiencia',
+        aboutText: usePreviewData ? getLocalizedValue(previewData.aboutText) : 
+                  (useSavedConfig && getLocalizedValue(savedConfig.aboutText)) || 
+                  'Con más de 15 años de experiencia en servicios técnicos, hemos construido nuestra reputación basada en la calidad, puntualidad y honestidad.',
+        
+        // Services - Use saved config if available
+        servicesTitle: (useSavedConfig && getLocalizedValue(savedConfig.servicesTitle)) || 'Nuestros Servicios',
+        
+        // Photos
+        photosTitle: 'Galería de Trabajos',
+        
+        // Reviews
+        reviewsTitle: 'Lo que dicen nuestros clientes',
+        
+        // Contact - Use preview data, then saved config, then defaults
+        contactTitle: 'Información de Contacto',
+        phone: usePreviewData ? previewData.phone : 
+               (useSavedConfig && savedConfig.phone) || 
+               '+52 983 321 6540',
+        email: usePreviewData ? previewData.email : 
+               (useSavedConfig && savedConfig.email) || 
+               'servicios@email.com',
+        address: usePreviewData ? getLocalizedValue(previewData.address) : 
+                (useSavedConfig && getLocalizedValue(savedConfig.address)) || 
+                'Calle Principal 789, Chetumal, QR',
+        hours: 'Horarios de Atención',
+        mondayFriday: usePreviewData ? getLocalizedValue(previewData.officeHours?.mondayFriday) : 
+                     (useSavedConfig && getLocalizedValue(savedConfig.officeHours?.mondayFriday)) || 
+                     'Lun-Vie: 8:00 AM - 6:00 PM',
+        saturday: usePreviewData ? getLocalizedValue(previewData.officeHours?.saturday) : 
+                 (useSavedConfig && getLocalizedValue(savedConfig.officeHours?.saturday)) || 
+                 'Sáb: 9:00 AM - 3:00 PM',
+        whatsappButton: 'WhatsApp',
+        viewOnMaps: 'Ver en Google Maps',
+        
+        // Footer
+        copyright: `© ${new Date().getFullYear()} ${usePreviewData ? previewData.businessName : 
+                     (useSavedConfig && savedConfig.businessName) || 
+                     'Servicios Técnicos Pro'}. Todos los derechos reservados.`,
+        poweredBy: 'Sitio creado por WebSitioPro'
+      },
+      en: {
+        // Header
+        home: 'Home',
+        about: 'About',
+        services: 'Services',
+        reviews: 'Reviews',
+        contact: 'Contact',
+        language: 'Español',
+        
+        // Hero - Use preview data, then saved config, then defaults
+        businessName: usePreviewData ? previewData.businessName : 
+                     (useSavedConfig && savedConfig.businessName) || 
+                     'Pro Technical Services',
+        heroTitle: usePreviewData ? getLocalizedValue(previewData.heroTitle) : 
+                  (useSavedConfig && getLocalizedValue(savedConfig.heroTitle)) || 
+                  'Pro Technical Services',
+        heroSubtitle: usePreviewData ? getLocalizedValue(previewData.heroSubtitle) : 
+                     (useSavedConfig && getLocalizedValue(savedConfig.heroSubtitle)) || 
+                     'Repairs & Maintenance',
+        heroDescription: usePreviewData ? getLocalizedValue(previewData.heroDescription) : 
+                        (useSavedConfig && getLocalizedValue(savedConfig.heroDescription)) || 
+                        'Professional technical services available 24/7',
+        scheduleService: 'Contact via WhatsApp',
+        
+        // About - Use preview data, then saved config, then defaults
+        aboutTitle: usePreviewData ? getLocalizedValue(previewData.aboutTitle) : 
+                   (useSavedConfig && getLocalizedValue(savedConfig.aboutTitle)) || 
+                   'Our Experience',
+        aboutText: usePreviewData ? getLocalizedValue(previewData.aboutText) : 
+                  (useSavedConfig && getLocalizedValue(savedConfig.aboutText)) || 
+                  'With over 15 years of experience in technical services, we have built our reputation based on quality, punctuality and honesty.',
+        
+        // Services - Use saved config if available
+        servicesTitle: (useSavedConfig && getLocalizedValue(savedConfig.servicesTitle)) || 'Our Services',
+        
+        // Photos
+        photosTitle: 'Work Gallery',
+        
+        // Reviews
+        reviewsTitle: 'What our clients say',
+        
+        // Contact - Use preview data, then saved config, then defaults
+        contactTitle: 'Contact Information',
+        phone: usePreviewData ? previewData.phone : 
+               (useSavedConfig && savedConfig.phone) || 
+               '+52 983 321 6540',
+        email: usePreviewData ? previewData.email : 
+               (useSavedConfig && savedConfig.email) || 
+               'services@email.com',
+        address: usePreviewData ? getLocalizedValue(previewData.address) : 
+                (useSavedConfig && getLocalizedValue(savedConfig.address)) || 
+                'Calle Principal 789, Chetumal, QR',
+        hours: 'Office Hours',
+        mondayFriday: usePreviewData ? getLocalizedValue(previewData.officeHours?.mondayFriday) : 
+                     (useSavedConfig && getLocalizedValue(savedConfig.officeHours?.mondayFriday)) || 
+                     'Mon-Fri: 8:00 AM - 6:00 PM',
+        saturday: usePreviewData ? getLocalizedValue(previewData.officeHours?.saturday) : 
+                 (useSavedConfig && getLocalizedValue(savedConfig.officeHours?.saturday)) || 
+                 'Sat: 9:00 AM - 3:00 PM',
+        whatsappButton: 'WhatsApp',
+        viewOnMaps: 'View on Google Maps',
+        
+        // Footer
+        copyright: `© ${new Date().getFullYear()} ${usePreviewData ? previewData.businessName : 
+                     (useSavedConfig && savedConfig.businessName) || 
+                     'Pro Technical Services'}. All rights reserved.`,
+        poweredBy: 'Site created by WebSitioPro'
       }
-      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
-    }, 1000);
+    };
+
+    return translations[language][key as keyof typeof translations['es']] || key;
   };
 
   return (
-    <div className="min-vh-100 bg-white">
-      {/* Header */}
+    <div className="min-vh-100" style={{ backgroundColor: 'var(--bs-light)' }}>
+      {/* Navigation */}
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
           <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
-            {t('businessName')}
+            Plomería Confiable
           </a>
           
-          <div className="d-flex align-items-center d-lg-none">
-            <button
-              className="btn btn-outline-warning btn-sm me-3"
-              onClick={toggleLanguage}
-              style={{ fontSize: '1.5em' }}
-            >
-              {language === 'es' ? 'English' : 'Español'}
-            </button>
-            
-            <button
-              className="navbar-toggler"
-              type="button"
-              onClick={() => setShowMobileMenu(!showMobileMenu)}
-            >
-              {showMobileMenu ? <X /> : <Menu />}
-            </button>
-          </div>
+          <button 
+            className="navbar-toggler border-0" 
+            type="button"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            aria-label="Toggle navigation"
+          >
+            {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
+          </button>
 
-          <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
-            <div className="d-none d-lg-flex gap-4 ms-auto align-items-center">
-              <a className="text-decoration-none text-dark" href="#home">{t('home')}</a>
-              <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
-              <a className="text-decoration-none text-dark" href="#services">{t('services')}</a>
-              <a className="text-decoration-none text-dark" href="#photos">{t('photos')}</a>
-              <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
-              <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
-              <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
-              <button
-                className="btn btn-outline-warning btn-sm"
-                onClick={toggleLanguage}
-                style={{ fontSize: '1.5em' }}
-              >
-                {language === 'es' ? 'English' : 'Español'}
-              </button>
-            </div>
-            
-            {/* Mobile menu */}
-            <ul className={`navbar-nav d-lg-none ${showMobileMenu ? 'd-block' : 'd-none'}`}>
+          <div className={`navbar-collapse ${showMobileMenu ? 'show' : 'collapse'}`}>
+            <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
+                <a className="nav-link" href="#home">Inicio</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#about" onClick={() => setShowMobileMenu(false)}>{t('about')}</a>
+                <a className="nav-link" href="#about">Acerca</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#services" onClick={() => setShowMobileMenu(false)}>{t('services')}</a>
+                <a className="nav-link" href="#services">Servicios</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#photos" onClick={() => setShowMobileMenu(false)}>{t('photos')}</a>
+                <a className="nav-link" href="#contact">Contacto</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#reviews" onClick={() => setShowMobileMenu(false)}>{t('reviews')}</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#contact" onClick={() => setShowMobileMenu(false)}>{t('contact')}</a>
-              </li>
-              <li className="nav-item">
-                <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
+                <button 
+                  className="btn btn-link nav-link border-0 bg-transparent" 
+                  onClick={toggleLanguage}
+                >
+                  {language === 'es' ? 'English' : 'Español'}
+                </button>
               </li>
             </ul>
           </div>
@@ -264,32 +266,40 @@ export default function ServicesDemo() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="py-5" style={{
-        background: savedConfig?.heroImage ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${savedConfig.heroImage}')` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '60vh'
-      }}>
+      <section 
+        id="home" 
+        className="py-5" 
+        style={{ 
+          minHeight: '60vh',
+          background: (previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage) ?
+            `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${(previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)})` :
+            'linear-gradient(135deg, #C8102E 0%, #00A859 100%)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
         <div className="container">
           <div className="row align-items-center" style={{ minHeight: '50vh' }}>
             <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'hsl(var(--primary))' }}>
-                {getLocalizedValue(savedConfig?.heroTitle) || 
-                 (savedConfig && savedConfig.businessName) || 
-                 t('businessName')}
+              <h1 className="display-4 fw-bold mb-4" style={{ 
+                color: ((previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)) ? 'white' : 'hsl(var(--primary))' 
+              }}>
+                {t('heroTitle')}
               </h1>
-              <h2 className="h4 mb-4" style={{ color: savedConfig?.heroImage ? '#f8f9fa' : 'hsl(var(--primary))' }}>
-                {getLocalizedValue(savedConfig?.heroSubtitle) || 
-                 (language === 'es' ? 'Reparaciones y Mantenimiento' : 'Repairs & Maintenance')}
+              <h2 className="h4 mb-4" style={{ 
+                color: ((previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)) ? '#f8f9fa' : 'hsl(var(--primary))' 
+              }}>
+                {t('heroSubtitle')}
               </h2>
-              <p className="lead mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'var(--bs-gray-600)' }}>
-                {getLocalizedValue(savedConfig?.heroDescription) || 
-                 getLocalizedValue(mockServicesData.intro)}
+              <p className="lead mb-4" style={{ 
+                color: ((previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)) ? 'white' : 'var(--bs-gray-600)' 
+              }}>
+                {t('heroDescription')}
               </p>
               <div className="d-flex flex-wrap gap-3">
                 <a 
-                  href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockServicesData.whatsappNumber}?text=Hola, necesito servicios de plomería`}
+                  href={`https://wa.me/${(previewData && previewData.whatsappNumber) || (savedConfig && savedConfig.whatsappNumber) || '529834567890'}?text=${encodeURIComponent(getLocalizedValue((previewData && previewData.whatsappMessage) || (savedConfig && savedConfig.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
                   className="btn btn-lg text-white"
                   style={{ backgroundColor: '#25D366' }}
                   target="_blank"
@@ -299,16 +309,24 @@ export default function ServicesDemo() {
                   {t('whatsappButton')}
                 </a>
                 <span className="badge bg-danger fs-6 px-3 py-2 align-self-center">
-                  {t('emergency24h')}
+                  {language === 'es' ? 'Emergencias 24/7' : 'Emergency 24/7'}
                 </span>
               </div>
             </div>
             <div className="col-lg-4 text-center">
-              <img 
-                src={savedConfig?.logo || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Plumbing+Logo"} 
-                alt="Plumbing Services" 
-                className="img-fluid rounded shadow"
-              />
+              {((previewData && previewData.profileImage) || (savedConfig && savedConfig.profileImage)) ? (
+                <OptimizedImage 
+                  src={(previewData && previewData.profileImage) || (savedConfig && savedConfig.profileImage)}
+                  alt={t('businessName')}
+                  className="img-fluid rounded shadow"
+                  style={{ maxHeight: '300px', width: 'auto' }}
+                  isCritical={isCriticalDevice}
+                />
+              ) : (
+                <div className="bg-light rounded shadow d-flex align-items-center justify-content-center" style={{ height: '300px' }}>
+                  <Wrench size={80} style={{ color: 'hsl(var(--primary))' }} />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -323,70 +341,37 @@ export default function ServicesDemo() {
                 {t('aboutTitle')}
               </h2>
               <p className="lead text-muted">
-                {getLocalizedValue(savedConfig?.aboutText) || 
-                 (language === 'es' ? 
-                  "Con más de 15 años de experiencia en servicios de plomería, hemos construido nuestra reputación basada en la calidad, puntualidad y honestidad. Nuestro equipo de técnicos certificados está disponible 24/7 para resolver cualquier emergencia y brindar soluciones duraderas." :
-                  "With over 15 years of experience in plumbing services, we have built our reputation based on quality, punctuality and honesty. Our team of certified technicians is available 24/7 to solve any emergency and provide lasting solutions."
-                )}
+                {t('aboutText')}
               </p>
-              <div className="row mt-5">
-                {(() => {
-                  // Get about stats from saved config, or use defaults
-                  // Ignore saved config for aboutStats temporarily
-                  const aboutStats = [
-                    {
-                      icon: 'Wrench',
-                      value: '24/7',
-                      label: 'Emergency Service'
-                    },
-                    {
-                      icon: 'Users',
-                      value: '500+',
-                      label: 'Clients Served'
-                    },
-                    {
-                      icon: 'CheckCircle',
-                      value: '98%',
-                      label: 'Satisfaction Guaranteed'
-                    }
-                  ];
-                  
-                  // Icon mapping
-                  const iconMap = {
-                    Award: Award,
-                    Star: Star,
-                    Shield: Shield,
-                    Heart: Heart,
-                    Users: Users,
-                    Clock: Clock,
-                    CheckCircle: CheckCircle,
-                    Target: Target,
-                    Wrench: Wrench
-                  };
-                  
-                  return aboutStats.map((stat, index) => {
-                    const IconComponent = iconMap[stat.icon as keyof typeof iconMap] || Wrench;
-                    return (
-                      <div key={index} className="col-md-4">
-                        <div className="text-center">
-                          <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                               style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                            <IconComponent size={32} style={{ color: 'hsl(var(--primary))' }} />
-                          </div>
-                          <h5>{stat.value}</h5>
-                          <p className="text-muted">{stat.label}</p>
-                        </div>
-                      </div>
-                    );
-                  });
-                })()}
-              </div>
             </div>
           </div>
+          
+          {/* About Stats */}
+          {((savedConfig && savedConfig.aboutStats && savedConfig.aboutStats.length > 0) || (previewData && previewData.aboutStats && previewData.aboutStats.length > 0)) && (
+            <div className="row mt-5 text-center">
+              {((previewData && previewData.aboutStats) || (savedConfig && savedConfig.aboutStats) || []).map((stat, index) => (
+                <div key={index} className="col-md-3 mb-4">
+                  <div className="card border-0 bg-light h-100">
+                    <div className="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                      {stat.icon === 'Users' && <Users size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
+                      {stat.icon === 'Award' && <Award size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
+                      {stat.icon === 'CheckCircle' && <CheckCircle size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
+                      {stat.icon === 'Target' && <Target size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
+                      {stat.icon === 'Wrench' && <Wrench size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
+                      {stat.icon === 'Shield' && <Shield size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
+                      {stat.icon === 'Heart' && <Heart size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
+                      <h4 className="fw-bold text-primary mb-2">{getLocalizedValue(stat.value)}</h4>
+                      <p className="mb-0 text-muted small">{getLocalizedValue(stat.label)}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Service Areas Section */}
+      {/* Services Section */}
       <section id="services" className="py-5 bg-light">
         <div className="container">
           <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
@@ -394,39 +379,55 @@ export default function ServicesDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              const services = (savedConfig && savedConfig.services && savedConfig.services.length > 0) 
-                ? savedConfig.services 
-                : mockServicesData.serviceAreas;
+              const services = (previewData && previewData.services && previewData.services.length > 0) 
+                ? previewData.services 
+                : (savedConfig && savedConfig.services && savedConfig.services.length > 0)
+                ? savedConfig.services
+                : [
+                    {
+                      name: { es: "Reparaciones de Emergencia", en: "Emergency Repairs" },
+                      description: { es: "Fugas, tuberías rotas, desagües tapados", en: "Leaks, broken pipes, clogged drains" },
+                      price: ""
+                    },
+                    {
+                      name: { es: "Instalaciones Nuevas", en: "New Installations" },
+                      description: { es: "Baños completos, cocinas, calentadores", en: "Complete bathrooms, kitchens, heaters" },
+                      price: ""
+                    },
+                    {
+                      name: { es: "Mantenimiento Preventivo", en: "Preventive Maintenance" },
+                      description: { es: "Inspecciones, limpieza de tuberías", en: "Inspections, pipe cleaning" },
+                      price: ""
+                    },
+                    {
+                      name: { es: "Servicios Comerciales", en: "Commercial Services" },
+                      description: { es: "Oficinas, restaurantes, hoteles", en: "Offices, restaurants, hotels" },
+                      price: ""
+                    }
+                  ];
               return services.map((service, index) => (
               <div key={index} className="col-md-6 col-lg-4">
                 <div className="card border-0 shadow-sm h-100">
                   <div className="card-body p-4">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
                       <Wrench size={20} className="me-2" />
-                      {service.title ? 
-                        (typeof service.title === 'object' ? 
-                          (service.title.es || service.title.en || 'Service') : 
-                          service.title) : 
-                        (service.name || 'Service')}
+                      {getLocalizedValue(service.name)}
                     </h5>
                     <p className="text-muted mb-4">
-                      {service.description ? 
-                        (typeof service.description === 'object' ? 
-                          (service.description.es || service.description.en || 'Professional service') : 
-                          service.description) : 
-                        'Professional service'}
+                      {getLocalizedValue(service.description)}
                     </p>
+                    {service.price && (
+                      <p className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                        {service.price}
+                      </p>
+                    )}
                     <a 
-                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockServicesData.whatsappNumber}?text=Me interesa el servicio de ${service.title ? 
-                        (typeof service.title === 'object' ? 
-                          (service.title.es || service.title.en || 'Service') : 
-                          service.title) : 
-                        (service.name || 'Service')}`}
+                      href={`https://wa.me/${(previewData && previewData.whatsappNumber) || (savedConfig && savedConfig.whatsappNumber) || '529834567890'}?text=${encodeURIComponent(`Me interesa el servicio de ${getLocalizedValue(service.name)}`)}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {t('requestService')}
+                      {language === 'es' ? 'Solicitar Servicio' : 'Request Service'}
                     </a>
                   </div>
                 </div>
@@ -437,20 +438,76 @@ export default function ServicesDemo() {
         </div>
       </section>
 
-      {/* Banner Section - Temporarily disabled for debugging */}
+      {/* Photos Section */}
+      <section id="photos" className="py-5">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {t('photosTitle')}
+          </h2>
+          <div className="row g-4">
+            {(() => {
+              const photos = (previewData && previewData.photos && previewData.photos.length > 0) 
+                ? previewData.photos 
+                : (savedConfig && savedConfig.photos && savedConfig.photos.length > 0)
+                ? savedConfig.photos
+                : [
+                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Service+Work+1",
+                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Tools+Equipment",
+                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Installation+Work",
+                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Repair+Service",
+                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professional+Team",
+                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Quality+Work"
+                  ];
+              return photos.slice(0, 6).map((photo, index) => (
+              <div key={index} className="col-md-4 col-sm-6">
+                <OptimizedImage 
+                  src={typeof photo === 'string' ? photo : photo.url} 
+                  alt={typeof photo === 'string' ? `Service photo ${index + 1}` : (getLocalizedValue(photo.caption) || `Service photo ${index + 1}`)} 
+                  className="img-fluid rounded shadow-sm"
+                  style={{ 
+                    width: '100%',
+                    height: '200px', 
+                    objectFit: 'cover' 
+                  }}
+                  isCritical={isCriticalDevice}
+                />
+              </div>
+              ));
+            })()}
+          </div>
+        </div>
+      </section>
 
       {/* Reviews Section */}
-      <section id="reviews" className="py-4 bg-light">
+      <section id="reviews" className="py-5 bg-light">
         <div className="container">
-          <h2 className="text-center fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
             {t('reviewsTitle')}
           </h2>
           <div className="row g-4 justify-content-center">
             {(() => {
-              const reviews = (savedConfig && savedConfig.reviews && savedConfig.reviews.length > 0) 
-                ? savedConfig.reviews 
-                : mockServicesData.reviews;
-              return reviews.map((review, index) => (
+              const reviews = (previewData && previewData.reviews && previewData.reviews.length > 0) 
+                ? previewData.reviews 
+                : (savedConfig && savedConfig.reviews && savedConfig.reviews.length > 0)
+                ? savedConfig.reviews
+                : [
+                    {
+                      name: "Luis Hernández",
+                      rating: 5,
+                      text: { es: "Excelente servicio, llegaron rápido en una emergencia. Trabajo limpio y profesional.", en: "Excellent service, arrived quickly in an emergency. Clean and professional work." }
+                    },
+                    {
+                      name: "Sandra López",
+                      rating: 5,
+                      text: { es: "Instalaron mi baño completo. Muy puntuales y precio justo. Altamente recomendados.", en: "Installed my complete bathroom. Very punctual and fair price. Highly recommended." }
+                    },
+                    {
+                      name: "Ricardo Morales",
+                      rating: 5,
+                      text: { es: "Servicio de calidad y precios accesibles. Siempre resuelven cualquier problema.", en: "Quality service and affordable prices. They always solve any problem." }
+                    }
+                  ];
+              return reviews.slice(0, 3).map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
@@ -476,38 +533,8 @@ export default function ServicesDemo() {
         </div>
       </section>
 
-      {/* Photos Section */}
-      <section id="photos" className="py-5">
-        <div className="container">
-          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
-            {t('photosTitle')}
-          </h2>
-          <div className="row g-3">
-            {(() => {
-              const photos = (savedConfig && savedConfig.photos && savedConfig.photos.length > 0) 
-                ? savedConfig.photos 
-                : mockServicesData.photos;
-              return photos.slice(0, 12).map((photo, index) => (
-              <div key={index} className="col-md-4 col-sm-6">
-                <img 
-                  src={typeof photo === 'string' ? photo : photo.url} 
-                  alt={typeof photo === 'string' ? `Service photo ${index + 1}` : (photo.caption ? getLocalizedValue(photo.caption) : `Service photo ${index + 1}`)} 
-                  className="img-fluid rounded shadow-sm"
-                  style={{ 
-                    width: '100%',
-                    height: '200px', 
-                    objectFit: 'cover' 
-                  }}
-                />
-              </div>
-              ));
-            })()}
-          </div>
-        </div>
-      </section>
-
       {/* Contact Section */}
-      <section id="contact" className="py-5 bg-light">
+      <section id="contact" className="py-5">
         <div className="container">
           <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
             {t('contactTitle')}
@@ -517,14 +544,14 @@ export default function ServicesDemo() {
               <div className="card border-0 shadow-sm h-100">
                 <div className="card-body p-4">
                   <h5 className="mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                    Información de Contacto
+                    {t('contactTitle')}
                   </h5>
                   <div className="row g-4">
                     <div className="col-12">
                       <div className="d-flex align-items-center mb-3">
                         <Phone className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
-                          <h6 className="mb-0">Teléfono</h6>
+                          <h6 className="mb-0">{language === 'es' ? 'Teléfono' : 'Phone'}</h6>
                           <p className="mb-0 text-muted">{t('phone')}</p>
                         </div>
                       </div>
@@ -542,7 +569,7 @@ export default function ServicesDemo() {
                       <div className="d-flex align-items-center mb-3">
                         <MapPin className="me-3" size={24} style={{ color: 'hsl(var(--primary))' }} />
                         <div>
-                          <h6 className="mb-0">Dirección</h6>
+                          <h6 className="mb-0">{language === 'es' ? 'Dirección' : 'Address'}</h6>
                           <p className="mb-0 text-muted">{t('address')}</p>
                         </div>
                       </div>
@@ -557,116 +584,80 @@ export default function ServicesDemo() {
                         </div>
                       </div>
                     </div>
-                    
-                    {/* Social Media Links */}
-                    {(savedConfig?.facebookUrl || savedConfig?.instagramUrl) && (
-                      <div className="col-12">
-                        <div className="d-flex align-items-center mb-3">
-                          <div className="me-3 d-flex">
-                            {savedConfig?.facebookUrl && (
-                              <a
-                                href={savedConfig.facebookUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="me-2"
-                                style={{ color: 'hsl(var(--primary))' }}
-                              >
-                                <Facebook size={24} />
-                              </a>
-                            )}
-                            {savedConfig?.instagramUrl && (
-                              <a
-                                href={savedConfig.instagramUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{ color: 'hsl(var(--primary))' }}
-                              >
-                                <Instagram size={24} />
-                              </a>
-                            )}
-                          </div>
-                          <div>
-                            <h6 className="mb-0">Redes Sociales</h6>
-                            <p className="mb-0 text-muted">Síguenos en redes sociales</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="mt-4">
-                    <a 
-                      href={`https://wa.me/${mockServicesData.whatsappNumber}?text=Hola, necesito servicios de plomería`}
-                      className="btn w-100 text-white mb-2"
-                      style={{ backgroundColor: '#25D366' }}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Phone size={16} className="me-2" />
-                      {t('whatsappButton')}
-                    </a>
-                    {mockServicesData.socialLink && (
-                      <a 
-                        href={mockServicesData.socialLink}
-                        className="btn btn-outline-primary w-100"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {t('followUs')}
-                      </a>
-                    )}
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-lg-6">
               <div className="card border-0 shadow-sm h-100">
-                <div className="card-body p-4">
-                  <h6 className="mb-3 d-flex align-items-center">
-                    <MapPin className="me-2" size={20} style={{ color: 'hsl(var(--primary))' }} />
-                    Ubicación
-                  </h6>
-                  <div className="ratio ratio-16x9">
-                    {(() => {
-                      const embedCode = savedConfig?.googleMapsEmbed;
-                      let embedUrl = '';
-                      
-                      if (embedCode) {
-                        // Check if it's an HTML iframe embed code
-                        if (embedCode.includes('<iframe')) {
-                          // Extract the src URL from the iframe
-                          const srcMatch = embedCode.match(/src="([^"]+)"/);
-                          if (srcMatch) {
-                            embedUrl = srcMatch[1];
-                          }
-                        } else if (embedCode.includes('google.com/maps/embed')) {
-                          // Direct embed URL
-                          embedUrl = embedCode;
-                        } else {
-                          // Fallback for other cases
-                          embedUrl = embedCode;
-                        }
+                <div className="card-body p-0">
+                  {(() => {
+                    const googleMapsEmbed = (previewData && previewData.googleMapsEmbed) || (savedConfig && savedConfig.googleMapsEmbed);
+                    
+                    if (googleMapsEmbed) {
+                      // Check if it's an iframe embed code
+                      if (googleMapsEmbed.includes('<iframe')) {
+                        return <div dangerouslySetInnerHTML={{ __html: googleMapsEmbed }} />;
                       }
                       
-                      return embedUrl ? (
-                        <iframe
-                          src={embedUrl}
-                          style={{ border: 0, borderRadius: '8px' }}
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                      ) : (
-                        <div className="d-flex align-items-center justify-content-center bg-light rounded" style={{ height: '100%' }}>
-                          <div className="text-center text-muted">
-                            <MapPin size={48} className="mb-3" />
-                            <p>Google Maps embed not configured</p>
-                            <small>Add Google Maps embed code in editor</small>
-                          </div>
+                      // Check if it's a direct embed URL
+                      if (googleMapsEmbed.includes('google.com/maps/embed')) {
+                        return (
+                          <iframe
+                            src={googleMapsEmbed}
+                            width="100%"
+                            height="300"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                          />
+                        );
+                      }
+                      
+                      // If it's a short URL or other format, show helpful message
+                      return (
+                        <div className="p-4 text-center">
+                          <MapPin size={48} className="mb-3" style={{ color: 'hsl(var(--primary))' }} />
+                          <p className="text-muted">
+                            {language === 'es' ? 
+                              'Para mostrar el mapa correctamente, proporciona el código de inserción completo de Google Maps.' :
+                              'To display the map correctly, provide the complete Google Maps embed code.'
+                            }
+                          </p>
+                          <a 
+                            href={`https://www.google.com/maps/search/${encodeURIComponent(t('address'))}`}
+                            className="btn btn-outline-primary"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {t('viewOnMaps')}
+                          </a>
                         </div>
                       );
-                    })()}
-                  </div>
+                    } else {
+                      // Default fallback when no Google Maps embed is configured
+                      return (
+                        <div className="p-4 text-center">
+                          <MapPin size={48} className="mb-3" style={{ color: 'hsl(var(--primary))' }} />
+                          <p className="text-muted">
+                            {language === 'es' ? 
+                              'Mapa no configurado. Agrega tu código de Google Maps en el editor.' :
+                              'Map not configured. Add your Google Maps code in the editor.'
+                            }
+                          </p>
+                          <a 
+                            href={`https://www.google.com/maps/search/${encodeURIComponent(t('address'))}`}
+                            className="btn btn-outline-primary"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {t('viewOnMaps')}
+                          </a>
+                        </div>
+                      );
+                    }
+                  })()}
                 </div>
               </div>
             </div>
@@ -674,135 +665,23 @@ export default function ServicesDemo() {
         </div>
       </section>
 
-      {/* Chatbot Placeholder */}
-      <div id="chatbot" className="chatbot-placeholder position-fixed" style={{ bottom: '20px', right: '20px', zIndex: 1000 }}>
-        <button className="btn btn-success rounded-circle" style={{ width: '60px', height: '60px' }}>
-          💬
-        </button>
-      </div>
-
       {/* Footer */}
-      <footer className="bg-dark text-white py-4">
+      <footer className="py-4" style={{ backgroundColor: 'hsl(var(--primary))', color: 'white' }}>
         <div className="container">
-          <div className="row">
+          <div className="row align-items-center">
             <div className="col-md-6">
               <p className="mb-0">
-                © {new Date().getFullYear()} {savedConfig?.businessName || mockServicesData.businessName}. {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                {t('copyright')}
               </p>
             </div>
             <div className="col-md-6 text-md-end">
               <p className="mb-0">
-                {language === 'es' ? 'Desarrollado por' : 'Powered by'} WebSitioPro
+                {t('poweredBy')}
               </p>
             </div>
           </div>
         </div>
       </footer>
-
-      {/* Chat Button */}
-      <button
-        className="btn btn-primary rounded-circle position-fixed"
-        style={{
-          bottom: '20px',
-          right: '20px',
-          width: '60px',
-          height: '60px',
-          backgroundColor: '#25D366',
-          border: 'none',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-          zIndex: 1000
-        }}
-        onClick={() => setShowChat(!showChat)}
-      >
-        💬
-      </button>
-
-      {/* Chat Interface */}
-      {showChat && (
-        <div
-          className="position-fixed bg-white border rounded shadow-lg"
-          style={{
-            bottom: '90px',
-            right: '20px',
-            width: '300px',
-            height: '400px',
-            zIndex: 1000
-          }}
-        >
-          <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-            <h6 className="mb-0">Chat de Ayuda</h6>
-            <button
-              className="btn btn-sm btn-outline-secondary"
-              onClick={() => setShowChat(false)}
-            >
-              ×
-            </button>
-          </div>
-          
-          <div className="p-3" style={{ height: '280px', overflowY: 'auto' }}>
-            {chatMessages.length === 0 && (
-              <div className="text-center text-muted">
-                <p>¡Hola! ¿En qué podemos ayudarte?</p>
-                <div className="d-grid gap-2">
-                  <button
-                    className="btn btn-outline-primary btn-sm"
-                    onClick={() => handleChatSubmit('¿Cuáles son sus precios?')}
-                  >
-                    ¿Cuáles son sus precios?
-                  </button>
-                  <button
-                    className="btn btn-outline-primary btn-sm"
-                    onClick={() => handleChatSubmit('¿Tienen servicio de emergencia?')}
-                  >
-                    ¿Tienen servicio de emergencia?
-                  </button>
-                  <button
-                    className="btn btn-outline-primary btn-sm"
-                    onClick={() => handleChatSubmit('¿Cuáles son sus horarios?')}
-                  >
-                    ¿Cuáles son sus horarios?
-                  </button>
-                </div>
-              </div>
-            )}
-            
-            {chatMessages.map((message, index) => (
-              <div
-                key={index}
-                className={`mb-3 ${message.isUser ? 'text-end' : 'text-start'}`}
-              >
-                <div
-                  className={`d-inline-block p-2 rounded ${
-                    message.isUser
-                      ? 'bg-primary text-white'
-                      : 'bg-light text-dark'
-                  }`}
-                  style={{ maxWidth: '80%' }}
-                >
-                  {message.text}
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="p-3 border-top">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Escribe tu pregunta..."
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  const input = e.target as HTMLInputElement;
-                  if (input.value.trim()) {
-                    handleChatSubmit(input.value);
-                    input.value = '';
-                  }
-                }
-              }}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
