@@ -622,7 +622,7 @@ export default function HomePage() {
         <div 
           className="position-absolute w-100 h-100"
           style={{
-            backgroundImage: `url(${savedConfig?.heroImage || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80"})`,
+            backgroundImage: savedConfig?.heroImage ? `url(${savedConfig.heroImage})` : 'none',
             backgroundSize: 'cover',
             backgroundPosition: savedConfig?.heroImagePosition || 'center',
             backgroundRepeat: 'no-repeat',

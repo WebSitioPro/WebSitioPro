@@ -123,6 +123,12 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 20, 2025. Fixed Hero Image Flash on Page Refresh
+  - RESOLVED: Removed hardcoded Unsplash placeholder image that briefly appeared before proper hero image loaded
+  - Changed hero background from fallback placeholder to conditional loading (only show image if heroImage exists)
+  - Eliminates the brief flash of incorrect image when navigating from Pro page to homepage
+  - Page now shows clean background until proper hero image loads from database
+  - Improved user experience by removing visual inconsistency during page transitions
 - July 20, 2025. Removed Payment Options Section from Pro Page
   - COMPLETED: Removed "Payment Information" and "Payment Options" sections from ProPage.tsx as requested
   - Clean-up of Pro site page structure to focus on essential content only
