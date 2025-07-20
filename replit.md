@@ -123,6 +123,20 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 20, 2025. Removed Payment Options Section from Pro Page
+  - COMPLETED: Removed "Payment Information" and "Payment Options" sections from ProPage.tsx as requested
+  - Clean-up of Pro site page structure to focus on essential content only
+  - Page now flows directly from Pricing & Domain section to Contact section before footer
+  - Maintained all other functionality while removing redundant payment information
+  - User requested specific removal of payment section above footer - successfully implemented
+- July 20, 2025. Fixed App Crash During Contact Area Editing
+  - RESOLVED: Added robust database error handling to prevent app crashes during contact information editing
+  - Enhanced database connection pooling with proper timeout settings (10s connection, 30s idle, keepAlive enabled)
+  - Added specific error handling for database operations in both storage.ts and routes.ts
+  - Improved error messages to provide clear feedback instead of silent failures
+  - Database pool now includes error event handlers to log connection issues
+  - Contact area editing operations now gracefully handle database connectivity issues without crashing
+  - Application stability significantly improved for all database-dependent editing operations
 - July 20, 2025. Fixed Services Template Photo Gallery Display Issue
   - RESOLVED: Critical issue where saved photos from editor were not displaying in Services template gallery section
   - Root cause identified: OptimizedImage component was preventing photo rendering

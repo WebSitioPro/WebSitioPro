@@ -658,28 +658,6 @@ export default function ProPage() {
         </div>
       </section>
 
-      {/* Payment Information */}
-      <section className="py-5">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8 text-center">
-              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {language === 'es' ? 'Información de Pago' : 'Payment Information'}
-              </h2>
-              <div className="bg-light rounded p-4">
-                <p className="mb-0">
-                  {savedConfig?.translations?.[language]?.paymentText || 
-                   (language === 'es' ? 
-                    'Paga por transferencia bancaria (detalles por WhatsApp), tarjeta de crédito o OXXO (código QR proporcionado).' : 
-                    'Pay via bank transfer (details via WhatsApp), credit card, or OXXO (QR code provided).')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
 
       {/* Contact */}
       <section id="contact" className="py-5 bg-light">
@@ -758,28 +736,7 @@ export default function ProPage() {
         </div>
       </section>
 
-      {/* Payment */}
-      <section className="py-5">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8 text-center">
-              <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('paymentTitle')}
-              </h2>
-              <p className="lead text-muted mb-4">
-                {t('paymentText')}
-              </p>
-              <a 
-                href="https://wa.me/529831234567?text=I want to pay for my Pro site"
-                className="btn btn-success btn-lg text-white px-5"
-                style={{ backgroundColor: 'hsl(var(--secondary))' }}
-              >
-                {t('contactToPay')}
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Footer */}
       <footer className="py-4 bg-dark text-white">
