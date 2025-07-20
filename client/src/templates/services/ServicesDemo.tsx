@@ -449,18 +449,25 @@ export default function ServicesDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              const photos = (previewData && previewData.photos && previewData.photos.length > 0) 
-                ? previewData.photos 
-                : (savedConfig && savedConfig.photos && savedConfig.photos.length > 0)
-                ? savedConfig.photos
-                : [
-                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Service+Work+1",
-                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Tools+Equipment",
-                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Installation+Work",
-                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Repair+Service",
-                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professional+Team",
-                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Quality+Work"
-                  ];
+              // Priority: previewData -> savedConfig -> fallback placeholders
+              let photos = [];
+              
+              if (previewData?.photos && Array.isArray(previewData.photos) && previewData.photos.length > 0) {
+                photos = previewData.photos;
+              } else if (savedConfig?.photos && Array.isArray(savedConfig.photos) && savedConfig.photos.length > 0) {
+                photos = savedConfig.photos;
+              } else {
+                // Only show placeholder if no real photos exist
+                photos = [
+                  "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Service+Work+1",
+                  "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Tools+Equipment",
+                  "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Installation+Work",
+                  "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Repair+Service",
+                  "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professional+Team",
+                  "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Quality+Work"
+                ];
+              }
+              
               return photos.slice(0, 6).map((photo, index) => (
               <div key={index} className="col-md-4 col-sm-6">
                 <OptimizedImage 
