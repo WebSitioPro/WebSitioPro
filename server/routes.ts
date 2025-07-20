@@ -181,12 +181,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
 
-        const updatedConfig = await storage.updateWebsiteConfig(config.id, validationResult.data);
-        if (!updatedConfig) {
-          return res.status(404).json({ error: "Configuration not found" });
-        }
+        try {
+          const updatedConfig = await storage.updateWebsiteConfig(config.id, validationResult.data);
+          if (!updatedConfig) {
+            return res.status(404).json({ error: "Configuration not found" });
+          }
 
-        return res.json(updatedConfig);
+          return res.json(updatedConfig);
+        } catch (dbError) {
+          console.error("Database error during homepage update:", dbError);
+          return res.status(500).json({ 
+            error: "Database connection failed. Please try again.", 
+            details: "The update could not be completed due to a database connectivity issue."
+          });
+        }
       }
       
       // Validate configuration access using isolation system
@@ -274,14 +282,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log(`Updating config ${config.id} with data:`, JSON.stringify(validationResult.data, null, 2));
 
-      const updatedConfig = await storage.updateWebsiteConfig(config.id, validationResult.data);
-      if (!updatedConfig) {
-        console.error(`Configuration with ID ${config.id} not found`);
-        return res.status(404).json({ error: "Configuration not found" });
-      }
+      try {
+        const updatedConfig = await storage.updateWebsiteConfig(config.id, validationResult.data);
+        if (!updatedConfig) {
+          console.error(`Configuration with ID ${config.id} not found`);
+          return res.status(404).json({ error: "Configuration not found" });
+        }
 
-      console.log(`Successfully updated config ${config.id}:`, JSON.stringify(updatedConfig, null, 2));
-      res.json(updatedConfig);
+        console.log(`Successfully updated config ${config.id}:`, JSON.stringify(updatedConfig, null, 2));
+        res.json(updatedConfig);
+      } catch (dbError) {
+        console.error("Database error during config update:", dbError);
+        return res.status(500).json({ 
+          error: "Database connection failed. Please try again.", 
+          details: "The update could not be completed due to a database connectivity issue."
+        });
+      }
     } catch (error) {
       console.error("Error updating configuration:", error);
       res.status(500).json({ error: "Failed to update website configuration" });

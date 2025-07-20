@@ -55,12 +55,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined> {
-    const [updatedConfig] = await db
-      .update(websiteConfigs)
-      .set(config)
-      .where(eq(websiteConfigs.id, id))
-      .returning();
-    return updatedConfig || undefined;
+    try {
+      const [updatedConfig] = await db
+        .update(websiteConfigs)
+        .set(config)
+        .where(eq(websiteConfigs.id, id))
+        .returning();
+      return updatedConfig || undefined;
+    } catch (error) {
+      console.error("Database update error:", error);
+      throw new Error("Failed to update configuration in database");
+    }
   }
 
   async deleteWebsiteConfig(id: number): Promise<boolean> {
