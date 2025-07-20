@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Clock, Star, Menu, X, Wrench, Facebook, Instagram, Award, Shield, Heart, Users, CheckCircle, Target } from 'lucide-react';
-import { OptimizedImage } from '../../components/OptimizedImage';
-import { usePerformance } from '../../hooks/use-performance';
-import { useIsSmallMobile } from '../../hooks/use-mobile';
 
 // Mock data for services template
 const mockServicesData = {
@@ -127,15 +124,10 @@ export default function ServicesDemo() {
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [savedConfig, setSavedConfig] = useState<any>(null);
 
-  // Load saved configuration
+  // Temporarily disable loading config to isolate React error
   useEffect(() => {
-    fetch('/api/config/services-demo')
-      .then(res => res.json())
-      .then(data => {
-        setSavedConfig(data);
-        console.log('Services demo loaded config:', data);
-      })
-      .catch(err => console.log('Config not loaded:', err));
+    // setSavedConfig({});
+    console.log('Config loading temporarily disabled for debugging');
   }, []);
 
   const t = (key: string) => {
@@ -166,7 +158,17 @@ export default function ServicesDemo() {
 
     return updatedTranslations[language][key as keyof typeof updatedTranslations['es']] || key;
   };
-  const getLocalizedValue = <T extends { en: string; es: string }>(obj: T) => obj[language];
+  const getLocalizedValue = (obj: any): string => {
+    if (!obj) return '';
+    if (typeof obj === 'string') return obj;
+    if (typeof obj === 'object') {
+      if (language === 'es' && obj.es) return obj.es;
+      if (language === 'en' && obj.en) return obj.en;
+      if (obj.es) return obj.es;
+      if (obj.en) return obj.en;
+    }
+    return '';
+  };
 
   const toggleLanguage = () => {
     setLanguage(language === 'es' ? 'en' : 'es');
@@ -273,16 +275,16 @@ export default function ServicesDemo() {
           <div className="row align-items-center" style={{ minHeight: '50vh' }}>
             <div className="col-lg-8">
               <h1 className="display-4 fw-bold mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'hsl(var(--primary))' }}>
-                {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
+                {getLocalizedValue(savedConfig?.heroTitle) || 
                  (savedConfig && savedConfig.businessName) || 
                  t('businessName')}
               </h1>
               <h2 className="h4 mb-4" style={{ color: savedConfig?.heroImage ? '#f8f9fa' : 'hsl(var(--primary))' }}>
-                {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
+                {getLocalizedValue(savedConfig?.heroSubtitle) || 
                  (language === 'es' ? 'Reparaciones y Mantenimiento' : 'Repairs & Maintenance')}
               </h2>
               <p className="lead mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'var(--bs-gray-600)' }}>
-                {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || 
+                {getLocalizedValue(savedConfig?.heroDescription) || 
                  getLocalizedValue(mockServicesData.intro)}
               </p>
               <div className="d-flex flex-wrap gap-3">
@@ -321,7 +323,7 @@ export default function ServicesDemo() {
                 {t('aboutTitle')}
               </h2>
               <p className="lead text-muted">
-                {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || 
+                {getLocalizedValue(savedConfig?.aboutText) || 
                  (language === 'es' ? 
                   "Con más de 15 años de experiencia en servicios de plomería, hemos construido nuestra reputación basada en la calidad, puntualidad y honestidad. Nuestro equipo de técnicos certificados está disponible 24/7 para resolver cualquier emergencia y brindar soluciones duraderas." :
                   "With over 15 years of experience in plumbing services, we have built our reputation based on quality, punctuality and honesty. Our team of certified technicians is available 24/7 to solve any emergency and provide lasting solutions."
@@ -330,22 +332,22 @@ export default function ServicesDemo() {
               <div className="row mt-5">
                 {(() => {
                   // Get about stats from saved config, or use defaults
-                  const aboutStats = (savedConfig?.aboutStats && Array.isArray(savedConfig.aboutStats) && savedConfig.aboutStats.length > 0) ? 
-                    savedConfig.aboutStats : [
+                  // Ignore saved config for aboutStats temporarily
+                  const aboutStats = [
                     {
                       icon: 'Wrench',
-                      value: { es: '24/7', en: '24/7' },
-                      label: { es: 'Servicio de emergencia', en: 'Emergency service' }
+                      value: '24/7',
+                      label: 'Emergency Service'
                     },
                     {
                       icon: 'Users',
-                      value: { es: '500+', en: '500+' },
-                      label: { es: 'Clientes atendidos', en: 'Clients served' }
+                      value: '500+',
+                      label: 'Clients Served'
                     },
                     {
                       icon: 'CheckCircle',
-                      value: { es: '98%', en: '98%' },
-                      label: { es: 'Satisfacción garantizada', en: 'Satisfaction guaranteed' }
+                      value: '98%',
+                      label: 'Satisfaction Guaranteed'
                     }
                   ];
                   
@@ -371,16 +373,8 @@ export default function ServicesDemo() {
                                style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
                             <IconComponent size={32} style={{ color: 'hsl(var(--primary))' }} />
                           </div>
-                          <h5>
-                            {stat.value && typeof stat.value === 'object' 
-                              ? (language === 'es' ? stat.value.es : stat.value.en)
-                              : stat.value || ''}
-                          </h5>
-                          <p className="text-muted">
-                            {stat.label && typeof stat.label === 'object' 
-                              ? (language === 'es' ? stat.label.es : stat.label.en)
-                              : stat.label || ''}
-                          </p>
+                          <h5>{stat.value}</h5>
+                          <p className="text-muted">{stat.label}</p>
                         </div>
                       </div>
                     );
@@ -409,13 +403,25 @@ export default function ServicesDemo() {
                   <div className="card-body p-4">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
                       <Wrench size={20} className="me-2" />
-                      {service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}
+                      {service.title ? 
+                        (typeof service.title === 'object' ? 
+                          (service.title.es || service.title.en || 'Service') : 
+                          service.title) : 
+                        (service.name || 'Service')}
                     </h5>
                     <p className="text-muted mb-4">
-                      {service.description ? (language === 'es' ? service.description.es : service.description.en) : service.description}
+                      {service.description ? 
+                        (typeof service.description === 'object' ? 
+                          (service.description.es || service.description.en || 'Professional service') : 
+                          service.description) : 
+                        'Professional service'}
                     </p>
                     <a 
-                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockServicesData.whatsappNumber}?text=Me interesa el servicio de ${service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}`}
+                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockServicesData.whatsappNumber}?text=Me interesa el servicio de ${service.title ? 
+                        (typeof service.title === 'object' ? 
+                          (service.title.es || service.title.en || 'Service') : 
+                          service.title) : 
+                        (service.name || 'Service')}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -431,33 +437,7 @@ export default function ServicesDemo() {
         </div>
       </section>
 
-      {/* Banner Section */}
-      {savedConfig?.showBanner && savedConfig.bannerText && (
-        <section className="py-4" style={{ backgroundColor: savedConfig.bannerBackgroundColor || '#f8f9fa' }}>
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-md-10">
-                <div className="text-center">
-                  {savedConfig.bannerTitle && (
-                    <h5 className="mb-3 fw-bold" style={{ 
-                      color: savedConfig.bannerTextColor || '#333333',
-                      fontSize: savedConfig.bannerTextSize || '18px'
-                    }}>
-                      {getLocalizedValue(savedConfig.bannerTitle)}
-                    </h5>
-                  )}
-                  <p className="mb-0" style={{ 
-                    color: savedConfig.bannerTextColor || '#333333',
-                    fontSize: savedConfig.bannerTextSize || '16px'
-                  }}>
-                    {getLocalizedValue(savedConfig.bannerText)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Banner Section - Temporarily disabled for debugging */}
 
       {/* Reviews Section */}
       <section id="reviews" className="py-4 bg-light">
@@ -481,7 +461,7 @@ export default function ServicesDemo() {
                     </div>
                     <div className="flex-grow-1 d-flex flex-column justify-content-center">
                       <p className="mb-3 text-muted">
-                        "{getLocalizedValue(review.text)}"
+                        "{getLocalizedValue(review.text) || 'Great service!'}"
                       </p>
                     </div>
                     <h6 className="mb-0 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
@@ -537,7 +517,7 @@ export default function ServicesDemo() {
               <div className="card border-0 shadow-sm h-100">
                 <div className="card-body p-4">
                   <h5 className="mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                    {t('contactInfo')}
+                    Información de Contacto
                   </h5>
                   <div className="row g-4">
                     <div className="col-12">
