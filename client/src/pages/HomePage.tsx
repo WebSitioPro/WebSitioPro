@@ -379,9 +379,6 @@ export default function HomePage() {
                 <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
                 <a className="text-decoration-none text-dark" href="#offerings">{t('offerings')}</a>
                 <a className="text-decoration-none text-dark" href="#pricing">{t('pricing')}</a>
-                <a className="btn btn-success text-white px-3 py-1" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
-                  {t('domainChecker')}
-                </a>
                 <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
                 <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
                 {import.meta.env.DEV && (
@@ -397,6 +394,10 @@ export default function HomePage() {
             {/* Desktop Language Toggle & CTA */}
             <div className="col-auto d-none d-md-flex">
               <div className="d-flex align-items-center gap-3">
+                <a className="btn btn-success text-white px-3 py-1" href="#domain" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                  {t('domainChecker')}
+                </a>
+
                 <button 
                   className="btn text-dark fw-bold px-3"
                   onClick={toggleLanguage}
@@ -436,7 +437,7 @@ export default function HomePage() {
                   style={{ backgroundColor: 'hsl(var(--accent))', borderColor: 'hsl(var(--accent))' }}
                   aria-label="Language toggle"
                 >
-                  {language === 'es' ? 'EN' : 'ES'}
+                  {language === 'es' ? 'English' : 'Español'}
                 </button>
                 <button 
                   className="btn btn-outline-dark d-lg-none"

@@ -231,9 +231,6 @@ export default function ProPage() {
                 <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('about')}>{t('about')}</button>
                 <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('offerings')}>{t('offerings')}</button>
                 <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('pricing')}>{t('pricing')}</button>
-                <button className="btn btn-success text-white px-3 py-1" style={{ backgroundColor: 'hsl(var(--secondary))' }} onClick={() => navigateToHomeSection('domain')}>
-                  {t('domainChecker')}
-                </button>
                 <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('contact')}>{t('contact')}</button>
                 <Link className="text-decoration-none fw-bold" href="/pro" style={{ color: 'hsl(var(--primary))' }}>{t('proSites')}</Link>
               </div>
@@ -244,6 +241,10 @@ export default function ProPage() {
             {/* Desktop Language Toggle & WhatsApp CTA */}
             <div className="col-auto d-none d-md-flex">
               <div className="d-flex align-items-center gap-3">
+                <button className="btn btn-success text-white px-3 py-1" style={{ backgroundColor: 'hsl(var(--secondary))' }} onClick={() => navigateToHomeSection('domain')}>
+                  {t('domainChecker')}
+                </button>
+
                 <button 
                   className="btn text-dark fw-bold px-3"
                   onClick={toggleLanguage}
@@ -272,7 +273,7 @@ export default function ProPage() {
                   style={{ backgroundColor: 'hsl(var(--accent))', borderColor: 'hsl(var(--accent))' }}
                   aria-label="Language toggle"
                 >
-                  {language === 'es' ? 'EN' : 'ES'}
+                  {language === 'es' ? 'English' : 'Español'}
                 </button>
                 <button 
                   className="btn btn-outline-dark d-lg-none"

@@ -58,9 +58,6 @@ export default function UnifiedHeader({ language, toggleLanguage, currentPage = 
               <a className="text-decoration-none text-dark" href="/#about">{t('about')}</a>
               <a className="text-decoration-none text-dark" href="/#offerings">{t('templates')}</a>
               <a className="text-decoration-none text-dark" href="/#pricing">{t('pricing')}</a>
-              <a className="btn btn-success text-white px-3 py-1" href="/#domain" style={{ backgroundColor: '#00A859' }}>
-                {t('domainChecker')}
-              </a>
               <a className="text-decoration-none text-dark" href="/#contact">{t('contact')}</a>
               <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
               {import.meta.env.DEV && (
@@ -72,6 +69,10 @@ export default function UnifiedHeader({ language, toggleLanguage, currentPage = 
           {/* Language Toggle & CTA */}
           <div className="col-auto">
             <div className="d-flex align-items-center gap-3">
+              <a className="btn btn-success text-white px-3 py-1" href="/#domain" style={{ backgroundColor: '#00A859' }}>
+                {t('domainChecker')}
+              </a>
+
               <button 
                 className="btn text-dark fw-bold px-3"
                 onClick={toggleLanguage}
@@ -99,11 +100,26 @@ export default function UnifiedHeader({ language, toggleLanguage, currentPage = 
               <a className="text-decoration-none text-dark" href="/#about">{t('about')}</a>
               <a className="text-decoration-none text-dark" href="/#offerings">{t('templates')}</a>
               <a className="text-decoration-none text-dark" href="/#pricing">{t('pricing')}</a>
+              <a className="text-decoration-none text-dark" href="/#contact">{t('contact')}</a>
+              <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
               <a className="btn btn-success text-white px-3 py-1" href="/#domain" style={{ backgroundColor: '#00A859' }}>
                 {t('domainChecker')}
               </a>
-              <a className="text-decoration-none text-dark" href="/#contact">{t('contact')}</a>
-              <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
+              <button 
+                className="btn text-dark fw-bold px-3"
+                onClick={toggleLanguage}
+                style={{ backgroundColor: '#FFC107', borderColor: '#FFC107' }}
+                aria-label="Language toggle"
+              >
+                {language === 'es' ? 'English' : 'Español'}
+              </button>
+              <Link 
+                href="/pro" 
+                className="btn btn-primary text-white px-4"
+                style={{ backgroundColor: '#C8102E' }}
+              >
+                {t('getStarted')}
+              </Link>
             </div>
           </div>
         </div>
