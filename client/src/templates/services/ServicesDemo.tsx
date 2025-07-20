@@ -449,11 +449,9 @@ export default function ServicesDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              // Get photos from saved configuration or preview data
-              const photos = (previewData?.photos && previewData.photos.length > 0) 
-                ? previewData.photos 
-                : (savedConfig?.photos && savedConfig.photos.length > 0)
-                ? savedConfig.photos
+              // Use photos from saved config first, then fall back to placeholder data
+              const photos = savedConfig?.photos?.length > 0 
+                ? savedConfig.photos 
                 : [
                     "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Service+Work+1",
                     "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Tools+Equipment", 
