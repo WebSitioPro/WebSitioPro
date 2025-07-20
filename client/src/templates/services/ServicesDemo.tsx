@@ -461,21 +461,24 @@ export default function ServicesDemo() {
                     "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Quality+Work"
                   ];
               
-              return photos.slice(0, 6).map((photo, index) => (
-                <div key={index} className="col-md-4 col-sm-6">
-                  <OptimizedImage 
-                    src={typeof photo === 'string' ? photo : photo?.url || photo} 
-                    alt={typeof photo === 'string' ? `Service photo ${index + 1}` : (photo?.caption ? getLocalizedValue(photo.caption) : `Service photo ${index + 1}`)} 
-                    className="img-fluid rounded shadow-sm"
-                    style={{ 
-                      width: '100%',
-                      height: '200px', 
-                      objectFit: 'cover' 
-                    }}
-                    isCritical={isCriticalDevice}
-                  />
-                </div>
-              ));
+              return photos.slice(0, 6).map((photo, index) => {
+                const photoSrc = typeof photo === 'string' ? photo : photo?.url;
+                
+                return (
+                  <div key={index} className="col-md-4 col-sm-6">
+                    <img 
+                      src={photoSrc} 
+                      alt={typeof photo === 'string' ? `Service photo ${index + 1}` : (photo?.caption ? getLocalizedValue(photo.caption) : `Service photo ${index + 1}`)} 
+                      className="img-fluid rounded shadow-sm"
+                      style={{ 
+                        width: '100%',
+                        height: '200px', 
+                        objectFit: 'cover' 
+                      }}
+                    />
+                  </div>
+                );
+              });
             })()}
           </div>
         </div>

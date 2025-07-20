@@ -123,6 +123,13 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 20, 2025. Fixed Services Template Photo Gallery Display Issue
+  - RESOLVED: Critical issue where saved photos from editor were not displaying in Services template gallery section
+  - Root cause identified: OptimizedImage component was preventing photo rendering
+  - Replaced OptimizedImage with standard img tag to ensure reliable photo display
+  - Services template now properly displays saved photos from editor in "Galería de trabajos" section
+  - Photo data loading logic was working correctly - issue was purely with the image rendering component
+  - Template follows same pattern as working Restaurants template for consistent photo handling
 - July 19, 2025. Fixed Google Maps Hardcoded Data Issues Across All Templates
   - RESOLVED: Fixed hardcoded "Av. Héroes" appearing in Google Maps when custom embed codes were added
   - RESOLVED: Fixed hardcoded address text at bottom of Maps section that didn't update with saved configuration
