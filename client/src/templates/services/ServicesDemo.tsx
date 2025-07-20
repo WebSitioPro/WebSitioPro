@@ -229,150 +229,147 @@ export default function ServicesDemo() {
             {t('businessName')}
           </a>
           
-          <button 
-            className="navbar-toggler border-0" 
-            type="button"
-            onClick={() => setShowMobileMenu(!showMobileMenu)}
-            aria-label="Toggle navigation"
-          >
-            {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="d-flex align-items-center d-lg-none">
+            <button
+              className="btn btn-outline-warning btn-sm me-3"
+              onClick={toggleLanguage}
+              style={{ fontSize: '1.5em' }}
+            >
+              {language === 'es' ? 'English' : 'Español'}
+            </button>
+            
+            <button
+              className="navbar-toggler"
+              type="button"
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+            >
+              {showMobileMenu ? <X /> : <Menu />}
+            </button>
+          </div>
 
-          <div className={`navbar-collapse ${showMobileMenu ? 'show' : 'collapse'}`}>
-            <ul className="navbar-nav ms-auto">
+          <div className={`navbar-collapse ${showMobileMenu ? 'show' : ''} d-lg-flex`}>
+            <div className="d-none d-lg-flex gap-4 ms-auto align-items-center">
+              <a className="text-decoration-none text-dark" href="#home">{t('home')}</a>
+              <a className="text-decoration-none text-dark" href="#about">{t('about')}</a>
+              <a className="text-decoration-none text-dark" href="#services">{t('services')}</a>
+              <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
+              <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
+              <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
+              <button
+                className="btn btn-outline-warning btn-sm"
+                onClick={toggleLanguage}
+                style={{ fontSize: '1.5em' }}
+              >
+                {language === 'es' ? 'English' : 'Español'}
+              </button>
+            </div>
+            
+            {/* Mobile menu */}
+            <ul className={`navbar-nav d-lg-none ${showMobileMenu ? 'd-block' : 'd-none'}`}>
               <li className="nav-item">
-                <a className="nav-link" href="#home">{t('home')}</a>
+                <a className="nav-link" href="#home" onClick={() => setShowMobileMenu(false)}>{t('home')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#about">{t('about')}</a>
+                <a className="nav-link" href="#about" onClick={() => setShowMobileMenu(false)}>{t('about')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#services">{t('services')}</a>
+                <a className="nav-link" href="#services" onClick={() => setShowMobileMenu(false)}>{t('services')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#reviews">{t('reviews')}</a>
+                <a className="nav-link" href="#reviews" onClick={() => setShowMobileMenu(false)}>{t('reviews')}</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#contact">{t('contact')}</a>
+                <a className="nav-link" href="#contact" onClick={() => setShowMobileMenu(false)}>{t('contact')}</a>
               </li>
               <li className="nav-item">
-                <button 
-                  className="btn btn-link nav-link border-0 bg-transparent" 
-                  onClick={toggleLanguage}
-                >
-                  {language === 'es' ? 'English' : 'Español'}
-                </button>
+                <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
 
-      {/* Announcement Banner */}
-      {((previewData && previewData.showBanner) || (savedConfig && savedConfig.showBanner)) && (
-        <div 
-          className="py-2 text-center"
-          style={{ 
-            backgroundColor: (previewData && previewData.bannerBackgroundColor) || (savedConfig && savedConfig.bannerBackgroundColor) || '#FFC107',
-            color: (previewData && previewData.bannerTextColor) || (savedConfig && savedConfig.bannerTextColor) || '#000000',
-            fontSize: (previewData && previewData.bannerTextSize) || (savedConfig && savedConfig.bannerTextSize) || '16px'
-          }}
-        >
-          <div className="container">
-            {((previewData && previewData.bannerTitle) || (savedConfig && savedConfig.bannerTitle)) && (
-              <h6 className="mb-1 fw-bold">
-                {getLocalizedValue((previewData && previewData.bannerTitle) || (savedConfig && savedConfig.bannerTitle))}
-              </h6>
-            )}
-            <p className="mb-0">
-              {getLocalizedValue((previewData && previewData.bannerText) || (savedConfig && savedConfig.bannerText))}
-            </p>
-          </div>
-        </div>
-      )}
+
 
       {/* Hero Section */}
-      <section 
-        id="home" 
-        className="py-5" 
-        style={{ 
-          minHeight: '60vh',
-          backgroundImage: (previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage) ?
-            `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${(previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)})` :
-            'linear-gradient(135deg, #C8102E 0%, #00A859 100%)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
+      <section id="home" className="py-5" style={{ 
+        backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
+          `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${previewData?.heroImage || savedConfig?.heroImage})` : 
+          'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: (previewData?.heroImage || savedConfig?.heroImage) ? 'transparent' : 'hsl(var(--primary) / 0.05)'
+      }}>
         <div className="container">
-          <div className="row align-items-center" style={{ minHeight: '50vh' }}>
+          <div className="row align-items-center">
             <div className="col-lg-8">
               <h1 className="display-4 fw-bold mb-4" style={{ 
-                color: ((previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)) ? 'white' : 'hsl(var(--primary))' 
+                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--primary))' 
               }}>
                 {t('heroTitle')}
               </h1>
-              <h2 className="h4 mb-4" style={{ 
-                color: ((previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)) ? '#f8f9fa' : 'hsl(var(--primary))' 
+              <h2 className="h3 mb-4" style={{ 
+                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--secondary))' 
               }}>
                 {t('heroSubtitle')}
               </h2>
               <p className="lead mb-4" style={{ 
-                color: ((previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage)) ? 'white' : 'var(--bs-gray-600)' 
+                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--muted-foreground))' 
               }}>
                 {t('heroDescription')}
               </p>
-              <div className="d-flex flex-wrap gap-3">
-                <a 
-                  href={`https://wa.me/${(previewData && previewData.whatsappNumber) || (savedConfig && savedConfig.whatsappNumber) || '529834567890'}?text=${encodeURIComponent(getLocalizedValue((previewData && previewData.whatsappMessage) || (savedConfig && savedConfig.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
-                  className="btn btn-lg text-white"
-                  style={{ backgroundColor: '#25D366' }}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Phone size={20} className="me-2" />
-                  {t('whatsappButton')}
-                </a>
-                <span className="badge bg-danger fs-6 px-3 py-2 align-self-center">
-                  {language === 'es' ? 'Emergencias 24/7' : 'Emergency 24/7'}
-                </span>
-              </div>
+              <a 
+                href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529834567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(getLocalizedValue((previewData?.whatsappMessage || savedConfig?.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
+                className="btn btn-primary btn-lg text-white"
+                style={{ backgroundColor: '#25D366' }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Phone className="me-2" size={20} />
+                {t('whatsappButton')}
+              </a>
             </div>
-            <div className="col-lg-4 text-center">
-              {(() => {
-                // Check for profile image or first photo in gallery
-                const profileImg = (previewData && previewData.profileImage) || (savedConfig && savedConfig.profileImage);
-                const firstPhoto = (previewData && previewData.photos && previewData.photos.length > 0) ? 
-                  (typeof previewData.photos[0] === 'string' ? previewData.photos[0] : previewData.photos[0].url) :
-                  (savedConfig && savedConfig.photos && savedConfig.photos.length > 0) ?
-                  (typeof savedConfig.photos[0] === 'string' ? savedConfig.photos[0] : savedConfig.photos[0].url) : null;
-                
-                const imageToShow = profileImg || firstPhoto;
-                
-                if (imageToShow) {
-                  return (
-                    <OptimizedImage 
-                      src={imageToShow}
-                      alt={t('businessName')}
-                      className="img-fluid rounded shadow"
-                      style={{ maxHeight: '300px', width: 'auto' }}
-                      isCritical={isCriticalDevice}
-                    />
-                  );
-                }
-                
-                // Only show fallback if no hero background image exists
-                if (!((previewData && previewData.heroImage) || (savedConfig && savedConfig.heroImage))) {
-                  return (
-                    <div className="d-flex align-items-center justify-content-center" style={{ height: '300px' }}>
-                      <Wrench size={80} style={{ color: 'hsl(var(--primary))', opacity: 0.3 }} />
-                    </div>
-                  );
-                }
-                
-                return null; // Don't show anything if background image exists
-              })()}
+            <div className="col-lg-4">
+              <div className="text-center">
+                {(() => {
+                  // Check for profile image or first photo in gallery
+                  const profileImg = (previewData?.profileImage || savedConfig?.profileImage);
+                  const firstPhoto = (previewData?.photos && previewData.photos.length > 0) ? 
+                    (typeof previewData.photos[0] === 'string' ? previewData.photos[0] : previewData.photos[0].url) :
+                    (savedConfig?.photos && savedConfig.photos.length > 0) ?
+                    (typeof savedConfig.photos[0] === 'string' ? savedConfig.photos[0] : savedConfig.photos[0].url) : null;
+                  
+                  const imageToShow = profileImg || firstPhoto;
+                  
+                  if (imageToShow) {
+                    return (
+                      <div 
+                        className="rounded-circle mx-auto mb-3 overflow-hidden border border-3"
+                        style={{ 
+                          width: '300px', 
+                          height: '300px', 
+                          backgroundColor: 'hsl(var(--primary) / 0.1)',
+                          borderColor: 'hsl(var(--primary)) !important'
+                        }}
+                      >
+                        <OptimizedImage 
+                          src={imageToShow}
+                          alt={t('businessName')}
+                          className="w-100 h-100"
+                          style={{ objectFit: 'cover' }}
+                          isCritical={isCriticalDevice}
+                          onError={(e) => {
+                            e.target.src = "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Services";
+                          }}
+                        />
+                      </div>
+                    );
+                  }
+                  
+                  return null; // Don't show anything if no image
+                })()}
+              </div>
             </div>
           </div>
         </div>
@@ -523,6 +520,29 @@ export default function ServicesDemo() {
           </div>
         </div>
       </section>
+
+      {/* Announcement Banner */}
+      {((previewData && previewData.showBanner) || (savedConfig && savedConfig.showBanner)) && (
+        <div 
+          className="py-3 text-center"
+          style={{ 
+            backgroundColor: (previewData && previewData.bannerBackgroundColor) || (savedConfig && savedConfig.bannerBackgroundColor) || '#FFC107',
+            color: (previewData && previewData.bannerTextColor) || (savedConfig && savedConfig.bannerTextColor) || '#000000',
+            fontSize: (previewData && previewData.bannerTextSize) || (savedConfig && savedConfig.bannerTextSize) || '16px'
+          }}
+        >
+          <div className="container">
+            {((previewData && previewData.bannerTitle) || (savedConfig && savedConfig.bannerTitle)) && (
+              <h6 className="mb-1 fw-bold">
+                {getLocalizedValue((previewData && previewData.bannerTitle) || (savedConfig && savedConfig.bannerTitle))}
+              </h6>
+            )}
+            <p className="mb-0">
+              {getLocalizedValue((previewData && previewData.bannerText) || (savedConfig && savedConfig.bannerText))}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Reviews Section */}
       <section id="reviews" className="py-5 bg-light">
