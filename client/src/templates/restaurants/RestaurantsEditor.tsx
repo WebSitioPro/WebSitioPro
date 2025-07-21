@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
-import { Save, ArrowLeft, Eye, UtensilsCrossed, Camera, Phone, Star, Plus, Trash2, Image, Type, Palette, Settings } from 'lucide-react';
+import { Save, ArrowLeft, Eye, UtensilsCrossed, Camera, Phone, Star, Plus, Trash2, Image, Type, Palette, Settings, Award, Clock, Users, Heart, Shield, CheckCircle, Target, ChefHat, Coffee, Utensils, Wine, MapPin } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 import { RestaurantsTemplateConfig } from './config';
@@ -706,14 +706,32 @@ export default function RestaurantsEditor() {
                                     value={stat.icon}
                                     onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
                                   >
-                                    <option value="Award">Award</option>
-                                    <option value="Star">Star</option>
-                                    <option value="Shield">Shield</option>
-                                    <option value="Heart">Heart</option>
-                                    <option value="Users">Users</option>
-                                    <option value="Clock">Clock</option>
-                                    <option value="CheckCircle">CheckCircle</option>
-                                    <option value="Target">Target</option>
+                                    <option value="chef_hat">👨‍🍳 Chef Hat</option>
+                                    <option value="taco">🌮 Taco</option>
+                                    <option value="pizza">🍕 Pizza</option>
+                                    <option value="hamburger">🍔 Hamburger</option>
+                                    <option value="coffee">☕ Coffee</option>
+                                    <option value="wine">🍷 Wine</option>
+                                    <option value="beer">🍺 Beer</option>
+                                    <option value="cake">🎂 Cake</option>
+                                    <option value="fire">🔥 Fire (Spicy)</option>
+                                    <option value="trophy">🏆 Trophy</option>
+                                    <option value="star">⭐ Star</option>
+                                    <option value="heart">❤️ Heart</option>
+                                    <option value="thumbs_up">👍 Thumbs Up</option>
+                                    <option value="clock">⏰ Clock</option>
+                                    <option value="location">📍 Location</option>
+                                    <option value="users">👥 Users</option>
+                                    <option value="Award">🏅 Award (Icon)</option>
+                                    <option value="ChefHat">ChefHat (Icon)</option>
+                                    <option value="Coffee">Coffee (Icon)</option>
+                                    <option value="Utensils">Utensils (Icon)</option>
+                                    <option value="Wine">Wine (Icon)</option>
+                                    <option value="Star">Star (Icon)</option>
+                                    <option value="Clock">Clock (Icon)</option>
+                                    <option value="Users">Users (Icon)</option>
+                                    <option value="Heart">Heart (Icon)</option>
+                                    <option value="MapPin">MapPin (Icon)</option>
                                   </select>
                                 </div>
                               </div>

@@ -333,27 +333,50 @@ export default function RestaurantsDemo() {
                     }
                   ];
                   
-                  // Icon mapping
+                  // Icon mapping with emoji and lucide icons
                   const iconMap = {
-                    Award: Award,
-                    Star: Star,
-                    Shield: Shield,
-                    Heart: Heart,
-                    Users: Users,
-                    Clock: Clock,
-                    CheckCircle: CheckCircle,
-                    Target: Target,
-                    Phone: Phone
+                    // Emoji icons (restaurant-specific)
+                    chef_hat: <span style={{ fontSize: '48px' }}>👨‍🍳</span>,
+                    taco: <span style={{ fontSize: '48px' }}>🌮</span>,
+                    pizza: <span style={{ fontSize: '48px' }}>🍕</span>,
+                    hamburger: <span style={{ fontSize: '48px' }}>🍔</span>,
+                    coffee: <span style={{ fontSize: '48px' }}>☕</span>,
+                    wine: <span style={{ fontSize: '48px' }}>🍷</span>,
+                    beer: <span style={{ fontSize: '48px' }}>🍺</span>,
+                    cake: <span style={{ fontSize: '48px' }}>🎂</span>,
+                    fire: <span style={{ fontSize: '48px' }}>🔥</span>,
+                    trophy: <span style={{ fontSize: '48px' }}>🏆</span>,
+                    star: <span style={{ fontSize: '48px' }}>⭐</span>,
+                    heart: <span style={{ fontSize: '48px' }}>❤️</span>,
+                    thumbs_up: <span style={{ fontSize: '48px' }}>👍</span>,
+                    clock: <span style={{ fontSize: '48px' }}>⏰</span>,
+                    location: <span style={{ fontSize: '48px' }}>📍</span>,
+                    users: <span style={{ fontSize: '48px' }}>👥</span>,
+                    // Lucide icons (fallback)
+                    Award: <Award size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Star: <Star size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Shield: <Shield size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Heart: <Heart size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Users: <Users size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Clock: <Clock size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    CheckCircle: <CheckCircle size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Target: <Target size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Phone: <Phone size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    ChefHat: <UtensilsCrossed size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Coffee: <Phone size={48} style={{ color: 'hsl(var(--primary))' }} />, // Using Phone as placeholder
+                    Utensils: <UtensilsCrossed size={48} style={{ color: 'hsl(var(--primary))' }} />,
+                    Wine: <Phone size={48} style={{ color: 'hsl(var(--primary))' }} />, // Using Phone as placeholder
+                    MapPin: <MapPin size={48} style={{ color: 'hsl(var(--primary))' }} />
                   };
                   
                   return aboutStats.map((stat, index) => {
-                    const IconComponent = iconMap[stat.icon as keyof typeof iconMap] || Clock;
+                    const iconElement = iconMap[stat.icon as keyof typeof iconMap] || iconMap.clock;
                     return (
                       <div key={index} className="col-md-4">
                         <div className="text-center">
                           <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
                                style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                            <IconComponent size={32} style={{ color: 'hsl(var(--primary))' }} />
+                            {iconElement}
                           </div>
                           <h5>{language === 'es' ? stat.value.es : stat.value.en}</h5>
                           <p className="text-muted">{language === 'es' ? stat.label.es : stat.label.en}</p>
