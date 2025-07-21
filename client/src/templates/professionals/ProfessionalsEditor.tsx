@@ -291,7 +291,25 @@ export default function ProfessionalsEditor() {
             bannerText: config.bannerText || websiteData.bannerText,
             bannerBackgroundColor: config.bannerBackgroundColor || websiteData.bannerBackgroundColor,
             bannerTextColor: config.bannerTextColor || websiteData.bannerTextColor,
-            bannerTextSize: config.bannerTextSize || websiteData.bannerTextSize
+            bannerTextSize: config.bannerTextSize || websiteData.bannerTextSize,
+
+            // Ensure clientApproval exists with proper structure
+            clientApproval: config.clientApproval || {
+              isFormEnabled: false,
+              formStatus: "disabled",
+              clientInfo: { name: "", email: "", submissionDate: "" },
+              sectionApprovals: {
+                hero: { status: "pending", approved: false, comments: "" },
+                about: { status: "pending", approved: false, comments: "" },
+                services: { status: "pending", approved: false, comments: "" },
+                photos: { status: "pending", approved: false, comments: "" },
+                reviews: { status: "pending", approved: false, comments: "" },
+                contact: { status: "pending", approved: false, comments: "" }
+              },
+              generalInstructions: "",
+              overallApproved: false,
+              lastSavedAt: ""
+            }
           };
 
           setWebsiteData(professionalConfig);
@@ -575,22 +593,11 @@ export default function ProfessionalsEditor() {
 
   // Client Approval System Functions
   const handleToggleClientApprovalForm = () => {
-    setWebsiteData(prev => ({
-      ...prev,
-      clientApproval: {
-        ...prev.clientApproval!,
-        isFormEnabled: !prev.clientApproval!.isFormEnabled,
-        formStatus: !prev.clientApproval!.isFormEnabled ? "active" : "disabled"
-      }
-    }));
-  };
-
-  const handleResetClientApprovals = () => {
-    setWebsiteData(prev => ({
-      ...prev,
-      clientApproval: {
-        isFormEnabled: prev.clientApproval!.isFormEnabled,
-        formStatus: "active",
+    setWebsiteData(prev => {
+      // Initialize clientApproval if it doesn't exist
+      const currentApproval = prev.clientApproval || {
+        isFormEnabled: false,
+        formStatus: "disabled",
         clientInfo: { name: "", email: "", submissionDate: "" },
         sectionApprovals: {
           hero: { status: "pending", approved: false, comments: "" },
@@ -603,8 +610,43 @@ export default function ProfessionalsEditor() {
         generalInstructions: "",
         overallApproved: false,
         lastSavedAt: ""
-      }
-    }));
+      };
+
+      return {
+        ...prev,
+        clientApproval: {
+          ...currentApproval,
+          isFormEnabled: !currentApproval.isFormEnabled,
+          formStatus: !currentApproval.isFormEnabled ? "active" : "disabled"
+        }
+      };
+    });
+  };
+
+  const handleResetClientApprovals = () => {
+    setWebsiteData(prev => {
+      const currentApproval = prev.clientApproval || { isFormEnabled: false };
+      
+      return {
+        ...prev,
+        clientApproval: {
+          isFormEnabled: currentApproval.isFormEnabled,
+          formStatus: "active",
+          clientInfo: { name: "", email: "", submissionDate: "" },
+          sectionApprovals: {
+            hero: { status: "pending", approved: false, comments: "" },
+            about: { status: "pending", approved: false, comments: "" },
+            services: { status: "pending", approved: false, comments: "" },
+            photos: { status: "pending", approved: false, comments: "" },
+            reviews: { status: "pending", approved: false, comments: "" },
+            contact: { status: "pending", approved: false, comments: "" }
+          },
+          generalInstructions: "",
+          overallApproved: false,
+          lastSavedAt: ""
+        }
+      };
+    });
   };
 
   const getApprovalStatusSummary = () => {
