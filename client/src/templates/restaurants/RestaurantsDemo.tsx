@@ -261,7 +261,7 @@ export default function RestaurantsDemo() {
       <section id="home" className="py-5">
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-lg-8">
+            <div className="col-lg-6">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
                 {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || t('businessName')}
               </h1>
@@ -282,14 +282,14 @@ export default function RestaurantsDemo() {
                 {t('whatsappButton')}
               </a>
             </div>
-            <div className="col-lg-4 text-center">
+            <div className="col-lg-6 text-center">
               <img 
                 src={savedConfig?.heroImage || "https://via.placeholder.com/500x400/C8102E/FFFFFF?text=Restaurant+Logo"} 
                 alt="Restaurant" 
                 className="img-fluid rounded shadow"
                 style={{ 
-                  maxHeight: isLargeScreen ? '600px' : '400px', 
-                  width: '100%', 
+                  height: isLargeScreen ? '800px' : '400px', 
+                  width: isLargeScreen ? '600px' : '100%', 
                   objectFit: 'cover'
                 }}
               />
