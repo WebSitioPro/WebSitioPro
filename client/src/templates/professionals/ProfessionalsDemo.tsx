@@ -839,7 +839,7 @@ export default function ProfessionalsDemo() {
             console.log(`Submitted: ${new Date().toISOString()}`);
             console.log('Approved Sections:', Object.entries(formData.sectionApprovals).filter(([_, approval]) => approval.approved).map(([section]) => section));
             console.log('Pending Edits:', Object.entries(formData.sectionApprovals).filter(([_, approval]) => approval.status === 'needsEdit').map(([section, approval]) => `${section}: ${approval.comments}`));
-            console.log('Instructions:', formData.generalInstructions);
+            console.log('General Instructions from Admin:', savedConfig.clientApproval.generalInstructions || 'None');
             
             // Update the configuration with form data
             const updatedConfig = {

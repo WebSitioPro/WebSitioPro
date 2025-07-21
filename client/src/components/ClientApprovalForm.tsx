@@ -14,7 +14,6 @@ interface ClientApprovalFormProps {
     clientName: string;
     clientEmail: string;
     sectionApprovals: Record<string, SectionApproval>;
-    generalInstructions: string;
     overallApproved: boolean;
   }) => void;
 }
@@ -81,7 +80,6 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
         clientName: clientName.trim(),
         clientEmail: clientEmail.trim(),
         sectionApprovals,
-        generalInstructions: '', // No longer collected from client
         overallApproved
       });
       
