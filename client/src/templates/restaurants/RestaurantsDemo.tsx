@@ -314,25 +314,8 @@ export default function RestaurantsDemo() {
               </p>
               <div className="row mt-5">
                 {(() => {
-                  // Get about stats from saved config, or use defaults
-                  const aboutStats = (savedConfig?.aboutStats && Array.isArray(savedConfig.aboutStats) && savedConfig.aboutStats.length > 0) ? 
-                    savedConfig.aboutStats : [
-                    {
-                      icon: 'Clock',
-                      value: { es: '30+', en: '30+' },
-                      label: { es: 'Años de Experiencia', en: 'Years of Experience' }
-                    },
-                    {
-                      icon: 'Star',
-                      value: { es: '1000+', en: '1000+' },
-                      label: { es: 'Clientes Satisfechos', en: 'Satisfied Customers' }
-                    },
-                    {
-                      icon: 'Phone',
-                      value: { es: 'Servicio', en: 'Service' },
-                      label: { es: 'Familiar', en: 'Family' }
-                    }
-                  ];
+                  // Get about stats from saved config only - no fallback to prevent flash
+                  const aboutStats = savedConfig?.aboutStats || [];
                   
                   // Icon mapping with emoji and lucide icons
                   const iconMap = {
@@ -400,13 +383,8 @@ export default function RestaurantsDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              // Use menuPages from saved config first, then fall back to mock data
-              const menuPages = savedConfig?.menuPages?.length > 0 
-                ? savedConfig.menuPages 
-                : mockRestaurantData.menuImages.map((url, index) => ({
-                    url: url,
-                    title: { es: `Página de Menú ${index + 1}`, en: `Menu Page ${index + 1}` }
-                  }));
+              // Use menuPages from saved config only - no fallback to prevent flash
+              const menuPages = savedConfig?.menuPages || [];
               
               return menuPages.map((page: any, index: number) => (
                 <div key={index} className="col-md-4 col-sm-6">
@@ -472,10 +450,8 @@ export default function RestaurantsDemo() {
           </h2>
           <div className="row g-4 justify-content-center">
             {(() => {
-              // Use reviews from saved config first, then fall back to mock data
-              const reviews = savedConfig?.reviews?.length > 0 
-                ? savedConfig.reviews 
-                : mockRestaurantData.reviews;
+              // Use reviews from saved config only - no fallback to prevent flash
+              const reviews = savedConfig?.reviews || [];
               
               return reviews.map((review: any, index: number) => (
               <div key={index} className="col-lg-4 col-md-6">
@@ -511,10 +487,8 @@ export default function RestaurantsDemo() {
           </h2>
           <div className="row g-3">
             {(() => {
-              // Use photos from saved config first, then fall back to mock data
-              const photos = savedConfig?.photos?.length > 0 
-                ? savedConfig.photos 
-                : mockRestaurantData.photos;
+              // Use photos from saved config only - no fallback to prevent flash
+              const photos = savedConfig?.photos || [];
               
               return photos.map((photo: any, index: number) => (
                 <div key={index} className="col-md-4 col-sm-6">

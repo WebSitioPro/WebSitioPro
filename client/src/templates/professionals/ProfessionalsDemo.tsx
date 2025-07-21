@@ -381,25 +381,8 @@ export default function ProfessionalsDemo() {
               </p>
               <div className="row mt-5">
                 {(() => {
-                  // Get about stats from saved config, or use defaults
-                  const aboutStats = (savedConfig?.aboutStats && Array.isArray(savedConfig.aboutStats) && savedConfig.aboutStats.length > 0) ? 
-                    savedConfig.aboutStats : [
-                    {
-                      icon: 'Award',
-                      value: { es: '15+', en: '15+' },
-                      label: { es: 'Años', en: 'Years' }
-                    },
-                    {
-                      icon: 'Star',
-                      value: { es: '500+', en: '500+' },
-                      label: { es: 'Pacientes Satisfechos', en: 'Satisfied Patients' }
-                    },
-                    {
-                      icon: 'Shield',
-                      value: { es: '24/7', en: '24/7' },
-                      label: { es: 'Emergencias', en: 'Emergency Care' }
-                    }
-                  ];
+                  // Get about stats from saved config only - no fallback to prevent flash
+                  const aboutStats = savedConfig?.aboutStats || [];
                   
                   // Icon mapping for about stats
                   const getAboutStatIcon = (iconName: string) => {
@@ -464,16 +447,8 @@ export default function ProfessionalsDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              // Get services from saved config, or use defaults
-              const savedServices = savedConfig?.services || [];
-              const defaultServices = [
-                { name: 'Consulta General', description: 'Atención médica integral para toda la familia' },
-                { name: 'Medicina Preventiva', description: 'Chequeos regulares y programas de prevención' },
-                { name: 'Pediatría', description: 'Cuidado especializado para niños y adolescentes' },
-                { name: 'Geriatría', description: 'Atención especializada para adultos mayores' }
-              ];
-              
-              const services = savedServices.length > 0 ? savedServices : defaultServices;
+              // Get services from saved config only - no fallback to prevent flash
+              const services = savedConfig?.services || [];
               
               // Icon mapping for services
               const getServiceIcon = (iconName: string) => {
@@ -546,15 +521,8 @@ export default function ProfessionalsDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              // Get photos from saved config, or use defaults
-              const photos = savedConfig?.photos || [
-                { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+1', caption: { es: 'Consultorio 1', en: 'Office 1' } },
-                { url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Consultorio+2', caption: { es: 'Consultorio 2', en: 'Office 2' } },
-                { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+3', caption: { es: 'Consultorio 3', en: 'Office 3' } },
-                { url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Consultorio+4', caption: { es: 'Consultorio 4', en: 'Office 4' } },
-                { url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Consultorio+5', caption: { es: 'Consultorio 5', en: 'Office 5' } },
-                { url: 'https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Consultorio+6', caption: { es: 'Consultorio 6', en: 'Office 6' } }
-              ];
+              // Get photos from saved config only - no fallback to prevent flash
+              const photos = savedConfig?.photos || [];
               
               return photos.map((photo, index) => (
                 <div key={index} className="col-lg-4 col-md-6">
@@ -621,12 +589,8 @@ export default function ProfessionalsDemo() {
           </h2>
           <div className="row g-4 justify-content-center">
             {(() => {
-              // Get reviews from saved config, or use defaults
-              const reviews = savedConfig?.reviews || [
-                { name: 'Ana López', rating: 5, text: 'Excelente doctora, muy profesional y atenta. Siempre disponible para emergencias.' },
-                { name: 'Carlos Méndez', rating: 5, text: 'La mejor atención médica en Chetumal. Mi familia y yo confiamos completamente en la Dra. González.' },
-                { name: 'María Fernández', rating: 5, text: 'Muy recomendada. Explica todo claramente y tiene mucha paciencia con los niños.' }
-              ];
+              // Get reviews from saved config only - no fallback to prevent flash
+              const reviews = savedConfig?.reviews || [];
               
               return reviews.map((review, index) => (
                 <div key={index} className="col-lg-4 col-md-6">
