@@ -141,22 +141,22 @@ export default function RestaurantsDemo() {
       ...translations,
       es: {
         ...translations.es,
-        // Use saved config for business name and contact info
-        businessName: (useSavedConfig && (savedConfig.translations?.businessName?.es || savedConfig.businessName)) || mockRestaurantData.businessName,
-        phone: (useSavedConfig && savedConfig.phone) || mockRestaurantData.phone,
-        email: (useSavedConfig && savedConfig.email) || mockRestaurantData.email,
-        address: (useSavedConfig && savedConfig.address?.es) || mockRestaurantData.address,
-        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.es) || translations.es.mondayFriday,
-        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.es) || translations.es.saturday,
+        // Use saved config only - no fallback to prevent flash
+        businessName: (useSavedConfig && (savedConfig.translations?.businessName?.es || savedConfig.businessName)) || '',
+        phone: (useSavedConfig && savedConfig.phone) || '',
+        email: (useSavedConfig && savedConfig.email) || '',
+        address: (useSavedConfig && savedConfig.address?.es) || '',
+        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.es) || '',
+        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.es) || '',
       },
       en: {
         ...translations.en,
-        businessName: (useSavedConfig && (savedConfig.translations?.businessName?.en || savedConfig.businessName)) || mockRestaurantData.businessName,
-        phone: (useSavedConfig && savedConfig.phone) || mockRestaurantData.phone,
-        email: (useSavedConfig && savedConfig.email) || mockRestaurantData.email,
-        address: (useSavedConfig && savedConfig.address?.en) || mockRestaurantData.address,
-        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.en) || translations.en.mondayFriday,
-        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.en) || translations.en.saturday,
+        businessName: (useSavedConfig && (savedConfig.translations?.businessName?.en || savedConfig.businessName)) || '',
+        phone: (useSavedConfig && savedConfig.phone) || '',
+        email: (useSavedConfig && savedConfig.email) || '',
+        address: (useSavedConfig && savedConfig.address?.en) || '',
+        mondayFriday: (useSavedConfig && savedConfig.officeHours?.mondayFriday?.en) || '',
+        saturday: (useSavedConfig && savedConfig.officeHours?.saturday?.en) || '',
       }
     };
 
@@ -263,7 +263,7 @@ export default function RestaurantsDemo() {
         id="home" 
         className="py-5 position-relative d-flex align-items-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${savedConfig?.heroImage || "https://via.placeholder.com/1200x600/C8102E/FFFFFF?text=Restaurant+Background"}')`,
+          backgroundImage: savedConfig?.heroImage ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${savedConfig.heroImage}')` : 'linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -277,21 +277,23 @@ export default function RestaurantsDemo() {
                 {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || t('businessName')}
               </h1>
               <p className="lead mb-4 text-white">
-                {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || getLocalizedValue(mockRestaurantData.intro)}
+                {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || ''}
               </p>
               <p className="mb-4 text-white">
                 {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
               </p>
-              <a 
-                href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRestaurantData.whatsappNumber}?text=Hola, me gustaría hacer una reservación`}
-                className="btn btn-lg text-white"
-                style={{ backgroundColor: '#25D366' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Phone size={20} className="me-2" />
-                {t('whatsappButton')}
-              </a>
+              {savedConfig?.whatsappNumber && (
+                <a 
+                  href={`https://wa.me/${savedConfig.whatsappNumber}?text=Hola, me gustaría hacer una reservación`}
+                  className="btn btn-lg text-white"
+                  style={{ backgroundColor: '#25D366' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Phone size={20} className="me-2" />
+                  {t('whatsappButton')}
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -306,11 +308,7 @@ export default function RestaurantsDemo() {
                 {(savedConfig && savedConfig.aboutTitle && getLocalizedValue(savedConfig.aboutTitle)) || t('aboutTitle')}
               </h2>
               <p className="lead text-muted">
-                {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || 
-                 (language === 'es' ? 
-                  "Somos una familia dedicada a preservar los sabores auténticos de la cocina mexicana. Con más de 30 años de experiencia, hemos servido a generaciones de familias en Chetumal, manteniendo siempre la calidad y tradición que nos caracterizan." :
-                  "We are a family dedicated to preserving the authentic flavors of Mexican cuisine. With over 30 years of experience, we have served generations of families in Chetumal, always maintaining the quality and tradition that characterizes us."
-                )}
+                {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || ''}
               </p>
               <div className="row mt-5">
                 {(() => {
