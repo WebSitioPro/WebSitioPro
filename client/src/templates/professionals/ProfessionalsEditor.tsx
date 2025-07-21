@@ -947,15 +947,37 @@ export default function ProfessionalsEditor() {
                                     value={stat.icon}
                                     onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
                                   >
-                                    <option value="Award">Award</option>
-                                    <option value="Star">Star</option>
-                                    <option value="Shield">Shield</option>
-                                    <option value="Heart">Heart</option>
-                                    <option value="Users">Users</option>
-                                    <option value="Clock">Clock</option>
-                                    <option value="CheckCircle">CheckCircle</option>
-                                    <option value="Target">Target</option>
+                                    <option value="stethoscope">🩺 Stethoscope</option>
+                                    <option value="heart">❤️ Heart</option>
+                                    <option value="shield">🛡️ Shield</option>
+                                    <option value="star">⭐ Star</option>
+                                    <option value="syringe">💉 Syringe</option>
+                                    <option value="pills">💊 Pills</option>
+                                    <option value="medical">🏥 Medical</option>
+                                    <option value="tooth">🦷 Tooth</option>
+                                    <option value="eye">👁️ Eye</option>
+                                    <option value="bone">🦴 Bone</option>
+                                    <option value="brain">🧠 Brain</option>
+                                    <option value="lungs">🫁 Lungs</option>
+                                    <option value="microscope">🔬 Microscope</option>
+                                    <option value="bandage">🩹 Bandage</option>
+                                    <option value="thermometer">🌡️ Thermometer</option>
+                                    <option value="clipboard">📋 Clipboard</option>
+                                    <option value="calendar">📅 Calendar</option>
+                                    <option value="phone">📞 Phone</option>
+                                    <option value="clock">⏰ Clock</option>
+                                    <option value="check">✅ Check</option>
+                                    <option value="service">🔧 Service</option>
+                                    <option value="Award">🏅 Award</option>
+                                    <option value="Users">👥 Users</option>
+                                    <option value="Target">🎯 Target</option>
                                   </select>
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Preview</label>
+                                  <div className="form-control d-flex align-items-center justify-content-center" style={{ height: '38px' }}>
+                                    {getServiceIconPreview(stat.icon || 'stethoscope')}
+                                  </div>
                                 </div>
                               </div>
                               <div className="col-md-3">

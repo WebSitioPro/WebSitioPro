@@ -399,23 +399,49 @@ export default function ProfessionalsDemo() {
                     }
                   ];
                   
-                  // Icon mapping
-                  const iconMap = {
-                    Award: Award,
-                    Star: Star,
-                    Shield: Shield,
-                    Heart: Heart,
-                    Users: Users,
-                    Clock: Clock,
-                    CheckCircle: CheckCircle,
-                    Target: Target
+                  // Icon mapping for about stats
+                  const getAboutStatIcon = (iconName: string) => {
+                    const iconMap: { [key: string]: JSX.Element } = {
+                      stethoscope: <span style={{ fontSize: '48px' }}>🩺</span>,
+                      heart: <span style={{ fontSize: '48px' }}>❤️</span>,
+                      shield: <Shield size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      star: <Star size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      syringe: <span style={{ fontSize: '48px' }}>💉</span>,
+                      pills: <span style={{ fontSize: '48px' }}>💊</span>,
+                      medical: <span style={{ fontSize: '48px' }}>🏥</span>,
+                      tooth: <span style={{ fontSize: '48px' }}>🦷</span>,
+                      eye: <span style={{ fontSize: '48px' }}>👁️</span>,
+                      bone: <span style={{ fontSize: '48px' }}>🦴</span>,
+                      brain: <span style={{ fontSize: '48px' }}>🧠</span>,
+                      lungs: <span style={{ fontSize: '48px' }}>🫁</span>,
+                      microscope: <span style={{ fontSize: '48px' }}>🔬</span>,
+                      bandage: <span style={{ fontSize: '48px' }}>🩹</span>,
+                      thermometer: <span style={{ fontSize: '48px' }}>🌡️</span>,
+                      clipboard: <span style={{ fontSize: '48px' }}>📋</span>,
+                      calendar: <span style={{ fontSize: '48px' }}>📅</span>,
+                      phone: <span style={{ fontSize: '48px' }}>📞</span>,
+                      clock: <span style={{ fontSize: '48px' }}>⏰</span>,
+                      check: <span style={{ fontSize: '48px' }}>✅</span>,
+                      service: <span style={{ fontSize: '48px' }}>🔧</span>,
+                      // Legacy support for old icon names
+                      Award: <Award size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      Star: <Star size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      Shield: <Shield size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      Heart: <Heart size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      Users: <Users size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      Clock: <Clock size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      CheckCircle: <CheckCircle size={48} style={{ color: 'hsl(var(--secondary))' }} />,
+                      Target: <Target size={48} style={{ color: 'hsl(var(--secondary))' }} />
+                    };
+                    return iconMap[iconName] || <Award size={48} style={{ color: 'hsl(var(--secondary))' }} />;
                   };
                   
                   return aboutStats.map((stat, index) => {
-                    const IconComponent = iconMap[stat.icon as keyof typeof iconMap] || Award;
                     return (
                       <div key={index} className="col-md-4">
-                        <IconComponent size={48} className="mb-3" style={{ color: 'hsl(var(--secondary))' }} />
+                        <div className="mb-3">
+                          {getAboutStatIcon(stat.icon)}
+                        </div>
                         <h5>{language === 'es' ? stat.value.es : stat.value.en}</h5>
                         <p className="text-muted">{language === 'es' ? stat.label.es : stat.label.en}</p>
                       </div>
