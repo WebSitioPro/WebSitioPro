@@ -1,0 +1,116 @@
+Agent Prompt: Client Approval Form for Professionals Template
+Overview
+Add a comprehensive client approval form to the Professionals template that allows clients to review and approve each section of their website template, or request specific edits. The form should be toggleable by the admin and include submission functionality.
+
+Requirements
+1. Form Structure
+Create a client approval form with the following sections:
+
+Hero Section Approval: Review hero image, title, subtitle, and description
+About Section Approval: Review doctor profile, specialty, about text, and profile image
+Services Section Approval: Review each service individually with approve/edit options
+Photos Section Approval: Review photo gallery with individual photo approval
+Reviews Section Approval: Review customer testimonials
+Contact Information Approval: Review phone, email, address, hours
+Overall Template Approval: Final approval checkbox
+2. Form Controls for Each Section
+Approve Button: Green button to approve the section as-is
+Request Edit Button: Yellow button to request changes with comment field
+Comment Field: Text area for edit requests (appears when "Request Edit" is clicked)
+Status Indicator: Visual indicator showing section status (approved/pending edits/not reviewed)
+3. Form Features
+Instructions Area: Large text area at the bottom for general instructions and next steps
+Client Information: Fields for client name, email, and date
+Progress Indicator: Show how many sections have been reviewed
+Save Draft: Allow clients to save progress and return later
+Submit Button: Final submission when all sections are reviewed
+4. Admin Toggle Controls
+Form Visibility Toggle: Admin can show/hide the form via editor
+Form Status: Track if form is active, completed, or disabled
+Reset Form: Admin can reset all approvals to start over
+5. Data Structure
+Store approval data in this format:
+
+{
+  "clientApproval": {
+    "isFormEnabled": true,
+    "formStatus": "active", // active, completed, disabled
+    "clientInfo": {
+      "name": "",
+      "email": "",
+      "submissionDate": ""
+    },
+    "sectionApprovals": {
+      "hero": { "status": "pending", "approved": false, "comments": "" },
+      "about": { "status": "pending", "approved": false, "comments": "" },
+      "services": { "status": "pending", "approved": false, "comments": "" },
+      "photos": { "status": "pending", "approved": false, "comments": "" },
+      "reviews": { "status": "pending", "approved": false, "comments": "" },
+      "contact": { "status": "pending", "approved": false, "comments": "" }
+    },
+    "generalInstructions": "",
+    "overallApproved": false
+  }
+}
+6. Implementation Details
+Add to ProfessionalsEditor.tsx:
+
+New toggle in editor: "Enable Client Approval Form"
+Section to view client feedback and approval status
+Button to reset/clear all approvals
+Add to ProfessionalsDemo.tsx:
+
+Approval form component that appears at bottom when enabled
+Form should be responsive and mobile-friendly
+Each section clearly labeled with current content preview
+Submit functionality that saves to database via /api/config endpoint
+Styling Requirements:
+
+Use existing template colors (primaryColor, secondaryColor)
+Bootstrap 5 compatible styling
+Clear visual hierarchy
+Mobile-responsive design
+Professional appearance matching template design
+7. Form Behavior
+Form only appears when clientApproval.isFormEnabled is true
+Each section shows a preview of current content
+Approval buttons change section status immediately
+Form auto-saves progress every 30 seconds
+Final submit sends email notification (log to console for now)
+After submission, form shows "thank you" message and becomes read-only
+8. Email/Notification System
+For now, log form submissions to console with this format:
+
+CLIENT APPROVAL FORM SUBMITTED
+Template: Professionals
+Client: [name] ([email])
+Submitted: [date]
+Approved Sections: [list]
+Pending Edits: [list with comments]
+Instructions: [general instructions]
+9. Security Considerations
+Validate all form inputs
+Sanitize comment text to prevent XSS
+Rate limit form submissions
+Store approval data securely in database
+10. Testing Requirements
+Test form display/hide toggle in editor
+Test individual section approvals
+Test edit request workflow with comments
+Test form submission and data persistence
+Test mobile responsiveness
+Test form reset functionality
+Implementation Priority
+Add data structure to config
+Add editor toggle controls
+Create approval form component
+Implement section-by-section approval
+Add submission functionality
+Add styling and responsive design
+Test all functionality
+This form should integrate seamlessly with the existing Professionals template while providing a comprehensive approval workflow for clients.
+
+Scroll to latest
+Assistant mode
+
+Claude 4.0 Sonnet
