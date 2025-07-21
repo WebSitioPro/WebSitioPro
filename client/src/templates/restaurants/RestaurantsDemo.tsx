@@ -257,18 +257,28 @@ export default function RestaurantsDemo() {
         </div>
       </nav>
 
-      {/* Intro Section */}
-      <section id="home" className="py-5">
+      {/* Hero Section with Background Image */}
+      <section 
+        id="home" 
+        className="py-5 position-relative d-flex align-items-center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${savedConfig?.heroImage || "https://via.placeholder.com/1200x600/C8102E/FFFFFF?text=Restaurant+Background"}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          minHeight: isLargeScreen ? '70vh' : '50vh'
+        }}
+      >
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-6">
-              <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
+          <div className="row">
+            <div className="col-lg-8 col-xl-6">
+              <h1 className="display-4 fw-bold mb-4 text-white">
                 {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || t('businessName')}
               </h1>
-              <p className="lead mb-4 text-muted">
+              <p className="lead mb-4 text-white">
                 {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || getLocalizedValue(mockRestaurantData.intro)}
               </p>
-              <p className="mb-4 text-muted">
+              <p className="mb-4 text-white">
                 {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
               </p>
               <a 
@@ -281,18 +291,6 @@ export default function RestaurantsDemo() {
                 <Phone size={20} className="me-2" />
                 {t('whatsappButton')}
               </a>
-            </div>
-            <div className="col-lg-6 text-center">
-              <img 
-                src={savedConfig?.heroImage || "https://via.placeholder.com/500x400/C8102E/FFFFFF?text=Restaurant+Logo"} 
-                alt="Restaurant" 
-                className="img-fluid rounded shadow"
-                style={{ 
-                  height: isLargeScreen ? '800px' : '400px', 
-                  width: isLargeScreen ? '600px' : '100%', 
-                  objectFit: 'cover'
-                }}
-              />
             </div>
           </div>
         </div>
