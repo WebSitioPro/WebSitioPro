@@ -258,9 +258,9 @@ export default function RestaurantsDemo() {
       </nav>
 
       {/* Intro Section */}
-      <section id="home" className="py-5">
-        <div className="container">
-          <div className="row align-items-center">
+      <section id="home" className="py-5" style={{ overflow: 'visible' }}>
+        <div className="container" style={{ overflow: 'visible' }}>
+          <div className="row align-items-center" style={{ overflow: 'visible' }}>
             <div className="col-lg-8">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
                 {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || t('businessName')}
@@ -282,18 +282,24 @@ export default function RestaurantsDemo() {
                 {t('whatsappButton')}
               </a>
             </div>
-            <div className="col-lg-4 text-center">
-              <img 
-                src={savedConfig?.heroImage || "https://via.placeholder.com/500x400/C8102E/FFFFFF?text=Restaurant+Logo"} 
-                alt="Restaurant" 
-                className="img-fluid rounded shadow"
-                style={{ 
-                  maxHeight: isLargeScreen ? '800px' : '400px', 
-                  width: isLargeScreen ? '200%' : '100%', 
-                  objectFit: 'cover',
-                  transform: isLargeScreen ? 'translateX(-25%)' : 'none'
-                }}
-              />
+            <div className="col-lg-4 text-center" style={{ overflow: 'visible' }}>
+              <div style={{ position: 'relative', width: '100%', height: isLargeScreen ? '800px' : '400px' }}>
+                <img 
+                  src={savedConfig?.heroImage || "https://via.placeholder.com/500x400/C8102E/FFFFFF?text=Restaurant+Logo"} 
+                  alt="Restaurant" 
+                  className="rounded shadow"
+                  style={{ 
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: `translate(-50%, -50%) ${isLargeScreen ? 'scale(2)' : 'scale(1)'}`,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transformOrigin: 'center center'
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
