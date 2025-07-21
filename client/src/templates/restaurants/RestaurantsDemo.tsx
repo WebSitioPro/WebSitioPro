@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Clock, Star, Menu, X, Facebook, Instagram, Award, Shield, Heart, Users, CheckCircle, Target } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Star, Menu, X, Facebook, Instagram, Award, Shield, Heart, Users, CheckCircle, Target, UtensilsCrossed } from 'lucide-react';
 import { OptimizedImage } from '../../components/OptimizedImage';
 import { usePerformance } from '../../hooks/use-performance';
 import { useIsSmallMobile } from '../../hooks/use-mobile';
@@ -48,7 +48,8 @@ const mockRestaurantData = {
   phone: "+52 983 123 4567",
   email: "info@taqueriafamilia.com",
   socialLink: "https://facebook.com/taqueriafamilia",
-  whatsappNumber: "529831234567"
+  whatsappNumber: "529831234567",
+  whatsappMessage: { es: "Hola, me gustaría hacer una reservación", en: "Hello, I would like to make a reservation" }
 };
 
 const translations = {
@@ -369,7 +370,7 @@ export default function RestaurantsDemo() {
                     MapPin: <MapPin size={48} style={{ color: 'hsl(var(--primary))' }} />
                   };
                   
-                  return aboutStats.map((stat, index) => {
+                  return aboutStats.map((stat: any, index: number) => {
                     const iconElement = iconMap[stat.icon as keyof typeof iconMap] || iconMap.clock;
                     return (
                       <div key={index} className="col-md-4">
@@ -407,7 +408,7 @@ export default function RestaurantsDemo() {
                     title: { es: `Página de Menú ${index + 1}`, en: `Menu Page ${index + 1}` }
                   }));
               
-              return menuPages.map((page, index) => (
+              return menuPages.map((page: any, index: number) => (
                 <div key={index} className="col-md-4 col-sm-6">
                   <div className="card border-0 shadow-sm">
                     <OptimizedImage 
@@ -475,7 +476,7 @@ export default function RestaurantsDemo() {
                 ? savedConfig.reviews 
                 : mockRestaurantData.reviews;
               
-              return reviews.map((review, index) => (
+              return reviews.map((review: any, index: number) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
@@ -514,7 +515,7 @@ export default function RestaurantsDemo() {
                 ? savedConfig.photos 
                 : mockRestaurantData.photos;
               
-              return photos.map((photoUrl, index) => (
+              return photos.map((photoUrl: any, index: number) => (
                 <div key={index} className="col-md-4 col-sm-6">
                   <OptimizedImage 
                     src={photoUrl} 
