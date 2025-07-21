@@ -42,8 +42,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/config/:id", async (req: Request, res: Response) => {
     try {
       const idParam = req.params.id;
+      console.log(`[DEBUG] Getting config for ID: ${idParam}`);
 
-      // Validate configuration access using isolation system
+      // Special handling for homepage - bypass isolation system
+      if (idParam === "homepage") {
+        console.log(`[DEBUG] Homepage access - bypassing isolation system`);
+        try {
+          const config = await storage.getWebsiteConfig(1);
+          console.log(`[DEBUG] Homepage direct query result:`, config ? 'SUCCESS' : 'NOT FOUND');
+          
+          if (config) {
+            return res.json(config);
+          } else {
+            return res.status(404).json({ error: "Homepage configuration not found" });
+          }
+        } catch (error) {
+          console.error(`[DEBUG] Homepage query error:`, error);
+          return res.status(500).json({ error: "Homepage database error" });
+        }
+      }
+
+      // Validate configuration access using isolation system for non-homepage requests
       const accessValidation = validateConfigAccess(idParam, 'read');
 
       if (!accessValidation.isValid) {
@@ -75,13 +94,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
           logConfigAccess('CREATE-DEMO', idParam, true, `Created safe demo config for ${templateType}`);
         }
       } else if (idParam === "homepage" || idParam === "editor-demo") {
-        // Homepage access allowed for read operations
-        const configs = await storage.getAllWebsiteConfigs();
-        config = configs.find(c => c.name === accessValidation.configName);
-
-        // If homepage config doesn't exist, find by ID 1
-        if (!config) {
-          config = configs.find(c => c.id === 1);
+        // Direct database access for homepage to bypass storage issues
+        console.log(`[DEBUG] Direct database access for homepage`);
+        try {
+          config = await storage.getWebsiteConfig(1);
+          console.log(`[DEBUG] Direct access result:`, config ? 'Found' : 'Not found');
+          
+          if (!config) {
+            console.log(`[DEBUG] Homepage not found by ID 1, trying general search`);
+            const configs = await storage.getAllWebsiteConfigs();
+            config = configs.find(c => 
+              c.name === "Website homepage" ||
+              c.name === "WebSitioPro Homepage" ||
+              c.name.toLowerCase().includes("homepage")
+            );
+          }
+        } catch (dbError) {
+          console.error(`[DEBUG] Database error:`, dbError);
+          return res.status(500).json({ error: "Database access error for homepage" });
         }
 
         if (!config) {
@@ -90,7 +120,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else if (idParam === "default") {
         // Legacy fallback - redirect to homepage
         const configs = await storage.getAllWebsiteConfigs();
-        config = configs.find(c => c.name === "homepage Configuration");
+        // First try to find by ID 1 (the primary homepage)
+        config = configs.find(c => c.id === 1);
+        
+        // If not found by ID, try by various name patterns
+        if (!config) {
+          config = configs.find(c => 
+            c.name === "Website homepage" ||
+            c.name === "WebSitioPro Homepage" ||
+            c.name === "homepage Configuration" ||
+            c.name.toLowerCase().includes("homepage")
+          );
+        }
 
         if (!config) {
           // If homepage config doesn't exist, create it with proper homepage values
@@ -154,6 +195,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json(config);
     } catch (error) {
+      console.error("Route error fetching config:", error);
       res.status(500).json({ error: "Failed to fetch website configuration" });
     }
   });
@@ -267,7 +309,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else if (idParam === "homepage" || idParam === "editor-demo") {
         // Homepage access - find existing config
         const configs = await storage.getAllWebsiteConfigs();
-        config = configs.find(c => c.name === accessValidation.configName);
+        // First try to find by ID 1 (the primary homepage)
+        config = configs.find(c => c.id === 1);
+        
+        // If not found by ID, try by various name patterns
+        if (!config) {
+          config = configs.find(c => 
+            c.name === "Website homepage" ||
+            c.name === "WebSitioPro Homepage" ||
+            c.name === "homepage Configuration" ||
+            c.name.toLowerCase().includes("homepage")
+          );
+        }
 
         if (!config) {
           return res.status(404).json({ error: "Homepage configuration not found" });

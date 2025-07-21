@@ -38,12 +38,23 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getWebsiteConfig(id: number): Promise<WebsiteConfig | undefined> {
-    const [config] = await db.select().from(websiteConfigs).where(eq(websiteConfigs.id, id));
-    return config || undefined;
+    try {
+      const [config] = await db.select().from(websiteConfigs).where(eq(websiteConfigs.id, id));
+      return config || undefined;
+    } catch (error) {
+      console.error("Database select by ID error:", error);
+      throw error;
+    }
   }
 
   async getAllWebsiteConfigs(): Promise<WebsiteConfig[]> {
-    return await db.select().from(websiteConfigs);
+    try {
+      const configs = await db.select().from(websiteConfigs);
+      return configs;
+    } catch (error) {
+      console.error("Database select error:", error);
+      throw error;
+    }
   }
 
   async createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig> {

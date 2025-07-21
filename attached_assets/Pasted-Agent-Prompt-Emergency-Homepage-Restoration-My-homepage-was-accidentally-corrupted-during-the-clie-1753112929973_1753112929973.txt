@@ -1,0 +1,49 @@
+Agent Prompt: Emergency Homepage Restoration
+
+My homepage was accidentally corrupted during the client approval form implementation and is now showing database errors. I need you to restore my WebSitioPro homepage to its previous working state with the following specifications:
+
+CRITICAL: Only fix the homepage - do not touch any client templates or the Professionals template.
+
+Homepage Restoration Requirements:
+
+Fix Database Connectivity Issues
+The homepage config (ID: 1, name: "WebSitioPro Homepage") is failing to load with 500 errors
+Ensure the homepage configuration can be properly fetched from /api/config/homepage
+Fix any database connection issues preventing homepage data retrieval
+Restore Homepage Content:
+Business Name: "WebSitioPro"
+Hero Image: "https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg"
+Phone: "+52 983 114 4462"
+Email: "ventas@websitiopro.com"
+Primary Color: "#C8102E" (Red)
+Secondary Color: "#00A859" (Green)
+WhatsApp Number: "529831144462"
+Restore Banner Text:
+Spanish: "¡Lanza Hoy por $1,995 MXN! ¡Hospedaje Solo $195 MXN/Mes!"
+English: "Launch Today for $1,995 MXN! Hosting Only $195 MXN/Month!"
+Restore Why Points Section (6 key features):
+Diseño Mexicano / Mexican Design
+Optimización Móvil / Mobile Optimization
+Integración WhatsApp / WhatsApp Integration
+Google Maps / Google Maps
+SEO Local / Local SEO
+Sitios Bilingües / Bilingual Sites
+Restore Templates Showcase (5 cards):
+Professionals (Doctors, lawyers, consultants)
+Restaurants (Menus and reservations)
+Tourism (Tours and experiences)
+Retail (Online stores)
+Services (Plumbers, electricians)
+What NOT to do:
+
+Do not modify any client template configurations
+Do not touch the Professionals template or its client approval form
+Do not change any /api/config/:id routes for client templates
+Only restore the homepage functionality
+Priority:
+
+Fix database errors preventing homepage from loading
+Restore homepage configuration data
+Verify homepage displays correctly at / route
+The homepage should work independently of any client template changes and display the WebSitioPro marketing content as it was before.
+
