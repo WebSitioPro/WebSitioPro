@@ -460,6 +460,34 @@ export default function ProfessionalsEditor() {
     }));
   };
 
+  // Icon preview function for services
+  const getServiceIconPreview = (iconName: string) => {
+    const iconMap: { [key: string]: JSX.Element } = {
+      stethoscope: <span style={{ fontSize: '24px' }}>🩺</span>,
+      heart: <span style={{ fontSize: '24px' }}>❤️</span>,
+      shield: <span style={{ fontSize: '24px' }}>🛡️</span>,
+      star: <span style={{ fontSize: '24px' }}>⭐</span>,
+      syringe: <span style={{ fontSize: '24px' }}>💉</span>,
+      pills: <span style={{ fontSize: '24px' }}>💊</span>,
+      medical: <span style={{ fontSize: '24px' }}>🏥</span>,
+      tooth: <span style={{ fontSize: '24px' }}>🦷</span>,
+      eye: <span style={{ fontSize: '24px' }}>👁️</span>,
+      bone: <span style={{ fontSize: '24px' }}>🦴</span>,
+      brain: <span style={{ fontSize: '24px' }}>🧠</span>,
+      lungs: <span style={{ fontSize: '24px' }}>🫁</span>,
+      microscope: <span style={{ fontSize: '24px' }}>🔬</span>,
+      bandage: <span style={{ fontSize: '24px' }}>🩹</span>,
+      thermometer: <span style={{ fontSize: '24px' }}>🌡️</span>,
+      clipboard: <span style={{ fontSize: '24px' }}>📋</span>,
+      calendar: <span style={{ fontSize: '24px' }}>📅</span>,
+      phone: <span style={{ fontSize: '24px' }}>📞</span>,
+      clock: <span style={{ fontSize: '24px' }}>⏰</span>,
+      check: <span style={{ fontSize: '24px' }}>✅</span>,
+      service: <span style={{ fontSize: '24px' }}>🔧</span>
+    };
+    return iconMap[iconName] || <span style={{ fontSize: '24px' }}>🔧</span>;
+  };
+
   const handleAddAboutStat = () => {
     setWebsiteData(prev => ({
       ...prev,
@@ -1039,13 +1067,39 @@ export default function ProfessionalsEditor() {
                             <div className="col-md-4">
                               <div className="mb-3">
                                 <label className="form-label">Icon</label>
-                                <input
-                                  type="text"
+                                <select
                                   className="form-control"
-                                  value={service.icon}
+                                  value={service.icon || 'stethoscope'}
                                   onChange={(e) => handleServiceChange(index, 'icon', e.target.value)}
-                                  placeholder="stethoscope"
-                                />
+                                >
+                                  <option value="stethoscope">🩺 Stethoscope</option>
+                                  <option value="heart">❤️ Heart</option>
+                                  <option value="shield">🛡️ Shield</option>
+                                  <option value="star">⭐ Star</option>
+                                  <option value="syringe">💉 Syringe</option>
+                                  <option value="pills">💊 Pills</option>
+                                  <option value="medical">🏥 Medical</option>
+                                  <option value="tooth">🦷 Tooth</option>
+                                  <option value="eye">👁️ Eye</option>
+                                  <option value="bone">🦴 Bone</option>
+                                  <option value="brain">🧠 Brain</option>
+                                  <option value="lungs">🫁 Lungs</option>
+                                  <option value="microscope">🔬 Microscope</option>
+                                  <option value="bandage">🩹 Bandage</option>
+                                  <option value="thermometer">🌡️ Thermometer</option>
+                                  <option value="clipboard">📋 Clipboard</option>
+                                  <option value="calendar">📅 Calendar</option>
+                                  <option value="phone">📞 Phone</option>
+                                  <option value="clock">⏰ Clock</option>
+                                  <option value="check">✅ Check</option>
+                                  <option value="service">🔧 Service</option>
+                                </select>
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Preview</label>
+                                <div className="form-control d-flex align-items-center justify-content-center" style={{ height: '38px' }}>
+                                  {getServiceIconPreview(service.icon || 'stethoscope')}
+                                </div>
                               </div>
                             </div>
                             <div className="col-md-4">

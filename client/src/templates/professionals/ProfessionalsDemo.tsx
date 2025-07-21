@@ -447,6 +447,34 @@ export default function ProfessionalsDemo() {
               
               const services = savedServices.length > 0 ? savedServices : defaultServices;
               
+              // Icon mapping for services
+              const getServiceIcon = (iconName: string) => {
+                const iconMap: { [key: string]: JSX.Element } = {
+                  stethoscope: <span style={{ fontSize: '32px' }}>🩺</span>,
+                  heart: <span style={{ fontSize: '32px' }}>❤️</span>,
+                  shield: <Shield size={32} style={{ color: 'hsl(var(--primary))' }} />,
+                  star: <Star size={32} style={{ color: 'hsl(var(--primary))' }} />,
+                  syringe: <span style={{ fontSize: '32px' }}>💉</span>,
+                  pills: <span style={{ fontSize: '32px' }}>💊</span>,
+                  medical: <span style={{ fontSize: '32px' }}>🏥</span>,
+                  tooth: <span style={{ fontSize: '32px' }}>🦷</span>,
+                  eye: <span style={{ fontSize: '32px' }}>👁️</span>,
+                  bone: <span style={{ fontSize: '32px' }}>🦴</span>,
+                  brain: <span style={{ fontSize: '32px' }}>🧠</span>,
+                  lungs: <span style={{ fontSize: '32px' }}>🫁</span>,
+                  microscope: <span style={{ fontSize: '32px' }}>🔬</span>,
+                  bandage: <span style={{ fontSize: '32px' }}>🩹</span>,
+                  thermometer: <span style={{ fontSize: '32px' }}>🌡️</span>,
+                  clipboard: <span style={{ fontSize: '32px' }}>📋</span>,
+                  calendar: <span style={{ fontSize: '32px' }}>📅</span>,
+                  phone: <span style={{ fontSize: '32px' }}>📞</span>,
+                  clock: <span style={{ fontSize: '32px' }}>⏰</span>,
+                  check: <span style={{ fontSize: '32px' }}>✅</span>,
+                  service: <span style={{ fontSize: '32px' }}>🔧</span>
+                };
+                return iconMap[iconName] || <Shield size={32} style={{ color: 'hsl(var(--primary))' }} />;
+              };
+
               return services.map((service, index) => (
                 <div key={index} className="col-lg-6">
                   <div className="card h-100 border-0 shadow-sm">
@@ -461,7 +489,7 @@ export default function ProfessionalsDemo() {
                               backgroundColor: 'hsl(var(--primary) / 0.1)' 
                             }}
                           >
-                            <Shield size={32} style={{ color: 'hsl(var(--primary))' }} />
+                            {getServiceIcon(service.icon || 'stethoscope')}
                           </div>
                         </div>
                         <div className="col-9">

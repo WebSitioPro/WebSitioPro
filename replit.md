@@ -123,6 +123,13 @@ WebSitioPro is a professional website building service specifically designed for
 
 ```
 Changelog:
+- July 21, 2025. Added Icon Picker for Professionals Template Services Section
+  - COMPLETED: Replaced text input with visual icon picker dropdown for service icons in Professionals template editor
+  - Added comprehensive icon preview function with 21 medical and professional icons (stethoscope, heart, syringe, pills, medical, tooth, eye, bone, brain, lungs, microscope, bandage, thermometer, clipboard, calendar, phone, clock, check, shield, star, service)
+  - Updated Professionals template demo to display selected icons dynamically instead of same shield for all services
+  - Icon picker includes preview showing actual icon that will appear on template
+  - Services now support proper icon selection with visual feedback in both editor and template display
+  - Maintains backward compatibility with existing service data while enabling rich icon customization
 - July 20, 2025. Fixed Hero Image Flash on Page Refresh
   - RESOLVED: Removed hardcoded Unsplash placeholder image that briefly appeared before proper hero image loaded
   - Changed hero background from fallback placeholder to conditional loading (only show image if heroImage exists)
