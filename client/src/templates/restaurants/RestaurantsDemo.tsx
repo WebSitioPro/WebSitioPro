@@ -104,10 +104,22 @@ export default function RestaurantsDemo() {
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   
   // Performance optimizations
   const { shouldReduceAnimations } = usePerformance();
   const isSmallMobile = useIsSmallMobile();
+  
+  // Track window size for hero image responsive behavior
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth >= 992);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Load saved configuration
   useEffect(() => {
@@ -275,7 +287,12 @@ export default function RestaurantsDemo() {
                 src={savedConfig?.heroImage || "https://via.placeholder.com/500x400/C8102E/FFFFFF?text=Restaurant+Logo"} 
                 alt="Restaurant" 
                 className="img-fluid rounded shadow"
-                style={{ maxHeight: '400px', width: '100%', objectFit: 'cover' }}
+                style={{ 
+                  maxHeight: isLargeScreen ? '800px' : '400px', 
+                  width: isLargeScreen ? '200%' : '100%', 
+                  objectFit: 'cover',
+                  transform: isLargeScreen ? 'translateX(-25%)' : 'none'
+                }}
               />
             </div>
           </div>
