@@ -127,7 +127,7 @@ export default function HomePage() {
     const responses = { es: {}, en: {} };
 
     if (savedConfig?.chatbotQuestions) {
-      savedConfig.chatbotQuestions.forEach(item => {
+      savedConfig.chatbotQuestions.forEach((item: any) => {
         responses.es[item.question.es] = item.answer.es;
         responses.en[item.question.en] = item.answer.en;
       });
@@ -169,9 +169,9 @@ export default function HomePage() {
     setMessages(prev => [...prev, userMessage]);
 
     // Generate bot response
-    const responses = chatbotResponses[language as keyof typeof chatbotResponses];
+    const responses = chatbotResponses[language as keyof typeof chatbotResponses] as Record<string, string>;
     const messageLower = currentMessage.toLowerCase();
-    let botResponse = responses.default;
+    let botResponse = responses.default || 'Thank you for your message. Please contact us for more information.';
 
     // Simple keyword matching
     for (const [keyword, response] of Object.entries(responses)) {
@@ -679,7 +679,7 @@ export default function HomePage() {
               { es: '70% de los mexicanos buscan en línea', en: '70% of Mexicans search online', icon: 'star' },
               { es: 'Aumenta las ventas en un 20%', en: 'Boost sales by 20%', icon: 'shield' },
               { es: 'Disponible 24/7 para tus clientes', en: 'Available 24/7 for your customers', icon: 'clock' }
-            ]).map((point, index) => {
+            ]).map((point: any, index: number) => {
               const getIcon = (iconName: string) => {
                 switch(iconName) {
                   case 'star': return <Star size={48} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />;
@@ -771,7 +771,7 @@ export default function HomePage() {
                     description: { es: 'Plomeros, electricistas y más', en: 'Plumbers, electricians, and more' },
                     image: 'https://via.placeholder.com/200x150/6C5CE7/FFFFFF?text=Services'
                   }
-                ]).map((solution, index) => {
+                ]).map((solution: any, index: number) => {
                   const title = solution.title[language] || solution.title.es;
                   const description = solution.description[language] || solution.description.es;
 
