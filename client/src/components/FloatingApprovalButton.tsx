@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { CheckCircle, MessageSquare } from 'lucide-react';
 
 interface FloatingApprovalButtonProps {
@@ -9,24 +9,6 @@ interface FloatingApprovalButtonProps {
 }
 
 export function FloatingApprovalButton({ text, color, language, show }: FloatingApprovalButtonProps) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (!show) {
-      setIsVisible(false);
-      return;
-    }
-
-    const handleScroll = () => {
-      // Show button when user scrolls past the hero section
-      const scrollPosition = window.scrollY;
-      setIsVisible(scrollPosition > 300);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [show]);
-
   const scrollToApproval = () => {
     const approvalSection = document.getElementById('client-approval');
     if (approvalSection) {
@@ -37,7 +19,7 @@ export function FloatingApprovalButton({ text, color, language, show }: Floating
     }
   };
 
-  if (!show || !isVisible) return null;
+  if (!show) return null;
 
   return (
     <button
