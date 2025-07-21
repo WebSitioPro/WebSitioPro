@@ -252,6 +252,9 @@ export const websiteConfigs = pgTable("website_configs", {
     generalInstructions: string;
     overallApproved: boolean;
     lastSavedAt: string;
+    showFloatingButton: boolean;
+    floatingButtonText: string;
+    floatingButtonColor: string;
   }>().default({
     isFormEnabled: false,
     formStatus: "disabled",
@@ -266,7 +269,10 @@ export const websiteConfigs = pgTable("website_configs", {
     },
     generalInstructions: "",
     overallApproved: false,
-    lastSavedAt: ""
+    lastSavedAt: "",
+    showFloatingButton: true,
+    floatingButtonText: "Approve Website",
+    floatingButtonColor: "#C8102E"
   }),
   // Timestamp fields
   createdAt: timestamp("created_at").defaultNow(),

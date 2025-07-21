@@ -5,6 +5,7 @@ import { OptimizedImage } from '../../components/OptimizedImage';
 import { usePerformance } from '../../hooks/use-performance';
 import { useIsSmallMobile } from '../../hooks/use-mobile';
 import { ClientApprovalForm } from '../../components/ClientApprovalForm';
+import { FloatingApprovalButton } from '../../components/FloatingApprovalButton';
 
 export default function ProfessionalsDemo() {
   const [language, setLanguage] = useState('es');
@@ -997,6 +998,15 @@ export default function ProfessionalsDemo() {
         </div>
       )}
 
+      {/* Floating Approval Button */}
+      {savedConfig?.clientApproval?.isFormEnabled && savedConfig.clientApproval.showFloatingButton !== false && (
+        <FloatingApprovalButton
+          text={savedConfig.clientApproval.floatingButtonText || (language === 'es' ? 'Aprobar Sitio' : 'Approve Website')}
+          color={savedConfig.clientApproval.floatingButtonColor || '#C8102E'}
+          language={language}
+          show={true}
+        />
+      )}
 
     </div>
   );

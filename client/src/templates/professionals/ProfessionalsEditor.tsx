@@ -2042,6 +2042,105 @@ export default function ProfessionalsEditor() {
                       </div>
                     )}
 
+                    {/* Floating Approval Button Settings */}
+                    {websiteData.clientApproval?.isFormEnabled && (
+                      <div className="card mb-4">
+                        <div className="card-header">
+                          <h6 className="mb-0">Floating Approval Button</h6>
+                        </div>
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="form-check mb-3">
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  checked={websiteData.clientApproval?.showFloatingButton !== false}
+                                  onChange={(e) => setWebsiteData(prev => ({
+                                    ...prev,
+                                    clientApproval: {
+                                      ...prev.clientApproval!,
+                                      showFloatingButton: e.target.checked
+                                    }
+                                  }))}
+                                />
+                                <label className="form-check-label">
+                                  Show Floating Button
+                                </label>
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <div className="mb-3">
+                                <label className="form-label">Button Text</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={websiteData.clientApproval?.floatingButtonText || 'Approve Website'}
+                                  onChange={(e) => setWebsiteData(prev => ({
+                                    ...prev,
+                                    clientApproval: {
+                                      ...prev.clientApproval!,
+                                      floatingButtonText: e.target.value
+                                    }
+                                  }))}
+                                  placeholder="Approve Website"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="mb-3">
+                                <label className="form-label">Button Color</label>
+                                <div className="input-group">
+                                  <input
+                                    type="color"
+                                    className="form-control form-control-color"
+                                    value={websiteData.clientApproval?.floatingButtonColor || '#C8102E'}
+                                    onChange={(e) => setWebsiteData(prev => ({
+                                      ...prev,
+                                      clientApproval: {
+                                        ...prev.clientApproval!,
+                                        floatingButtonColor: e.target.value
+                                      }
+                                    }))}
+                                  />
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    value={websiteData.clientApproval?.floatingButtonColor || '#C8102E'}
+                                    onChange={(e) => setWebsiteData(prev => ({
+                                      ...prev,
+                                      clientApproval: {
+                                        ...prev.clientApproval!,
+                                        floatingButtonColor: e.target.value
+                                      }
+                                    }))}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <div className="mb-3">
+                                <label className="form-label">Preview</label>
+                                <div 
+                                  className="btn btn-sm d-inline-block"
+                                  style={{ 
+                                    backgroundColor: websiteData.clientApproval?.floatingButtonColor || '#C8102E',
+                                    color: 'white',
+                                    borderRadius: '25px',
+                                    padding: '8px 16px'
+                                  }}
+                                >
+                                  {websiteData.clientApproval?.floatingButtonText || 'Approve Website'}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Approval Status Summary */}
                     {websiteData.clientApproval?.isFormEnabled && (
                       <div className="card mb-4">
