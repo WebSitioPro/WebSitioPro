@@ -514,8 +514,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         address: templateData.address || '',
         phone: templateData.phone || '',
         email: templateData.email || '',
-        profileImage: templateData.profileImage || '',
-        coverImage: templateData.coverImage || '',
         officeHours: {
           mondayToFriday: '9:00 AM - 6:00 PM',
           saturday: '10:00 AM - 2:00 PM'
@@ -536,7 +534,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
             aboutText: templateData.intro?.es || 'Acerca de nuestro negocio'
           }
         },
-        heroImage: '',
         templates: templateData.services?.map((service: any, index: number) => ({
           title: {
             es: service.name || `Servicio ${index + 1}`,
@@ -810,15 +807,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         facebook_url: facebook_url || "",
         profileImage: profileImage || "",
         coverImage: coverImage || "",
-        heroImage: heroImage || "", // Include hero image mapping in response
+        heroImage: coverImage || "", // Include hero image mapping in response
         previewUrl: `websitiopro.com/preview/${place_id || templateId}`,
         templateType: category || "Professionals",
         dateCreated: new Date().toLocaleDateString(),
         sunsetDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString(),
         agentNotes: "Template generated successfully",
-```
-// Replacing the old homepage config with the new one
-templateId,
+        templateId,
         webhookSent: true,
         makeIntegration: {
           googleSheetsCompatible: true,
