@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, Clock, Star, Shield, Award, Menu, X, Facebook, Ins
 import { OptimizedImage } from '../../components/OptimizedImage';
 import { usePerformance } from '../../hooks/use-performance';
 import { useIsSmallMobile } from '../../hooks/use-mobile';
+import { ClientApprovalForm } from '../../components/ClientApprovalForm';
 
 export default function ProfessionalsDemo() {
   const [language, setLanguage] = useState('es');
@@ -824,6 +825,52 @@ export default function ProfessionalsDemo() {
           </div>
         </div>
       </section>
+
+      {/* Client Approval Form */}
+      {savedConfig?.clientApproval?.isFormEnabled && savedConfig.clientApproval.formStatus !== 'completed' && (
+        <ClientApprovalForm 
+          config={savedConfig}
+          language={language}
+          onSubmit={(formData) => {
+            console.log('CLIENT APPROVAL FORM SUBMITTED');
+            console.log('Template: Professionals');
+            console.log(`Client: ${formData.clientName} (${formData.clientEmail})`);
+            console.log(`Submitted: ${new Date().toISOString()}`);
+            console.log('Approved Sections:', Object.entries(formData.sectionApprovals).filter(([_, approval]) => approval.approved).map(([section]) => section));
+            console.log('Pending Edits:', Object.entries(formData.sectionApprovals).filter(([_, approval]) => approval.status === 'needsEdit').map(([section, approval]) => `${section}: ${approval.comments}`));
+            console.log('Instructions:', formData.generalInstructions);
+            
+            // Update the configuration with form data
+            const updatedConfig = {
+              ...savedConfig,
+              clientApproval: {
+                ...savedConfig.clientApproval,
+                formStatus: 'completed',
+                clientInfo: {
+                  name: formData.clientName,
+                  email: formData.clientEmail,
+                  submissionDate: new Date().toISOString()
+                },
+                sectionApprovals: formData.sectionApprovals,
+                generalInstructions: formData.generalInstructions,
+                overallApproved: formData.overallApproved,
+                lastSavedAt: new Date().toISOString()
+              }
+            };
+            
+            // Save to database
+            fetch(`/api/config/professionals-demo`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(updatedConfig)
+            }).then(response => {
+              if (response.ok) {
+                setSavedConfig(updatedConfig);
+              }
+            });
+          }}
+        />
+      )}
 
       {/* Footer */}
       <footer className="bg-dark text-white py-4">

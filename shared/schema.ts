@@ -232,6 +232,42 @@ export const websiteConfigs = pgTable("website_configs", {
     color: string;
     message: { es: string; en: string };
   }>>().default([]),
+  // Client Approval System
+  clientApproval: json("client_approval").$type<{
+    isFormEnabled: boolean;
+    formStatus: "active" | "completed" | "disabled";
+    clientInfo: {
+      name: string;
+      email: string;
+      submissionDate: string;
+    };
+    sectionApprovals: {
+      hero: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      about: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      services: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      photos: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      reviews: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      contact: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+    };
+    generalInstructions: string;
+    overallApproved: boolean;
+    lastSavedAt: string;
+  }>().default({
+    isFormEnabled: false,
+    formStatus: "disabled",
+    clientInfo: { name: "", email: "", submissionDate: "" },
+    sectionApprovals: {
+      hero: { status: "pending", approved: false, comments: "" },
+      about: { status: "pending", approved: false, comments: "" },
+      services: { status: "pending", approved: false, comments: "" },
+      photos: { status: "pending", approved: false, comments: "" },
+      reviews: { status: "pending", approved: false, comments: "" },
+      contact: { status: "pending", approved: false, comments: "" }
+    },
+    generalInstructions: "",
+    overallApproved: false,
+    lastSavedAt: ""
+  }),
   // Timestamp fields
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

@@ -86,6 +86,28 @@ interface ProfessionalsConfig {
   // Settings
   showWhatsappButton: boolean;
   showChatbot: boolean;
+
+  // Client Approval System
+  clientApproval?: {
+    isFormEnabled: boolean;
+    formStatus: "active" | "completed" | "disabled";
+    clientInfo: {
+      name: string;
+      email: string;
+      submissionDate: string;
+    };
+    sectionApprovals: {
+      hero: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      about: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      services: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      photos: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      reviews: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      contact: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+    };
+    generalInstructions: string;
+    overallApproved: boolean;
+    lastSavedAt: string;
+  };
 }
 
 export default function ProfessionalsEditor() {
@@ -185,7 +207,25 @@ export default function ProfessionalsEditor() {
 
     // Settings
     showWhatsappButton: true,
-    showChatbot: true
+    showChatbot: true,
+
+    // Client Approval System
+    clientApproval: {
+      isFormEnabled: false,
+      formStatus: "disabled",
+      clientInfo: { name: "", email: "", submissionDate: "" },
+      sectionApprovals: {
+        hero: { status: "pending", approved: false, comments: "" },
+        about: { status: "pending", approved: false, comments: "" },
+        services: { status: "pending", approved: false, comments: "" },
+        photos: { status: "pending", approved: false, comments: "" },
+        reviews: { status: "pending", approved: false, comments: "" },
+        contact: { status: "pending", approved: false, comments: "" }
+      },
+      generalInstructions: "",
+      overallApproved: false,
+      lastSavedAt: ""
+    }
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -533,6 +573,52 @@ export default function ProfessionalsEditor() {
     });
   };
 
+  // Client Approval System Functions
+  const handleToggleClientApprovalForm = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      clientApproval: {
+        ...prev.clientApproval!,
+        isFormEnabled: !prev.clientApproval!.isFormEnabled,
+        formStatus: !prev.clientApproval!.isFormEnabled ? "active" : "disabled"
+      }
+    }));
+  };
+
+  const handleResetClientApprovals = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      clientApproval: {
+        isFormEnabled: prev.clientApproval!.isFormEnabled,
+        formStatus: "active",
+        clientInfo: { name: "", email: "", submissionDate: "" },
+        sectionApprovals: {
+          hero: { status: "pending", approved: false, comments: "" },
+          about: { status: "pending", approved: false, comments: "" },
+          services: { status: "pending", approved: false, comments: "" },
+          photos: { status: "pending", approved: false, comments: "" },
+          reviews: { status: "pending", approved: false, comments: "" },
+          contact: { status: "pending", approved: false, comments: "" }
+        },
+        generalInstructions: "",
+        overallApproved: false,
+        lastSavedAt: ""
+      }
+    }));
+  };
+
+  const getApprovalStatusSummary = () => {
+    const approvals = websiteData.clientApproval?.sectionApprovals;
+    if (!approvals) return { pending: 0, approved: 0, needsEdit: 0 };
+    
+    const sections = Object.values(approvals);
+    return {
+      pending: sections.filter(s => s.status === 'pending').length,
+      approved: sections.filter(s => s.status === 'approved').length,
+      needsEdit: sections.filter(s => s.status === 'needsEdit').length
+    };
+  };
+
   if (isLoading) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center">
@@ -697,6 +783,16 @@ export default function ProfessionalsEditor() {
                 >
                   <Palette size={16} className="me-2" />
                   Colors & Branding
+                </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'approval' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('approval')}
+                >
+                  <Settings size={16} className="me-2" />
+                  Client Approval
+                  {websiteData.clientApproval?.isFormEnabled && (
+                    <span className="badge bg-success ms-2">ON</span>
+                  )}
                 </button>
               </div>
             </div>
@@ -1812,6 +1908,192 @@ export default function ProfessionalsEditor() {
                         </div>
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {/* Client Approval Section */}
+                {activeTab === 'approval' && (
+                  <div>
+                    <h5 className="mb-4">Client Approval System</h5>
+                    
+                    {/* Form Toggle */}
+                    <div className="card mb-4">
+                      <div className="card-header">
+                        <h6 className="mb-0">Form Settings</h6>
+                      </div>
+                      <div className="card-body">
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-check mb-3">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                checked={websiteData.clientApproval?.isFormEnabled || false}
+                                onChange={handleToggleClientApprovalForm}
+                              />
+                              <label className="form-check-label">
+                                <strong>Enable Client Approval Form</strong>
+                              </label>
+                              <small className="form-text text-muted d-block">
+                                When enabled, clients will see an approval form at the bottom of their website template.
+                              </small>
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="d-flex align-items-center">
+                              <span className="me-2">Form Status:</span>
+                              <span className={`badge ${
+                                websiteData.clientApproval?.formStatus === 'active' ? 'bg-success' :
+                                websiteData.clientApproval?.formStatus === 'completed' ? 'bg-primary' :
+                                'bg-secondary'
+                              }`}>
+                                {websiteData.clientApproval?.formStatus?.toUpperCase() || 'DISABLED'}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {websiteData.clientApproval?.isFormEnabled && (
+                          <div className="mt-3">
+                            <button 
+                              className="btn btn-warning btn-sm"
+                              onClick={handleResetClientApprovals}
+                            >
+                              <Settings size={16} className="me-2" />
+                              Reset All Approvals
+                            </button>
+                            <small className="form-text text-muted d-block mt-2">
+                              This will reset all section approvals and clear client feedback.
+                            </small>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Approval Status Summary */}
+                    {websiteData.clientApproval?.isFormEnabled && (
+                      <div className="card mb-4">
+                        <div className="card-header">
+                          <h6 className="mb-0">Approval Status Overview</h6>
+                        </div>
+                        <div className="card-body">
+                          <div className="row text-center">
+                            <div className="col-md-4">
+                              <div className="border rounded p-3">
+                                <h4 className="text-secondary mb-1">{getApprovalStatusSummary().pending}</h4>
+                                <p className="mb-0 small text-muted">Pending Review</p>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="border rounded p-3">
+                                <h4 className="text-success mb-1">{getApprovalStatusSummary().approved}</h4>
+                                <p className="mb-0 small text-muted">Approved</p>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="border rounded p-3">
+                                <h4 className="text-warning mb-1">{getApprovalStatusSummary().needsEdit}</h4>
+                                <p className="mb-0 small text-muted">Need Edits</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Client Information */}
+                    {websiteData.clientApproval?.clientInfo?.name && (
+                      <div className="card mb-4">
+                        <div className="card-header">
+                          <h6 className="mb-0">Client Information</h6>
+                        </div>
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <strong>Client Name:</strong><br/>
+                              {websiteData.clientApproval.clientInfo.name}
+                            </div>
+                            <div className="col-md-4">
+                              <strong>Email:</strong><br/>
+                              {websiteData.clientApproval.clientInfo.email}
+                            </div>
+                            <div className="col-md-4">
+                              <strong>Submitted:</strong><br/>
+                              {websiteData.clientApproval.clientInfo.submissionDate ? 
+                                new Date(websiteData.clientApproval.clientInfo.submissionDate).toLocaleDateString() : 
+                                'Not submitted'
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Section Approvals Details */}
+                    {websiteData.clientApproval?.isFormEnabled && (
+                      <div className="card">
+                        <div className="card-header">
+                          <h6 className="mb-0">Section Approval Details</h6>
+                        </div>
+                        <div className="card-body">
+                          {Object.entries(websiteData.clientApproval.sectionApprovals).map(([section, approval]) => (
+                            <div key={section} className="border rounded p-3 mb-3">
+                              <div className="row align-items-center">
+                                <div className="col-md-3">
+                                  <h6 className="mb-0 text-capitalize">{section} Section</h6>
+                                </div>
+                                <div className="col-md-2">
+                                  <span className={`badge ${
+                                    approval.status === 'approved' ? 'bg-success' :
+                                    approval.status === 'needsEdit' ? 'bg-warning' :
+                                    'bg-secondary'
+                                  }`}>
+                                    {approval.status === 'needsEdit' ? 'Needs Edit' : approval.status.charAt(0).toUpperCase() + approval.status.slice(1)}
+                                  </span>
+                                </div>
+                                <div className="col-md-7">
+                                  {approval.comments && (
+                                    <div>
+                                      <strong>Client Feedback:</strong>
+                                      <p className="mb-0 small text-muted mt-1">{approval.comments}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+
+                          {/* General Instructions */}
+                          {websiteData.clientApproval.generalInstructions && (
+                            <div className="border rounded p-3 mt-3" style={{ backgroundColor: '#f8f9fa' }}>
+                              <h6 className="mb-2">General Instructions from Client:</h6>
+                              <p className="mb-0">{websiteData.clientApproval.generalInstructions}</p>
+                            </div>
+                          )}
+
+                          {/* Overall Approval */}
+                          <div className="mt-3 text-center">
+                            <div className={`p-3 rounded ${websiteData.clientApproval.overallApproved ? 'bg-success text-white' : 'bg-light'}`}>
+                              <h6 className="mb-0">
+                                {websiteData.clientApproval.overallApproved ? '✅ Website Fully Approved by Client' : '⏳ Awaiting Full Approval'}
+                              </h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {!websiteData.clientApproval?.isFormEnabled && (
+                      <div className="card">
+                        <div className="card-body text-center py-5">
+                          <div className="text-muted">
+                            <Settings size={48} className="mb-3" style={{ color: '#dee2e6' }} />
+                            <h6>Client Approval Form Disabled</h6>
+                            <p>Enable the form above to allow clients to review and approve their website sections.</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
