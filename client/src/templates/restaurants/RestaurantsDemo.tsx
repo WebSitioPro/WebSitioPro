@@ -411,7 +411,7 @@ export default function RestaurantsDemo() {
               return menuPages.map((page: any, index: number) => (
                 <div key={index} className="col-md-4 col-sm-6">
                   <div className="card border-0 shadow-sm">
-                    <OptimizedImage 
+                    <img 
                       src={page.url || `https://via.placeholder.com/400x600/00A859/FFFFFF?text=Menu+Page+${index + 1}`} 
                       alt={page.title?.[language] || `Menu page ${index + 1}`} 
                       className="card-img-top menu-image"
@@ -419,7 +419,8 @@ export default function RestaurantsDemo() {
                         height: '400px', 
                         objectFit: 'contain',
                         border: '2px solid #00A859',
-                        backgroundColor: '#f8f9fa'
+                        backgroundColor: '#f8f9fa',
+                        width: '100%'
                       }}
                     />
                     {page.title && (
@@ -515,11 +516,11 @@ export default function RestaurantsDemo() {
                 ? savedConfig.photos 
                 : mockRestaurantData.photos;
               
-              return photos.map((photoUrl: any, index: number) => (
+              return photos.map((photo: any, index: number) => (
                 <div key={index} className="col-md-4 col-sm-6">
-                  <OptimizedImage 
-                    src={photoUrl} 
-                    alt={`Restaurant photo ${index + 1}`} 
+                  <img 
+                    src={photo.url || photo} 
+                    alt={photo.caption?.[language] || `Restaurant photo ${index + 1}`} 
                     className="img-fluid rounded shadow-sm"
                     style={{ 
                       width: '100%',
