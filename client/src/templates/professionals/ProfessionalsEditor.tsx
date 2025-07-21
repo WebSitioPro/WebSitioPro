@@ -2012,6 +2012,36 @@ export default function ProfessionalsEditor() {
                       </div>
                     </div>
 
+                    {/* Admin General Instructions Editor */}
+                    {websiteData.clientApproval?.isFormEnabled && (
+                      <div className="card mb-4">
+                        <div className="card-header">
+                          <h6 className="mb-0">General Instructions for Client</h6>
+                        </div>
+                        <div className="card-body">
+                          <div className="mb-3">
+                            <label className="form-label">Instructions (Admin Only)</label>
+                            <textarea
+                              className="form-control"
+                              rows={4}
+                              value={websiteData.clientApproval?.generalInstructions || ''}
+                              onChange={(e) => setWebsiteData(prev => ({
+                                ...prev,
+                                clientApproval: {
+                                  ...prev.clientApproval!,
+                                  generalInstructions: e.target.value
+                                }
+                              }))}
+                              placeholder="Enter instructions for the client (e.g., payment details, contact information, next steps after approval...)"
+                            />
+                            <small className="text-muted">
+                              These instructions will be displayed to the client at the top of the approval form. Use this to provide payment details, contact information, or next steps.
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Approval Status Summary */}
                     {websiteData.clientApproval?.isFormEnabled && (
                       <div className="card mb-4">

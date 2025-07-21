@@ -22,7 +22,6 @@ interface ClientApprovalFormProps {
 export function ClientApprovalForm({ config, language, onSubmit }: ClientApprovalFormProps) {
   const [clientName, setClientName] = useState('');
   const [clientEmail, setClientEmail] = useState('');
-  const [generalInstructions, setGeneralInstructions] = useState('');
   const [sectionApprovals, setSectionApprovals] = useState<Record<string, SectionApproval>>({
     hero: { status: "pending", approved: false, comments: "" },
     about: { status: "pending", approved: false, comments: "" },
@@ -82,7 +81,7 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
         clientName: clientName.trim(),
         clientEmail: clientEmail.trim(),
         sectionApprovals,
-        generalInstructions: generalInstructions.trim(),
+        generalInstructions: '', // No longer collected from client
         overallApproved
       });
       
@@ -235,26 +234,25 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
                 </div>
               </div>
 
-              {/* General Instructions */}
-              <div className="card mb-4">
-                <div className="card-header">
-                  <h5 className="mb-0">
-                    <MessageSquare size={20} className="me-2" />
-                    {language === 'es' ? 'Instrucciones Generales' : 'General Instructions'}
-                  </h5>
+              {/* Admin General Instructions Display */}
+              {config?.clientApproval?.generalInstructions && (
+                <div className="card mb-4">
+                  <div className="card-header">
+                    <h5 className="mb-0">
+                      <MessageSquare size={20} className="me-2" />
+                      {language === 'es' ? 'Instrucciones Importantes' : 'Important Instructions'}
+                    </h5>
+                  </div>
+                  <div className="card-body">
+                    <div className="alert alert-info mb-0">
+                      <strong>{language === 'es' ? 'Información de tu diseñador web:' : 'Information from your web designer:'}</strong>
+                      <div className="mt-2" style={{ whiteSpace: 'pre-wrap' }}>
+                        {config.clientApproval.generalInstructions}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="card-body">
-                  <textarea
-                    className="form-control"
-                    rows={4}
-                    placeholder={language === 'es' 
-                      ? 'Cualquier comentario adicional, cambios generales, o instrucciones especiales...'
-                      : 'Any additional comments, general changes, or special instructions...'}
-                    value={generalInstructions}
-                    onChange={(e) => setGeneralInstructions(e.target.value)}
-                  />
-                </div>
-              </div>
+              )}
 
               {/* Submit Button */}
               <div className="text-center">
