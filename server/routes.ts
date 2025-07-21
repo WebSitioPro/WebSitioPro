@@ -45,7 +45,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Validate configuration access using isolation system
       const accessValidation = validateConfigAccess(idParam, 'read');
-      
+
       if (!accessValidation.isValid) {
         logConfigAccess('GET', idParam, false, accessValidation.error);
         return res.status(403).json({ 
@@ -59,11 +59,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (idParam === "professionals-demo" || idParam === "tourism-demo" || 
           idParam === "retail-demo" || idParam === "services-demo" || 
           idParam === "restaurants-demo") {
-        
+
         // Try to find existing config by name
         const configs = await storage.getAllWebsiteConfigs();
         config = configs.find(c => c.name === accessValidation.configName);
-        
+
         // If demo config doesn't exist, create it with safe defaults
         if (!config) {
           const templateType = idParam.replace('-demo', '');
@@ -78,12 +78,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Homepage access allowed for read operations
         const configs = await storage.getAllWebsiteConfigs();
         config = configs.find(c => c.name === accessValidation.configName);
-        
+
         // If homepage config doesn't exist, find by ID 1
         if (!config) {
           config = configs.find(c => c.id === 1);
         }
-        
+
         if (!config) {
           return res.status(404).json({ error: "Homepage configuration not found" });
         }
@@ -91,15 +91,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Legacy fallback - redirect to homepage
         const configs = await storage.getAllWebsiteConfigs();
         config = configs.find(c => c.name === "homepage Configuration");
-        
+
         if (!config) {
+          // If homepage config doesn't exist, create it with proper homepage values
           const defaultConfig = {
-            name: "homepage Configuration",
-            templateType: 'professionals',
-            businessName: 'WebSitioPro Demo',
-            heroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=WebSitioPro+Demo',
-            phone: '+52 983 123 4567',
-            email: 'info@websitiopro.com'
+            name: 'WebSitioPro Homepage',
+            templateType: 'homepage',
+            businessName: 'WebSitioPro',
+            logo: 'WebSitioPro',
+            heroImage: 'https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg',
+            phone: '+52 983 114 4462',
+            email: 'ventas@websitiopro.com',
+            primaryColor: '#C8102E',
+            secondaryColor: '#00A859',
+            backgroundColor: '#FFFFFF',
+            defaultLanguage: 'es',
+            showWhyWebsiteButton: true,
+            showDomainButton: true,
+            showChatbot: true,
+            whatsappNumber: '529831144462',
+            address: JSON.stringify({
+              es: 'Chetumal, Quintana Roo, México',
+              en: 'Chetumal, Quintana Roo, Mexico'
+            }),
+            officeHours: {
+              mondayToFriday: 'Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM',
+              saturday: 'Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM'
+            },
+            bannerText: JSON.stringify({
+              es: '¡Lanza Hoy por $1,995 MXN!    ¡Hospedaje Solo $195 MXN/Mes!',
+              en: 'Launch Today for $1,995 MXN!    Hosting Only $195 MXN/Month!'
+            }),
+            translations: {
+              es: {
+                heroHeadline: 'Construye tu Negocio con WebSitioPro',
+                heroSubheadline: 'Sitios web accesibles y personalizados para México—desde $1,995 pesos',
+                aboutTitle: 'Sobre Nosotros',
+                aboutText: 'Empoderando a los negocios de Chetumal con sitios web impresionantes'
+              },
+              en: {
+                heroHeadline: 'Build Your Business with WebSitioPro',
+                heroSubheadline: 'Affordable, custom sites for Mexico—starting at $1,995 pesos',
+                aboutTitle: 'About Us',
+                aboutText: 'Empowering Chetumal businesses with stunning websites'
+              }
+            }
           };
           config = await storage.createWebsiteConfig(defaultConfig);
         }
@@ -127,7 +163,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Clean the request body by removing timestamp fields
       const { createdAt, updatedAt, ...cleanBody } = req.body;
-      
+
       const validationResult = insertWebsiteConfigSchema.safeParse(cleanBody);
 
       if (!validationResult.success) {
@@ -151,24 +187,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Check if this is a legitimate homepage editor request
       const isHomepageEditor = idParam === 'homepage' && req.headers['x-homepage-editor'] === 'true';
-      
+
       // For homepage editor, bypass isolation system temporarily
       if (isHomepageEditor) {
         const configs = await storage.getAllWebsiteConfigs();
         let config = configs.find(c => c.name === 'WebSitioPro Homepage');
-        
+
         // If homepage config doesn't exist, find by ID 1
         if (!config) {
           config = configs.find(c => c.id === 1);
         }
-        
+
         if (!config) {
           return res.status(404).json({ error: "Homepage configuration not found" });
         }
-        
+
         // Clean the request body by removing timestamp fields
         const { createdAt, updatedAt, ...cleanBody } = req.body;
-        
+
         // Partial validation of the update data
         const partialSchema = insertWebsiteConfigSchema.partial();
         const validationResult = partialSchema.safeParse(cleanBody);
@@ -196,10 +232,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
       }
-      
+
       // Validate configuration access using isolation system
       const accessValidation = validateConfigAccess(idParam, 'write', isHomepageEditor);
-      
+
       if (!accessValidation.isValid) {
         logConfigAccess('PUT', idParam, false, accessValidation.error);
         return res.status(403).json({ 
@@ -213,11 +249,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (idParam === "professionals-demo" || idParam === "tourism-demo" || 
           idParam === "retail-demo" || idParam === "services-demo" || 
           idParam === "restaurants-demo") {
-        
+
         // Try to find existing config by name
         const configs = await storage.getAllWebsiteConfigs();
         config = configs.find(c => c.name === accessValidation.configName);
-        
+
         // If demo config doesn't exist, create it with safe defaults
         if (!config) {
           const templateType = idParam.replace('-demo', '');
@@ -232,7 +268,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Homepage access - find existing config
         const configs = await storage.getAllWebsiteConfigs();
         config = configs.find(c => c.name === accessValidation.configName);
-        
+
         if (!config) {
           return res.status(404).json({ error: "Homepage configuration not found" });
         }
@@ -240,7 +276,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Legacy fallback - redirect to homepage
         const configs = await storage.getAllWebsiteConfigs();
         config = configs.find(c => c.name === "homepage Configuration");
-        
+
         if (!config) {
           const defaultConfig = {
             name: "homepage Configuration",
@@ -267,7 +303,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Clean the request body by removing timestamp fields
       const { createdAt, updatedAt, ...cleanBody } = req.body;
-      
+
       // Partial validation of the update data
       const partialSchema = insertWebsiteConfigSchema.partial();
       const validationResult = partialSchema.safeParse(cleanBody);
@@ -632,17 +668,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/stock-image", async (req: Request, res: Response) => {
     try {
       const { category = 'business', width = 800, height = 600 } = req.query;
-      
+
       // Generate Unsplash URL for stock images
       const unsplashUrl = `https://source.unsplash.com/${width}x${height}/?${category}`;
-      
+
       res.json({ 
         imageUrl: unsplashUrl,
         category,
         dimensions: `${width}x${height}`,
         source: 'Unsplash'
       });
-      
+
     } catch (error) {
       console.error('Stock image generator error:', error);
       res.status(500).json({ error: "Failed to generate stock image URL" });
@@ -774,13 +810,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         facebook_url: facebook_url || "",
         profileImage: profileImage || "",
         coverImage: coverImage || "",
-        heroImage: coverImage || "", // Include hero image mapping in response
+        heroImage: heroImage || "", // Include hero image mapping in response
         previewUrl: `websitiopro.com/preview/${place_id || templateId}`,
         templateType: category || "Professionals",
         dateCreated: new Date().toLocaleDateString(),
         sunsetDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString(),
         agentNotes: "Template generated successfully",
-        templateId,
+```
+// Replacing the old homepage config with the new one
+templateId,
         webhookSent: true,
         makeIntegration: {
           googleSheetsCompatible: true,
