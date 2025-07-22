@@ -689,15 +689,26 @@ export default function TourismEditor() {
                                     value={stat.icon}
                                     onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
                                   >
-                                    <option value="MapPin">MapPin</option>
-                                    <option value="Award">Award</option>
-                                    <option value="Star">Star</option>
-                                    <option value="Shield">Shield</option>
-                                    <option value="Heart">Heart</option>
-                                    <option value="Users">Users</option>
-                                    <option value="Clock">Clock</option>
-                                    <option value="CheckCircle">CheckCircle</option>
-                                    <option value="Target">Target</option>
+                                    <option value="mountain">🏔️ Mountain</option>
+                                    <option value="beach">🏖️ Beach</option>
+                                    <option value="airplane">✈️ Airplane</option>
+                                    <option value="camera">📷 Camera</option>
+                                    <option value="compass">🧭 Compass</option>
+                                    <option value="map">🗺️ Map</option>
+                                    <option value="backpack">🎒 Backpack</option>
+                                    <option value="palm_tree">🌴 Palm Tree</option>
+                                    <option value="sunrise">🌅 Sunrise</option>
+                                    <option value="boat">⛵ Boat</option>
+                                    <option value="temple">🏛️ Temple</option>
+                                    <option value="tent">⛺ Tent</option>
+                                    <option value="binoculars">🔭 Binoculars</option>
+                                    <option value="trophy">🏆 Trophy</option>
+                                    <option value="star">⭐ Star</option>
+                                    <option value="heart">❤️ Heart</option>
+                                    <option value="users">👥 Users</option>
+                                    <option value="clock">🕐 Clock</option>
+                                    <option value="shield">🛡️ Shield</option>
+                                    <option value="target">🎯 Target</option>
                                   </select>
                                 </div>
                               </div>
