@@ -286,14 +286,7 @@ export default function TourismDemo() {
                 {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
                  (language === 'es' ? 'Descubre la belleza de México' : 'Discover the beauty of Mexico')}
               </h2>
-              {savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription) && (
-                <p className="lead mb-4" style={{ 
-                  color: savedConfig?.heroImage ? 'white' : 'var(--bs-gray-600)',
-                  textShadow: savedConfig?.heroImage ? '1px 1px 2px rgba(0,0,0,0.5)' : 'none'
-                }}>
-                  {getLocalizedValue(savedConfig.heroDescription)}
-                </p>
-              )}
+
               <a 
                 href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockTourismData.whatsappNumber}?text=Hola, me gustaría información sobre sus tours`}
                 className="btn btn-lg text-white"
