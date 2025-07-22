@@ -420,9 +420,22 @@ export default function TourismDemo() {
                       </p>
                     )}
                     <div className="mb-3">
-                      <span className="badge fs-6 px-3 py-2" style={{ backgroundColor: 'hsl(var(--secondary))', color: 'white' }}>
-                        {tour.price || 'Consultar precio'}
-                      </span>
+                      <div 
+                        className="d-inline-block px-3 py-3 rounded text-center" 
+                        style={{ 
+                          backgroundColor: 'hsl(var(--secondary))', 
+                          color: 'white',
+                          minWidth: '120px',
+                          lineHeight: '1.2'
+                        }}
+                      >
+                        <div className="fw-bold" style={{ fontSize: '0.9rem' }}>
+                          {tour.price || 'Consultar precio'}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', opacity: '0.9' }}>
+                          por persona
+                        </div>
+                      </div>
                     </div>
                     <a 
                       href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockTourismData.whatsappNumber}?text=Me interesa el ${tour.title ? (language === 'es' ? tour.title.es : tour.title.en) : tour.name}`}
