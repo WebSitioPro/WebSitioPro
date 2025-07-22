@@ -421,19 +421,15 @@ export default function TourismDemo() {
                     )}
                     <div className="mb-3">
                       <div 
-                        className="d-inline-block px-3 py-3 rounded text-center" 
+                        className="d-inline-block px-3 py-2 rounded text-center" 
                         style={{ 
                           backgroundColor: 'hsl(var(--secondary))', 
                           color: 'white',
-                          minWidth: '120px',
-                          lineHeight: '1.2'
+                          minWidth: '120px'
                         }}
                       >
                         <div className="fw-bold" style={{ fontSize: '0.9rem' }}>
                           {tour.price || 'Consultar precio'}
-                        </div>
-                        <div style={{ fontSize: '0.75rem', opacity: '0.9' }}>
-                          por persona
                         </div>
                       </div>
                     </div>
