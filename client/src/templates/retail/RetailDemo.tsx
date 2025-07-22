@@ -319,7 +319,8 @@ export default function RetailDemo() {
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {t('aboutTitle')}
+                {(savedConfig && savedConfig.aboutTitle && getLocalizedValue(savedConfig.aboutTitle)) || 
+                 t('aboutTitle')}
               </h2>
               <p className="lead text-muted">
                 {(savedConfig && savedConfig.aboutText && getLocalizedValue(savedConfig.aboutText)) || 
