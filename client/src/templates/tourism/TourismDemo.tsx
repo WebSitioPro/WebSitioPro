@@ -421,7 +421,6 @@ export default function TourismDemo() {
                     )}
                     <div className="mb-3">
                       <span className="badge fs-6 px-3 py-2" style={{ backgroundColor: 'hsl(var(--secondary))', color: 'white' }}>
-                        <DollarSign size={16} className="me-1" />
                         {tour.price || 'Consultar precio'}
                       </span>
                     </div>
