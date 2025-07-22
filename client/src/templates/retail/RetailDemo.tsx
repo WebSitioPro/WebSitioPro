@@ -351,27 +351,53 @@ export default function RetailDemo() {
                     }
                   ];
                   
-                  // Icon mapping
-                  const iconMap = {
-                    Award: Award,
-                    Star: Star,
-                    Shield: Shield,
-                    Heart: Heart,
-                    Users: Users,
-                    Clock: Clock,
-                    CheckCircle: CheckCircle,
-                    Target: Target,
-                    ShoppingBag: ShoppingBag
+                  // Colorful retail icon mapping
+                  const retailIconMap: { [key: string]: string } = {
+                    shopping_bag: '🛍️',
+                    store: '🏪',
+                    credit_card: '💳',
+                    price_tag: '🏷️',
+                    gift: '🎁',
+                    diamond: '💎',
+                    dress: '👗',
+                    shoe: '👠',
+                    handbag: '👜',
+                    gem: '💍',
+                    tshirt: '👕',
+                    jeans: '👖',
+                    hat: '👒',
+                    sunglasses: '🕶️',
+                    watch: '⌚',
+                    perfume: '🧴',
+                    lipstick: '💄',
+                    shopping_cart: '🛒',
+                    cash: '💰',
+                    star: '⭐',
+                    heart: '❤️',
+                    users: '👥',
+                    clock: '🕐',
+                    check: '✅',
+                    trophy: '🏆',
+                    // Fallback for old icons
+                    ShoppingBag: '🛍️',
+                    Award: '🏆',
+                    Star: '⭐',
+                    Shield: '🛡️',
+                    Heart: '❤️',
+                    Users: '👥',
+                    Clock: '🕐',
+                    CheckCircle: '✅',
+                    Target: '🎯'
                   };
                   
                   return aboutStats.map((stat, index) => {
-                    const IconComponent = iconMap[stat.icon as keyof typeof iconMap] || ShoppingBag;
+                    const iconEmoji = retailIconMap[stat.icon] || retailIconMap.shopping_bag;
                     return (
                       <div key={index} className="col-md-4">
                         <div className="text-center">
                           <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
                                style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
-                            <IconComponent size={32} style={{ color: 'hsl(var(--primary))' }} />
+                            <span style={{ fontSize: '2.5rem', lineHeight: '1' }}>{iconEmoji}</span>
                           </div>
                           <h5>{language === 'es' ? stat.value.es : stat.value.en}</h5>
                           <p className="text-muted">{language === 'es' ? stat.label.es : stat.label.en}</p>

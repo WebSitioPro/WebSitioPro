@@ -274,6 +274,39 @@ export default function RetailEditor() {
     }));
   };
 
+  // Retail icon preview function
+  const getRetailIconPreview = (iconKey: string) => {
+    const retailIconMap: { [key: string]: string } = {
+      shopping_bag: '🛍️',
+      store: '🏪',
+      credit_card: '💳',
+      price_tag: '🏷️',
+      gift: '🎁',
+      diamond: '💎',
+      dress: '👗',
+      shoe: '👠',
+      handbag: '👜',
+      gem: '💍',
+      tshirt: '👕',
+      jeans: '👖',
+      hat: '👒',
+      sunglasses: '🕶️',
+      watch: '⌚',
+      perfume: '🧴',
+      lipstick: '💄',
+      shopping_cart: '🛒',
+      cash: '💰',
+      star: '⭐',
+      heart: '❤️',
+      users: '👥',
+      clock: '🕐',
+      check: '✅',
+      trophy: '🏆'
+    };
+    
+    return <span style={{ fontSize: '24px' }}>{retailIconMap[iconKey] || '🛍️'}</span>;
+  };
+
   const handleReviewChange = (index: number, field: string, value: string | number, language?: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
@@ -650,16 +683,38 @@ export default function RetailEditor() {
                                     value={stat.icon}
                                     onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
                                   >
-                                    <option value="ShoppingBag">ShoppingBag</option>
-                                    <option value="Award">Award</option>
-                                    <option value="Star">Star</option>
-                                    <option value="Shield">Shield</option>
-                                    <option value="Heart">Heart</option>
-                                    <option value="Users">Users</option>
-                                    <option value="Clock">Clock</option>
-                                    <option value="CheckCircle">CheckCircle</option>
-                                    <option value="Target">Target</option>
+                                    <option value="shopping_bag">🛍️ Shopping Bag</option>
+                                    <option value="store">🏪 Store</option>
+                                    <option value="credit_card">💳 Credit Card</option>
+                                    <option value="price_tag">🏷️ Price Tag</option>
+                                    <option value="gift">🎁 Gift</option>
+                                    <option value="diamond">💎 Diamond</option>
+                                    <option value="dress">👗 Dress</option>
+                                    <option value="shoe">👠 Shoe</option>
+                                    <option value="handbag">👜 Handbag</option>
+                                    <option value="gem">💍 Ring</option>
+                                    <option value="tshirt">👕 T-Shirt</option>
+                                    <option value="jeans">👖 Jeans</option>
+                                    <option value="hat">👒 Hat</option>
+                                    <option value="sunglasses">🕶️ Sunglasses</option>
+                                    <option value="watch">⌚ Watch</option>
+                                    <option value="perfume">🧴 Perfume</option>
+                                    <option value="lipstick">💄 Lipstick</option>
+                                    <option value="shopping_cart">🛒 Shopping Cart</option>
+                                    <option value="cash">💰 Cash</option>
+                                    <option value="star">⭐ Star</option>
+                                    <option value="heart">❤️ Heart</option>
+                                    <option value="users">👥 Users</option>
+                                    <option value="clock">🕐 Clock</option>
+                                    <option value="check">✅ Check</option>
+                                    <option value="trophy">🏆 Trophy</option>
                                   </select>
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Preview</label>
+                                  <div className="form-control d-flex align-items-center justify-content-center" style={{ height: '38px' }}>
+                                    {getRetailIconPreview(stat.icon || 'shopping_bag')}
+                                  </div>
                                 </div>
                               </div>
                               <div className="col-md-3">
