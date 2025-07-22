@@ -252,26 +252,44 @@ export default function TourismDemo() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="py-5" style={{
-        background: savedConfig?.heroImage ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${savedConfig.heroImage}')` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '60vh'
-      }}>
-        <div className="container">
-          <div className="row align-items-center" style={{ minHeight: '50vh' }}>
-            <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'hsl(var(--primary))' }}>
+      <section 
+        id="home" 
+        className="py-5 position-relative d-flex align-items-center"
+        style={{
+          backgroundImage: savedConfig?.heroImage ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${savedConfig.heroImage}')` : 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'scroll',
+          minHeight: '70vh',
+          maxHeight: '100vh',
+          overflow: 'hidden',
+          position: 'relative'
+        }}
+      >
+        <div className="container h-100">
+          <div className="row align-items-center justify-content-start h-100" style={{ minHeight: '60vh' }}>
+            <div className="col-lg-8 col-xl-7">
+              <h1 className="display-4 display-md-3 display-lg-2 fw-bold mb-4" style={{ 
+                color: savedConfig?.heroImage ? 'white' : 'hsl(var(--primary))',
+                textShadow: savedConfig?.heroImage ? '2px 2px 4px rgba(0,0,0,0.7)' : 'none',
+                lineHeight: '1.2'
+              }}>
                 {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
                  (savedConfig && savedConfig.businessName) || 
                  t('businessName')}
               </h1>
-              <h2 className="h4 mb-4" style={{ color: savedConfig?.heroImage ? '#f8f9fa' : 'hsl(var(--primary))' }}>
+              <h2 className="h4 h3-md h2-lg mb-4" style={{ 
+                color: savedConfig?.heroImage ? '#f8f9fa' : 'hsl(var(--primary))',
+                textShadow: savedConfig?.heroImage ? '1px 1px 3px rgba(0,0,0,0.6)' : 'none'
+              }}>
                 {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
                  (language === 'es' ? 'Descubre la belleza de México' : 'Discover the beauty of Mexico')}
               </h2>
-              <p className="lead mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'var(--bs-gray-600)' }}>
+              <p className="lead mb-4" style={{ 
+                color: savedConfig?.heroImage ? 'white' : 'var(--bs-gray-600)',
+                textShadow: savedConfig?.heroImage ? '1px 1px 2px rgba(0,0,0,0.5)' : 'none'
+              }}>
                 {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || 
                  getLocalizedValue(mockTourismData.intro)}
               </p>
