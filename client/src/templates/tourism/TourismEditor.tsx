@@ -64,6 +64,18 @@ export default function TourismEditor() {
         icon: 'landmark'
       }
     ],
+    tours: [
+      {
+        title: { es: 'Tour Cenotes Exclusivo', en: 'Exclusive Cenotes Tour' },
+        description: { es: 'Visita cenotes únicos con guía experto', en: 'Visit unique cenotes with expert guide' },
+        price: '$850 MXN'
+      },
+      {
+        title: { es: 'Aventura Maya Completa', en: 'Complete Maya Adventure' },
+        description: { es: 'Ruinas, cenotes y cultura local', en: 'Ruins, cenotes and local culture' },
+        price: '$1,200 MXN'
+      }
+    ],
     photos: [
       {
         url: 'https://via.placeholder.com/300x200/00A859/FFFFFF?text=Bacalar+Lagoon',
@@ -249,6 +261,47 @@ export default function TourismEditor() {
     setWebsiteData(prev => ({
       ...prev,
       services: prev.services.filter((_, i) => i !== index)
+    }));
+  };
+
+  // Tour handling functions
+  const handleTourChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      tours: (prev.tours || []).map((tour, i) => {
+        if (i === index) {
+          if (language && (field === 'title' || field === 'description')) {
+            return {
+              ...tour,
+              [field]: {
+                ...tour[field as keyof typeof tour],
+                [language]: value
+              }
+            };
+          } else {
+            return { ...tour, [field]: value };
+          }
+        }
+        return tour;
+      })
+    }));
+  };
+
+  const addTour = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      tours: [...(prev.tours || []), {
+        title: { es: '', en: '' },
+        description: { es: '', en: '' },
+        price: ''
+      }]
+    }));
+  };
+
+  const removeTour = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      tours: (prev.tours || []).filter((_, i) => i !== index)
     }));
   };
 
@@ -479,11 +532,18 @@ export default function TourismEditor() {
                   About Section
                 </button>
                 <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'tours' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('tours')}
+                >
+                  <MapPin size={16} className="me-2" />
+                  Our Tours
+                </button>
+                <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'services' ? 'active' : ''}`}
                   onClick={() => setActiveTab('services')}
                 >
-                  <MapPin size={16} className="me-2" />
-                  Tours & Services
+                  <Settings size={16} className="me-2" />
+                  Services
                 </button>
                 <button 
                   className={`list-group-item list-group-item-action ${activeTab === 'photos' ? 'active' : ''}`}
@@ -761,6 +821,104 @@ export default function TourismEditor() {
                         </div>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {activeTab === 'tours' && (
+                  <div>
+                    <h5 className="mb-4">Our Tours</h5>
+                    <div className="alert alert-info">
+                      <strong>Tours Section:</strong> Add tour packages with pricing that will appear in the "Our Tours" section of your website.
+                    </div>
+                    
+                    {(websiteData.tours || []).map((tour, index) => (
+                      <div key={index} className="card mb-3">
+                        <div className="card-header d-flex justify-content-between align-items-center">
+                          <h6 className="mb-0">Tour #{index + 1}</h6>
+                          <button 
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => removeTour(index)}
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Tour Title (Spanish)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.title.es}
+                                  onChange={(e) => handleTourChange(index, 'title', e.target.value, 'es')}
+                                  placeholder="Tour Cenotes Exclusivo"
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Tour Title (English)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.title.en}
+                                  onChange={(e) => handleTourChange(index, 'title', e.target.value, 'en')}
+                                  placeholder="Exclusive Cenotes Tour"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Description (Spanish)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={3}
+                                  value={tour.description.es}
+                                  onChange={(e) => handleTourChange(index, 'description', e.target.value, 'es')}
+                                  placeholder="Visita cenotes únicos con guía experto"
+                                />
+                              </div>
+                              <div className="mb-3">
+                                <label className="form-label">Description (English)</label>
+                                <textarea
+                                  className="form-control"
+                                  rows={3}
+                                  value={tour.description.en}
+                                  onChange={(e) => handleTourChange(index, 'description', e.target.value, 'en')}
+                                  placeholder="Visit unique cenotes with expert guide"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="mb-3">
+                                <label className="form-label">Price</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tour.price}
+                                  onChange={(e) => handleTourChange(index, 'price', e.target.value)}
+                                  placeholder="$850 MXN"
+                                />
+                              </div>
+                              <div className="d-grid">
+                                <button 
+                                  className="btn btn-danger"
+                                  onClick={() => removeTour(index)}
+                                >
+                                  Remove Tour
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <button 
+                      className="btn btn-success"
+                      onClick={addTour}
+                    >
+                      <Plus size={16} className="me-2" />
+                      Add Tour
+                    </button>
                   </div>
                 )}
 

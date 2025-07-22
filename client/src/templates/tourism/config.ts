@@ -22,6 +22,11 @@ export interface TourismTemplateConfig {
     description: { es: string; en: string };
     icon: string;
   }>;
+  tours?: Array<{
+    title: { es: string; en: string };
+    description: { es: string; en: string };
+    price: string;
+  }>;
   photos: Array<{
     url: string;
     caption: { es: string; en: string };

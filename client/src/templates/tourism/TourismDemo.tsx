@@ -404,24 +404,29 @@ export default function TourismDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              const services = (savedConfig && savedConfig.services && savedConfig.services.length > 0) 
-                ? savedConfig.services 
+              const tours = (savedConfig && savedConfig.tours && savedConfig.tours.length > 0) 
+                ? savedConfig.tours 
                 : mockTourismData.tours;
-              return services.map((service, index) => (
+              return tours.map((tour, index) => (
               <div key={index} className="col-md-6 col-lg-3">
                 <div className="card border-0 shadow-sm h-100">
                   <div className="card-body p-4 text-center">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                      {service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}
+                      {tour.title ? (language === 'es' ? tour.title.es : tour.title.en) : tour.name}
                     </h5>
+                    {tour.description && (
+                      <p className="text-muted mb-3 small">
+                        {tour.description ? (language === 'es' ? tour.description.es : tour.description.en) : ''}
+                      </p>
+                    )}
                     <div className="mb-3">
                       <span className="badge fs-6 px-3 py-2" style={{ backgroundColor: 'hsl(var(--secondary))', color: 'white' }}>
                         <DollarSign size={16} className="me-1" />
-                        {service.price || 'Consultar precio'}
+                        {tour.price || 'Consultar precio'}
                       </span>
                     </div>
                     <a 
-                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockTourismData.whatsappNumber}?text=Me interesa el ${service.title ? (language === 'es' ? service.title.es : service.title.en) : service.name}`}
+                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockTourismData.whatsappNumber}?text=Me interesa el ${tour.title ? (language === 'es' ? tour.title.es : tour.title.en) : tour.name}`}
                       className="btn btn-outline-primary btn-sm"
                       target="_blank"
                       rel="noopener noreferrer"
