@@ -266,15 +266,19 @@ export default function RetailDemo() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="py-5" style={{
-        background: savedConfig?.heroImage ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${savedConfig.heroImage}')` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '60vh'
-      }}>
+      <section 
+        id="home" 
+        className="py-5 d-flex align-items-center" 
+        style={{
+          backgroundImage: savedConfig?.heroImage ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${savedConfig.heroImage}')` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          minHeight: '70vh'
+        }}
+      >
         <div className="container">
-          <div className="row align-items-center" style={{ minHeight: '50vh' }}>
+          <div className="row align-items-center">
             <div className="col-lg-8">
               <h1 className="display-4 fw-bold mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'hsl(var(--primary))' }}>
                 {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
@@ -285,10 +289,6 @@ export default function RetailDemo() {
                 {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
                  (language === 'es' ? 'Moda y Estilo' : 'Fashion & Style')}
               </h2>
-              <p className="lead mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'var(--bs-gray-600)' }}>
-                {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || 
-                 getLocalizedValue(mockRetailData.intro)}
-              </p>
               <a 
                 href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRetailData.whatsappNumber}?text=Hola, me interesa conocer más sobre sus productos`}
                 className="btn btn-lg text-white"
@@ -300,13 +300,15 @@ export default function RetailDemo() {
                 {t('whatsappButton')}
               </a>
             </div>
-            <div className="col-lg-4 text-center">
-              <img 
-                src={savedConfig?.logo || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Boutique+Logo"} 
-                alt="Boutique" 
-                className="img-fluid rounded shadow"
-              />
-            </div>
+            {!savedConfig?.heroImage && (
+              <div className="col-lg-4 text-center">
+                <img 
+                  src={savedConfig?.logo || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Boutique+Logo"} 
+                  alt="Boutique" 
+                  className="img-fluid rounded shadow"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>
