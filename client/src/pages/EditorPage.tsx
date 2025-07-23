@@ -1375,13 +1375,14 @@ export default function EditorPage() {
                   <Settings size={16} className="me-2" />
                   Chatbot
                 </button>
-                <button 
-                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pro' ? 'active fw-bold' : ''}`}
-                  onClick={() => setActiveTab('pro')}
+                <Link 
+                  href="/editor/pro"
+                  className="nav-link text-start border-0 bg-transparent text-decoration-none"
+                  style={{ color: 'inherit' }}
                 >
                   <Type size={16} className="me-2" />
-                  Pro Page
-                </button>
+                  Pro Page Editor
+                </Link>
 
 
               </nav>
@@ -2357,147 +2358,16 @@ export default function EditorPage() {
                 </div>
               )}
 
-              {/* Pro Page Tab */}
+              {/* Pro Page Tab - Redirected to comprehensive editor */}
               {activeTab === 'pro' && (
                 <div>
                   <h4 className="mb-4">Pro Page Settings</h4>
-                  
-                  <div className="row g-3 mb-4">
-                    <div className="col-12">
-                      <label className="form-label">Pro Hero Image URL</label>
-                      <input 
-                        type="url" 
-                        className="form-control"
-                        value={websiteData.proHeroImage || ''}
-                        onChange={(e) => handleInputChange('proHeroImage', e.target.value)}
-                        placeholder="https://example.com/pro-hero.jpg"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Pro Hero Headline (Spanish)</label>
-                      <input 
-                        type="text" 
-                        className="form-control"
-                        value={websiteData.proHeroHeadline?.es || ''}
-                        onChange={(e) => handleInputChange('proHeroHeadline', e.target.value, 'es')}
-                        placeholder="Página Profesional"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Pro Hero Headline (English)</label>
-                      <input 
-                        type="text" 
-                        className="form-control"
-                        value={websiteData.proHeroHeadline?.en || ''}
-                        onChange={(e) => handleInputChange('proHeroHeadline', e.target.value, 'en')}
-                        placeholder="Professional Page"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Pro Hero Subheadline (Spanish)</label>
-                      <textarea 
-                        className="form-control"
-                        rows={2}
-                        value={websiteData.proHeroSubheadline?.es || ''}
-                        onChange={(e) => handleInputChange('proHeroSubheadline', e.target.value, 'es')}
-                        placeholder="Descripción profesional"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Pro Hero Subheadline (English)</label>
-                      <textarea 
-                        className="form-control"
-                        rows={2}
-                        value={websiteData.proHeroSubheadline?.en || ''}
-                        onChange={(e) => handleInputChange('proHeroSubheadline', e.target.value, 'en')}
-                        placeholder="Professional description"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Service Steps Title (Spanish)</label>
-                      <input 
-                        type="text" 
-                        className="form-control"
-                        value={websiteData.serviceStepsTitle?.es || ''}
-                        onChange={(e) => handleInputChange('serviceStepsTitle', e.target.value, 'es')}
-                        placeholder="Nuestro Proceso"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Service Steps Title (English)</label>
-                      <input 
-                        type="text" 
-                        className="form-control"
-                        value={websiteData.serviceStepsTitle?.en || ''}
-                        onChange={(e) => handleInputChange('serviceStepsTitle', e.target.value, 'en')}
-                        placeholder="Our Process"
-                      />
-                    </div>
+                  <div className="alert alert-info">
+                    <p className="mb-0">
+                      Pro Page editing has been moved to a comprehensive dedicated editor. 
+                      Click on "Pro Page Editor" in the sidebar to access all Pro page editing features.
+                    </p>
                   </div>
-
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h5>Service Steps</h5>
-                    <button 
-                      className="btn btn-sm btn-outline-primary"
-                      onClick={handleAddServiceStep}
-                    >
-                      Add Step
-                    </button>
-                  </div>
-
-                  {websiteData.serviceSteps.map((step, index) => (
-                    <div key={index} className="card mb-3">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                          <h6>Step {index + 1}</h6>
-                          <button 
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => handleRemoveServiceStep(index)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                        <div className="row g-3">
-                          <div className="col-md-6">
-                            <label className="form-label">Step Title (Spanish)</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={step.es}
-                              onChange={(e) => handleServiceStepChange(index, e.target.value, 'es')}
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Step Title (English)</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={step.en}
-                              onChange={(e) => handleServiceStepChange(index, e.target.value, 'en')}
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Description (Spanish)</label>
-                            <textarea 
-                              className="form-control"
-                              rows={2}
-                              value={step.description?.es || ''}
-                              onChange={(e) => handleServiceStepChange(index, e.target.value, 'es', 'description')}
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Description (English)</label>
-                            <textarea 
-                              className="form-control"
-                              rows={2}
-                              value={step.description?.en || ''}
-                              onChange={(e) => handleServiceStepChange(index, e.target.value, 'en', 'description')}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               )}
             </div>
