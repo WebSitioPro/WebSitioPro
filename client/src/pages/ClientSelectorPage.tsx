@@ -418,11 +418,31 @@ export default function ClientSelectorPage() {
                             <span className="fs-4 me-2">
                               {getTemplateIcon(client.templateType)}
                             </span>
-                            <div>
+                            <div className="flex-grow-1">
                               <h6 className="card-title mb-1">{client.name}</h6>
                               <small className="text-muted text-capitalize">
                                 {client.templateType} • ID: {client.id}
                               </small>
+                              
+                              {/* Approval Status Badge */}
+                              <div className="mt-1">
+                                {(() => {
+                                  const status = getApprovalStatus(client);
+                                  const days = getDaysSinceActivity(client);
+                                  
+                                  if (status.status === 'approved') {
+                                    return <span className="badge bg-success">✓ Approved</span>;
+                                  } else if (status.status === 'pending') {
+                                    return <span className="badge bg-warning">📝 Feedback Received</span>;
+                                  } else if (status.status === 'active') {
+                                    return <span className="badge bg-primary">👁️ Awaiting Review</span>;
+                                  } else if (days >= 10) {
+                                    return <span className="badge bg-danger">🗑️ Ready for Cleanup ({days} days)</span>;
+                                  } else {
+                                    return <span className="badge bg-secondary">○ No Form Active</span>;
+                                  }
+                                })()}
+                              </div>
                             </div>
                           </div>
                           <button
@@ -440,32 +460,7 @@ export default function ClientSelectorPage() {
                           </p>
                         )}
 
-                        {/* Approval Status Indicators */}
-                        {client.clientApproval && client.clientApproval.isFormEnabled && (
-                          <div className="d-flex align-items-center mb-2">
-                            {getApprovalStatus(client).status === 'approved' && (
-                              <>
-                                <CheckCircle size={16} className="text-success me-1" />
-                                <small className="text-success">Approved</small>
-                              </>
-                            )}
-                            {getApprovalStatus(client).status === 'pending' && (
-                              <>
-                                <Clock size={16} className="text-warning me-1" />
-                                <small className="text-warning">Feedback Received</small>
-                              </>
-                            )}
-                            {getApprovalStatus(client).status === 'active' && (
-                              <>
-                                <Eye size={16} className="text-primary me-1" />
-                                <small className="text-primary">Awaiting Review</small>
-                              </>
-                            )}
-                            <small className="ms-auto text-muted">
-                              {getDaysSinceActivity(client)} days
-                            </small>
-                          </div>
-                        )}
+                        
 
                         <p className="card-text small text-muted mb-3">
                           <Calendar size={14} className="me-1" />
