@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Plus, Users, Edit, Trash2, Calendar, Search, CheckCircle, Clock, Eye, Filter } from 'lucide-react';
+import ClientUrlGenerator from '@/components/ClientUrlGenerator';
 
 interface ClientInfo {
   id: string;
@@ -459,6 +460,15 @@ export default function ClientSelectorPage() {
                             Business: {client.businessName}
                           </p>
                         )}
+
+                        {/* Client URL Display */}
+                        <div className="mb-3">
+                          <label className="form-label small text-muted">Client URL:</label>
+                          <ClientUrlGenerator 
+                            clientId={parseInt(client.id)} 
+                            businessName={client.name}
+                          />
+                        </div>
 
                         
 

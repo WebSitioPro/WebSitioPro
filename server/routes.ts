@@ -14,6 +14,10 @@ import {
   logConfigAccess,
   ISOLATION_RULES 
 } from "./config-isolation";
+import { 
+  clientUrlMiddleware,
+  registerClientUrlRoutes
+} from "./client-urls";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API route for getting all website configurations (for client manager)
@@ -782,6 +786,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register agent routes for Make automation
   registerAgentRoutes(app);
+
+  // Register client URL routes for clean URLs
+  registerClientUrlRoutes(app);
+
+  // Add client URL middleware (should be before static file serving)
+  app.use(clientUrlMiddleware);
 
   // Add Make webhook endpoint - handle both GET and POST
   app.get("/api/make/auto-create", (req: Request, res: Response) => {

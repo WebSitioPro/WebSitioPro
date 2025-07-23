@@ -119,10 +119,48 @@ WebSitioPro is a professional website building service specifically designed for
 - **PORT**: Server port (default: 5000)
 - **REPLIT_DEPLOYMENT**: Deployment environment detection
 
+## Clean Client URL System
+
+### URL Structure
+Client websites now appear with clean URLs formatted as: `websitiopro.com/businessnameID`
+
+Examples:
+- Dr. Juan Garcia (ID #43): `websitiopro.com/drjuangarcia43`
+- El Rey de Tacos (ID #44): `websitiopro.com/elreydetacos44`
+- Tours de México (ID #45): `websitiopro.com/toursdemexico45`
+- ClimaCool Cancún (ID #46): `websitiopro.com/climacoolcancun46`
+- Artesanías de Colores (ID #47): `websitiopro.com/artesaniasdecolores47`
+
+### Technical Implementation
+- **Client Router**: React component handling clean URL routing with client ID extraction
+- **Server Middleware**: Express middleware for URL validation and SPA serving
+- **URL Generation**: Automatic slug generation with accent removal and character sanitization
+- **Production Ready**: Full deployment support with websitiopro.com domain integration
+
+### Features
+- URL slug generation from business names with diacritic removal
+- Client ID parsing from URL endings
+- Business name validation against database records
+- 301 redirects for incorrect URL formats
+- SPA routing integration with template rendering
+- Copy-to-clipboard functionality in client manager
+- Production server configuration for domain deployment
+
 ## Changelog
 
 ```
 Changelog:
+- July 23, 2025. Clean Client URL System Implementation
+  - COMPLETED: Full clean URL system for client pages like websitiopro.com/dr.juangarcia43
+  - Built URL utility functions for slug generation with accent/special character removal
+  - Created ClientRouter component for React-side clean URL handling with template routing  
+  - Added server-side clientUrlMiddleware for URL validation and SPA serving
+  - Implemented client URL API endpoints (/api/client-url/:clientId, /api/validate-client-url/:urlSlug)
+  - Created ClientUrlGenerator component with copy/preview functionality for client manager
+  - Added production server configuration for websitiopro.com domain deployment
+  - URL format: businessname + clientID (drjuangarcia43, elreydetacos44, etc.)
+  - System validates URLs against database, redirects incorrect formats, serves templates properly
+  - Ready for production deployment with clean professional client URLs
 - July 21, 2025. Client Approval Form System Implementation Complete
   - COMPLETED: Full client approval system for Professionals template with comprehensive form interface
   - Built ClientApprovalForm component with section-by-section approval (Hero, About, Services, Photos, Reviews, Contact)

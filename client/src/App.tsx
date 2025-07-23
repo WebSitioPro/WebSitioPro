@@ -20,6 +20,7 @@ import { RestaurantsEditor } from "@/templates/restaurants";
 import { TourismEditor } from "@/templates/tourism";
 import { RetailEditor } from "@/templates/retail";
 import { ServicesEditor } from "@/templates/services";
+import ClientRouter from "@/components/ClientRouter";
 
 function Router() {
   return (
@@ -42,6 +43,9 @@ function Router() {
       <Route path="/editor/tourism" component={TourismEditor} />
       <Route path="/editor/retail" component={RetailEditor} />
       <Route path="/editor/services" component={ServicesEditor} />
+      
+      {/* Client clean URL routing - must be last before NotFound */}
+      <Route path="/:clientSlug" component={ClientRouter} />
       <Route component={NotFound} />
     </Switch>
   );
