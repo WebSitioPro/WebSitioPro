@@ -475,14 +475,6 @@ export default function RetailDemo() {
                         {product.price || 'Consultar precio'}
                       </span>
                     </div>
-                    <a 
-                      href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRetailData.whatsappNumber}?text=Me interesa ${product.title ? (language === 'es' ? product.title.es : product.title.en) : product.name}`}
-                      className="btn btn-outline-primary btn-sm"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {t('askPrice')}
-                    </a>
                   </div>
                 </div>
               </div>
