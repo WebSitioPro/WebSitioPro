@@ -214,8 +214,8 @@ export default function HomePage() {
         getStarted: 'Comenzar',
 
         // Hero
-        heroHeadline: 'Construye tu Negocio con WebSitioPro',
-        heroSubheadline: 'Sitios web accesibles y personalizados para México—desde 2,000 pesos',
+        heroHeadline: 'Sitios Profesionales Que Hacen Crecer Tu Negocio Rápido',
+        heroSubheadline: 'Nuestros sitios web profesionales están diseñados para hacer brillar tu negocio. Asequibles por $1,995 MXN, nuestros sitios bilingües y optimizados para móviles atraen clientes locales y turistas, aumentando ganancias.',
         exploreProPlans: 'Explorar Planes Pro',
 
         // Why section
@@ -289,8 +289,8 @@ export default function HomePage() {
         getStarted: 'Get Started',
 
         // Hero
-        heroHeadline: 'Build Your Business with WebSitioPro',
-        heroSubheadline: 'Affordable, custom sites for Mexico—starting at 2,000 pesos',
+        heroHeadline: 'Professional Websites That Grow Your Business Fast',
+        heroSubheadline: 'Our professional websites are built to make your business shine. Affordable at $1,995 MXN, our bilingual, mobile-optimized sites attract local clients and tourists, boosting profits.',
         exploreProPlans: 'Explore Pro Plans',
 
         // Why section
