@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send, Menu, Settings, Eye, Briefcase, UtensilsCrossed, ShoppingBag, Wrench, Users, ChevronRight, Plus } from 'lucide-react';
+import { Shield, Star, Globe, Phone, Mail, MapPin, Clock, MessageCircle, X, Send, Menu, Settings, Eye, Briefcase, UtensilsCrossed, ShoppingBag, Wrench, Users, ChevronRight, Plus, CheckCircle } from 'lucide-react';
 import { OptimizedImage } from '../components/OptimizedImage';
 import { usePerformance } from '../hooks/use-performance';
 import { useIsSmallMobile } from '../hooks/use-mobile';
@@ -741,90 +741,86 @@ export default function HomePage() {
       <section id="offerings" className="py-5">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
-            {savedConfig?.solutionsTitle?.[language] || t('solutionsTitle')}
+            {savedConfig?.solutionsTitle?.[language] || (language === 'es' ? 'Sitios Web Profesionales' : 'Professional Websites')}
           </h2>
+          
+          {/* Single Showcase Template */}
           <div className="row justify-content-center">
-            <div className="col-lg-10">
-              <div className="row g-4">
-                {(savedConfig?.templates || [
-                  { 
-                    title: { es: 'Profesionales', en: 'Professionals' },
-                    description: { es: 'Sitios elegantes para doctores, abogados y consultores', en: 'Elegant sites for doctors, lawyers, and consultants' },
-                    image: 'https://via.placeholder.com/200x150/00A859/FFFFFF?text=Professional'
-                  },
-                  { 
-                    title: { es: 'Restaurantes', en: 'Restaurants' },
-                    description: { es: 'Menús atractivos y sistemas de reservas', en: 'Attractive menus and reservation systems' },
-                    image: 'https://via.placeholder.com/200x150/C8102E/FFFFFF?text=Restaurant'
-                  },
-                  { 
-                    title: { es: 'Turismo', en: 'Tourism' },
-                    description: { es: 'Promociona tours y experiencias locales', en: 'Promote local tours and experiences' },                    image: 'https://via.placeholder.com/200x150/007ACC/FFFFFF?text=Tourism'
-                  },
-                  { 
-                    title: { es: 'Retail', en: 'Retail' },
-                    description: { es: 'Tiendas en línea con carrito de compras', en: 'Online stores with shopping carts' },
-                    image: 'https://via.placeholder.com/200x150/FF6B35/FFFFFF?text=Retail'
-                  },
-                  { 
-                    title: { es: 'Servicios', en: 'Services' },
-                    description: { es: 'Plomeros, electricistas y más', en: 'Plumbers, electricians, and more' },
-                    image: 'https://via.placeholder.com/200x150/6C5CE7/FFFFFF?text=Services'
-                  }
-                ]).map((solution: any, index: number) => {
-                  const title = solution.title[language] || solution.title.es;
-                  const description = solution.description[language] || solution.description.es;
-
-                  return (
-                    <div key={index} className="col-md-6 col-lg-4">
-                      <div className="card h-100 border-0 shadow-sm">
-                        <div className="card-body text-center p-4">
-                          <div className="mb-3">
-                            <img 
-                              src={solution.image || 'https://via.placeholder.com/240x360/C8102E/FFFFFF?text=Template'} 
-                              alt={title}
-                              className="img-fluid rounded mb-3"
-                              style={{ 
-                                height: isSmallMobile ? '150px' : '360px', 
-                                width: isSmallMobile ? '100px' : '240px', 
-                                objectFit: 'cover', 
-                                margin: '0 auto', 
-                                display: 'block',
-                                maxWidth: '100%'
-                              }}
-                            />
+            <div className="col-lg-8">
+              <div className="card border-0 shadow-lg">
+                <div className="card-body p-0">
+                  <div className="row g-0">
+                    <div className="col-md-6">
+                      <div className="p-4 h-100 d-flex flex-column justify-content-center">
+                        <h3 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
+                          {language === 'es' ? 'Sitios Web de Calidad Premium' : 'Premium Quality Websites'}
+                        </h3>
+                        <p className="text-muted mb-4 lead">
+                          {language === 'es' 
+                            ? 'Diseños profesionales, completamente personalizados para tu negocio en Chetumal. Desde doctores hasta restaurantes, creamos sitios que convierten visitantes en clientes.'
+                            : 'Professional designs, completely customized for your business in Chetumal. From doctors to restaurants, we create sites that convert visitors into customers.'
+                          }
+                        </p>
+                        <div className="d-flex flex-column gap-2">
+                          <div className="d-flex align-items-center gap-2 text-muted">
+                            <CheckCircle size={16} style={{ color: 'hsl(var(--secondary))' }} />
+                            <small>{language === 'es' ? 'Diseño responsive y móvil' : 'Responsive & mobile design'}</small>
                           </div>
-                          <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                            {title}
-                          </h5>
-                          <p className="text-muted mb-3">
-                            {description}
-                          </p>
-                          <Link 
-                            href="/pro"
-                            className="btn btn-primary text-white"
-                            style={{ backgroundColor: 'hsl(var(--primary))' }}
-                            onClick={() => window.scrollTo(0, 0)}
-                          >
-                            {language === 'es' ? 'Ver Más' : 'Learn More'}
-                          </Link>
+                          <div className="d-flex align-items-center gap-2 text-muted">
+                            <CheckCircle size={16} style={{ color: 'hsl(var(--secondary))' }} />
+                            <small>{language === 'es' ? 'Optimizado para búsquedas locales' : 'Local search optimized'}</small>
+                          </div>
+                          <div className="d-flex align-items-center gap-2 text-muted">
+                            <CheckCircle size={16} style={{ color: 'hsl(var(--secondary))' }} />
+                            <small>{language === 'es' ? 'Integración con WhatsApp' : 'WhatsApp integration'}</small>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  );
-                })}
+                    <div className="col-md-6">
+                      <div className="p-4">
+                        <div className="position-relative">
+                          <img 
+                            src={savedConfig?.templates?.[0]?.image || 'https://via.placeholder.com/400x500/C8102E/FFFFFF?text=Professional+Website+Preview'}
+                            alt={language === 'es' ? 'Vista previa del sitio web profesional' : 'Professional website preview'}
+                            className="img-fluid rounded shadow-sm"
+                            style={{ 
+                              width: '100%',
+                              height: '300px',
+                              objectFit: 'cover'
+                            }}
+                          />
+                          <div className="position-absolute top-0 end-0 m-2">
+                            <span className="badge text-white" style={{ backgroundColor: 'hsl(var(--secondary))' }}>
+                              {language === 'es' ? 'Ejemplo' : 'Preview'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
+          {/* Call to Action */}
           <div className="text-center mt-5">
+            <p className="text-muted mb-4">
+              {language === 'es' 
+                ? 'Explora todos nuestros diseños profesionales y encuentra el perfecto para tu negocio'
+                : 'Explore all our professional designs and find the perfect one for your business'
+              }
+            </p>
             <Link 
               href="/pro"
-              className="btn btn-lg text-white px-5"
+              className="btn btn-lg text-white px-5 py-3"
               style={{ backgroundColor: 'hsl(var(--primary))' }}
               onClick={() => window.scrollTo(0, 0)}
             >
-              {language === 'es' ? 'Explorar Sitios Pro' : 'Explore Pro Sites'}
+              <Users size={20} className="me-2" />
+              {language === 'es' ? 'Ver Todos los Diseños Pro' : 'View All Pro Designs'}
+              <ChevronRight size={16} className="ms-2" />
             </Link>
           </div>
         </div>
