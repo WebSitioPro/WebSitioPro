@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
-import { Plus, Users, Edit, Trash2, Calendar, Search, CheckCircle, Clock, Eye } from 'lucide-react';
+import { Plus, Users, Edit, Trash2, Calendar, Search, CheckCircle, Clock, Eye, Filter } from 'lucide-react';
 
 interface ClientInfo {
   id: string;
