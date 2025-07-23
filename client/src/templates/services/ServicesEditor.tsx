@@ -345,6 +345,59 @@ export default function ServicesEditor() {
     }));
   };
 
+  // Services icon preview function
+  const getServicesIconPreview = (iconKey: string) => {
+    const servicesIconMap: { [key: string]: string } = {
+      wrench: '🔧',
+      hammer: '🔨',
+      screwdriver: '🪛',
+      plumber: '🔧',
+      electrician: '⚡',
+      toolbox: '🧰',
+      gear: '⚙️',
+      nut_bolt: '🔩',
+      drill: '🛠️',
+      saw: '🪚',
+      house: '🏠',
+      building: '🏢',
+      construction: '🚧',
+      ladder: '🪜',
+      truck: '🚚',
+      phone: '📞',
+      calendar: '📅',
+      clock: '🕐',
+      lightning: '⚡',
+      water: '💧',
+      fire: '🔥',
+      shield: '🛡️',
+      check: '✅',
+      star: '⭐',
+      trophy: '🏆',
+      heart: '❤️',
+      users: '👥',
+      target: '🎯',
+      thumbs_up: '👍',
+      money: '💰',
+      medal: '🏅',
+      key: '🔑',
+      lock: '🔒',
+      safety: '🦺',
+      hardhat: '⛑️',
+      // Legacy fallbacks
+      Wrench: '🔧',
+      Award: '🏆',
+      Star: '⭐',
+      Shield: '🛡️',
+      Heart: '❤️',
+      Users: '👥',
+      Clock: '🕐',
+      CheckCircle: '✅',
+      Target: '🎯'
+    };
+    
+    return <span style={{ fontSize: '24px' }}>{servicesIconMap[iconKey] || '🔧'}</span>;
+  };
+
   if (isLoading) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center">
@@ -650,16 +703,58 @@ export default function ServicesEditor() {
                                     value={stat.icon}
                                     onChange={(e) => handleAboutStatChange(index, 'icon', e.target.value)}
                                   >
-                                    <option value="Wrench">Wrench</option>
-                                    <option value="Award">Award</option>
-                                    <option value="Star">Star</option>
-                                    <option value="Shield">Shield</option>
-                                    <option value="Heart">Heart</option>
-                                    <option value="Users">Users</option>
-                                    <option value="Clock">Clock</option>
-                                    <option value="CheckCircle">CheckCircle</option>
-                                    <option value="Target">Target</option>
+                                    <option value="wrench">🔧 Wrench</option>
+                                    <option value="hammer">🔨 Hammer</option>
+                                    <option value="screwdriver">🪛 Screwdriver</option>
+                                    <option value="plumber">🔧 Plumber</option>
+                                    <option value="electrician">⚡ Electrician</option>
+                                    <option value="toolbox">🧰 Toolbox</option>
+                                    <option value="gear">⚙️ Gear</option>
+                                    <option value="nut_bolt">🔩 Nut & Bolt</option>
+                                    <option value="drill">🛠️ Drill</option>
+                                    <option value="saw">🪚 Saw</option>
+                                    <option value="house">🏠 House</option>
+                                    <option value="building">🏢 Building</option>
+                                    <option value="construction">🚧 Construction</option>
+                                    <option value="ladder">🪜 Ladder</option>
+                                    <option value="truck">🚚 Service Truck</option>
+                                    <option value="phone">📞 Phone</option>
+                                    <option value="calendar">📅 Calendar</option>
+                                    <option value="clock">🕐 Clock</option>
+                                    <option value="lightning">⚡ Lightning</option>
+                                    <option value="water">💧 Water</option>
+                                    <option value="fire">🔥 Fire</option>
+                                    <option value="shield">🛡️ Shield</option>
+                                    <option value="check">✅ Check</option>
+                                    <option value="star">⭐ Star</option>
+                                    <option value="trophy">🏆 Trophy</option>
+                                    <option value="heart">❤️ Heart</option>
+                                    <option value="users">👥 Users</option>
+                                    <option value="target">🎯 Target</option>
+                                    <option value="thumbs_up">👍 Thumbs Up</option>
+                                    <option value="money">💰 Money</option>
+                                    <option value="medal">🏅 Medal</option>
+                                    <option value="key">🔑 Key</option>
+                                    <option value="lock">🔒 Lock</option>
+                                    <option value="safety">🦺 Safety</option>
+                                    <option value="hardhat">⛑️ Hard Hat</option>
+                                    {/* Fallback for old icons */}
+                                    <option value="Wrench">🔧 Wrench (Legacy)</option>
+                                    <option value="Award">🏆 Award (Legacy)</option>
+                                    <option value="Star">⭐ Star (Legacy)</option>
+                                    <option value="Shield">🛡️ Shield (Legacy)</option>
+                                    <option value="Heart">❤️ Heart (Legacy)</option>
+                                    <option value="Users">👥 Users (Legacy)</option>
+                                    <option value="Clock">🕐 Clock (Legacy)</option>
+                                    <option value="CheckCircle">✅ Check (Legacy)</option>
+                                    <option value="Target">🎯 Target (Legacy)</option>
                                   </select>
+                                </div>
+                                <div className="mb-3">
+                                  <label className="form-label">Preview</label>
+                                  <div className="form-control d-flex align-items-center justify-content-center" style={{ height: '38px' }}>
+                                    {getServicesIconPreview(stat.icon || 'wrench')}
+                                  </div>
                                 </div>
                               </div>
                               <div className="col-md-3">

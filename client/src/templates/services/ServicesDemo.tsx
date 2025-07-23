@@ -352,23 +352,76 @@ export default function ServicesDemo() {
           {/* About Stats */}
           {((savedConfig && savedConfig.aboutStats && savedConfig.aboutStats.length > 0) || (previewData && previewData.aboutStats && previewData.aboutStats.length > 0)) && (
             <div className="row mt-5 text-center">
-              {((previewData && previewData.aboutStats) || (savedConfig && savedConfig.aboutStats) || []).map((stat, index) => (
-                <div key={index} className="col-md-3 mb-4">
-                  <div className="card border-0 bg-light h-100">
-                    <div className="card-body d-flex flex-column align-items-center justify-content-center p-4">
-                      {stat.icon === 'Users' && <Users size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
-                      {stat.icon === 'Award' && <Award size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
-                      {stat.icon === 'CheckCircle' && <CheckCircle size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
-                      {stat.icon === 'Target' && <Target size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
-                      {stat.icon === 'Wrench' && <Wrench size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
-                      {stat.icon === 'Shield' && <Shield size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
-                      {stat.icon === 'Heart' && <Heart size={40} style={{ color: 'hsl(var(--primary))' }} className="mb-3" />}
-                      <h4 className="fw-bold text-primary mb-2">{getLocalizedValue(stat.value)}</h4>
-                      <p className="mb-0 text-muted small">{getLocalizedValue(stat.label)}</p>
+              {(() => {
+                const aboutStats = (previewData && previewData.aboutStats) || (savedConfig && savedConfig.aboutStats) || [];
+                
+                // Colorful services icon mapping
+                const servicesIconMap: { [key: string]: string } = {
+                  wrench: '🔧',
+                  hammer: '🔨',
+                  screwdriver: '🪛',
+                  plumber: '🔧',
+                  electrician: '⚡',
+                  toolbox: '🧰',
+                  gear: '⚙️',
+                  nut_bolt: '🔩',
+                  drill: '🛠️',
+                  saw: '🪚',
+                  house: '🏠',
+                  building: '🏢',
+                  construction: '🚧',
+                  ladder: '🪜',
+                  truck: '🚚',
+                  phone: '📞',
+                  calendar: '📅',
+                  clock: '🕐',
+                  lightning: '⚡',
+                  water: '💧',
+                  fire: '🔥',
+                  shield: '🛡️',
+                  check: '✅',
+                  star: '⭐',
+                  trophy: '🏆',
+                  heart: '❤️',
+                  users: '👥',
+                  target: '🎯',
+                  thumbs_up: '👍',
+                  money: '💰',
+                  medal: '🏅',
+                  key: '🔑',
+                  lock: '🔒',
+                  safety: '🦺',
+                  hardhat: '⛑️',
+                  // Legacy fallbacks
+                  Users: '👥',
+                  Award: '🏆',
+                  CheckCircle: '✅',
+                  Target: '🎯',
+                  Wrench: '🔧',
+                  Shield: '🛡️',
+                  Heart: '❤️',
+                  Clock: '🕐',
+                  Star: '⭐'
+                };
+                
+                return aboutStats.map((stat, index) => {
+                  const iconEmoji = servicesIconMap[stat.icon] || servicesIconMap.wrench;
+                  return (
+                    <div key={index} className="col-md-3 mb-4">
+                      <div className="card border-0 bg-light h-100">
+                        <div className="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                          <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                               style={{ width: '80px', height: '80px', backgroundColor: 'hsl(var(--primary) / 0.1)' }}>
+                            <span style={{ fontSize: '2.5rem', lineHeight: '1' }}>{iconEmoji}</span>
+                          </div>
+                          <h4 className="fw-bold text-primary mb-2">{getLocalizedValue(stat.value)}</h4>
+                          <p className="mb-0 text-muted small">{getLocalizedValue(stat.label)}</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  );
+                });
+              })()}
             </div>
           )}
         </div>
