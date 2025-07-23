@@ -34,6 +34,39 @@ interface ProPageData {
     color: string;
     message: { es: string; en: string };
   }>;
+
+  // Pricing & Domain
+  pricingTitle: { es: string; en: string };
+  pricingDescription: { es: string; en: string };
+  launchPrice: string;
+  monthlyPrice: string;
+  domainPrice: string;
+  
+  // Gallery Photos
+  galleryPhotos: Array<{
+    url: string;
+    caption: { es: string; en: string };
+  }>;
+  
+  // Contact Information
+  businessName: { es: string; en: string };
+  phone: string;
+  email: string;
+  address: { es: string; en: string };
+  whatsappNumber: string;
+  facebookUrl: string;
+  instagramUrl: string;
+  
+  // Additional Demo Settings
+  showDemoNote: boolean;
+  demoNoteStyle: string;
+  
+  // Payment Methods
+  paymentMethods: Array<{
+    name: { es: string; en: string };
+    description: { es: string; en: string };
+    enabled: boolean;
+  }>;
 }
 
 export default function ProEditorPage() {
@@ -137,6 +170,69 @@ export default function ProEditorPage() {
         text: { es: 'Contacto Servicios', en: 'Services Contact' },
         color: '#6C5CE7',
         message: { es: 'Hola! Me interesa un sitio web para servicios', en: 'Hello! I\'m interested in a services website' }
+      }
+    ],
+
+    // Pricing & Domain
+    pricingTitle: {
+      es: 'Precios y Dominios',
+      en: 'Pricing & Domains'
+    },
+    pricingDescription: {
+      es: 'Sitios web profesionales con hospedaje incluido',
+      en: 'Professional websites with hosting included'
+    },
+    launchPrice: '$1,995 MXN',
+    monthlyPrice: '$195 MXN/mes',
+    domainPrice: '$799 MXN/año',
+    
+    // Gallery Photos
+    galleryPhotos: [
+      {
+        url: 'https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Gallery+1',
+        caption: { es: 'Foto de ejemplo 1', en: 'Sample photo 1' }
+      },
+      {
+        url: 'https://via.placeholder.com/400x300/00A859/FFFFFF?text=Gallery+2',
+        caption: { es: 'Foto de ejemplo 2', en: 'Sample photo 2' }
+      }
+    ],
+    
+    // Contact Information
+    businessName: {
+      es: 'WebSitioPro',
+      en: 'WebSitioPro'
+    },
+    phone: '+52 983 114 4462',
+    email: 'ventas@websitiopro.com',
+    address: {
+      es: 'Chetumal, Quintana Roo, México',
+      en: 'Chetumal, Quintana Roo, Mexico'
+    },
+    whatsappNumber: '529831144462',
+    facebookUrl: '',
+    instagramUrl: '',
+    
+    // Additional Demo Settings
+    showDemoNote: true,
+    demoNoteStyle: 'info',
+    
+    // Payment Methods
+    paymentMethods: [
+      {
+        name: { es: 'Transferencia Bancaria', en: 'Bank Transfer' },
+        description: { es: 'Transferencia directa a cuenta bancaria', en: 'Direct bank account transfer' },
+        enabled: true
+      },
+      {
+        name: { es: 'Tarjeta de Crédito', en: 'Credit Card' },
+        description: { es: 'Pago con tarjeta de crédito o débito', en: 'Credit or debit card payment' },
+        enabled: true
+      },
+      {
+        name: { es: 'OXXO', en: 'OXXO' },
+        description: { es: 'Pago en efectivo en tiendas OXXO', en: 'Cash payment at OXXO stores' },
+        enabled: true
       }
     ]
   });
@@ -446,6 +542,36 @@ export default function ProEditorPage() {
                   onClick={() => setActiveTab('whatsapp')}
                 >
                   WhatsApp Buttons
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'pricing' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('pricing')}
+                >
+                  Pricing & Domain
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'photos' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('photos')}
+                >
+                  Gallery Photos
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'contact' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('contact')}
+                >
+                  Contact Info
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'demo' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('demo')}
+                >
+                  Demo Notes
+                </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'payment' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('payment')}
+                >
+                  Payment Info
                 </button>
               </nav>
             </div>
@@ -885,6 +1011,519 @@ export default function ProEditorPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              )}
+
+              {/* Pricing & Domain Tab */}
+              {activeTab === 'pricing' && (
+                <div>
+                  <h4 className="mb-4">Pricing & Domain</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.pricingTitle.es}
+                        onChange={(e) => handleInputChange('pricingTitle', e.target.value, 'es')}
+                        placeholder="Precios y Dominios"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.pricingTitle.en}
+                        onChange={(e) => handleInputChange('pricingTitle', e.target.value, 'en')}
+                        placeholder="Pricing & Domains"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Description (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={proPageData.pricingDescription.es}
+                        onChange={(e) => handleInputChange('pricingDescription', e.target.value, 'es')}
+                        placeholder="Sitios web profesionales con hospedaje incluido"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Description (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={proPageData.pricingDescription.en}
+                        onChange={(e) => handleInputChange('pricingDescription', e.target.value, 'en')}
+                        placeholder="Professional websites with hosting included"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-4">
+                      <label className="form-label">Launch Price</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.launchPrice}
+                        onChange={(e) => handleInputChange('launchPrice', e.target.value)}
+                        placeholder="$1,995 MXN"
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Monthly Price</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.monthlyPrice}
+                        onChange={(e) => handleInputChange('monthlyPrice', e.target.value)}
+                        placeholder="$195 MXN/mes"
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Domain Price</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.domainPrice}
+                        onChange={(e) => handleInputChange('domainPrice', e.target.value)}
+                        placeholder="$799 MXN/año"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Gallery Photos Tab */}
+              {activeTab === 'photos' && (
+                <div>
+                  <h4 className="mb-4">Gallery Photos</h4>
+                  
+                  <div className="mb-3">
+                    <button 
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setProPageData(prev => ({
+                          ...prev,
+                          galleryPhotos: [...prev.galleryPhotos, {
+                            url: '',
+                            caption: { es: '', en: '' }
+                          }]
+                        }));
+                      }}
+                    >
+                      <Plus size={16} className="me-1" />
+                      Add Photo
+                    </button>
+                  </div>
+
+                  <div className="row g-4">
+                    {proPageData.galleryPhotos.map((photo, index) => (
+                      <div key={index} className="col-md-6">
+                        <div className="card">
+                          <div className="card-body">
+                            <h6 className="card-title">Photo {index + 1}</h6>
+                            
+                            <div className="mb-3">
+                              <label className="form-label">Image URL</label>
+                              <input 
+                                type="url" 
+                                className="form-control"
+                                value={photo.url}
+                                onChange={(e) => {
+                                  setProPageData(prev => ({
+                                    ...prev,
+                                    galleryPhotos: prev.galleryPhotos.map((p, i) => 
+                                      i === index ? { ...p, url: e.target.value } : p
+                                    )
+                                  }));
+                                }}
+                                placeholder="https://example.com/image.jpg"
+                              />
+                            </div>
+
+                            <div className="row g-2 mb-3">
+                              <div className="col-6">
+                                <label className="form-label">Caption (Spanish)</label>
+                                <input 
+                                  type="text" 
+                                  className="form-control"
+                                  value={photo.caption.es}
+                                  onChange={(e) => {
+                                    setProPageData(prev => ({
+                                      ...prev,
+                                      galleryPhotos: prev.galleryPhotos.map((p, i) => 
+                                        i === index ? { 
+                                          ...p, 
+                                          caption: { ...p.caption, es: e.target.value }
+                                        } : p
+                                      )
+                                    }));
+                                  }}
+                                  placeholder="Descripción en español"
+                                />
+                              </div>
+                              <div className="col-6">
+                                <label className="form-label">Caption (English)</label>
+                                <input 
+                                  type="text" 
+                                  className="form-control"
+                                  value={photo.caption.en}
+                                  onChange={(e) => {
+                                    setProPageData(prev => ({
+                                      ...prev,
+                                      galleryPhotos: prev.galleryPhotos.map((p, i) => 
+                                        i === index ? { 
+                                          ...p, 
+                                          caption: { ...p.caption, en: e.target.value }
+                                        } : p
+                                      )
+                                    }));
+                                  }}
+                                  placeholder="Description in English"
+                                />
+                              </div>
+                            </div>
+
+                            {photo.url && (
+                              <div className="mb-3">
+                                <img 
+                                  src={photo.url} 
+                                  alt={photo.caption.es || `Photo ${index + 1}`}
+                                  className="img-fluid rounded"
+                                  style={{ maxHeight: '200px', width: '100%', objectFit: 'cover' }}
+                                />
+                              </div>
+                            )}
+
+                            <button 
+                              className="btn btn-outline-danger btn-sm"
+                              onClick={() => {
+                                setProPageData(prev => ({
+                                  ...prev,
+                                  galleryPhotos: prev.galleryPhotos.filter((_, i) => i !== index)
+                                }));
+                              }}
+                            >
+                              Remove Photo
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Contact Info Tab */}
+              {activeTab === 'contact' && (
+                <div>
+                  <h4 className="mb-4">Contact Information</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Business Name (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.businessName.es}
+                        onChange={(e) => handleInputChange('businessName', e.target.value, 'es')}
+                        placeholder="WebSitioPro"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Business Name (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.businessName.en}
+                        onChange={(e) => handleInputChange('businessName', e.target.value, 'en')}
+                        placeholder="WebSitioPro"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Phone Number</label>
+                      <input 
+                        type="tel" 
+                        className="form-control"
+                        value={proPageData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        placeholder="+52 983 114 4462"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Email Address</label>
+                      <input 
+                        type="email" 
+                        className="form-control"
+                        value={proPageData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        placeholder="ventas@websitiopro.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Address (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.address.es}
+                        onChange={(e) => handleInputChange('address', e.target.value, 'es')}
+                        placeholder="Chetumal, Quintana Roo, México"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Address (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={proPageData.address.en}
+                        onChange={(e) => handleInputChange('address', e.target.value, 'en')}
+                        placeholder="Chetumal, Quintana Roo, Mexico"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-4">
+                      <label className="form-label">WhatsApp Number</label>
+                      <input 
+                        type="tel" 
+                        className="form-control"
+                        value={proPageData.whatsappNumber}
+                        onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
+                        placeholder="529831144462"
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Facebook URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        value={proPageData.facebookUrl}
+                        onChange={(e) => handleInputChange('facebookUrl', e.target.value)}
+                        placeholder="https://facebook.com/websitiopro"
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Instagram URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        value={proPageData.instagramUrl}
+                        onChange={(e) => handleInputChange('instagramUrl', e.target.value)}
+                        placeholder="https://instagram.com/websitiopro"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Demo Notes Tab */}
+              {activeTab === 'demo' && (
+                <div>
+                  <h4 className="mb-4">Demo Notes & Settings</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Show Demo Note</label>
+                      <select 
+                        className="form-select"
+                        value={proPageData.showDemoNote ? 'true' : 'false'}
+                        onChange={(e) => handleInputChange('showDemoNote', e.target.value === 'true')}
+                      >
+                        <option value="true">Show Demo Note</option>
+                        <option value="false">Hide Demo Note</option>
+                      </select>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Demo Note Style</label>
+                      <select 
+                        className="form-select"
+                        value={proPageData.demoNoteStyle}
+                        onChange={(e) => handleInputChange('demoNoteStyle', e.target.value)}
+                      >
+                        <option value="info">Info (Blue)</option>
+                        <option value="success">Success (Green)</option>
+                        <option value="warning">Warning (Yellow)</option>
+                        <option value="primary">Primary (Red)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Demo Note (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={4}
+                        value={proPageData.demoNote.es}
+                        onChange={(e) => handleInputChange('demoNote', e.target.value, 'es')}
+                        placeholder="¡Si nos hemos contactado contigo vía WhatsApp, tienes una demostración personalizada lista!"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Demo Note (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={4}
+                        value={proPageData.demoNote.en}
+                        onChange={(e) => handleInputChange('demoNote', e.target.value, 'en')}
+                        placeholder="If we've reached out via WhatsApp, you have a custom demo ready!"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Payment Info Tab */}
+              {activeTab === 'payment' && (
+                <div>
+                  <h4 className="mb-4">Payment Information</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Payment Text (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={4}
+                        value={proPageData.paymentText.es}
+                        onChange={(e) => handleInputChange('paymentText', e.target.value, 'es')}
+                        placeholder="Paga mediante transferencia bancaria, tarjeta de crédito, o OXXO..."
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Payment Text (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={4}
+                        value={proPageData.paymentText.en}
+                        onChange={(e) => handleInputChange('paymentText', e.target.value, 'en')}
+                        placeholder="Pay via bank transfer, credit card, or OXXO..."
+                      />
+                    </div>
+                  </div>
+
+                  <h5 className="mb-3">Payment Methods</h5>
+                  <div className="row g-3">
+                    {proPageData.paymentMethods.map((method, index) => (
+                      <div key={index} className="col-md-4">
+                        <div className="card">
+                          <div className="card-body">
+                            <div className="form-check mb-3">
+                              <input 
+                                className="form-check-input" 
+                                type="checkbox" 
+                                checked={method.enabled}
+                                onChange={(e) => {
+                                  setProPageData(prev => ({
+                                    ...prev,
+                                    paymentMethods: prev.paymentMethods.map((m, i) => 
+                                      i === index ? { ...m, enabled: e.target.checked } : m
+                                    )
+                                  }));
+                                }}
+                              />
+                              <label className="form-check-label fw-bold">
+                                {method.name.es}
+                              </label>
+                            </div>
+                            
+                            <div className="mb-2">
+                              <label className="form-label small">Name (Spanish)</label>
+                              <input 
+                                type="text" 
+                                className="form-control form-control-sm"
+                                value={method.name.es}
+                                onChange={(e) => {
+                                  setProPageData(prev => ({
+                                    ...prev,
+                                    paymentMethods: prev.paymentMethods.map((m, i) => 
+                                      i === index ? { 
+                                        ...m, 
+                                        name: { ...m.name, es: e.target.value }
+                                      } : m
+                                    )
+                                  }));
+                                }}
+                              />
+                            </div>
+                            
+                            <div className="mb-2">
+                              <label className="form-label small">Name (English)</label>
+                              <input 
+                                type="text" 
+                                className="form-control form-control-sm"
+                                value={method.name.en}
+                                onChange={(e) => {
+                                  setProPageData(prev => ({
+                                    ...prev,
+                                    paymentMethods: prev.paymentMethods.map((m, i) => 
+                                      i === index ? { 
+                                        ...m, 
+                                        name: { ...m.name, en: e.target.value }
+                                      } : m
+                                    )
+                                  }));
+                                }}
+                              />
+                            </div>
+                            
+                            <div className="mb-2">
+                              <label className="form-label small">Description (Spanish)</label>
+                              <textarea 
+                                className="form-control form-control-sm"
+                                rows={2}
+                                value={method.description.es}
+                                onChange={(e) => {
+                                  setProPageData(prev => ({
+                                    ...prev,
+                                    paymentMethods: prev.paymentMethods.map((m, i) => 
+                                      i === index ? { 
+                                        ...m, 
+                                        description: { ...m.description, es: e.target.value }
+                                      } : m
+                                    )
+                                  }));
+                                }}
+                              />
+                            </div>
+                            
+                            <div className="mb-2">
+                              <label className="form-label small">Description (English)</label>
+                              <textarea 
+                                className="form-control form-control-sm"
+                                rows={2}
+                                value={method.description.en}
+                                onChange={(e) => {
+                                  setProPageData(prev => ({
+                                    ...prev,
+                                    paymentMethods: prev.paymentMethods.map((m, i) => 
+                                      i === index ? { 
+                                        ...m, 
+                                        description: { ...m.description, en: e.target.value }
+                                      } : m
+                                    )
+                                  }));
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
