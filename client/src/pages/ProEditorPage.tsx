@@ -20,6 +20,15 @@ interface ProPageData {
     desktop: string;
     mobile: string;
   }>;
+  templateShowcaseCards?: Array<{
+    businessName: string;
+    templateType: string;
+    clientId: number;
+    screenshotUrl: string;
+    demoUrl: string;
+    description: { es: string; en: string };
+    enabled: boolean;
+  }>;
   paymentText: { es: string; en: string };
   
   // Pro Page Banner
@@ -129,6 +138,53 @@ export default function ProEditorPage() {
       { desktop: '', mobile: '' },
       { desktop: '', mobile: '' },
       { desktop: '', mobile: '' }
+    ],
+    templateShowcaseCards: [
+      {
+        businessName: "Dr. Juan Garcia",
+        templateType: "professionals",
+        clientId: 43,
+        screenshotUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=600&fit=crop",
+        demoUrl: "/professionals-demo?client=43",
+        description: { es: "Sitio web médico profesional", en: "Professional medical website" },
+        enabled: true
+      },
+      {
+        businessName: "El Rey de Tacos",
+        templateType: "restaurants",
+        clientId: 44,
+        screenshotUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=600&fit=crop",
+        demoUrl: "/restaurants-demo?client=44",
+        description: { es: "Sitio web de restaurante auténtico", en: "Authentic restaurant website" },
+        enabled: true
+      },
+      {
+        businessName: "Tours de Mexico",
+        templateType: "tourism",
+        clientId: 45,
+        screenshotUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop",
+        demoUrl: "/tourism-demo?client=45",
+        description: { es: "Sitio web de turismo aventurero", en: "Adventure tourism website" },
+        enabled: true
+      },
+      {
+        businessName: "Artesanías de Colores",
+        templateType: "retail",
+        clientId: 47,
+        screenshotUrl: "https://i.ibb.co/xtM7LFN9/mathias-reding-KB341-Ttn-YSE-unsplash.jpg",
+        demoUrl: "/retail-demo?client=47",
+        description: { es: "Tienda de artesanías mexicanas", en: "Mexican crafts store" },
+        enabled: true
+      },
+      {
+        businessName: "ClimaCool Cancún",
+        templateType: "services",
+        clientId: 46,
+        screenshotUrl: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=600&fit=crop",
+        demoUrl: "/services-demo?client=46",
+        description: { es: "Servicios de aire acondicionado", en: "Air conditioning services" },
+        enabled: true
+      }
     ],
     paymentText: {
       es: 'Paga mediante transferencia bancaria (detalles vía WhatsApp), tarjeta de crédito, o OXXO (código QR proporcionado).',
@@ -318,6 +374,56 @@ export default function ProEditorPage() {
     }));
   };
 
+  const handleTemplateCardChange = (index: number, field: string, value: any) => {
+    setProPageData(prev => ({
+      ...prev,
+      templateShowcaseCards: (prev.templateShowcaseCards || []).map((card, i) => {
+        if (i === index) {
+          return {
+            ...card,
+            [field]: value
+          };
+        }
+        return card;
+      })
+    }));
+  };
+
+  const handleTemplateCardDescriptionChange = (index: number, language: 'es' | 'en', value: string) => {
+    setProPageData(prev => ({
+      ...prev,
+      templateShowcaseCards: (prev.templateShowcaseCards || []).map((card, i) => {
+        if (i === index) {
+          return {
+            ...card,
+            description: {
+              ...card.description,
+              [language]: value
+            }
+          };
+        }
+        return card;
+      })
+    }));
+  };
+
+  const handleAddTemplateCard = () => {
+    const newCard = {
+      businessName: "New Business",
+      templateType: "professionals",
+      clientId: 0,
+      screenshotUrl: "",
+      demoUrl: "/professionals-demo?client=0",
+      description: { es: "", en: "" },
+      enabled: true
+    };
+    
+    setProPageData(prev => ({
+      ...prev,
+      templateShowcaseCards: [...(prev.templateShowcaseCards || []), newCard]
+    }));
+  };
+
   const handleServiceStepChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
     setProPageData(prev => ({
       ...prev,
@@ -376,6 +482,7 @@ export default function ProEditorPage() {
             serviceStepsDescription: data.serviceStepsDescription || proPageData.serviceStepsDescription,
             serviceSteps: data.serviceSteps || proPageData.serviceSteps,
             templateShowcaseImages: data.templateShowcaseImages || proPageData.templateShowcaseImages,
+            templateShowcaseCards: data.templateShowcaseCards || proPageData.templateShowcaseCards,
             paymentText: data.translations?.es?.paymentText && data.translations?.en?.paymentText ? 
               { es: data.translations.es.paymentText, en: data.translations.en.paymentText } : 
               proPageData.paymentText,
@@ -421,6 +528,7 @@ export default function ProEditorPage() {
         serviceStepsDescription: proPageData.serviceStepsDescription,
         serviceSteps: proPageData.serviceSteps,
         templateShowcaseImages: proPageData.templateShowcaseImages,
+        templateShowcaseCards: proPageData.templateShowcaseCards,
         // Pro Banner fields
         proBannerText: proPageData.proBannerText,
         proBannerBackgroundColor: proPageData.proBannerBackgroundColor,
@@ -870,36 +978,135 @@ export default function ProEditorPage() {
               {/* Template Showcase Tab */}
               {activeTab === 'templates' && (
                 <div>
-                  <h4 className="mb-4">Template Showcase Images</h4>
-                  <p className="text-muted mb-4">Add larger showcase images for your Pro templates that will be displayed on the Pro page.</p>
+                  <h4 className="mb-4">Template Showcase Cards</h4>
+                  <p className="text-muted mb-4">Manage the template showcase cards displayed on the Pro page. Each card links to a live client demo.</p>
                   
-                  {proPageData.templateShowcaseImages.map((img, index) => (
-                    <div key={index} className="border rounded p-3 mb-3 bg-light">
-                      <h6>Template {index + 1} Showcase</h6>
-                      <div className="row g-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Desktop Preview Image URL</label>
+                  {(proPageData.templateShowcaseCards || []).map((card, index) => (
+                    <div key={index} className="border rounded p-4 mb-4 bg-light">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6>Template Card {index + 1}</h6>
+                        <div className="form-check">
                           <input 
-                            type="url" 
+                            className="form-check-input" 
+                            type="checkbox" 
+                            id={`enabled-${index}`}
+                            checked={card.enabled}
+                            onChange={(e) => handleTemplateCardChange(index, 'enabled', e.target.checked)}
+                          />
+                          <label className="form-check-label" htmlFor={`enabled-${index}`}>
+                            Enabled
+                          </label>
+                        </div>
+                      </div>
+                      
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Business Name</label>
+                          <input 
+                            type="text" 
                             className="form-control"
-                            placeholder={`https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Template+${index + 1}+Desktop`}
-                            value={img.desktop}
-                            onChange={(e) => handleTemplateShowcaseImageChange(index, 'desktop', e.target.value)}
+                            value={card.businessName}
+                            onChange={(e) => handleTemplateCardChange(index, 'businessName', e.target.value)}
+                            placeholder="Dr. Juan Garcia"
                           />
                         </div>
                         <div className="col-md-6">
-                          <label className="form-label">Mobile Preview Image URL</label>
+                          <label className="form-label">Template Type</label>
+                          <select 
+                            className="form-select"
+                            value={card.templateType}
+                            onChange={(e) => handleTemplateCardChange(index, 'templateType', e.target.value)}
+                          >
+                            <option value="professionals">Professionals</option>
+                            <option value="restaurants">Restaurants</option>
+                            <option value="tourism">Tourism</option>
+                            <option value="retail">Retail</option>
+                            <option value="services">Services</option>
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Client ID</label>
                           <input 
-                            type="url" 
+                            type="number" 
                             className="form-control"
-                            placeholder={`https://via.placeholder.com/200x300/C8102E/FFFFFF?text=Template+${index + 1}+Mobile`}
-                            value={img.mobile}
-                            onChange={(e) => handleTemplateShowcaseImageChange(index, 'mobile', e.target.value)}
+                            value={card.clientId}
+                            onChange={(e) => handleTemplateCardChange(index, 'clientId', parseInt(e.target.value))}
+                            placeholder="43"
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Demo URL</label>
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={card.demoUrl}
+                            onChange={(e) => handleTemplateCardChange(index, 'demoUrl', e.target.value)}
+                            placeholder="/professionals-demo?client=43"
                           />
                         </div>
                       </div>
+                      
+                      <div className="row g-3 mb-3">
+                        <div className="col-12">
+                          <label className="form-label">Screenshot URL</label>
+                          <input 
+                            type="url" 
+                            className="form-control"
+                            value={card.screenshotUrl}
+                            onChange={(e) => handleTemplateCardChange(index, 'screenshotUrl', e.target.value)}
+                            placeholder="https://your-screenshot-url.jpg"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Description (Spanish)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={2}
+                            value={card.description.es}
+                            onChange={(e) => handleTemplateCardDescriptionChange(index, 'es', e.target.value)}
+                            placeholder="Sitio web médico profesional"
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Description (English)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={2}
+                            value={card.description.en}
+                            onChange={(e) => handleTemplateCardDescriptionChange(index, 'en', e.target.value)}
+                            placeholder="Professional medical website"
+                          />
+                        </div>
+                      </div>
+                      
+                      {card.screenshotUrl && (
+                        <div className="mb-3">
+                          <label className="form-label">Preview</label>
+                          <div className="border rounded p-2 bg-white" style={{ maxWidth: '200px' }}>
+                            <img 
+                              src={card.screenshotUrl} 
+                              alt={card.businessName}
+                              style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
+                  
+                  <button 
+                    className="btn btn-outline-primary"
+                    onClick={handleAddTemplateCard}
+                  >
+                    <Plus size={16} className="me-1" />
+                    Add Template Card
+                  </button>
                 </div>
               )}
 

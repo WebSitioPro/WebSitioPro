@@ -246,6 +246,62 @@ export const websiteConfigs = pgTable("website_configs", {
     color: string;
     message: { es: string; en: string };
   }>>().default([]),
+  // Pro page template showcase cards
+  templateShowcaseCards: json("template_showcase_cards").$type<Array<{
+    businessName: string;
+    templateType: string;
+    clientId: number;
+    screenshotUrl: string;
+    demoUrl: string;
+    description: { es: string; en: string };
+    enabled: boolean;
+  }>>().default([
+    {
+      businessName: "Dr. Juan Garcia",
+      templateType: "professionals",
+      clientId: 43,
+      screenshotUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=600&fit=crop",
+      demoUrl: "/professionals-demo?client=43",
+      description: { es: "Sitio web médico profesional", en: "Professional medical website" },
+      enabled: true
+    },
+    {
+      businessName: "El Rey de Tacos",
+      templateType: "restaurants",
+      clientId: 44,
+      screenshotUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=600&fit=crop",
+      demoUrl: "/restaurants-demo?client=44",
+      description: { es: "Sitio web de restaurante auténtico", en: "Authentic restaurant website" },
+      enabled: true
+    },
+    {
+      businessName: "Tours de Mexico",
+      templateType: "tourism",
+      clientId: 45,
+      screenshotUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop",
+      demoUrl: "/tourism-demo?client=45",
+      description: { es: "Sitio web de turismo aventurero", en: "Adventure tourism website" },
+      enabled: true
+    },
+    {
+      businessName: "Artesanías de Colores",
+      templateType: "retail",
+      clientId: 47,
+      screenshotUrl: "https://i.ibb.co/xtM7LFN9/mathias-reding-KB341-Ttn-YSE-unsplash.jpg",
+      demoUrl: "/retail-demo?client=47",
+      description: { es: "Tienda de artesanías mexicanas", en: "Mexican crafts store" },
+      enabled: true
+    },
+    {
+      businessName: "ClimaCool Cancún",
+      templateType: "services",
+      clientId: 46,
+      screenshotUrl: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=600&fit=crop",
+      demoUrl: "/services-demo?client=46",
+      description: { es: "Servicios de aire acondicionado", en: "Air conditioning services" },
+      enabled: true
+    }
+  ]),
   // Client Approval System
   clientApproval: json("client_approval").$type<{
     isFormEnabled: boolean;

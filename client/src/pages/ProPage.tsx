@@ -478,7 +478,7 @@ export default function ProPage() {
               { es: 'Contacto Inicial', en: 'Initial Contact' },
               { es: 'Diseño y Desarrollo', en: 'Design & Development' },
               { es: 'Lanzamiento', en: 'Launch' }
-            ]).map((step, index) => {
+            ]).map((step: any, index: number) => {
               const icons = [
                 <Phone size={64} className="text-primary" style={{ color: 'hsl(var(--primary))' }} />,
                 <Palette size={64} className="text-warning" style={{ color: 'hsl(var(--accent))' }} />,
@@ -534,48 +534,10 @@ export default function ProPage() {
             {t('templatesTitle')}
           </h2>
           <div className="row g-4">
-            {[1, 2, 3, 4, 5].map((num) => {
-              // Map to live client demos using specific client IDs
-              const clientIds = [43, 44, 45, 47, 46]; // Professionals, Restaurant, Tourism, Retail, Services  
-              const templateLinks = [
-                `/professionals-demo?client=${clientIds[0]}`, // Dr. Juan Garcia
-                `/restaurants-demo?client=${clientIds[1]}`,   // El Rey de Tacos  
-                `/tourism-demo?client=${clientIds[2]}`,       // Tours de Mexico
-                `/retail-demo?client=${clientIds[3]}`,        // Artesanías de Colores
-                `/services-demo?client=${clientIds[4]}`       // ClimaCool Cancún
-              ];
-
-              const templateNames = [
-                'Dr. Juan Garcia', 
-                'El Rey de Tacos',
-                'Tours de Mexico', 
-                'Artesanías de Colores',
-                'ClimaCool Cancún'
-              ];
-
-              const templateTypes = [
-                'professionals',
-                'restaurants', 
-                'tourism',
-                'retail',
-                'services'
-              ];
-              
-              // Use actual client hero images as thumbnails - most mobile-friendly approach
-              const heroImages = [
-                'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=600&fit=crop', // Dr. Juan Garcia - medical
-                'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=600&fit=crop', // El Rey de Tacos - restaurant  
-                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop', // Tours de Mexico - tourism
-                'https://i.ibb.co/xtM7LFN9/mathias-reding-KB341-Ttn-YSE-unsplash.jpg', // Artesanías de Colores - actual client image
-                'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=600&fit=crop'  // ClimaCool - services
-              ];
-              const thumbnailUrl = heroImages[num - 1];
-              
-              // Get WhatsApp button for this template
-              const whatsappButton = savedConfig?.proWhatsappButtons?.[num - 1];
+            {(savedConfig?.templateShowcaseCards?.filter((card: any) => card.enabled) || []).map((card: any, index: number) => {
               
               return (
-                <div key={num} className="col-lg-6">
+                <div key={index} className="col-lg-6">
                   <div className="card h-100 border-0 shadow">
                     <div className="card-body p-4">
                       <div className="row g-3">
@@ -583,8 +545,8 @@ export default function ProPage() {
                           {/* Website Screenshot - Portrait */}
                           <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '280px' }}>
                             <img 
-                              src={thumbnailUrl} 
-                              alt={`${templateNames[num - 1]} Website Preview`}
+                              src={card.screenshotUrl} 
+                              alt={`${card.businessName} Website Preview`}
                               style={{ 
                                 width: '100%', 
                                 height: '100%', 
@@ -596,23 +558,48 @@ export default function ProPage() {
                           </div>
                         </div>
                         <div className="col-7">
-                          <h5 className="fw-bold mb-2" style={{ color: 'hsl(var(--primary))' }}>
-                            {templateNames[num - 1]}
-                          </h5>
-                          <p className="text-muted mb-2 small">
-                            {t(`template${num}` as any)} - {t(`template${num}Desc` as any)}
-                          </p>
-                          <div className="d-flex flex-column gap-2">
-                            <a 
-                              href={templateLinks[num - 1]}
-                              className="btn btn-sm text-decoration-none text-white"
-                              style={{ backgroundColor: '#C8102E' }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {language === 'es' ? 'Ver Demo' : 'View Demo'}
-                            </a>
-
+                          <div className="d-flex flex-column h-100">
+                            <div className="flex-grow-1">
+                              <h5 className="card-title mb-3 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
+                                {card.businessName}
+                              </h5>
+                              <p className="card-text text-muted small mb-3">
+                                <span className="badge bg-secondary me-2">
+                                  {card.templateType.charAt(0).toUpperCase() + card.templateType.slice(1)}
+                                </span>
+                                Live Client Demo
+                              </p>
+                              <p className="card-text small">
+                                {card.description?.[language] || 'Professional website showcase'}
+                              </p>
+                            </div>
+                            
+                            <div className="mt-auto">
+                              <div className="d-flex flex-column gap-2">
+                                <Link 
+                                  href={card.demoUrl}
+                                  className="btn btn-outline-primary btn-sm w-100"
+                                >
+                                  {language === 'es' ? 'Ver Demo' : 'View Demo'}
+                                </Link>
+                                
+                                {savedConfig?.proWhatsappButtons?.[index] && (
+                                  <a 
+                                    href={`https://wa.me/52${savedConfig.whatsappNumber}?text=${encodeURIComponent(savedConfig.proWhatsappButtons[index].message?.[language] || '')}`}
+                                    className="btn btn-sm w-100"
+                                    style={{ 
+                                      backgroundColor: savedConfig.proWhatsappButtons[index].color,
+                                      color: '#FFFFFF',
+                                      borderColor: savedConfig.proWhatsappButtons[index].color
+                                    }}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {savedConfig.proWhatsappButtons[index].text?.[language] || 'Contact'}
+                                  </a>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
