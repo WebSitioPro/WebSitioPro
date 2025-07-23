@@ -753,27 +753,25 @@ export default function HomePage() {
                     <div className="col-md-6">
                       <div className="p-4 h-100 d-flex flex-column justify-content-center">
                         <h3 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                          {language === 'es' ? 'Sitios Web de Calidad Premium' : 'Premium Quality Websites'}
+                          {savedConfig?.showcaseTitle?.[language] || (language === 'es' ? 'Sitios Web de Calidad Premium' : 'Premium Quality Websites')}
                         </h3>
                         <p className="text-muted mb-4 lead">
-                          {language === 'es' 
+                          {savedConfig?.showcaseDescription?.[language] || (language === 'es' 
                             ? 'Diseños profesionales, completamente personalizados para tu negocio en Chetumal. Desde doctores hasta restaurantes, creamos sitios que convierten visitantes en clientes.'
                             : 'Professional designs, completely customized for your business in Chetumal. From doctors to restaurants, we create sites that convert visitors into customers.'
-                          }
+                          )}
                         </p>
                         <div className="d-flex flex-column gap-2">
-                          <div className="d-flex align-items-center gap-2 text-muted">
-                            <CheckCircle size={16} style={{ color: 'hsl(var(--secondary))' }} />
-                            <small>{language === 'es' ? 'Diseño responsive y móvil' : 'Responsive & mobile design'}</small>
-                          </div>
-                          <div className="d-flex align-items-center gap-2 text-muted">
-                            <CheckCircle size={16} style={{ color: 'hsl(var(--secondary))' }} />
-                            <small>{language === 'es' ? 'Optimizado para búsquedas locales' : 'Local search optimized'}</small>
-                          </div>
-                          <div className="d-flex align-items-center gap-2 text-muted">
-                            <CheckCircle size={16} style={{ color: 'hsl(var(--secondary))' }} />
-                            <small>{language === 'es' ? 'Integración con WhatsApp' : 'WhatsApp integration'}</small>
-                          </div>
+                          {(savedConfig?.showcaseFeatures || [
+                            { es: 'Diseño responsive y móvil', en: 'Responsive & mobile design' },
+                            { es: 'Optimizado para búsquedas locales', en: 'Local search optimized' },
+                            { es: 'Integración con WhatsApp', en: 'WhatsApp integration' }
+                          ]).map((feature: any, index: number) => (
+                            <div key={index} className="d-flex align-items-center gap-2 text-muted">
+                              <CheckCircle size={16} style={{ color: 'hsl(var(--secondary))' }} />
+                              <small>{feature[language] || feature.en}</small>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -781,7 +779,7 @@ export default function HomePage() {
                       <div className="p-4">
                         <div className="position-relative">
                           <img 
-                            src={savedConfig?.templates?.[0]?.image || 'https://via.placeholder.com/400x500/C8102E/FFFFFF?text=Professional+Website+Preview'}
+                            src={savedConfig?.showcaseImage || savedConfig?.templates?.[0]?.image || 'https://via.placeholder.com/400x500/C8102E/FFFFFF?text=Professional+Website+Preview'}
                             alt={language === 'es' ? 'Vista previa del sitio web profesional' : 'Professional website preview'}
                             className="img-fluid rounded shadow-sm"
                             style={{ 
@@ -807,10 +805,10 @@ export default function HomePage() {
           {/* Call to Action */}
           <div className="text-center mt-5">
             <p className="text-muted mb-4">
-              {language === 'es' 
+              {savedConfig?.showcaseHelper?.[language] || (language === 'es' 
                 ? 'Explora todos nuestros diseños profesionales y encuentra el perfecto para tu negocio'
                 : 'Explore all our professional designs and find the perfect one for your business'
-              }
+              )}
             </p>
             <Link 
               href="/pro"
@@ -819,7 +817,7 @@ export default function HomePage() {
               onClick={() => window.scrollTo(0, 0)}
             >
               <Users size={20} className="me-2" />
-              {language === 'es' ? 'Ver Todos los Diseños Pro' : 'View All Pro Designs'}
+              {savedConfig?.showcaseCTA?.[language] || (language === 'es' ? 'Ver Todos los Diseños Pro' : 'View All Pro Designs')}
               <ChevronRight size={16} className="ms-2" />
             </Link>
           </div>
