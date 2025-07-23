@@ -506,6 +506,21 @@ export default function EditorPage() {
     });
   };
 
+  const handleBooleanChange = (path: string, value: boolean) => {
+    setWebsiteData(prev => {
+      const newData = { ...prev };
+      const keys = path.split('.');
+      let current: any = newData;
+
+      for (let i = 0; i < keys.length - 1; i++) {
+        current = current[keys[i]];
+      }
+
+      current[keys[keys.length - 1]] = value;
+      return newData;
+    });
+  };
+
   const handleSolutionsOverviewChange = (index: number, field: string, value: string, language?: 'es' | 'en') => {
     setWebsiteData(prev => ({
       ...prev,
@@ -515,7 +530,7 @@ export default function EditorPage() {
             return {
               ...solution,
               [field]: {
-                ...solution[field as keyof typeof solution],
+                ...(solution[field as 'title' | 'description'] as { es: string; en: string }),
                 [language]: value
               }
             };
@@ -537,7 +552,7 @@ export default function EditorPage() {
             return {
               ...button,
               [field]: {
-                ...button[field as keyof typeof button],
+                ...(button[field as 'text' | 'message'] as { es: string; en: string }),
                 [language]: value
               }
             };
@@ -603,7 +618,7 @@ export default function EditorPage() {
             return {
               ...solution,
               [field]: {
-                ...solution[field as keyof typeof solution],
+                ...(solution[field as 'title' | 'description'] as { es: string; en: string }),
                 [language]: value
               }
             };
@@ -790,7 +805,7 @@ export default function EditorPage() {
             return {
               ...step,
               description: {
-                ...step.description,
+                ...(step.description || { es: '', en: '' }),
                 [language]: value
               }
             };
@@ -1446,7 +1461,7 @@ export default function EditorPage() {
                           className="form-check-input" 
                           type="checkbox" 
                           checked={websiteData.showBanner}
-                          onChange={(e) => handleInputChange('showBanner', e.target.checked)}
+                          onChange={(e) => handleBooleanChange('showBanner', e.target.checked)}
                         />
                         <label className="form-check-label">
                           Show Banner
@@ -1624,6 +1639,16 @@ export default function EditorPage() {
                 <div>
                   <h4 className="mb-4">Hero Section</h4>
                   <div className="row g-3">
+                    <div className="col-12">
+                      <label className="form-label">Hero Image URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        value={websiteData.heroImage}
+                        onChange={(e) => handleInputChange('heroImage', e.target.value)}
+                        placeholder="https://example.com/image.jpg"
+                      />
+                    </div>
                     <div className="col-md-6">
                       <label className="form-label">Main Headline Line 1 (Spanish)</label>
                       <input 
@@ -1680,6 +1705,257 @@ export default function EditorPage() {
                         rows={3}
                         value={websiteData.heroSubheadline.en}
                         onChange={(e) => handleInputChange('heroSubheadline', e.target.value, 'en')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* About Tab */}
+              {activeTab === 'about' && (
+                <div>
+                  <h4 className="mb-4">About Section</h4>
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label">About Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.aboutTitle?.es || ''}
+                        onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'es')}
+                        placeholder="Acerca de Nosotros"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">About Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.aboutTitle?.en || ''}
+                        onChange={(e) => handleInputChange('aboutTitle', e.target.value, 'en')}
+                        placeholder="About Us"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">About Description (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={4}
+                        value={websiteData.aboutText?.es || ''}
+                        onChange={(e) => handleInputChange('aboutText', e.target.value, 'es')}
+                        placeholder="Descripción sobre la empresa..."
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">About Description (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={4}
+                        value={websiteData.aboutText?.en || ''}
+                        onChange={(e) => handleInputChange('aboutText', e.target.value, 'en')}
+                        placeholder="About the company description..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Solutions Tab */}
+              {activeTab === 'solutions' && (
+                <div>
+                  <h4 className="mb-4">Solutions Overview</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Solutions Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.solutionsTitle?.es || ''}
+                        onChange={(e) => handleInputChange('solutionsTitle', e.target.value, 'es')}
+                        placeholder="Nuestras Soluciones"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Solutions Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.solutionsTitle?.en || ''}
+                        onChange={(e) => handleInputChange('solutionsTitle', e.target.value, 'en')}
+                        placeholder="Our Solutions"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Solution Items</h5>
+                    <button 
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={handleAddSolutionOverview}
+                    >
+                      Add Solution
+                    </button>
+                  </div>
+
+                  {websiteData.solutionsOverview.map((solution, index) => (
+                    <div key={index} className="card mb-3">
+                      <div className="card-body">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <h6>Solution {index + 1}</h6>
+                          <button 
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleRemoveSolutionOverview(index)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <label className="form-label">Title (Spanish)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={solution.title.es}
+                              onChange={(e) => handleSolutionOverviewChange(index, 'title', e.target.value, 'es')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Title (English)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={solution.title.en}
+                              onChange={(e) => handleSolutionOverviewChange(index, 'title', e.target.value, 'en')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Description (Spanish)</label>
+                            <textarea 
+                              className="form-control"
+                              rows={2}
+                              value={solution.description.es}
+                              onChange={(e) => handleSolutionOverviewChange(index, 'description', e.target.value, 'es')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Description (English)</label>
+                            <textarea 
+                              className="form-control"
+                              rows={2}
+                              value={solution.description.en}
+                              onChange={(e) => handleSolutionOverviewChange(index, 'description', e.target.value, 'en')}
+                            />
+                          </div>
+                          <div className="col-12">
+                            <label className="form-label">Image URL</label>
+                            <input 
+                              type="url" 
+                              className="form-control"
+                              value={solution.image}
+                              onChange={(e) => handleSolutionOverviewChange(index, 'image', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Pricing Tab */}
+              {activeTab === 'pricing' && (
+                <div>
+                  <h4 className="mb-4">Pricing Section</h4>
+                  <div className="alert alert-info">
+                    <p>Pricing customization options will be available in a future update. For now, you can customize colors and contact information in their respective sections.</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Contact Tab */}
+              {activeTab === 'contact' && (
+                <div>
+                  <h4 className="mb-4">Contact Information</h4>
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Phone Number</label>
+                      <input 
+                        type="tel" 
+                        className="form-control"
+                        value={websiteData.phone || ''}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        placeholder="+52 983 114 4462"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Email Address</label>
+                      <input 
+                        type="email" 
+                        className="form-control"
+                        value={websiteData.email || ''}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        placeholder="info@company.com"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">WhatsApp Number</label>
+                      <input 
+                        type="tel" 
+                        className="form-control"
+                        value={websiteData.whatsappNumber || ''}
+                        onChange={(e) => handleInputChange('whatsappNumber', e.target.value)}
+                        placeholder="529831144462"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Address (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={typeof websiteData.address === 'string' ? JSON.parse(websiteData.address || '{}').es || '' : websiteData.address?.es || ''}
+                        onChange={(e) => handleInputChange('address', e.target.value, 'es')}
+                        placeholder="Dirección completa"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Address (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={typeof websiteData.address === 'string' ? JSON.parse(websiteData.address || '{}').en || '' : websiteData.address?.en || ''}
+                        onChange={(e) => handleInputChange('address', e.target.value, 'en')}
+                        placeholder="Full address"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Facebook URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        value={(websiteData as any).facebookUrl || ''}
+                        onChange={(e) => handleInputChange('facebookUrl', e.target.value)}
+                        placeholder="https://facebook.com/yourpage"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Instagram URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        value={(websiteData as any).instagramUrl || ''}
+                        onChange={(e) => handleInputChange('instagramUrl', e.target.value)}
+                        placeholder="https://instagram.com/yourprofile"
+                      />
+                    </div>
+                    <div className="col-12">
+                      <label className="form-label">Google Maps Embed Code</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={(websiteData as any).googleMapsEmbed || ''}
+                        onChange={(e) => handleInputChange('googleMapsEmbed', e.target.value)}
+                        placeholder="<iframe src='...' ...</iframe>"
                       />
                     </div>
                   </div>
