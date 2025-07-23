@@ -27,7 +27,7 @@ interface WebsiteData {
 
   // Why Section
   whyTitle: { es: string; en: string };
-  whyPoints: Array<{ es: string; en: string }>;
+  whyPoints: Array<{ es: string; en: string; icon?: string }>;
 
   // About Section
   aboutTitle: { es: string; en: string };
@@ -118,6 +118,28 @@ interface WebsiteData {
     es: string;
     en: string;
   };
+
+  // Missing properties causing crashes
+  offeringsTitle: { es: string; en: string };
+  heroImageOpacity: string;
+  heroImagePosition: string;
+  heroSectionHeight: string;
+  heroTextAlignment: string;
+  heroTextColor: string;
+  heroSubtextColor: string;
+  heroTitleSize: string;
+  heroSubtitleSize: string;
+  heroVerticalAlignment: string;
+  
+  // Chatbot properties
+  chatbotIcon: string;
+  chatbotColor: string;
+  chatbotTitle: { es: string; en: string };
+  chatbotWelcome: { es: string; en: string };
+  chatbotQuestions: Array<{
+    question: { es: string; en: string };
+    answer: { es: string; en: string };
+  }>;
 }
 
 export default function EditorPage() {
@@ -260,6 +282,10 @@ export default function EditorPage() {
       es: 'Plan Pro: 2,000 pesos construcción + 3,000 pesos/año hosting (o 1,000 pesos inicial + 200 pesos/mes por 5 meses). Dominio incluido hasta $12 USD, extra por dominios premium.',
       en: 'Pro plan: 2,000 pesos build + 3,000 pesos/year hosting (or 1,000 pesos upfront + 200 pesos/month for 5 months). Domain included up to $12 USD, extra for premium domains.'
     },
+    pricingBannerText: {
+      es: '¡Oferta Especial! Sitio Web Pro',
+      en: 'Special Offer! Pro Website'
+    },
 
     // Contact Info
     phone: '+52 983 123 4567',
@@ -287,31 +313,32 @@ export default function EditorPage() {
     },
     chatbotQuestions: [
       {
-        key: 'hola',
         question: { es: 'hola', en: 'hello' },
         answer: { es: '¡Hola! Soy el asistente de WebSitioPro. ¿En qué puedo ayudarte hoy?', en: 'Hello! I\'m the WebSitioPro assistant. How can I help you today?' }
       },
       {
-        key: 'precios',
         question: { es: 'precios', en: 'pricing' },
         answer: { es: 'Nuestros sitios Pro cuestan 2,000 pesos de construcción + 3,000 pesos/año de hosting.', en: 'Our Pro sites cost 2,000 pesos for construction + 3,000 pesos/year for hosting.' }
       },
       {
-        key: 'servicios',
         question: { es: 'servicios', en: 'services' },
         answer: { es: 'Ofrecemos sitios web para profesionales, restaurantes, negocios turísticos, retail y servicios.', en: 'We offer websites for professionals, restaurants, tourist businesses, retail, and services.' }
       },
       {
-        key: 'contacto',
         question: { es: 'contacto', en: 'contact' },
         answer: { es: 'Puedes contactarnos por WhatsApp al +52 983 123 4567 o por email a info@websitiopro.com', en: 'You can contact us via WhatsApp at +52 983 123 4567 or email us at info@websitiopro.com' }
       },
       {
-        key: 'tiempo',
         question: { es: 'tiempo', en: 'time' },
         answer: { es: 'Típicamente creamos tu sitio web en 5-7 días hábiles después de recibir todo tu contenido.', en: 'We typically create your website in 5-7 business days after receiving all your content.' }
       }
     ],
+
+    // Missing offerings title
+    offeringsTitle: {
+      es: 'Nuestras Ofertas',
+      en: 'Our Offerings'
+    },
 
     // Pro Page
     proHeroHeadline: {
