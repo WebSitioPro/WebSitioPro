@@ -1720,8 +1720,10 @@ export default function EditorPage() {
               {activeTab === 'hero' && (
                 <div>
                   <h4 className="mb-4">Hero Section</h4>
-                  <div className="row g-3">
-                    <div className="col-12">
+                  
+                  {/* Hero Image Settings */}
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-8">
                       <label className="form-label">Hero Image URL</label>
                       <input 
                         type="url" 
@@ -1731,6 +1733,131 @@ export default function EditorPage() {
                         placeholder="https://example.com/image.jpg"
                       />
                     </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Image Opacity</label>
+                      <input 
+                        type="range" 
+                        className="form-range"
+                        min="0" 
+                        max="1" 
+                        step="0.1"
+                        value={websiteData.heroImageOpacity}
+                        onChange={(e) => handleInputChange('heroImageOpacity', e.target.value)}
+                      />
+                      <small className="text-muted">Current: {websiteData.heroImageOpacity}</small>
+                    </div>
+                  </div>
+
+                  {/* Hero Layout & Positioning */}
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-4">
+                      <label className="form-label">Image Position</label>
+                      <select 
+                        className="form-control"
+                        value={websiteData.heroImagePosition}
+                        onChange={(e) => handleInputChange('heroImagePosition', e.target.value)}
+                      >
+                        <option value="center">Center</option>
+                        <option value="top">Top</option>
+                        <option value="bottom">Bottom</option>
+                        <option value="left">Left</option>
+                        <option value="right">Right</option>
+                      </select>
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Section Height</label>
+                      <select 
+                        className="form-control"
+                        value={websiteData.heroSectionHeight}
+                        onChange={(e) => handleInputChange('heroSectionHeight', e.target.value)}
+                      >
+                        <option value="400px">Small (400px)</option>
+                        <option value="500px">Medium (500px)</option>
+                        <option value="600px">Large (600px)</option>
+                        <option value="700px">Extra Large (700px)</option>
+                        <option value="100vh">Full Screen</option>
+                      </select>
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Vertical Alignment</label>
+                      <select 
+                        className="form-control"
+                        value={websiteData.heroVerticalAlignment}
+                        onChange={(e) => handleInputChange('heroVerticalAlignment', e.target.value)}
+                      >
+                        <option value="center">Center</option>
+                        <option value="top">Top</option>
+                        <option value="bottom">Bottom</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Text Colors & Styling */}
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-3">
+                      <label className="form-label">Title Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.heroTextColor}
+                          onChange={(e) => handleInputChange('heroTextColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.heroTextColor}
+                          onChange={(e) => handleInputChange('heroTextColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label">Subtitle Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.heroSubtextColor}
+                          onChange={(e) => handleInputChange('heroSubtextColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.heroSubtextColor}
+                          onChange={(e) => handleInputChange('heroSubtextColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label">Title Size</label>
+                      <select 
+                        className="form-control"
+                        value={websiteData.heroTitleSize}
+                        onChange={(e) => handleInputChange('heroTitleSize', e.target.value)}
+                      >
+                        <option value="2rem">Small (2rem)</option>
+                        <option value="2.5rem">Medium (2.5rem)</option>
+                        <option value="3rem">Large (3rem)</option>
+                        <option value="3.5rem">Extra Large (3.5rem)</option>
+                        <option value="4rem">Huge (4rem)</option>
+                      </select>
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label">Text Alignment</label>
+                      <select 
+                        className="form-control"
+                        value={websiteData.heroTextAlignment}
+                        onChange={(e) => handleInputChange('heroTextAlignment', e.target.value)}
+                      >
+                        <option value="center">Center</option>
+                        <option value="left">Left</option>
+                        <option value="right">Right</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Hero Text Content */}
+                  <div className="row g-3">
                     <div className="col-md-6">
                       <label className="form-label">Main Headline Line 1 (Spanish)</label>
                       <input 
