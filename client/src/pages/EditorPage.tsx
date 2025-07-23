@@ -860,6 +860,33 @@ export default function EditorPage() {
     }));
   };
 
+  // Showcase Features handlers
+  const handleAddShowcaseFeature = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      showcaseFeatures: [
+        ...(prev.showcaseFeatures || []),
+        { es: '', en: '' }
+      ]
+    }));
+  };
+
+  const handleRemoveShowcaseFeature = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      showcaseFeatures: (prev.showcaseFeatures || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleShowcaseFeatureChange = (index: number, value: string, language: 'es' | 'en') => {
+    setWebsiteData(prev => ({
+      ...prev,
+      showcaseFeatures: (prev.showcaseFeatures || []).map((feature, i) => 
+        i === index ? { ...feature, [language]: value } : feature
+      )
+    }));
+  };
+
 
 
   // Load client-specific config on mount and when returning to page
@@ -1818,103 +1845,150 @@ export default function EditorPage() {
               {/* Solutions Tab */}
               {activeTab === 'solutions' && (
                 <div>
-                  <h4 className="mb-4">Solutions Overview</h4>
+                  <h4 className="mb-4">Solutions Showcase</h4>
                   
+                  {/* Section Title */}
                   <div className="row g-3 mb-4">
                     <div className="col-md-6">
-                      <label className="form-label">Solutions Title (Spanish)</label>
+                      <label className="form-label">Section Title (Spanish)</label>
                       <input 
                         type="text" 
                         className="form-control"
                         value={websiteData.solutionsTitle?.es || ''}
                         onChange={(e) => handleInputChange('solutionsTitle', e.target.value, 'es')}
-                        placeholder="Nuestras Soluciones"
+                        placeholder="Sitios Web Profesionales"
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Solutions Title (English)</label>
+                      <label className="form-label">Section Title (English)</label>
                       <input 
                         type="text" 
                         className="form-control"
                         value={websiteData.solutionsTitle?.en || ''}
                         onChange={(e) => handleInputChange('solutionsTitle', e.target.value, 'en')}
-                        placeholder="Our Solutions"
+                        placeholder="Professional Websites"
                       />
                     </div>
                   </div>
 
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h5>Solution Items</h5>
-                    <button 
-                      className="btn btn-sm btn-outline-primary"
-                      onClick={handleAddSolutionOverview}
-                    >
-                      Add Solution
-                    </button>
-                  </div>
-
-                  {websiteData.solutionsOverview.map((solution, index) => (
-                    <div key={index} className="card mb-3">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                          <h6>Solution {index + 1}</h6>
-                          <button 
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => handleRemoveSolutionOverview(index)}
-                          >
-                            Remove
-                          </button>
+                  {/* Template Showcase Card */}
+                  <div className="card mb-4">
+                    <div className="card-header">
+                      <h5 className="mb-0">Template Showcase Card</h5>
+                    </div>
+                    <div className="card-body">
+                      {/* Template Title */}
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Template Title (Spanish)</label>
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={websiteData.showcaseTitle?.es || ''}
+                            onChange={(e) => handleInputChange('showcaseTitle', e.target.value, 'es')}
+                            placeholder="Sitios Web de Calidad Premium"
+                          />
                         </div>
-                        <div className="row g-3">
-                          <div className="col-md-6">
-                            <label className="form-label">Title (Spanish)</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={solution.title.es}
-                              onChange={(e) => handleSolutionOverviewChange(index, 'title', e.target.value, 'es')}
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Title (English)</label>
-                            <input 
-                              type="text" 
-                              className="form-control"
-                              value={solution.title.en}
-                              onChange={(e) => handleSolutionOverviewChange(index, 'title', e.target.value, 'en')}
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Description (Spanish)</label>
-                            <textarea 
-                              className="form-control"
-                              rows={2}
-                              value={solution.description.es}
-                              onChange={(e) => handleSolutionOverviewChange(index, 'description', e.target.value, 'es')}
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label">Description (English)</label>
-                            <textarea 
-                              className="form-control"
-                              rows={2}
-                              value={solution.description.en}
-                              onChange={(e) => handleSolutionOverviewChange(index, 'description', e.target.value, 'en')}
-                            />
-                          </div>
-                          <div className="col-12">
-                            <label className="form-label">Image URL</label>
-                            <input 
-                              type="url" 
-                              className="form-control"
-                              value={solution.image}
-                              onChange={(e) => handleSolutionOverviewChange(index, 'image', e.target.value)}
-                            />
-                          </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Template Title (English)</label>
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={websiteData.showcaseTitle?.en || ''}
+                            onChange={(e) => handleInputChange('showcaseTitle', e.target.value, 'en')}
+                            placeholder="Premium Quality Websites"
+                          />
                         </div>
                       </div>
+
+                      {/* Template Description */}
+                      <div className="row g-3 mb-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Template Description (Spanish)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={3}
+                            value={websiteData.showcaseDescription?.es || ''}
+                            onChange={(e) => handleInputChange('showcaseDescription', e.target.value, 'es')}
+                            placeholder="Diseños profesionales, completamente personalizados para tu negocio..."
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label">Template Description (English)</label>
+                          <textarea 
+                            className="form-control"
+                            rows={3}
+                            value={websiteData.showcaseDescription?.en || ''}
+                            onChange={(e) => handleInputChange('showcaseDescription', e.target.value, 'en')}
+                            placeholder="Professional designs, completely customized for your business..."
+                          />
+                        </div>
+                      </div>
+
+                      {/* Template Image */}
+                      <div className="row g-3 mb-4">
+                        <div className="col-12">
+                          <label className="form-label">Template Image URL</label>
+                          <input 
+                            type="url" 
+                            className="form-control"
+                            value={websiteData.showcaseImage || ''}
+                            onChange={(e) => handleInputChange('showcaseImage', e.target.value)}
+                            placeholder="https://example.com/template-preview.jpg"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Template Features */}
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6>Template Features</h6>
+                        <button 
+                          className="btn btn-sm btn-outline-primary"
+                          onClick={handleAddShowcaseFeature}
+                        >
+                          Add Feature
+                        </button>
+                      </div>
+
+                      {(websiteData.showcaseFeatures || []).map((feature, index) => (
+                        <div key={index} className="card mb-3 border-light">
+                          <div className="card-body py-2">
+                            <div className="d-flex justify-content-between align-items-center mb-2">
+                              <small className="text-muted fw-bold">Feature {index + 1}</small>
+                              <button 
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={() => handleRemoveShowcaseFeature(index)}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                            <div className="row g-2">
+                              <div className="col-md-6">
+                                <label className="form-label small">Feature (Spanish)</label>
+                                <input 
+                                  type="text" 
+                                  className="form-control form-control-sm"
+                                  value={feature.es || ''}
+                                  onChange={(e) => handleShowcaseFeatureChange(index, e.target.value, 'es')}
+                                  placeholder="Diseño responsive y móvil"
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <label className="form-label small">Feature (English)</label>
+                                <input 
+                                  type="text" 
+                                  className="form-control form-control-sm"
+                                  value={feature.en || ''}
+                                  onChange={(e) => handleShowcaseFeatureChange(index, e.target.value, 'en')}
+                                  placeholder="Responsive & mobile design"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
               )}
 

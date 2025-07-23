@@ -218,6 +218,20 @@ export const websiteConfigs = pgTable("website_configs", {
     description: { es: string; en: string };
     image: string;
   }>>().default([]),
+  // Single showcase template fields for homepage
+  showcaseTitle: json("showcase_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  showcaseDescription: json("showcase_description").$type<{
+    es: string;
+    en: string;
+  }>(),
+  showcaseImage: text("showcase_image"),
+  showcaseFeatures: json("showcase_features").$type<Array<{
+    es: string;
+    en: string;
+  }>>().default([]),
   // Pro page banner fields
   proBannerText: json("pro_banner_text").$type<{
     es: string;
