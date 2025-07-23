@@ -535,101 +535,94 @@ export default function ProPage() {
           </h2>
           <div className="row g-4">
             {[1, 2, 3, 4, 5].map((num) => {
+              // Map to live client demos using specific client IDs
+              const clientIds = [43, 44, 45, 47, 46]; // Professionals, Restaurant, Tourism, Retail, Services  
               const templateLinks = [
-                '/professionals-demo',
-                '/restaurants-demo', 
-                '/tourism-demo',
-                '/retail-demo',
-                '/services-demo'
+                `/professionals?client=${clientIds[0]}`, // Dr. Juan Garcia
+                `/restaurants?client=${clientIds[1]}`,   // El Rey de Tacos  
+                `/tourism?client=${clientIds[2]}`,       // Tours de Mexico
+                `/retail?client=${clientIds[3]}`,        // Artesanías de Colores
+                `/services?client=${clientIds[4]}`       // ClimaCool Cancún
+              ];
+
+              const templateNames = [
+                'Dr. Juan Garcia', 
+                'El Rey de Tacos',
+                'Tours de Mexico', 
+                'Artesanías de Colores',
+                'ClimaCool Cancún'
+              ];
+
+              const templateTypes = [
+                'professionals',
+                'restaurants', 
+                'tourism',
+                'retail',
+                'services'
               ];
               
-              // Get template showcase images from saved configuration
-              const templateIndex = num - 1;
-              const templateImage = savedConfig?.templateShowcaseImages?.[templateIndex];
-              const desktopImage = templateImage?.desktop || '';
-              const mobileImage = templateImage?.mobile || '';
+              // Generate website thumbnail using simple screenshot service
+              const clientId = clientIds[num - 1];
+              const websiteUrl = `https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev${templateLinks[num - 1]}`;
+              const thumbnailUrl = `https://api.screenshotmachine.com/?key=demo&url=${encodeURIComponent(websiteUrl)}&dimension=1024x768`;
               
               // Get WhatsApp button for this template
-              const whatsappButton = savedConfig?.proWhatsappButtons?.[templateIndex];
-              
-              // Debug logging
-              console.log('Template', num, 'WhatsApp button:', whatsappButton);
-              console.log('All WhatsApp buttons:', savedConfig?.proWhatsappButtons);
+              const whatsappButton = savedConfig?.proWhatsappButtons?.[num - 1];
               
               return (
                 <div key={num} className="col-lg-6">
                   <div className="card h-100 border-0 shadow">
                     <div className="card-body p-4">
                       <div className="row g-3">
-                        <div className="col-6">
-                          {/* Desktop Preview - Larger */}
-                          <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '180px' }}>
-                            {desktopImage ? (
-                              <img 
-                                src={desktopImage} 
-                                alt={`Template ${num} Desktop Preview`}
-                                style={{ 
-                                  maxWidth: '100%', 
-                                  maxHeight: '100%', 
-                                  objectFit: 'contain',
-                                  borderRadius: '4px'
-                                }}
-                              />
-                            ) : (
+                        <div className="col-8">
+                          {/* Website Thumbnail */}
+                          <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '200px' }}>
+                            <img 
+                              src={thumbnailUrl} 
+                              alt={`${templateNames[num - 1]} Live Website`}
+                              style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'cover',
+                                borderRadius: '4px'
+                              }}
+                              onError={(e) => {
+                                // Fallback to icon if screenshot fails
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.nextElementSibling!.style.display = 'flex';
+                              }}
+                            />
+                            <div style={{ display: 'none' }} className="d-flex align-items-center justify-content-center w-100 h-100">
                               <Globe size={64} className="text-muted" />
-                            )}
-                          </div>
-                          {/* Mobile Preview - Larger */}
-                          <div className="mt-3 d-flex justify-content-center">
-                            <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ width: '80px', height: '120px' }}>
-                              {mobileImage ? (
-                                <img 
-                                  src={mobileImage} 
-                                  alt={`Template ${num} Mobile Preview`}
-                                  style={{ 
-                                    maxWidth: '100%', 
-                                    maxHeight: '100%', 
-                                    objectFit: 'contain',
-                                    borderRadius: '4px'
-                                  }}
-                                />
-                              ) : (
-                                <Smartphone size={32} className="text-muted" />
-                              )}
                             </div>
                           </div>
                         </div>
-                        <div className="col-6">
-                          <h5 className="fw-bold mb-3" style={{ color: 'hsl(var(--primary))' }}>
-                            {t(`template${num}` as any)}
+                        <div className="col-4">
+                          <h5 className="fw-bold mb-2" style={{ color: 'hsl(var(--primary))' }}>
+                            {templateNames[num - 1]}
                           </h5>
-                          <p className="text-muted mb-3 small">
-                            {savedConfig?.templates?.[templateIndex]?.description?.[language] || 
-                             savedConfig?.templates?.[templateIndex]?.description?.es || 
-                             t(`template${num}Desc` as any)}
+                          <p className="text-muted mb-2 small">
+                            {t(`template${num}` as any)} - {t(`template${num}Desc` as any)}
                           </p>
                           <div className="d-flex flex-column gap-2">
                             <a 
                               href={templateLinks[num - 1]}
                               className="btn btn-sm text-decoration-none text-white"
                               style={{ backgroundColor: '#C8102E' }}
-                              onClick={() => window.scrollTo(0, 0)}
+                              target="_blank"
+                              rel="noopener noreferrer"
                             >
-                              {t('viewTemplate')}
+                              {language === 'es' ? 'Ver Demo' : 'View Demo'}
                             </a>
-                            {whatsappButton && whatsappButton.text ? (
-                              <a 
-                                href={`https://wa.me/529831234567?text=${encodeURIComponent(whatsappButton.message?.[language] || whatsappButton.message?.es || 'Hello!')}`}
-                                className="btn btn-sm text-white"
-                                style={{ backgroundColor: whatsappButton.color || '#00A859' }}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {whatsappButton.text?.[language] || whatsappButton.text?.es || 'Contact'}
-                              </a>
-                            ) : (
-                              <div className="text-muted small">No WhatsApp button configured</div>
-                            )}
+                            <a 
+                              href={`https://wa.me/529831234567?text=${encodeURIComponent(language === 'es' ? `Hola! Me interesa el template ${templateTypes[num - 1]} como el de ${templateNames[num - 1]}` : `Hello! I'm interested in the ${templateTypes[num - 1]} template like ${templateNames[num - 1]}`)}`}
+                              className="btn btn-sm text-white"
+                              style={{ backgroundColor: '#00A859' }}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {language === 'es' ? 'Contactar' : 'Contact'}
+                            </a>
                           </div>
                         </div>
                       </div>
