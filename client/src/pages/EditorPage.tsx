@@ -44,7 +44,7 @@ interface WebsiteData {
   // Pricing
   pricingTitle: { es: string; en: string };
   pricingText: { es: string; en: string };
-  bannerText: { es: string; en: string };
+  pricingBannerText: { es: string; en: string };
   pricingBannerBgColor: string;
   pricingBannerTextColor: string;
   paymentBannerBgColor: string;
@@ -1651,3 +1651,17 @@ export default function EditorPage() {
                       <textarea 
                         className="form-control"
                         rows={3}
+                        value={websiteData.heroSubheadline.en}
+                        onChange={(e) => handleInputChange('heroSubheadline', e.target.value, 'en')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
