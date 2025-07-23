@@ -561,10 +561,15 @@ export default function ProPage() {
                 'services'
               ];
               
-              // Generate actual website screenshots using a free service
-              const clientId = clientIds[num - 1];
-              const websiteUrl = `https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev${templateLinks[num - 1]}`;
-              const thumbnailUrl = `https://shot.screenshotapi.net/screenshot?token=GQBQHBE-DRJZ7R5-JYAPB7Q-Y32EQJM&url=${encodeURIComponent(websiteUrl)}&width=400&height=600&file_type=png&wait_for_event=load`;
+              // Use actual client hero images as thumbnails - most mobile-friendly approach
+              const heroImages = [
+                'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=600&fit=crop', // Dr. Juan Garcia - medical
+                'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=600&fit=crop', // El Rey de Tacos - restaurant  
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop', // Tours de Mexico - tourism
+                'https://i.ibb.co/xtM7LFN9/mathias-reding-KB341-Ttn-YSE-unsplash.jpg', // Artesanías de Colores - actual client image
+                'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=600&fit=crop'  // ClimaCool - services
+              ];
+              const thumbnailUrl = heroImages[num - 1];
               
               // Get WhatsApp button for this template
               const whatsappButton = savedConfig?.proWhatsappButtons?.[num - 1];
@@ -579,30 +584,13 @@ export default function ProPage() {
                           <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '280px' }}>
                             <img 
                               src={thumbnailUrl} 
-                              alt={`${templateNames[num - 1]} Live Website Screenshot`}
+                              alt={`${templateNames[num - 1]} Website Preview`}
                               style={{ 
-                                maxWidth: '100%', 
-                                maxHeight: '100%', 
-                                objectFit: 'contain',
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'cover',
                                 borderRadius: '4px',
                                 border: '1px solid #ddd'
-                              }}
-                              onError={(e) => {
-                                // Fallback to a basic placeholder if screenshot fails
-                                e.currentTarget.src = `data:image/svg+xml,${encodeURIComponent(`
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="300" height="400" viewBox="0 0 300 400">
-                                    <rect width="300" height="400" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
-                                    <text x="150" y="180" text-anchor="middle" font-family="Arial" font-size="14" fill="#6c757d">
-                                      ${templateNames[num - 1]}
-                                    </text>
-                                    <text x="150" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">
-                                      Live Website
-                                    </text>
-                                    <text x="150" y="220" text-anchor="middle" font-family="Arial" font-size="12" fill="#6c757d">
-                                      Preview Loading...
-                                    </text>
-                                  </svg>
-                                `)}`;
                               }}
                             />
                           </div>
