@@ -1,6 +1,3 @@
-Analysis: The user wants to add fields related to website showcase functionality (title, description, image, features, CTA, helper) to the editor page, including modifying the WebsiteData interface, providing default values, and updating the data loading and saving logic.
-```
-```replit_final_file
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
 import { Save, Download, Upload, Palette, Type, Image, Settings, Eye, Briefcase, UtensilsCrossed, MapPin, ShoppingBag, Wrench, Users, ChevronRight, Plus } from 'lucide-react';
