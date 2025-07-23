@@ -538,11 +538,11 @@ export default function ProPage() {
               // Map to live client demos using specific client IDs
               const clientIds = [43, 44, 45, 47, 46]; // Professionals, Restaurant, Tourism, Retail, Services  
               const templateLinks = [
-                `/professionals?client=${clientIds[0]}`, // Dr. Juan Garcia
-                `/restaurants?client=${clientIds[1]}`,   // El Rey de Tacos  
-                `/tourism?client=${clientIds[2]}`,       // Tours de Mexico
-                `/retail?client=${clientIds[3]}`,        // Artesanías de Colores
-                `/services?client=${clientIds[4]}`       // ClimaCool Cancún
+                `/professionals-demo?client=${clientIds[0]}`, // Dr. Juan Garcia
+                `/restaurants-demo?client=${clientIds[1]}`,   // El Rey de Tacos  
+                `/tourism-demo?client=${clientIds[2]}`,       // Tours de Mexico
+                `/retail-demo?client=${clientIds[3]}`,        // Artesanías de Colores
+                `/services-demo?client=${clientIds[4]}`       // ClimaCool Cancún
               ];
 
               const templateNames = [
@@ -561,10 +561,15 @@ export default function ProPage() {
                 'services'
               ];
               
-              // Generate website thumbnail using simple screenshot service
-              const clientId = clientIds[num - 1];
-              const websiteUrl = `https://59f44953-d964-4fb9-91a2-34cac2c67ba7-00-3h7lcr3fuh1mq.picard.replit.dev${templateLinks[num - 1]}`;
-              const thumbnailUrl = `https://api.screenshotmachine.com/?key=demo&url=${encodeURIComponent(websiteUrl)}&dimension=1024x768`;
+              // Use hero images from client configurations as thumbnails
+              const heroImages = [
+                'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400', // Professional medical
+                'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400', // Restaurant
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', // Tourism
+                'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400', // Retail
+                'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400'  // Services
+              ];
+              const thumbnailUrl = heroImages[num - 1];
               
               // Get WhatsApp button for this template
               const whatsappButton = savedConfig?.proWhatsappButtons?.[num - 1];
@@ -579,22 +584,14 @@ export default function ProPage() {
                           <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ height: '200px' }}>
                             <img 
                               src={thumbnailUrl} 
-                              alt={`${templateNames[num - 1]} Live Website`}
+                              alt={`${templateNames[num - 1]} Template Preview`}
                               style={{ 
                                 width: '100%', 
                                 height: '100%', 
                                 objectFit: 'cover',
                                 borderRadius: '4px'
                               }}
-                              onError={(e) => {
-                                // Fallback to icon if screenshot fails
-                                e.currentTarget.style.display = 'none';
-                                e.currentTarget.nextElementSibling!.style.display = 'flex';
-                              }}
                             />
-                            <div style={{ display: 'none' }} className="d-flex align-items-center justify-content-center w-100 h-100">
-                              <Globe size={64} className="text-muted" />
-                            </div>
                           </div>
                         </div>
                         <div className="col-4">
@@ -614,15 +611,7 @@ export default function ProPage() {
                             >
                               {language === 'es' ? 'Ver Demo' : 'View Demo'}
                             </a>
-                            <a 
-                              href={`https://wa.me/529831234567?text=${encodeURIComponent(language === 'es' ? `Hola! Me interesa el template ${templateTypes[num - 1]} como el de ${templateNames[num - 1]}` : `Hello! I'm interested in the ${templateTypes[num - 1]} template like ${templateNames[num - 1]}`)}`}
-                              className="btn btn-sm text-white"
-                              style={{ backgroundColor: '#00A859' }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {language === 'es' ? 'Contactar' : 'Contact'}
-                            </a>
+
                           </div>
                         </div>
                       </div>
