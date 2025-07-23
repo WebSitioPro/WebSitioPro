@@ -15,32 +15,38 @@ const mockRetailData = {
     {
       name: "Textiles Mayas",
       description: "Huipiles y rebozos tradicionales",
-      price: "$450 - $1,200 MXN"
+      price: "$450 - $1,200 MXN",
+      image: "https://via.placeholder.com/400x300/00A859/FFFFFF?text=Textiles+Mayas"
     },
     {
       name: "Joyería Artesanal",
       description: "Collares y aretes de plata",
-      price: "$200 - $800 MXN"
+      price: "$200 - $800 MXN",
+      image: "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Joyería+Artesanal"
     },
     {
       name: "Cerámica Local",
       description: "Vasijas y platos decorativos",
-      price: "$150 - $600 MXN"
+      price: "$150 - $600 MXN",
+      image: "https://via.placeholder.com/400x300/00A859/FFFFFF?text=Cerámica+Local"
     },
     {
       name: "Bolsas Tejidas",
       description: "Morales y bolsos tradicionales",
-      price: "$180 - $400 MXN"
+      price: "$180 - $400 MXN",
+      image: "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Bolsas+Tejidas"
     },
     {
       name: "Arte en Madera",
       description: "Figuras y máscaras talladas",
-      price: "$300 - $900 MXN"
+      price: "$300 - $900 MXN",
+      image: "https://via.placeholder.com/400x300/00A859/FFFFFF?text=Arte+en+Madera"
     },
     {
       name: "Especias y Condimentos",
       description: "Chiles y condimentos locales",
-      price: "$50 - $150 MXN"
+      price: "$50 - $150 MXN",
+      image: "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Especias"
     }
   ],
   photos: [
@@ -130,6 +136,7 @@ export default function RetailDemo() {
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [selectedProductImage, setSelectedProductImage] = useState<{src: string, alt: string, title: string} | null>(null);
 
   // Load saved configuration
   useEffect(() => {
@@ -426,6 +433,35 @@ export default function RetailDemo() {
               return products.map((product, index) => (
               <div key={index} className="col-md-6 col-lg-4">
                 <div className="card border-0 shadow-sm h-100">
+                  {/* Product Image */}
+                  {product.image && (
+                    <div className="position-relative">
+                      <img
+                        src={product.image}
+                        alt={product.title ? (language === 'es' ? product.title.es : product.title.en) : product.name}
+                        className="card-img-top"
+                        style={{ 
+                          height: '200px', 
+                          objectFit: 'cover',
+                          cursor: 'pointer'
+                        }}
+                        onClick={() => {
+                          setSelectedProductImage({
+                            src: product.image,
+                            alt: product.title ? (language === 'es' ? product.title.es : product.title.en) : product.name,
+                            title: product.title ? (language === 'es' ? product.title.es : product.title.en) : product.name
+                          });
+                        }}
+                      />
+                      <div className="position-absolute top-0 end-0 m-2">
+                        <span className="badge bg-dark bg-opacity-75">
+                          <Eye size={12} className="me-1" />
+                          Ver
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="card-body p-4">
                     <h5 className="card-title mb-3" style={{ color: 'hsl(var(--primary))' }}>
                       <ShoppingBag size={20} className="me-2" />
@@ -845,6 +881,54 @@ export default function RetailDemo() {
                 }
               }}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Product Image Modal */}
+      {selectedProductImage && (
+        <div
+          className="modal d-block"
+          style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
+          onClick={() => setSelectedProductImage(null)}
+        >
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{selectedProductImage.title}</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setSelectedProductImage(null)}
+                ></button>
+              </div>
+              <div className="modal-body p-0">
+                <img
+                  src={selectedProductImage.src}
+                  alt={selectedProductImage.alt}
+                  className="img-fluid w-100"
+                  style={{ maxHeight: '70vh', objectFit: 'contain' }}
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setSelectedProductImage(null)}
+                >
+                  Cerrar
+                </button>
+                <a 
+                  href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRetailData.whatsappNumber}?text=Me interesa ${selectedProductImage.title}`}
+                  className="btn btn-success"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Phone size={16} className="me-2" />
+                  Consultar
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}

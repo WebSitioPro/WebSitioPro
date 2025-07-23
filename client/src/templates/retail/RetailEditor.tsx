@@ -57,13 +57,13 @@ export default function RetailEditor() {
         title: { es: 'Textiles Mayas', en: 'Maya Textiles' },
         description: { es: 'Huipiles y rebozos tradicionales', en: 'Traditional huipiles and rebozos' },
         price: '$450 - $1,200 MXN',
-        image: 'https://via.placeholder.com/300x200/007ACC/FFFFFF?text=Textiles'
+        image: 'https://via.placeholder.com/400x300/007ACC/FFFFFF?text=Textiles+Mayas'
       },
       {
         title: { es: 'Joyería Artesanal', en: 'Artisan Jewelry' },
         description: { es: 'Collares y aretes de plata', en: 'Silver necklaces and earrings' },
         price: '$200 - $800 MXN',
-        image: 'https://via.placeholder.com/300x200/007ACC/FFFFFF?text=Jewelry'
+        image: 'https://via.placeholder.com/400x300/007ACC/FFFFFF?text=Joyería+Artesanal'
       }
     ],
     photos: [
@@ -796,11 +796,22 @@ export default function RetailEditor() {
                                 <textarea className="form-control" rows={3} value={product.description?.en || ''} onChange={(e) => handleProductChange(index, 'description', e.target.value, 'en')} />
                               </div>
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-md-3">
                               <div className="mb-3">
                                 <label className="form-label">Price</label>
                                 <input type="text" className="form-control" value={product.price || ''} onChange={(e) => handleProductChange(index, 'price', e.target.value)} />
                               </div>
+                            </div>
+                            <div className="col-md-3">
+                              <div className="mb-3">
+                                <label className="form-label">Product Image URL</label>
+                                <input type="url" className="form-control" value={product.image || ''} onChange={(e) => handleProductChange(index, 'image', e.target.value)} />
+                              </div>
+                              {product.image && (
+                                <div className="mb-3">
+                                  <img src={product.image} alt="Product preview" className="img-thumbnail" style={{ maxWidth: '100px', maxHeight: '100px' }} />
+                                </div>
+                              )}
                               <div className="d-grid">
                                 <button className="btn btn-danger" onClick={() => removeProduct(index)}>Remove Product</button>
                               </div>
