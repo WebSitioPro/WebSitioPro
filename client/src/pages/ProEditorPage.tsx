@@ -541,6 +541,7 @@ export default function ProEditorPage() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'X-Homepage-Editor': 'true',
         },
         body: JSON.stringify(configData),
       });
