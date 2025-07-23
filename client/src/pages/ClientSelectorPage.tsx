@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
-import { Plus, Edit, Users, Trash2, Calendar, Search, Filter } from 'lucide-react';
+import { Plus, Users, Edit, Trash2, Calendar, Search, CheckCircle, Clock, Eye } from 'lucide-react';
 
 interface ClientInfo {
   id: string;
@@ -11,6 +10,17 @@ interface ClientInfo {
   businessName: string;
   createdAt: string;
   templateId: string;
+  clientApproval?: {
+    isFormEnabled: boolean;
+    formStatus: "active" | "completed" | "disabled";
+    clientInfo?: {
+      name: string;
+      email: string;
+      submissionDate: string;
+    };
+    overallApproved: boolean;
+    lastSavedAt: string;
+  };
 }
 
 interface TemplateData {
@@ -45,12 +55,12 @@ export default function ClientSelectorPage() {
       const response = await fetch('/api/configs');
       if (response.ok) {
         const configs = await response.json();
-        
+
         const clientList: ClientInfo[] = configs.map((config: any) => {
           // Use the correct field names based on template type
           let displayName = config.name || 'Unnamed Client';
           let businessName = config.name || '';
-          
+
           // Handle different template types properly
           if (config.templateType === 'professionals') {
             displayName = config.doctorName || config.name || 'Unnamed Professional';
@@ -60,10 +70,10 @@ export default function ClientSelectorPage() {
             displayName = config.businessName || config.name || `Unnamed ${config.templateType || 'Business'}`;
             businessName = config.businessName || config.name || '';
           }
-          
+
           // Use actual database timestamps or current time for new clients
           const actualTimestamp = config.createdAt || config.updatedAt || new Date().toISOString();
-          
+
           return {
             id: config.id?.toString() || 'unknown',
             name: displayName,
@@ -175,6 +185,32 @@ export default function ClientSelectorPage() {
     { value: 'services', label: 'Services' }
   ];
 
+  // Helper function to determine approval status
+  const getApprovalStatus = (client: ClientInfo) => {
+    if (!client.clientApproval || !client.clientApproval.isFormEnabled) {
+      return { status: 'inactive', label: 'No Form Active' };
+    }
+
+    if (client.clientApproval.overallApproved) {
+      return { status: 'approved', label: '✓ Approved' };
+    }
+
+    if (client.clientApproval.formStatus === 'completed') {
+      return { status: 'pending', label: '📝 Feedback Received' };
+    }
+
+    return { status: 'active', label: '👁️ Awaiting Review' };
+  };
+
+    // Helper function to determine days since last activity
+    const getDaysSinceActivity = (client: ClientInfo) => {
+      if (!client.clientApproval) return 0;
+      const lastActivity = new Date(client.clientApproval.lastSavedAt || client.lastModified);
+      const now = new Date();
+      const diff = now.getTime() - lastActivity.getTime();
+      return Math.ceil(diff / (1000 * 3600 * 24));
+    };
+
   return (
     <div className="min-h-screen bg-light">
       {/* Header */}
@@ -202,17 +238,55 @@ export default function ClientSelectorPage() {
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-lg-10">
-            <div className="text-center mb-5">
+          <div className="text-center mb-5">
               <Users size={48} className="text-primary mb-3" />
               <h1 className="mb-3">Client Website Manager</h1>
               <p className="text-muted">Manage all your client websites in one place. Create, edit, and track your projects.</p>
+
+              {/* Approval Status Summary */}
+              {clients.length > 0 && (
+                <div className="row mt-4">
+                  <div className="col-md-3">
+                    <div className="card bg-success text-white">
+                      <div className="card-body py-2">
+                        <h5 className="mb-0">{clients.filter(c => getApprovalStatus(c).status === 'approved').length}</h5>
+                        <small>Approved</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="card bg-warning text-white">
+                      <div className="card-body py-2">
+                        <h5 className="mb-0">{clients.filter(c => getApprovalStatus(c).status === 'pending').length}</h5>
+                        <small>Feedback Received</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="card bg-primary text-white">
+                      <div className="card-body py-2">
+                        <h5 className="mb-0">{clients.filter(c => getApprovalStatus(c).status === 'active').length}</h5>
+                        <small>Awaiting Review</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="card bg-danger text-white">
+                      <div className="card-body py-2">
+                        <h5 className="mb-0">{clients.filter(c => getDaysSinceActivity(c) >= 10).length}</h5>
+                        <small>Ready for Cleanup</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Search and Filter Controls */}
             <div className="card mb-4">
               <div className="card-body">
                 <div className="row g-3 align-items-center">
-                  <div className="col-md-6">
+                  <div className="col-md-4">
                     <div className="input-group">
                       <span className="input-group-text">
                         <Search size={16} />
@@ -241,6 +315,25 @@ export default function ClientSelectorPage() {
                             {type.label}
                           </option>
                         ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-4">
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <Filter size={16} />
+                      </span>
+                      <select 
+                        className="form-select"
+                        value={filterType}
+                        onChange={(e) => setFilterType(e.target.value)}
+                      >
+                        <option value="all">All Approval Status</option>
+                        <option value="approved">✓ Approved</option>
+                        <option value="pending">📝 Feedback Received</option>
+                        <option value="active">👁️ Awaiting Review</option>
+                        <option value="inactive">○ No Form Active</option>
+                        <option value="cleanup">🗑️ Ready for Cleanup (10+ days)</option>
                       </select>
                     </div>
                   </div>
@@ -345,6 +438,33 @@ export default function ClientSelectorPage() {
                           <p className="card-text small text-muted mb-2">
                             Business: {client.businessName}
                           </p>
+                        )}
+
+                        {/* Approval Status Indicators */}
+                        {client.clientApproval && client.clientApproval.isFormEnabled && (
+                          <div className="d-flex align-items-center mb-2">
+                            {getApprovalStatus(client).status === 'approved' && (
+                              <>
+                                <CheckCircle size={16} className="text-success me-1" />
+                                <small className="text-success">Approved</small>
+                              </>
+                            )}
+                            {getApprovalStatus(client).status === 'pending' && (
+                              <>
+                                <Clock size={16} className="text-warning me-1" />
+                                <small className="text-warning">Feedback Received</small>
+                              </>
+                            )}
+                            {getApprovalStatus(client).status === 'active' && (
+                              <>
+                                <Eye size={16} className="text-primary me-1" />
+                                <small className="text-primary">Awaiting Review</small>
+                              </>
+                            )}
+                            <small className="ms-auto text-muted">
+                              {getDaysSinceActivity(client)} days
+                            </small>
+                          </div>
                         )}
 
                         <p className="card-text small text-muted mb-3">
