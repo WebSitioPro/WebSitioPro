@@ -100,7 +100,7 @@ export default function ServicesDemo() {
                      'Reparaciones y Mantenimiento',
         heroDescription: usePreviewData ? getLocalizedValue(previewData.heroDescription) : 
                         (useSavedConfig && getLocalizedValue(savedConfig.heroDescription)) || 
-                        'Servicios técnicos profesionales disponibles 24/7',
+                        '',
         scheduleService: 'Contactar por WhatsApp',
         
         // About - Use preview data, then saved config, then defaults
@@ -168,7 +168,7 @@ export default function ServicesDemo() {
                      'Repairs & Maintenance',
         heroDescription: usePreviewData ? getLocalizedValue(previewData.heroDescription) : 
                         (useSavedConfig && getLocalizedValue(savedConfig.heroDescription)) || 
-                        'Professional technical services available 24/7',
+                        '',
         scheduleService: 'Contact via WhatsApp',
         
         // About - Use preview data, then saved config, then defaults
@@ -292,15 +292,20 @@ export default function ServicesDemo() {
 
 
       {/* Hero Section */}
-      <section id="home" className="py-5" style={{ 
-        backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
-          `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${previewData?.heroImage || savedConfig?.heroImage})` : 
-          'none',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor: (previewData?.heroImage || savedConfig?.heroImage) ? 'transparent' : 'hsl(var(--primary) / 0.05)'
-      }}>
+      <section 
+        id="home" 
+        className="py-5 d-flex align-items-center" 
+        style={{ 
+          backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
+            `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${previewData?.heroImage || savedConfig?.heroImage})` : 
+            'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: (previewData?.heroImage || savedConfig?.heroImage) ? 'transparent' : 'hsl(var(--primary) / 0.05)',
+          minHeight: '70vh'
+        }}
+      >
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-12 text-center">
@@ -314,11 +319,6 @@ export default function ServicesDemo() {
               }}>
                 {t('heroSubtitle')}
               </h2>
-              <p className="lead mb-4" style={{ 
-                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--muted-foreground))' 
-              }}>
-                {t('heroDescription')}
-              </p>
               <a 
                 href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529834567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(getLocalizedValue((previewData?.whatsappMessage || savedConfig?.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
                 className="btn btn-primary btn-lg text-white"
