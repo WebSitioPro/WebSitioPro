@@ -839,6 +839,27 @@ export default function EditorPage() {
     }));
   };
 
+  const handleAddServiceStep = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      serviceSteps: [
+        ...prev.serviceSteps,
+        {
+          es: 'Nuevo paso',
+          en: 'New step',
+          description: { es: 'Descripción del paso', en: 'Step description' }
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveServiceStep = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      serviceSteps: prev.serviceSteps.filter((_, i) => i !== index)
+    }));
+  };
+
 
 
   // Load client-specific config on mount and when returning to page
@@ -1900,8 +1921,123 @@ export default function EditorPage() {
               {activeTab === 'pricing' && (
                 <div>
                   <h4 className="mb-4">Pricing Section</h4>
-                  <div className="alert alert-info">
-                    <p>Pricing customization options will be available in a future update. For now, you can customize colors and contact information in their respective sections.</p>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.pricingTitle?.es || ''}
+                        onChange={(e) => handleInputChange('pricingTitle', e.target.value, 'es')}
+                        placeholder="Precios y Planes"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.pricingTitle?.en || ''}
+                        onChange={(e) => handleInputChange('pricingTitle', e.target.value, 'en')}
+                        placeholder="Pricing & Plans"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Text (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={websiteData.pricingText?.es || ''}
+                        onChange={(e) => handleInputChange('pricingText', e.target.value, 'es')}
+                        placeholder="Descripción de precios y planes"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pricing Text (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={websiteData.pricingText?.en || ''}
+                        onChange={(e) => handleInputChange('pricingText', e.target.value, 'en')}
+                        placeholder="Pricing and plans description"
+                      />
+                    </div>
+                  </div>
+
+                  <h5 className="mb-3">Pricing Banner</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.pricingBannerText?.es || ''}
+                        onChange={(e) => handleInputChange('pricingBannerText', e.target.value, 'es')}
+                        placeholder="¡Oferta Especial!"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.pricingBannerText?.en || ''}
+                        onChange={(e) => handleInputChange('pricingBannerText', e.target.value, 'en')}
+                        placeholder="Special Offer!"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Background Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.pricingBannerBgColor || '#17A2B8'}
+                          onChange={(e) => handleInputChange('pricingBannerBgColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.pricingBannerBgColor || '#17A2B8'}
+                          onChange={(e) => handleInputChange('pricingBannerBgColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Banner Text Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.pricingBannerTextColor || '#FFFFFF'}
+                          onChange={(e) => handleInputChange('pricingBannerTextColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.pricingBannerTextColor || '#FFFFFF'}
+                          onChange={(e) => handleInputChange('pricingBannerTextColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row g-3">
+                    <div className="col-12">
+                      <label className="form-label">Banner Preview</label>
+                      <div 
+                        className="border rounded p-3 text-center"
+                        style={{
+                          backgroundColor: websiteData.pricingBannerBgColor || '#17A2B8',
+                          color: websiteData.pricingBannerTextColor || '#FFFFFF',
+                          fontSize: '18px',
+                          fontWeight: 'bold'
+                        }}
+                      >
+                        {websiteData.pricingBannerText?.es || 'Preview text will appear here'}
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
