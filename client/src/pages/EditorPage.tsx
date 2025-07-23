@@ -816,6 +816,31 @@ export default function EditorPage() {
     }));
   };
 
+
+
+  const handleAddChatbotQuestion = () => {
+    setWebsiteData(prev => ({
+      ...prev,
+      chatbotQuestions: [
+        ...prev.chatbotQuestions,
+        {
+          key: `q${Date.now()}`,
+          question: { es: '¿Nueva pregunta?', en: 'New question?' },
+          answer: { es: 'Nueva respuesta', en: 'New answer' }
+        }
+      ]
+    }));
+  };
+
+  const handleRemoveChatbotQuestion = (index: number) => {
+    setWebsiteData(prev => ({
+      ...prev,
+      chatbotQuestions: prev.chatbotQuestions.filter((_, i) => i !== index)
+    }));
+  };
+
+
+
   // Load client-specific config on mount and when returning to page
   useEffect(() => {
     const loadClientConfig = async () => {
@@ -1967,6 +1992,376 @@ export default function EditorPage() {
                       />
                     </div>
                   </div>
+                </div>
+              )}
+
+              {/* Why Tab */}
+              {activeTab === 'why' && (
+                <div>
+                  <h4 className="mb-4">Why Choose Us Section</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Why Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.whyTitle?.es || ''}
+                        onChange={(e) => handleInputChange('whyTitle', e.target.value, 'es')}
+                        placeholder="¿Por qué elegirnos?"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Why Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.whyTitle?.en || ''}
+                        onChange={(e) => handleInputChange('whyTitle', e.target.value, 'en')}
+                        placeholder="Why Choose Us?"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Why Points</h5>
+                    <button 
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={handleAddWhyPoint}
+                    >
+                      Add Point
+                    </button>
+                  </div>
+
+                  {websiteData.whyPoints.map((point, index) => (
+                    <div key={index} className="card mb-3">
+                      <div className="card-body">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <h6>Point {index + 1}</h6>
+                          <button 
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleRemoveWhyPoint(index)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <label className="form-label">Text (Spanish)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={point.es}
+                              onChange={(e) => handleWhyPointChange(index, e.target.value, 'es')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Text (English)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={point.en}
+                              onChange={(e) => handleWhyPointChange(index, e.target.value, 'en')}
+                            />
+                          </div>
+                          <div className="col-12">
+                            <label className="form-label">Icon</label>
+                            <select 
+                              className="form-control"
+                              value={point.icon || 'star'}
+                              onChange={(e) => handleWhyPointIconChange(index, e.target.value)}
+                            >
+                              <option value="star">⭐ Star</option>
+                              <option value="shield">🛡️ Shield</option>
+                              <option value="clock">⏰ Clock</option>
+                              <option value="heart">❤️ Heart</option>
+                              <option value="thumbs-up">👍 Thumbs Up</option>
+                              <option value="check">✅ Check</option>
+                              <option value="rocket">🚀 Rocket</option>
+                              <option value="trophy">🏆 Trophy</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Chatbot Tab */}
+              {activeTab === 'chatbot' && (
+                <div>
+                  <h4 className="mb-4">Chatbot Settings</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Chatbot Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.chatbotTitle?.es || ''}
+                        onChange={(e) => handleInputChange('chatbotTitle', e.target.value, 'es')}
+                        placeholder="Asistente Virtual"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Chatbot Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.chatbotTitle?.en || ''}
+                        onChange={(e) => handleInputChange('chatbotTitle', e.target.value, 'en')}
+                        placeholder="Virtual Assistant"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Welcome Message (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={2}
+                        value={websiteData.chatbotWelcome?.es || ''}
+                        onChange={(e) => handleInputChange('chatbotWelcome', e.target.value, 'es')}
+                        placeholder="¡Hola! ¿En qué puedo ayudarte?"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Welcome Message (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={2}
+                        value={websiteData.chatbotWelcome?.en || ''}
+                        onChange={(e) => handleInputChange('chatbotWelcome', e.target.value, 'en')}
+                        placeholder="Hello! How can I help you?"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Chatbot Color</label>
+                      <input 
+                        type="color" 
+                        className="form-control form-control-color"
+                        value={websiteData.chatbotColor || '#007BFF'}
+                        onChange={(e) => handleInputChange('chatbotColor', e.target.value)}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Chatbot Icon</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.chatbotIcon || '📞'}
+                        onChange={(e) => handleInputChange('chatbotIcon', e.target.value)}
+                        placeholder="📞"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5>FAQ Questions</h5>
+                    <button 
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={handleAddChatbotQuestion}
+                    >
+                      Add Question
+                    </button>
+                  </div>
+
+                  {websiteData.chatbotQuestions.map((item, index) => (
+                    <div key={index} className="card mb-3">
+                      <div className="card-body">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <h6>Question {index + 1}</h6>
+                          <button 
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleRemoveChatbotQuestion(index)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <label className="form-label">Question (Spanish)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={item.question.es}
+                              onChange={(e) => handleChatbotQuestionChange(index, 'question', e.target.value, 'es')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Question (English)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={item.question.en}
+                              onChange={(e) => handleChatbotQuestionChange(index, 'question', e.target.value, 'en')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Answer (Spanish)</label>
+                            <textarea 
+                              className="form-control"
+                              rows={2}
+                              value={item.answer.es}
+                              onChange={(e) => handleChatbotQuestionChange(index, 'answer', e.target.value, 'es')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Answer (English)</label>
+                            <textarea 
+                              className="form-control"
+                              rows={2}
+                              value={item.answer.en}
+                              onChange={(e) => handleChatbotQuestionChange(index, 'answer', e.target.value, 'en')}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Pro Page Tab */}
+              {activeTab === 'pro' && (
+                <div>
+                  <h4 className="mb-4">Pro Page Settings</h4>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-12">
+                      <label className="form-label">Pro Hero Image URL</label>
+                      <input 
+                        type="url" 
+                        className="form-control"
+                        value={websiteData.proHeroImage || ''}
+                        onChange={(e) => handleInputChange('proHeroImage', e.target.value)}
+                        placeholder="https://example.com/pro-hero.jpg"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pro Hero Headline (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.proHeroHeadline?.es || ''}
+                        onChange={(e) => handleInputChange('proHeroHeadline', e.target.value, 'es')}
+                        placeholder="Página Profesional"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pro Hero Headline (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.proHeroHeadline?.en || ''}
+                        onChange={(e) => handleInputChange('proHeroHeadline', e.target.value, 'en')}
+                        placeholder="Professional Page"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pro Hero Subheadline (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={2}
+                        value={websiteData.proHeroSubheadline?.es || ''}
+                        onChange={(e) => handleInputChange('proHeroSubheadline', e.target.value, 'es')}
+                        placeholder="Descripción profesional"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Pro Hero Subheadline (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={2}
+                        value={websiteData.proHeroSubheadline?.en || ''}
+                        onChange={(e) => handleInputChange('proHeroSubheadline', e.target.value, 'en')}
+                        placeholder="Professional description"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Service Steps Title (Spanish)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.serviceStepsTitle?.es || ''}
+                        onChange={(e) => handleInputChange('serviceStepsTitle', e.target.value, 'es')}
+                        placeholder="Nuestro Proceso"
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Service Steps Title (English)</label>
+                      <input 
+                        type="text" 
+                        className="form-control"
+                        value={websiteData.serviceStepsTitle?.en || ''}
+                        onChange={(e) => handleInputChange('serviceStepsTitle', e.target.value, 'en')}
+                        placeholder="Our Process"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Service Steps</h5>
+                    <button 
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={handleAddServiceStep}
+                    >
+                      Add Step
+                    </button>
+                  </div>
+
+                  {websiteData.serviceSteps.map((step, index) => (
+                    <div key={index} className="card mb-3">
+                      <div className="card-body">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <h6>Step {index + 1}</h6>
+                          <button 
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleRemoveServiceStep(index)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <label className="form-label">Step Title (Spanish)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={step.es}
+                              onChange={(e) => handleServiceStepChange(index, e.target.value, 'es')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Step Title (English)</label>
+                            <input 
+                              type="text" 
+                              className="form-control"
+                              value={step.en}
+                              onChange={(e) => handleServiceStepChange(index, e.target.value, 'en')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Description (Spanish)</label>
+                            <textarea 
+                              className="form-control"
+                              rows={2}
+                              value={step.description?.es || ''}
+                              onChange={(e) => handleServiceStepChange(index, e.target.value, 'es', 'description')}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label">Description (English)</label>
+                            <textarea 
+                              className="form-control"
+                              rows={2}
+                              value={step.description?.en || ''}
+                              onChange={(e) => handleServiceStepChange(index, e.target.value, 'en', 'description')}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
