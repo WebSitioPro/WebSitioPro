@@ -1583,8 +1583,9 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        value="© 2025 WebSitioPro"
+                        defaultValue="© 2025 WebSitioPro"
                         placeholder="© 2025 WebSitioPro"
+                        readOnly
                       />
                     </div>
                     <div className="col-md-6">
@@ -1592,8 +1593,9 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        value="© 2025 WebSitioPro"
+                        defaultValue="© 2025 WebSitioPro"
                         placeholder="© 2025 WebSitioPro"
+                        readOnly
                       />
                     </div>
                     <div className="col-md-6">
@@ -1601,8 +1603,9 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        value="Powered by WebSitioPro"
+                        defaultValue="Powered by WebSitioPro"
                         placeholder="Powered by WebSitioPro"
+                        readOnly
                       />
                     </div>
                     <div className="col-md-6">
@@ -1610,8 +1613,9 @@ export default function EditorPage() {
                       <input 
                         type="text" 
                         className="form-control"
-                        value="Powered by WebSitioPro"
+                        defaultValue="Powered by WebSitioPro"
                         placeholder="Powered by WebSitioPro"
+                        readOnly
                       />
                     </div>
                     <div className="col-md-6">
@@ -1619,6 +1623,8 @@ export default function EditorPage() {
                       <input 
                         type="url" 
                         className="form-control"
+                        value={(websiteData as any).facebookUrl || ''}
+                        onChange={(e) => handleInputChange('facebookUrl', e.target.value)}
                         placeholder="https://facebook.com/yourpage"
                       />
                     </div>
@@ -1627,6 +1633,8 @@ export default function EditorPage() {
                       <input 
                         type="url" 
                         className="form-control"
+                        value={(websiteData as any).instagramUrl || ''}
+                        onChange={(e) => handleInputChange('instagramUrl', e.target.value)}
                         placeholder="https://instagram.com/yourprofile"
                       />
                     </div>
