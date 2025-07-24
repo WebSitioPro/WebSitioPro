@@ -7,8 +7,7 @@ import { useIsSmallMobile } from '../../hooks/use-mobile';
 
 export default function ServicesDemo() {
   const [language, setLanguage] = useState('es');
-  const [showChat, setShowChat] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,21 +50,7 @@ export default function ServicesDemo() {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
 
-  const handleChatSubmit = (question: string) => {
-    setChatMessages(prev => [...prev, { text: question, isUser: true }]);
-    
-    setTimeout(() => {
-      let response = "Gracias por contactarnos. ¿En qué puedo ayudarte?";
-      if (question.toLowerCase().includes('reparación') || question.toLowerCase().includes('repair')) {
-        response = "Para servicios de reparación de emergencia, puedes contactarnos las 24/7 por WhatsApp o llamada.";
-      } else if (question.toLowerCase().includes('precio') || question.toLowerCase().includes('price')) {
-        response = "Nuestros precios varían según el tipo de servicio. Contactanos para una cotización gratuita.";
-      } else if (question.toLowerCase().includes('horario') || question.toLowerCase().includes('hours')) {
-        response = "Atendemos de Lunes a Viernes de 8:00 AM a 6:00 PM, y Sábados de 9:00 AM a 3:00 PM. Emergencias 24/7.";
-      }
-      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
-    }, 1000);
-  };
+
 
   const getLocalizedValue = (obj: any): string => {
     if (!obj) return '';

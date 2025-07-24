@@ -133,8 +133,7 @@ const translations = {
 export default function RetailDemo() {
   const [language, setLanguage] = useState<'es' | 'en'>('es');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProductImage, setSelectedProductImage] = useState<{src: string, alt: string, title: string} | null>(null);
@@ -188,21 +187,7 @@ export default function RetailDemo() {
     setLanguage(language === 'es' ? 'en' : 'es');
   };
 
-  const handleChatSubmit = (question: string) => {
-    setChatMessages(prev => [...prev, { text: question, isUser: true }]);
-    
-    setTimeout(() => {
-      let response = "Gracias por tu interés. ¿En qué puedo ayudarte hoy?";
-      if (question.toLowerCase().includes('precio')) {
-        response = "Nuestros precios varían según el producto. ¡Contáctanos por WhatsApp para precios específicos!";
-      } else if (question.toLowerCase().includes('entrega') || question.toLowerCase().includes('envío')) {
-        response = "Ofrecemos entrega a domicilio en Chetumal. El costo depende de la ubicación.";
-      } else if (question.toLowerCase().includes('hora')) {
-        response = "Estamos abiertos de lunes a viernes de 9:00 AM a 8:00 PM, y sábados de 10:00 AM a 6:00 PM.";
-      }
-      setChatMessages(prev => [...prev, { text: response, isUser: false }]);
-    }, 1000);
-  };
+
 
   // Show loading screen until config is loaded
   if (isLoading) {
@@ -763,12 +748,7 @@ export default function RetailDemo() {
         </div>
       </section>
 
-      {/* Chatbot Placeholder */}
-      <div id="chatbot" className="chatbot-placeholder position-fixed" style={{ bottom: '20px', right: '20px', zIndex: 1000 }}>
-        <button className="btn btn-success rounded-circle" style={{ width: '60px', height: '60px' }}>
-          💬
-        </button>
-      </div>
+
 
       {/* Footer */}
       <footer className="bg-dark text-white py-4">
