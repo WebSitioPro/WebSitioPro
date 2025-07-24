@@ -14,6 +14,7 @@ export default function ProfessionalsDemo() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [previewData, setPreviewData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function ProfessionalsDemo() {
         .then(res => res.json())
         .then(data => {
           setPreviewData(data);
+          setIsLoading(false);
           console.log('Preview data loaded:', data);
           console.log('Google Maps embed from preview:', data.googleMapsEmbed);
         })
@@ -39,6 +41,7 @@ export default function ProfessionalsDemo() {
         .then(res => res.json())
         .then(data => {
           setSavedConfig(data);
+          setIsLoading(false);
           console.log('Saved config loaded:', data);
           console.log('Google Maps embed from config:', data.googleMapsEmbed);
         })
@@ -234,6 +237,20 @@ export default function ProfessionalsDemo() {
 
     return translations[language as keyof typeof translations]?.[key as keyof typeof translations['es']] || key;
   };
+
+  // Show loading screen until config is loaded
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-3 text-muted">Cargando template...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-vh-100">

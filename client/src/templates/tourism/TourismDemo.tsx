@@ -116,6 +116,7 @@ export default function TourismDemo() {
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Load saved configuration
   useEffect(() => {
@@ -126,6 +127,7 @@ export default function TourismDemo() {
       .then(res => res.json())
       .then(data => {
         setSavedConfig(data);
+        setIsLoading(false);
         console.log('Tourism demo loaded config:', data);
       })
       .catch(err => console.log('Config not loaded:', err));
@@ -180,6 +182,20 @@ export default function TourismDemo() {
       setChatMessages(prev => [...prev, { text: response, isUser: false }]);
     }, 1000);
   };
+
+  // Show loading screen until config is loaded
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-3 text-muted">Cargando template...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-vh-100 bg-white">
