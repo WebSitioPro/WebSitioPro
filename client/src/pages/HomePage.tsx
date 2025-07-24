@@ -643,7 +643,11 @@ export default function HomePage() {
         >
           <div className="row">
             <div 
-              className={`col-12 text-${savedConfig?.heroTextAlignment || 'center'}`}
+              className={
+                savedConfig?.heroTextAlignment === 'left' ? 'col-lg-6 col-12 text-start' :
+                savedConfig?.heroTextAlignment === 'right' ? 'col-lg-6 col-12 ms-auto text-end' :
+                'col-12 text-center'
+              }
               style={{
                 marginTop: savedConfig?.heroTitlePosition === 'high' ? '-2rem' : 
                           savedConfig?.heroTitlePosition === 'low' ? '2rem' : '0',
