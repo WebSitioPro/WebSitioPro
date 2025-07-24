@@ -8,6 +8,16 @@ interface ProPageData {
   proHeroSubheadline: { es: string; en: string };
   proHeroImage: string;
   proHeroImageOpacity: string;
+  
+  // Pro Hero Text Customization
+  proHeroTextAlignment: string;
+  proHeroTextColor: string;
+  proHeroSubtextColor: string;
+  proHeroTitleSize: string;
+  proHeroSubtitleSize: string;
+  proHeroVerticalAlignment: string;
+  proHeroTextSpacing: string;
+  proHeroTitlePosition: string;
   demoNote: { es: string; en: string };
   serviceStepsTitle: { es: string; en: string };
   serviceStepsDescription: { es: string; en: string };
@@ -94,6 +104,16 @@ export default function ProEditorPage() {
     },
     proHeroImage: 'https://via.placeholder.com/800x400/C8102E/FFFFFF?text=Pro+Hero+Image',
     proHeroImageOpacity: '0.8',
+    
+    // Pro Hero Text Customization defaults
+    proHeroTextAlignment: 'center',
+    proHeroTextColor: '#ffffff',
+    proHeroSubtextColor: '#ffffff',
+    proHeroTitleSize: '3.5rem',
+    proHeroSubtitleSize: '1.25rem',
+    proHeroVerticalAlignment: 'center',
+    proHeroTextSpacing: 'normal',
+    proHeroTitlePosition: 'normal',
     demoNote: {
       es: '¡Si nos hemos contactado contigo vía WhatsApp, tienes una demostración personalizada lista! Finalizaremos tus detalles y fotos.',
       en: 'If we\'ve reached out via WhatsApp, you have a custom demo ready! We\'ll finalize your details and photos.'
@@ -475,6 +495,16 @@ export default function ProEditorPage() {
               proPageData.proHeroSubheadline,
             proHeroImage: data.proHeroImage || proPageData.proHeroImage,
             proHeroImageOpacity: data.proHeroImageOpacity || proPageData.proHeroImageOpacity,
+            
+            // Pro Hero Text Customization fields
+            proHeroTextAlignment: data.proHeroTextAlignment || proPageData.proHeroTextAlignment,
+            proHeroTextColor: data.proHeroTextColor || proPageData.proHeroTextColor,
+            proHeroSubtextColor: data.proHeroSubtextColor || proPageData.proHeroSubtextColor,
+            proHeroTitleSize: data.proHeroTitleSize || proPageData.proHeroTitleSize,
+            proHeroSubtitleSize: data.proHeroSubtitleSize || proPageData.proHeroSubtitleSize,
+            proHeroVerticalAlignment: data.proHeroVerticalAlignment || proPageData.proHeroVerticalAlignment,
+            proHeroTextSpacing: data.proHeroTextSpacing || proPageData.proHeroTextSpacing,
+            proHeroTitlePosition: data.proHeroTitlePosition || proPageData.proHeroTitlePosition,
             demoNote: data.translations?.es?.demoNote && data.translations?.en?.demoNote ? 
               { es: data.translations.es.demoNote, en: data.translations.en.demoNote } : 
               proPageData.demoNote,
@@ -524,6 +554,16 @@ export default function ProEditorPage() {
         // Pro Page specific fields
         proHeroImage: proPageData.proHeroImage,
         proHeroImageOpacity: proPageData.proHeroImageOpacity,
+        
+        // Pro Hero Text Customization fields
+        proHeroTextAlignment: proPageData.proHeroTextAlignment,
+        proHeroTextColor: proPageData.proHeroTextColor,
+        proHeroSubtextColor: proPageData.proHeroSubtextColor,
+        proHeroTitleSize: proPageData.proHeroTitleSize,
+        proHeroSubtitleSize: proPageData.proHeroSubtitleSize,
+        proHeroVerticalAlignment: proPageData.proHeroVerticalAlignment,
+        proHeroTextSpacing: proPageData.proHeroTextSpacing,
+        proHeroTitlePosition: proPageData.proHeroTitlePosition,
         serviceStepsTitle: proPageData.serviceStepsTitle,
         serviceStepsDescription: proPageData.serviceStepsDescription,
         serviceSteps: proPageData.serviceSteps,
@@ -857,6 +897,111 @@ export default function ProEditorPage() {
                     </div>
                   </div>
                   
+                  <h5 className="mb-3">Text Placement & Styling</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-4">
+                      <label className="form-label">Text Alignment</label>
+                      <select 
+                        className="form-control"
+                        value={proPageData.proHeroTextAlignment}
+                        onChange={(e) => handleInputChange('proHeroTextAlignment', e.target.value)}
+                      >
+                        <option value="left">Left Aligned</option>
+                        <option value="center">Center Aligned</option>
+                        <option value="right">Right Aligned</option>
+                      </select>
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Text Position (Vertical)</label>
+                      <select 
+                        className="form-control"
+                        value={proPageData.proHeroVerticalAlignment}
+                        onChange={(e) => handleInputChange('proHeroVerticalAlignment', e.target.value)}
+                      >
+                        <option value="top">Top of Section</option>
+                        <option value="center">Center of Section</option>
+                        <option value="bottom">Bottom of Section</option>
+                      </select>
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Text Spacing</label>
+                      <select 
+                        className="form-control"
+                        value={proPageData.proHeroTextSpacing || 'normal'}
+                        onChange={(e) => handleInputChange('proHeroTextSpacing', e.target.value)}
+                      >
+                        <option value="compact">Compact</option>
+                        <option value="normal">Normal</option>
+                        <option value="relaxed">Relaxed</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-3">
+                      <label className="form-label">Title Size</label>
+                      <select 
+                        className="form-control"
+                        value={proPageData.proHeroTitleSize}
+                        onChange={(e) => handleInputChange('proHeroTitleSize', e.target.value)}
+                      >
+                        <option value="2rem">Small (2rem)</option>
+                        <option value="2.5rem">Medium (2.5rem)</option>
+                        <option value="3rem">Large (3rem)</option>
+                        <option value="3.5rem">Extra Large (3.5rem)</option>
+                        <option value="4rem">Huge (4rem)</option>
+                      </select>
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label">Subtitle Size</label>
+                      <select 
+                        className="form-control"
+                        value={proPageData.proHeroSubtitleSize}
+                        onChange={(e) => handleInputChange('proHeroSubtitleSize', e.target.value)}
+                      >
+                        <option value="1rem">Small (1rem)</option>
+                        <option value="1.1rem">Medium (1.1rem)</option>
+                        <option value="1.25rem">Large (1.25rem)</option>
+                        <option value="1.5rem">Extra Large (1.5rem)</option>
+                      </select>
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label">Title Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={proPageData.proHeroTextColor}
+                          onChange={(e) => handleInputChange('proHeroTextColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={proPageData.proHeroTextColor}
+                          onChange={(e) => handleInputChange('proHeroTextColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label">Subtitle Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={proPageData.proHeroSubtextColor}
+                          onChange={(e) => handleInputChange('proHeroSubtextColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={proPageData.proHeroSubtextColor}
+                          onChange={(e) => handleInputChange('proHeroSubtextColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <h5 className="mb-3">Demo Note</h5>
                   <div className="row g-3 mb-4">
                     <div className="col-md-6">
                       <label className="form-label">Demo Note (Spanish)</label>

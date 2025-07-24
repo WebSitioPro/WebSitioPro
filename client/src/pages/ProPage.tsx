@@ -414,22 +414,42 @@ export default function ProPage() {
         ></div>
         
         <div className="container position-relative" style={{ zIndex: 3 }}>
-          <div className="row align-items-center">
-            <div className="col-lg-8 mx-auto text-center">
+          <div 
+            className="row" 
+            style={{ 
+              alignItems: savedConfig?.proHeroVerticalAlignment === 'top' ? 'flex-start' : 
+                         savedConfig?.proHeroVerticalAlignment === 'bottom' ? 'flex-end' : 'center',
+              minHeight: '50vh'
+            }}
+          >
+            <div 
+              className="col-lg-8 mx-auto" 
+              style={{ 
+                textAlign: savedConfig?.proHeroTextAlignment || 'center',
+                marginBottom: savedConfig?.proHeroTextSpacing === 'compact' ? '1rem' : 
+                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '3rem' : '2rem'
+              }}
+            >
               <h1 
-                className="display-4 fw-bold mb-4" 
+                className="fw-bold mb-4" 
                 style={{ 
-                  color: savedConfig?.proHeroImage ? '#ffffff' : 'hsl(var(--primary))',
-                  textShadow: savedConfig?.proHeroImage ? '2px 2px 4px rgba(0,0,0,0.7)' : 'none'
+                  color: savedConfig?.proHeroTextColor || '#ffffff',
+                  textShadow: savedConfig?.proHeroImage ? '2px 2px 4px rgba(0,0,0,0.7)' : 'none',
+                  fontSize: savedConfig?.proHeroTitleSize || '3.5rem',
+                  lineHeight: savedConfig?.proHeroTextSpacing === 'compact' ? '1.2' : 
+                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '1.6' : '1.4'
                 }}
               >
                 {t('proHeroHeadline')}
               </h1>
               <p 
-                className="lead mb-4" 
+                className="mb-4" 
                 style={{ 
-                  color: savedConfig?.proHeroImage ? '#ffffff' : '#6c757d',
-                  textShadow: savedConfig?.proHeroImage ? '1px 1px 2px rgba(0,0,0,0.7)' : 'none'
+                  color: savedConfig?.proHeroSubtextColor || '#ffffff',
+                  textShadow: savedConfig?.proHeroImage ? '1px 1px 2px rgba(0,0,0,0.7)' : 'none',
+                  fontSize: savedConfig?.proHeroSubtitleSize || '1.25rem',
+                  marginTop: savedConfig?.proHeroTextSpacing === 'compact' ? '0.5rem' : 
+                            savedConfig?.proHeroTextSpacing === 'relaxed' ? '2rem' : '1rem'
                 }}
               >
                 {t('proHeroSubheadline')}
