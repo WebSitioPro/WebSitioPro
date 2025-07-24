@@ -122,14 +122,14 @@ interface WebsiteData {
   // Missing properties causing crashes
   offeringsTitle: { es: string; en: string };
   heroImageOpacity: string;
-  heroImagePosition: string;
-  heroSectionHeight: string;
   heroTextAlignment: string;
   heroTextColor: string;
   heroSubtextColor: string;
   heroTitleSize: string;
   heroSubtitleSize: string;
   heroVerticalAlignment: string;
+  heroTextSpacing: string;
+  heroTitlePosition: string;
   
   // Chatbot properties
   chatbotIcon: string;
@@ -186,14 +186,14 @@ export default function EditorPage() {
 
     // Hero customization - will be populated from database
     heroImageOpacity: '0.5',
-    heroImagePosition: 'center',
-    heroSectionHeight: '70vh',
-    heroTextAlignment: 'text-center',
+    heroTextAlignment: 'center',
     heroTextColor: '#ffffff',
     heroSubtextColor: '#ffffff',
     heroTitleSize: '3.5rem',
     heroSubtitleSize: '1.25rem',
     heroVerticalAlignment: 'center',
+    heroTextSpacing: 'normal',
+    heroTitlePosition: 'normal',
 
     // Why Section
     whyTitle: {
@@ -914,14 +914,14 @@ export default function EditorPage() {
               heroImage: config.heroImage || prev.heroImage,
               // Hero customization fields
               heroImageOpacity: config.heroImageOpacity || prev.heroImageOpacity,
-              heroImagePosition: config.heroImagePosition || prev.heroImagePosition,
-              heroSectionHeight: config.heroSectionHeight || prev.heroSectionHeight,
               heroTextAlignment: config.heroTextAlignment || prev.heroTextAlignment,
               heroTextColor: config.heroTextColor || prev.heroTextColor,
               heroSubtextColor: config.heroSubtextColor || prev.heroSubtextColor,
               heroTitleSize: config.heroTitleSize || prev.heroTitleSize,
               heroSubtitleSize: config.heroSubtitleSize || prev.heroSubtitleSize,
               heroVerticalAlignment: config.heroVerticalAlignment || prev.heroVerticalAlignment,
+              heroTextSpacing: config.heroTextSpacing || prev.heroTextSpacing,
+              heroTitlePosition: config.heroTitlePosition || prev.heroTitlePosition,
               heroHeadline: {
                 es: config.translations?.es?.heroHeadline ? 
                   (() => {
@@ -1133,14 +1133,14 @@ export default function EditorPage() {
         proHeroImageOpacity: websiteData.proHeroImageOpacity,
         // Hero customization fields
         heroImageOpacity: websiteData.heroImageOpacity,
-        heroImagePosition: websiteData.heroImagePosition,
-        heroSectionHeight: websiteData.heroSectionHeight,
         heroTextAlignment: websiteData.heroTextAlignment,
         heroTextColor: websiteData.heroTextColor,
         heroSubtextColor: websiteData.heroSubtextColor,
         heroTitleSize: websiteData.heroTitleSize,
         heroSubtitleSize: websiteData.heroSubtitleSize,
         heroVerticalAlignment: websiteData.heroVerticalAlignment,
+        heroTextSpacing: websiteData.heroTextSpacing,
+        heroTitlePosition: websiteData.heroTitlePosition,
         // Banner fields
         bannerText: JSON.stringify(websiteData.bannerText),
         bannerBackgroundColor: websiteData.bannerBackgroundColor,
@@ -1748,46 +1748,42 @@ export default function EditorPage() {
                     </div>
                   </div>
 
-                  {/* Hero Layout & Positioning */}
+                  {/* Text Positioning & Layout */}
                   <div className="row g-3 mb-4">
                     <div className="col-md-4">
-                      <label className="form-label">Image Position</label>
+                      <label className="form-label">Text Alignment (Horizontal)</label>
                       <select 
                         className="form-control"
-                        value={websiteData.heroImagePosition}
-                        onChange={(e) => handleInputChange('heroImagePosition', e.target.value)}
+                        value={websiteData.heroTextAlignment}
+                        onChange={(e) => handleInputChange('heroTextAlignment', e.target.value)}
                       >
                         <option value="center">Center</option>
-                        <option value="top">Top</option>
-                        <option value="bottom">Bottom</option>
                         <option value="left">Left</option>
                         <option value="right">Right</option>
                       </select>
                     </div>
                     <div className="col-md-4">
-                      <label className="form-label">Section Height</label>
-                      <select 
-                        className="form-control"
-                        value={websiteData.heroSectionHeight}
-                        onChange={(e) => handleInputChange('heroSectionHeight', e.target.value)}
-                      >
-                        <option value="400px">Small (400px)</option>
-                        <option value="500px">Medium (500px)</option>
-                        <option value="600px">Large (600px)</option>
-                        <option value="700px">Extra Large (700px)</option>
-                        <option value="100vh">Full Screen</option>
-                      </select>
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label">Vertical Alignment</label>
+                      <label className="form-label">Text Position (Vertical)</label>
                       <select 
                         className="form-control"
                         value={websiteData.heroVerticalAlignment}
                         onChange={(e) => handleInputChange('heroVerticalAlignment', e.target.value)}
                       >
-                        <option value="center">Center</option>
-                        <option value="top">Top</option>
-                        <option value="bottom">Bottom</option>
+                        <option value="top">Top of Section</option>
+                        <option value="center">Center of Section</option>
+                        <option value="bottom">Bottom of Section</option>
+                      </select>
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Text Spacing</label>
+                      <select 
+                        className="form-control"
+                        value={websiteData.heroTextSpacing || 'normal'}
+                        onChange={(e) => handleInputChange('heroTextSpacing', e.target.value)}
+                      >
+                        <option value="compact">Compact</option>
+                        <option value="normal">Normal</option>
+                        <option value="spacious">Spacious</option>
                       </select>
                     </div>
                   </div>
@@ -1843,15 +1839,15 @@ export default function EditorPage() {
                       </select>
                     </div>
                     <div className="col-md-3">
-                      <label className="form-label">Text Alignment</label>
+                      <label className="form-label">Title Position</label>
                       <select 
                         className="form-control"
-                        value={websiteData.heroTextAlignment}
-                        onChange={(e) => handleInputChange('heroTextAlignment', e.target.value)}
+                        value={websiteData.heroTitlePosition || 'normal'}
+                        onChange={(e) => handleInputChange('heroTitlePosition', e.target.value)}
                       >
-                        <option value="center">Center</option>
-                        <option value="left">Left</option>
-                        <option value="right">Right</option>
+                        <option value="high">High (Top Area)</option>
+                        <option value="normal">Normal (Center Area)</option>
+                        <option value="low">Low (Bottom Area)</option>
                       </select>
                     </div>
                   </div>

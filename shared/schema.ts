@@ -64,14 +64,14 @@ export const websiteConfigs = pgTable("website_configs", {
   paymentBannerTextColor: text("payment_banner_text_color").default("#333333"),
   // Hero customization fields
   heroImageOpacity: text("hero_image_opacity").default("0.5"),
-  heroImagePosition: text("hero_image_position").default("center"),
-  heroSectionHeight: text("hero_section_height").default("70vh"),
-  heroTextAlignment: text("hero_text_alignment").default("text-center"),
+  heroTextAlignment: text("hero_text_alignment").default("center"),
   heroTextColor: text("hero_text_color").default("#ffffff"),
   heroSubtextColor: text("hero_subtext_color").default("#ffffff"),
   heroTitleSize: text("hero_title_size").default("3.5rem"),
   heroSubtitleSize: text("hero_subtitle_size").default("1.25rem"),
   heroVerticalAlignment: text("hero_vertical_alignment").default("center"),
+  heroTextSpacing: text("hero_text_spacing").default("normal"),
+  heroTitlePosition: text("hero_title_position").default("normal"),
   // Pro Page hero fields
   proHeroImage: text("pro_hero_image"),
   proHeroImageOpacity: text("pro_hero_image_opacity").default("0.8"),
