@@ -497,6 +497,10 @@ export default function EditorPage() {
       }
 
       if (language) {
+        // Initialize bilingual object if it doesn't exist
+        if (!current[keys[keys.length - 1]]) {
+          current[keys[keys.length - 1]] = { es: '', en: '' };
+        }
         current[keys[keys.length - 1]][language] = value;
       } else {
         current[keys[keys.length - 1]] = value;
@@ -968,6 +972,20 @@ export default function EditorPage() {
                 es: config.translations?.es?.pricingText || prev.pricingText.es,
                 en: config.translations?.en?.pricingText || prev.pricingText.en
               },
+              pricingBannerText: config.pricingBannerText ? 
+                (typeof config.pricingBannerText === 'string' ? 
+                  (() => {
+                    try {
+                      return JSON.parse(config.pricingBannerText);
+                    } catch (e) {
+                      return { es: config.pricingBannerText, en: config.pricingBannerText };
+                    }
+                  })() : 
+                  config.pricingBannerText
+                ) : {
+                  es: config.translations?.es?.pricingBannerText || prev.pricingBannerText.es,
+                  en: config.translations?.en?.pricingBannerText || prev.pricingBannerText.en
+                },
               proHeroHeadline: {
                 es: config.translations?.es?.proHeroHeadline || prev.proHeroHeadline.es,
                 en: config.translations?.en?.proHeroHeadline || prev.proHeroHeadline.en
@@ -1165,6 +1183,7 @@ export default function EditorPage() {
             offeringsTitle: websiteData.offeringsTitle.es,
             pricingTitle: websiteData.pricingTitle.es,
             pricingText: websiteData.pricingText.es,
+            pricingBannerText: websiteData.pricingBannerText.es,
             proHeroHeadline: websiteData.proHeroHeadline.es,
             proHeroSubheadline: websiteData.proHeroSubheadline.es,
             demoNote: websiteData.demoNote.es,
@@ -1180,6 +1199,7 @@ export default function EditorPage() {
             offeringsTitle: websiteData.offeringsTitle.en,
             pricingTitle: websiteData.pricingTitle.en,
             pricingText: websiteData.pricingText.en,
+            pricingBannerText: websiteData.pricingBannerText.en,
             proHeroHeadline: websiteData.proHeroHeadline.en,
             proHeroSubheadline: websiteData.proHeroSubheadline.en,
             demoNote: websiteData.demoNote.en,
@@ -1197,6 +1217,9 @@ export default function EditorPage() {
         serviceStepsDescription: websiteData.serviceStepsDescription,
         serviceSteps: websiteData.serviceSteps,
         templateShowcaseImages: websiteData.templateShowcaseImages,
+        // Store pricing banner fields  
+        pricingBannerText: JSON.stringify(websiteData.pricingBannerText),
+        paymentText: JSON.stringify(websiteData.paymentText),
         // Store pricing banner colors
         pricingBannerBgColor: websiteData.pricingBannerBgColor,
         pricingBannerTextColor: websiteData.pricingBannerTextColor,
