@@ -52,6 +52,24 @@ export default function HomePage() {
         const response = await fetch(`/api/config/homepage?_t=${timestamp}`);
         if (response.ok) {
           const data = await response.json();
+          
+          // Parse JSON fields that are stored as strings
+          if (data.pricingBannerText && typeof data.pricingBannerText === 'string') {
+            try {
+              data.pricingBannerText = JSON.parse(data.pricingBannerText);
+            } catch (e) {
+              console.log('Error parsing pricingBannerText:', e);
+            }
+          }
+          
+          if (data.paymentText && typeof data.paymentText === 'string') {
+            try {
+              data.paymentText = JSON.parse(data.paymentText);
+            } catch (e) {
+              console.log('Error parsing paymentText:', e);
+            }
+          }
+          
           setSavedConfig(data);
           console.log('Loaded saved config:', data);
         } else {
