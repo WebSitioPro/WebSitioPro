@@ -612,11 +612,11 @@ export default function HomePage() {
         id="hero" 
         className={`hero-section position-relative d-flex`}
         style={{
-          height: savedConfig?.heroSectionHeight || '70vh',
+          height: '70vh',
           minHeight: '500px',
           backgroundColor: '#f8f9fa', // Light background for when image is transparent
-          alignItems: savedConfig?.heroVerticalAlignment === 'start' ? 'flex-start' : 
-                     savedConfig?.heroVerticalAlignment === 'end' ? 'flex-end' : 'center'
+          alignItems: savedConfig?.heroVerticalAlignment === 'top' ? 'flex-start' : 
+                     savedConfig?.heroVerticalAlignment === 'bottom' ? 'flex-end' : 'center'
         }}
       >
         <div 
@@ -624,19 +624,32 @@ export default function HomePage() {
           style={{
             backgroundImage: savedConfig?.heroImage ? `url(${savedConfig.heroImage})` : 'none',
             backgroundSize: 'cover',
-            backgroundPosition: savedConfig?.heroImagePosition || 'center',
+            backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            opacity: Math.max(0, Math.min(1, parseFloat(savedConfig?.heroImageOpacity || '1.0'))),
+            opacity: Math.max(0, Math.min(1, parseFloat(savedConfig?.heroImageOpacity || '0.5'))),
             top: 0,
             left: 0,
             zIndex: 1
           }}
         ></div>
 
-        <div className="container position-relative" style={{ zIndex: 2 }}>
+        <div 
+          className="container position-relative" 
+          style={{ 
+            zIndex: 2,
+            paddingTop: savedConfig?.heroVerticalAlignment === 'top' ? '3rem' : '0',
+            paddingBottom: savedConfig?.heroVerticalAlignment === 'bottom' ? '3rem' : '0'
+          }}
+        >
           <div className="row">
             <div 
-              className={`col-12 ${savedConfig?.heroTextAlignment || 'text-center'}`}
+              className={`col-12 text-${savedConfig?.heroTextAlignment || 'center'}`}
+              style={{
+                marginTop: savedConfig?.heroTitlePosition === 'high' ? '-2rem' : 
+                          savedConfig?.heroTitlePosition === 'low' ? '2rem' : '0',
+                marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '1rem' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '4rem' : '2rem'
+              }}
             >
               <h1 
                 className="hero-title fw-bold mb-3 mb-md-4"
@@ -645,7 +658,10 @@ export default function HomePage() {
                   fontSize: savedConfig?.heroTitleSize || '3.5rem',
                   textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
                   whiteSpace: 'pre-line',
-                  lineHeight: '1.1'
+                  lineHeight: savedConfig?.heroTextSpacing === 'compact' ? '1.0' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '1.3' : '1.1',
+                  marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' :
+                              savedConfig?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
                 }}
               >
                 {savedConfig?.translations?.[language]?.heroHeadline || t('heroHeadline')}
@@ -657,7 +673,10 @@ export default function HomePage() {
                   fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
                   textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
                   whiteSpace: 'pre-line',
-                  lineHeight: '1.4'
+                  lineHeight: savedConfig?.heroTextSpacing === 'compact' ? '1.2' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '1.6' : '1.4',
+                  marginTop: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' :
+                            savedConfig?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
                 }}
               >
                 {savedConfig?.translations?.[language]?.heroSubheadline || t('heroSubheadline')}
