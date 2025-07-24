@@ -72,6 +72,30 @@ export const websiteConfigs = pgTable("website_configs", {
   heroVerticalAlignment: text("hero_vertical_alignment").default("center"),
   heroTextSpacing: text("hero_text_spacing").default("normal"),
   heroTitlePosition: text("hero_title_position").default("normal"),
+  
+  // Template Showcase fields (for homepage)
+  showcaseTitle: json("showcase_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  showcaseDescription: json("showcase_description").$type<{
+    es: string;
+    en: string;
+  }>(),
+  showcaseImage: text("showcase_image"),
+  showcaseFeatures: json("showcase_features").$type<Array<{
+    es: string;
+    en: string;
+  }>>(),
+  showcaseCTA: json("showcase_cta").$type<{
+    es: string;
+    en: string;
+  }>(),
+  showcaseHelper: json("showcase_helper").$type<{
+    es: string;
+    en: string;
+  }>(),
+  
   // Pro Page hero fields
   proHeroImage: text("pro_hero_image"),
   proHeroImageOpacity: text("pro_hero_image_opacity").default("0.8"),

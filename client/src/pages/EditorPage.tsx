@@ -1141,6 +1141,14 @@ export default function EditorPage() {
         heroVerticalAlignment: websiteData.heroVerticalAlignment,
         heroTextSpacing: websiteData.heroTextSpacing,
         heroTitlePosition: websiteData.heroTitlePosition,
+        
+        // Template Showcase fields
+        showcaseTitle: websiteData.showcaseTitle,
+        showcaseDescription: websiteData.showcaseDescription,
+        showcaseImage: websiteData.showcaseImage,
+        showcaseFeatures: websiteData.showcaseFeatures,
+        showcaseCTA: websiteData.showcaseCTA,
+        showcaseHelper: websiteData.showcaseHelper,
         // Banner fields
         bannerText: JSON.stringify(websiteData.bannerText),
         bannerBackgroundColor: websiteData.bannerBackgroundColor,
