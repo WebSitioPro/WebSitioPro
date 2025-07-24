@@ -26,13 +26,7 @@ export default function ProPage() {
     // Load saved configuration to demonstrate Editor functionality
     fetch('/api/config/homepage')
       .then(res => res.json())
-      .then(data => {
-        console.log('Pro page loaded config:', data);
-        console.log('Pro hero text alignment:', data.proHeroTextAlignment);
-        console.log('Pro hero text color:', data.proHeroTextColor);
-        console.log('Pro hero vertical alignment:', data.proHeroVerticalAlignment);
-        setSavedConfig(data);
-      })
+      .then(data => setSavedConfig(data))
       .catch(err => console.log('Config not loaded:', err));
   }, []);
 
@@ -429,33 +423,44 @@ export default function ProPage() {
             }}
           >
             <div 
-              className="col-lg-8 mx-auto" 
-              style={{ 
-                textAlign: savedConfig?.proHeroTextAlignment || 'center',
-                marginBottom: savedConfig?.proHeroTextSpacing === 'compact' ? '1rem' : 
-                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '3rem' : '2rem'
+              className={
+                savedConfig?.proHeroTextAlignment === 'left' ? 'col-lg-6 col-12 text-start' :
+                savedConfig?.proHeroTextAlignment === 'right' ? 'col-lg-6 col-12 ms-auto text-end' :
+                'col-12 text-center'
+              }
+              style={{
+                marginTop: savedConfig?.proHeroTitlePosition === 'high' ? '-2rem' : 
+                          savedConfig?.proHeroTitlePosition === 'low' ? '2rem' : '0',
+                marginBottom: savedConfig?.proHeroTextSpacing === 'compact' ? '1rem' :
+                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '4rem' : '2rem'
               }}
             >
               <h1 
-                className="fw-bold mb-4" 
+                className="hero-title fw-bold mb-3 mb-md-4" 
                 style={{ 
                   color: savedConfig?.proHeroTextColor || '#ffffff',
-                  textShadow: savedConfig?.proHeroImage ? '2px 2px 4px rgba(0,0,0,0.7)' : 'none',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
                   fontSize: savedConfig?.proHeroTitleSize || '3.5rem',
-                  lineHeight: savedConfig?.proHeroTextSpacing === 'compact' ? '1.2' : 
-                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '1.6' : '1.4'
+                  whiteSpace: 'pre-line',
+                  lineHeight: savedConfig?.proHeroTextSpacing === 'compact' ? '1.0' :
+                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '1.3' : '1.1',
+                  marginBottom: savedConfig?.proHeroTextSpacing === 'compact' ? '0.5rem' :
+                              savedConfig?.proHeroTextSpacing === 'relaxed' ? '2rem' : '1rem'
                 }}
               >
                 {t('proHeroHeadline')}
               </h1>
               <p 
-                className="mb-4" 
+                className="hero-subtitle mb-3 mb-md-4" 
                 style={{ 
                   color: savedConfig?.proHeroSubtextColor || '#ffffff',
-                  textShadow: savedConfig?.proHeroImage ? '1px 1px 2px rgba(0,0,0,0.7)' : 'none',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
                   fontSize: savedConfig?.proHeroSubtitleSize || '1.25rem',
-                  marginTop: savedConfig?.proHeroTextSpacing === 'compact' ? '0.5rem' : 
-                            savedConfig?.proHeroTextSpacing === 'relaxed' ? '2rem' : '1rem'
+                  whiteSpace: 'pre-line',
+                  lineHeight: savedConfig?.proHeroTextSpacing === 'compact' ? '1.2' :
+                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '1.6' : '1.4',
+                  marginTop: savedConfig?.proHeroTextSpacing === 'compact' ? '0.5rem' :
+                            savedConfig?.proHeroTextSpacing === 'relaxed' ? '1.5rem' : '1rem'
                 }}
               >
                 {t('proHeroSubheadline')}
