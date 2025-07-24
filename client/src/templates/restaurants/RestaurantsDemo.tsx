@@ -124,6 +124,9 @@ export default function RestaurantsDemo() {
 
   // Load saved configuration
   useEffect(() => {
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
+    
     fetch('/api/config/restaurants-demo')
       .then(res => res.json())
       .then(data => {

@@ -17,6 +17,9 @@ export default function ServicesDemo() {
   const isSmallMobile = useIsSmallMobile();
 
   useEffect(() => {
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
+    
     const urlParams = new URLSearchParams(window.location.search);
     const previewId = urlParams.get('preview');
     

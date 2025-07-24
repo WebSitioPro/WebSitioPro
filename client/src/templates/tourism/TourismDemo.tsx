@@ -119,6 +119,9 @@ export default function TourismDemo() {
 
   // Load saved configuration
   useEffect(() => {
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
+    
     fetch('/api/config/tourism-demo')
       .then(res => res.json())
       .then(data => {

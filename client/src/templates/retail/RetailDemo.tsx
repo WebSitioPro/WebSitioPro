@@ -140,6 +140,9 @@ export default function RetailDemo() {
 
   // Load saved configuration
   useEffect(() => {
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
+    
     fetch('/api/config/retail-demo')
       .then(res => res.json())
       .then(data => {
