@@ -150,6 +150,17 @@ Examples:
 
 ```
 Changelog:
+- July 24, 2025. Template Flash Artifact Cleanup
+  - RESOLVED: Removed all fallback mock data causing hero section and content flashing in template demos
+  - Services template: Removed placeholder photo and review data that caused flash before real data loaded
+  - Tourism template: Removed mockTourismData fallbacks in tours, photos, and reviews sections
+  - Retail template: Removed mockRetailData fallbacks in products, photos, and reviews sections
+  - Restaurants template: Already using config-only approach, no fallback data present
+  - Professionals template: Already using config-only approach, no fallback data present
+  - All templates now use `savedConfig?.field || []` pattern to prevent flash artifacts
+  - Template demos now load cleanly without showing old/placeholder content before actual data appears
+  - Added scroll-to-top functionality (window.scrollTo(0, 0)) to all template demos for proper landing
+  - All 5 template demos now provide clean, flash-free user experience with proper top positioning
 - July 23, 2025. Clean Client URL System Implementation
   - COMPLETED: Full clean URL system for client pages like websitiopro.com/dr.juangarcia43
   - Built URL utility functions for slug generation with accent/special character removal

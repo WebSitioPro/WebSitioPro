@@ -407,9 +407,8 @@ export default function TourismDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              const tours = (savedConfig && savedConfig.tours && savedConfig.tours.length > 0) 
-                ? savedConfig.tours 
-                : mockTourismData.tours;
+              // Use tours from saved config only - no fallback to prevent flash
+              const tours = savedConfig?.tours || [];
               return tours.map((tour, index) => (
               <div key={index} className="col-md-6 col-lg-3">
                 <div className="card border-0 shadow-sm h-100">
@@ -489,9 +488,8 @@ export default function TourismDemo() {
           </h2>
           <div className="row g-4 justify-content-center">
             {(() => {
-              const reviews = (savedConfig && savedConfig.reviews && savedConfig.reviews.length > 0) 
-                ? savedConfig.reviews 
-                : mockTourismData.reviews;
+              // Use reviews from saved config only - no fallback to prevent flash
+              const reviews = savedConfig?.reviews || [];
               return reviews.map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
@@ -526,10 +524,9 @@ export default function TourismDemo() {
           </h2>
           <div className="row g-3">
             {(() => {
-              const photos = (savedConfig && savedConfig.photos && savedConfig.photos.length > 0) 
-                ? savedConfig.photos 
-                : mockTourismData.photos;
-              return photos.slice(0, 12).map((photo, index) => (
+              // Use photos from saved config only - no fallback to prevent flash
+              const photos = savedConfig?.photos || [];
+              return photos.map((photo, index) => (
               <div key={index} className="col-md-4 col-sm-6">
                 <img 
                   src={typeof photo === 'string' ? photo : photo.url} 

@@ -505,19 +505,10 @@ export default function ServicesDemo() {
           </h2>
           <div className="row g-4">
             {(() => {
-              // Use photos from saved config first, then fall back to placeholder data
-              const photos = savedConfig?.photos?.length > 0 
-                ? savedConfig.photos 
-                : [
-                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Service+Work+1",
-                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Tools+Equipment", 
-                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Installation+Work",
-                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Repair+Service",
-                    "https://via.placeholder.com/300x200/00A859/FFFFFF?text=Professional+Team",
-                    "https://via.placeholder.com/300x200/C8102E/FFFFFF?text=Quality+Work"
-                  ];
+              // Use photos from saved config only - no fallback to prevent flash
+              const photos = savedConfig?.photos || [];
               
-              return photos.slice(0, 6).map((photo, index) => {
+              return photos.map((photo, index) => {
                 const photoSrc = typeof photo === 'string' ? photo : photo?.url;
                 
                 return (
@@ -571,28 +562,11 @@ export default function ServicesDemo() {
           </h2>
           <div className="row g-4 justify-content-center">
             {(() => {
+              // Use reviews from saved config only - no fallback to prevent flash
               const reviews = (previewData && previewData.reviews && previewData.reviews.length > 0) 
                 ? previewData.reviews 
-                : (savedConfig && savedConfig.reviews && savedConfig.reviews.length > 0)
-                ? savedConfig.reviews
-                : [
-                    {
-                      name: "Luis Hernández",
-                      rating: 5,
-                      text: { es: "Excelente servicio, llegaron rápido en una emergencia. Trabajo limpio y profesional.", en: "Excellent service, arrived quickly in an emergency. Clean and professional work." }
-                    },
-                    {
-                      name: "Sandra López",
-                      rating: 5,
-                      text: { es: "Instalaron mi baño completo. Muy puntuales y precio justo. Altamente recomendados.", en: "Installed my complete bathroom. Very punctual and fair price. Highly recommended." }
-                    },
-                    {
-                      name: "Ricardo Morales",
-                      rating: 5,
-                      text: { es: "Servicio de calidad y precios accesibles. Siempre resuelven cualquier problema.", en: "Quality service and affordable prices. They always solve any problem." }
-                    }
-                  ];
-              return reviews.slice(0, 3).map((review, index) => (
+                : savedConfig?.reviews || [];
+              return reviews.map((review, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card border-0 shadow-sm h-100" style={{ minHeight: '200px' }}>
                   <div className="card-body p-4 text-center d-flex flex-column">
