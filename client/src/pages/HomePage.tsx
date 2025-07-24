@@ -853,30 +853,26 @@ export default function HomePage() {
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
-                {savedConfig?.translations?.[language]?.pricingTitle || t('pricingTitle')}
+                {savedConfig?.pricingTitle?.[language] || savedConfig?.translations?.[language]?.pricingTitle || t('pricingTitle')}
               </h2>
               <p className="lead text-muted">
-                {savedConfig?.translations?.[language]?.pricingText || t('pricingText')}
+                {savedConfig?.pricingText?.[language] || savedConfig?.translations?.[language]?.pricingText || t('pricingText')}
               </p>
 
-              {/* Display saved pricing information if available */}
-              {savedConfig?.translations?.[language]?.bannerText && (
+              {/* Display pricing banner if available */}
+              {savedConfig?.pricingBannerText?.[language] && (
                 <div className="mt-4 p-4 rounded shadow-sm" style={{
                   backgroundColor: savedConfig.pricingBannerBgColor || '#17A2B8',
                   color: savedConfig.pricingBannerTextColor || '#FFFFFF'
                 }}>
                   <div className="fs-5 fw-bold mb-2">
-                    {savedConfig.translations[language].bannerText.split('\n\n')[0]}
+                    {savedConfig.pricingBannerText[language]}
                   </div>
-                  {savedConfig.translations[language].bannerText.split('\n\n')[1] && (
-                    <div className="opacity-75">
-                      {savedConfig.translations[language].bannerText.split('\n\n')[1]}
-                    </div>
-                  )}
                 </div>
               )}
 
-              {savedConfig?.translations?.[language]?.paymentText && (
+              {/* Display payment methods banner if available */}
+              {savedConfig?.paymentText?.[language] && (
                 <div className="mt-4 p-4 rounded shadow-sm" style={{
                   backgroundColor: savedConfig.paymentBannerBgColor || '#FFFFFF',
                   color: savedConfig.paymentBannerTextColor || '#333333',
@@ -888,7 +884,7 @@ export default function HomePage() {
                     {language === 'es' ? 'Métodos de Pago' : 'Payment Methods'}
                   </h5>
                   <p className="mb-0">
-                    {savedConfig.translations[language].paymentText}
+                    {savedConfig.paymentText[language]}
                   </p>
                 </div>
               )}
