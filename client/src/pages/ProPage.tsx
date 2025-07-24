@@ -465,14 +465,30 @@ export default function ProPage() {
               >
                 {t('proHeroSubheadline')}
               </p>
-              <a 
-                href="https://wa.me/529831234567?text=Interested in Pro sites!"
-                className="btn btn-success btn-lg text-white px-5"
-                style={{ backgroundColor: 'hsl(var(--secondary))' }}
-              >
-                {t('contactWhatsApp')}
-              </a>
             </div>
+          </div>
+          
+          {/* WhatsApp Button - Lower Left Corner */}
+          <div 
+            className="position-absolute"
+            style={{
+              bottom: '2rem',
+              left: '2rem',
+              zIndex: 4
+            }}
+          >
+            <a 
+              href="https://wa.me/529831234567?text=Interested in Pro sites!"
+              className="btn btn-success btn-lg text-white px-4 py-3"
+              style={{ 
+                backgroundColor: 'hsl(var(--secondary))',
+                borderRadius: '50px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+              }}
+            >
+              <MessageCircle size={20} className="me-2" />
+              {t('contactWhatsApp')}
+            </a>
           </div>
         </div>
       </section>
