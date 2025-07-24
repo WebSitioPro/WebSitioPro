@@ -115,6 +115,16 @@ export const websiteConfigs = pgTable("website_configs", {
   // Pro Page hero fields
   proHeroImage: text("pro_hero_image"),
   proHeroImageOpacity: text("pro_hero_image_opacity").default("0.8"),
+  
+  // Pro Hero Text Customization fields
+  proHeroTextAlignment: text("pro_hero_text_alignment").default("center"),
+  proHeroTextColor: text("pro_hero_text_color").default("#ffffff"),
+  proHeroSubtextColor: text("pro_hero_subtext_color").default("#ffffff"),
+  proHeroTitleSize: text("pro_hero_title_size").default("3.5rem"),
+  proHeroSubtitleSize: text("pro_hero_subtitle_size").default("1.25rem"),
+  proHeroVerticalAlignment: text("pro_hero_vertical_alignment").default("center"),
+  proHeroTextSpacing: text("pro_hero_text_spacing").default("normal"),
+  proHeroTitlePosition: text("pro_hero_title_position").default("normal"),
   translations: json("translations").$type<{
     en: Record<string, string>;
     es: Record<string, string>;
