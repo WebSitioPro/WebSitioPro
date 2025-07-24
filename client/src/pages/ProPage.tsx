@@ -587,11 +587,10 @@ export default function ProPage() {
                               <h5 className="card-title mb-3 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
                                 {card.businessName}
                               </h5>
-                              <p className="card-text text-muted small mb-3">
-                                <span className="badge bg-secondary me-2">
+                              <p className="card-text text-muted mb-3">
+                                <span className="badge bg-secondary px-3 py-2" style={{ fontSize: '0.9rem' }}>
                                   {card.templateType.charAt(0).toUpperCase() + card.templateType.slice(1)}
                                 </span>
-                                Live Client Demo
                               </p>
                               <p className="card-text small">
                                 {card.description?.[language] || 'Professional website showcase'}
@@ -607,7 +606,7 @@ export default function ProPage() {
                                   {language === 'es' ? 'Ver Demo' : 'View Demo'}
                                 </Link>
                                 
-                                {savedConfig?.proWhatsappButtons?.[index] && (
+                                {savedConfig?.proWhatsappButtons?.[index] && card.templateType !== 'professionals' && (
                                   <a 
                                     href={`https://wa.me/52${savedConfig.whatsappNumber}?text=${encodeURIComponent(savedConfig.proWhatsappButtons[index].message?.[language] || '')}`}
                                     className="btn btn-sm w-100"
