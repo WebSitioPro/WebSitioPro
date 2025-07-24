@@ -26,7 +26,13 @@ export default function ProPage() {
     // Load saved configuration to demonstrate Editor functionality
     fetch('/api/config/homepage')
       .then(res => res.json())
-      .then(data => setSavedConfig(data))
+      .then(data => {
+        console.log('Pro page loaded config:', data);
+        console.log('Pro hero text alignment:', data.proHeroTextAlignment);
+        console.log('Pro hero text color:', data.proHeroTextColor);
+        console.log('Pro hero vertical alignment:', data.proHeroVerticalAlignment);
+        setSavedConfig(data);
+      })
       .catch(err => console.log('Config not loaded:', err));
   }, []);
 
