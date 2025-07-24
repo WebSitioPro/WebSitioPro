@@ -60,8 +60,24 @@ export const websiteConfigs = pgTable("website_configs", {
   // Pricing banner fields
   pricingBannerBgColor: text("pricing_banner_bg_color").default("#17A2B8"),
   pricingBannerTextColor: text("pricing_banner_text_color").default("#FFFFFF"),
+  pricingBannerText: json("pricing_banner_text").$type<{
+    es: string;
+    en: string;
+  }>(),
+  pricingTitle: json("pricing_title").$type<{
+    es: string;
+    en: string;
+  }>(),
+  pricingText: json("pricing_text").$type<{
+    es: string;
+    en: string;
+  }>(),
   paymentBannerBgColor: text("payment_banner_bg_color").default("#FFFFFF"),
   paymentBannerTextColor: text("payment_banner_text_color").default("#333333"),
+  paymentText: json("payment_text").$type<{
+    es: string;
+    en: string;
+  }>(),
   // Hero customization fields
   heroImageOpacity: text("hero_image_opacity").default("0.5"),
   heroTextAlignment: text("hero_text_alignment").default("center"),
@@ -241,20 +257,6 @@ export const websiteConfigs = pgTable("website_configs", {
     title: { es: string; en: string };
     description: { es: string; en: string };
     image: string;
-  }>>().default([]),
-  // Single showcase template fields for homepage
-  showcaseTitle: json("showcase_title").$type<{
-    es: string;
-    en: string;
-  }>(),
-  showcaseDescription: json("showcase_description").$type<{
-    es: string;
-    en: string;
-  }>(),
-  showcaseImage: text("showcase_image"),
-  showcaseFeatures: json("showcase_features").$type<Array<{
-    es: string;
-    en: string;
   }>>().default([]),
   // Pro page banner fields
   proBannerText: json("pro_banner_text").$type<{

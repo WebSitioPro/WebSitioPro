@@ -2229,9 +2229,9 @@ export default function EditorPage() {
                     </div>
                   </div>
 
-                  <div className="row g-3">
+                  <div className="row g-3 mb-5">
                     <div className="col-12">
-                      <label className="form-label">Banner Preview</label>
+                      <label className="form-label">Pricing Banner Preview</label>
                       <div 
                         className="border rounded p-3 text-center"
                         style={{
@@ -2242,6 +2242,85 @@ export default function EditorPage() {
                         }}
                       >
                         {websiteData.pricingBannerText?.es || 'Preview text will appear here'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <h5 className="mb-3">Payment Methods Banner</h5>
+                  <div className="row g-3 mb-4">
+                    <div className="col-md-6">
+                      <label className="form-label">Payment Text (Spanish)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={websiteData.paymentText?.es || ''}
+                        onChange={(e) => handleInputChange('paymentText', e.target.value, 'es')}
+                        placeholder="Aceptamos pagos con tarjeta, transferencia bancaria y PayPal. Planes de pago personalizados disponibles."
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Payment Text (English)</label>
+                      <textarea 
+                        className="form-control"
+                        rows={3}
+                        value={websiteData.paymentText?.en || ''}
+                        onChange={(e) => handleInputChange('paymentText', e.target.value, 'en')}
+                        placeholder="We accept credit cards, bank transfers, and PayPal. Custom payment plans available."
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Payment Banner Background Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.paymentBannerBgColor || '#FFFFFF'}
+                          onChange={(e) => handleInputChange('paymentBannerBgColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.paymentBannerBgColor || '#FFFFFF'}
+                          onChange={(e) => handleInputChange('paymentBannerBgColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Payment Banner Text Color</label>
+                      <div className="d-flex gap-2">
+                        <input 
+                          type="color" 
+                          className="form-control form-control-color"
+                          value={websiteData.paymentBannerTextColor || '#333333'}
+                          onChange={(e) => handleInputChange('paymentBannerTextColor', e.target.value)}
+                        />
+                        <input 
+                          type="text" 
+                          className="form-control"
+                          value={websiteData.paymentBannerTextColor || '#333333'}
+                          onChange={(e) => handleInputChange('paymentBannerTextColor', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row g-3">
+                    <div className="col-12">
+                      <label className="form-label">Payment Banner Preview</label>
+                      <div 
+                        className="border rounded p-3"
+                        style={{
+                          backgroundColor: websiteData.paymentBannerBgColor || '#FFFFFF',
+                          color: websiteData.paymentBannerTextColor || '#333333',
+                          border: websiteData.paymentBannerBgColor === '#FFFFFF' ? '1px solid #dee2e6' : 'none'
+                        }}
+                      >
+                        <h5 className="mb-3" style={{ color: websiteData.paymentBannerTextColor || '#333333' }}>
+                          Métodos de Pago
+                        </h5>
+                        <p className="mb-0">
+                          {websiteData.paymentText?.es || 'Payment methods information will appear here'}
+                        </p>
                       </div>
                     </div>
                   </div>
