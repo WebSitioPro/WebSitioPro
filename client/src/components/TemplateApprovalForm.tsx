@@ -317,7 +317,7 @@ export function TemplateApprovalForm({ config, language, templateType, onSubmit 
                       <Send size={20} className="me-2" />
                       {summary.approved === summary.total 
                         ? (language === 'es' ? '✅ Aprobar Sitio Web' : '✅ Approve Website')
-                        : (language === 'es' ? '📝 Enviar Feedback' : '📝 Submit Feedback')
+                        : (language === 'es' ? '📝 Enviar Formulario' : '📝 Submit Form')
                       }
                     </>
                   )}

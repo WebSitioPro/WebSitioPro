@@ -91,6 +91,7 @@ interface ProfessionalsConfig {
   clientApproval?: {
     isFormEnabled: boolean;
     formStatus: "active" | "completed" | "disabled";
+    notificationEmail?: string;
     clientInfo: {
       name: string;
       email: string;
@@ -2037,6 +2038,29 @@ export default function ProfessionalsEditor() {
                             <small className="text-muted">
                               These instructions will be displayed to the client at the top of the approval form. Use this to provide payment details, contact information, or next steps.
                             </small>
+                          </div>
+                          
+                          {/* Email Notification Settings */}
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <label className="form-label">Email Notification</label>
+                              <input
+                                type="email"
+                                className="form-control"
+                                value={websiteData.clientApproval?.notificationEmail || ''}
+                                onChange={(e) => setWebsiteData(prev => ({
+                                  ...prev,
+                                  clientApproval: {
+                                    ...prev.clientApproval!,
+                                    notificationEmail: e.target.value
+                                  }
+                                }))}
+                                placeholder="your-email@example.com"
+                              />
+                              <small className="text-muted">
+                                You'll receive an email notification when the client submits their approval form.
+                              </small>
+                            </div>
                           </div>
                         </div>
                       </div>
