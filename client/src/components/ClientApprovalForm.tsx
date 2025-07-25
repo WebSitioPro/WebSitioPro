@@ -83,6 +83,10 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
         overallApproved
       });
 
+      // Debug: Check if email is configured
+      console.log('[EMAIL] Config:', config.clientApproval);
+      console.log('[EMAIL] Notification email:', config.clientApproval?.notificationEmail);
+      
       // Send email notification if email is configured
       if (config.clientApproval?.notificationEmail) {
         const approvedSections = Object.entries(sectionApprovals)
