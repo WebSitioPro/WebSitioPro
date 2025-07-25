@@ -149,7 +149,16 @@ export default function ProPage() {
         // Office hours
         officeHours: 'Horarios de Oficina',
         mondayFriday: 'Lun-Vie: 9:00 AM - 6:00 PM',
-        saturday: 'Sáb: 10:00 AM - 2:00 PM'
+        saturday: 'Sáb: 10:00 AM - 2:00 PM',
+        
+        // Navigation
+        navHome: 'Inicio',
+        navDemo: 'Demo', 
+        navProcess: 'Proceso',
+        navTemplates: 'Plantillas',
+        navPricing: 'Precios',
+        navContact: 'Contacto',
+        navHomePage: 'Página Principal'
       },
       en: {
         // Header
@@ -219,7 +228,16 @@ export default function ProPage() {
         // Office hours
         officeHours: 'Office Hours',
         mondayFriday: 'Mon-Fri: 9:00 AM - 6:00 PM',
-        saturday: 'Sat: 10:00 AM - 2:00 PM'
+        saturday: 'Sat: 10:00 AM - 2:00 PM',
+        
+        // Navigation
+        navHome: 'Home',
+        navDemo: 'Demo',
+        navProcess: 'Process', 
+        navTemplates: 'Templates',
+        navPricing: 'Pricing',
+        navContact: 'Contact',
+        navHomePage: 'Main Page'
       }
     };
     
@@ -288,14 +306,14 @@ export default function ProPage() {
                   className="btn btn-link text-decoration-none text-dark p-0" 
                   onClick={() => navigateToSection('hero')}
                 >
-                  Inicio
+                  {t('navHome')}
                 </button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('demo')}>Demo</button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('howItWorks')}>Proceso</button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('templates')}>Plantillas</button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('pricing')}>Precios</button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('contact')}>Contacto</button>
-                <Link className="text-decoration-none fw-bold" href="/" style={{ color: 'hsl(var(--primary))' }}>Página Principal</Link>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('demo')}>{t('navDemo')}</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('howItWorks')}>{t('navProcess')}</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('templates')}>{t('navTemplates')}</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('pricing')}>{t('navPricing')}</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('contact')}>{t('navContact')}</button>
+                <Link className="text-decoration-none fw-bold" href="/" style={{ color: 'hsl(var(--primary))' }}>{t('navHomePage')}</Link>
               </div>
             </div>
             
@@ -360,7 +378,7 @@ export default function ProPage() {
                         navigateToSection('hero');
                       }}
                     >
-                      Inicio
+                      {t('navHome')}
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
@@ -369,7 +387,7 @@ export default function ProPage() {
                         navigateToSection('demo');
                       }}
                     >
-                      Demo
+                      {t('navDemo')}
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
@@ -378,7 +396,7 @@ export default function ProPage() {
                         navigateToSection('howItWorks');
                       }}
                     >
-                      Proceso
+                      {t('navProcess')}
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
@@ -387,7 +405,7 @@ export default function ProPage() {
                         navigateToSection('templates');
                       }}
                     >
-                      Plantillas
+                      {t('navTemplates')}
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
@@ -396,7 +414,7 @@ export default function ProPage() {
                         navigateToSection('pricing');
                       }}
                     >
-                      Precios
+                      {t('navPricing')}
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
@@ -405,7 +423,7 @@ export default function ProPage() {
                         navigateToSection('contact');
                       }}
                     >
-                      Contacto
+                      {t('navContact')}
                     </button>
                     <Link 
                       className="text-decoration-none fw-bold py-2 px-3 rounded" 
@@ -413,7 +431,7 @@ export default function ProPage() {
                       style={{ color: 'hsl(var(--primary))' }}
                       onClick={() => setShowMobileMenu(false)}
                     >
-                      Página Principal
+                      {t('navHomePage')}
                     </Link>
                     <a 
                       href="https://wa.me/529831234567?text=Interested in Pro sites!"
@@ -524,7 +542,7 @@ export default function ProPage() {
       </section>
 
       {/* Demo Note */}
-      <section className="py-4 bg-warning" style={{ backgroundColor: 'hsl(var(--accent) / 0.1)' }}>
+      <section id="demo" className="py-4 bg-warning" style={{ backgroundColor: 'hsl(var(--accent) / 0.1)' }}>
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
@@ -540,7 +558,7 @@ export default function ProPage() {
       </section>
 
       {/* How Our Service Works */}
-      <section className="py-5">
+      <section id="howItWorks" className="py-5">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
             {savedConfig?.serviceStepsTitle?.[language] || t('howItWorksTitle')}
@@ -605,7 +623,7 @@ export default function ProPage() {
       )}
 
       {/* Template Showcase */}
-      <section className="py-5 bg-light">
+      <section id="templates" className="py-5 bg-light">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold" style={{ color: 'hsl(var(--primary))' }}>
             {t('templatesTitle')}
@@ -689,7 +707,7 @@ export default function ProPage() {
       </section>
 
       {/* Pricing & Domain */}
-      <section className="py-5">
+      <section id="pricing" className="py-5">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
