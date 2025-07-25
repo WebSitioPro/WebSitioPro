@@ -32,14 +32,14 @@ export default function HomePage() {
     document.documentElement.style.setProperty('--info', '211 100% 50%'); // Blue #007BFF
     document.documentElement.style.setProperty('--background', '0 0% 100%'); // White
 
-    // Add scroll offset for sticky header
+    // Add scroll offset for sticky header and banner
     const style = document.createElement('style');
     style.textContent = `
       html {
-        scroll-padding-top: 120px;
+        scroll-padding-top: ${savedConfig?.showBanner ? '140px' : '100px'};
       }
       section {
-        scroll-margin-top: 120px;
+        scroll-margin-top: ${savedConfig?.showBanner ? '140px' : '100px'};
       }
     `;
     document.head.appendChild(style);
@@ -410,7 +410,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="sticky-top bg-white shadow-sm">
+      <header className="sticky-top bg-white shadow-sm" style={{ zIndex: 1030 }}>
         <div className="container-fluid">
           <div className="row align-items-center py-3">
             {/* Logo */}
@@ -501,86 +501,78 @@ export default function HomePage() {
             {/* Mobile Navigation Dropdown */}
             {showMobileMenu && (
               <div className="col-12 d-md-none">
-                <div className="border-top pt-3 mt-3">
-                  <div className="d-flex flex-column gap-2" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+                <div className="border-top pt-2 mt-2">
+                  <div className="d-flex flex-column gap-1" style={{ maxHeight: 'auto', overflowY: 'visible' }}>
                     <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      className="text-decoration-none text-dark py-1 px-3 rounded small" 
                       href="#hero"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('home')}
                     </a>
                     <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      className="text-decoration-none text-dark py-1 px-3 rounded small" 
                       href="#why"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('why')}
                     </a>
                     <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      className="text-decoration-none text-dark py-1 px-3 rounded small" 
                       href="#about"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('about')}
                     </a>
                     <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      className="text-decoration-none text-dark py-1 px-3 rounded small" 
                       href="#offerings"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('offerings')}
                     </a>
                     <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      className="text-decoration-none text-dark py-1 px-3 rounded small" 
                       href="#pricing"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('pricing')}
                     </a>
-                    <a 
-                      className="btn btn-success text-white mb-2" 
-                      href="#domain" 
-                      style={{ backgroundColor: 'hsl(var(--secondary))' }}
-                      onClick={() => setShowMobileMenu(false)}
-                    >
-                      {t('domainChecker')}
-                    </a>
-                    <a 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
-                      href="#contact"
-                      onClick={() => setShowMobileMenu(false)}
-                    >
-                      {t('contact')}
-                    </a>
                     <Link 
-                      className="text-decoration-none text-dark py-2 px-3 rounded" 
+                      className="text-decoration-none text-dark py-1 px-3 rounded small" 
                       href="/pro"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('proSites')}
                     </Link>
-                    <Link 
-                      href="/pro"
-                      className="btn btn-primary text-white mt-2"
-                      style={{ backgroundColor: 'hsl(var(--primary))' }}
-                      onClick={() => {
-                        setShowMobileMenu(false);
-                        window.scrollTo(0, 0);
-                      }}
-                    >
-                      {t('exploreProPlans')}
-                    </Link>
                     <a 
-                      href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent(savedConfig?.translations?.[language]?.whatsappMessage || 'Hola! Me interesa conocer más sobre WebSitioPro.')}`}
-                      className="btn btn-success text-white mt-2"
-                      style={{ backgroundColor: 'hsl(var(--secondary))' }}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      className="text-decoration-none text-dark py-1 px-3 rounded small" 
+                      href="#contact"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('contact')}
                     </a>
+                    <div className="d-flex gap-2 mt-2">
+                      <a 
+                        className="btn btn-success text-white btn-sm flex-fill" 
+                        href="#domain" 
+                        style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                        onClick={() => setShowMobileMenu(false)}
+                      >
+                        {t('domainChecker')}
+                      </a>
+                      <Link 
+                        href="/pro"
+                        className="btn btn-primary text-white btn-sm flex-fill"
+                        style={{ backgroundColor: 'hsl(var(--primary))' }}
+                        onClick={() => {
+                          setShowMobileMenu(false);
+                          window.scrollTo(0, 0);
+                        }}
+                      >
+                        {t('exploreProPlans')}
+                      </Link>
+                    </div>
                     {import.meta.env.DEV && (
                       <>
                         <Link 
@@ -620,12 +612,14 @@ export default function HomePage() {
       {/* Banner Section */}
       {savedConfig?.showBanner && (
         <div 
-          className="banner"
+          className="banner sticky-top"
           style={{ 
             backgroundColor: savedConfig.bannerBackgroundColor || '#FFC107',
             color: savedConfig.bannerTextColor || '#000000',
             fontSize: savedConfig.bannerTextSize || '16px',
-            borderBottom: '1px solid rgba(0,0,0,0.1)'
+            borderBottom: '1px solid rgba(0,0,0,0.1)',
+            top: '76px', // Position below header
+            zIndex: 1020
           }}
         >
           <div className="container">
@@ -693,8 +687,8 @@ export default function HomePage() {
           <div className="row">
             <div 
               className={
-                savedConfig?.heroTextAlignment === 'left' ? 'col-lg-6 col-12 text-start' :
-                savedConfig?.heroTextAlignment === 'right' ? 'col-lg-6 col-12 ms-auto text-end' :
+                savedConfig?.heroTextAlignment === 'left' ? 'col-lg-6 col-12 text-start text-md-start text-center' :
+                savedConfig?.heroTextAlignment === 'right' ? 'col-lg-6 col-12 ms-auto text-end text-md-end text-center' :
                 'col-12 text-center'
               }
               style={{
