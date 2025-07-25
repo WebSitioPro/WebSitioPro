@@ -150,6 +150,15 @@ Examples:
 
 ```
 Changelog:
+- July 25, 2025. Fixed Pro Page Hero Section to Match Homepage Display
+  - RESOLVED: Updated Pro page hero section to display hero image and text exactly like the home page
+  - Changed from proHeroImage to heroImage field for consistency with homepage configuration
+  - Added mobile text centering with responsive classes (text-start text-md-start text-center)
+  - Updated hero section height to match homepage (70vh with 500px minimum)
+  - Simplified background styling to match homepage approach without dark overlay
+  - Hero image now displays properly from saved configuration with same opacity control
+  - Text content now uses translations field for proper data integration
+  - Pro page and homepage now have identical hero section behavior and mobile responsiveness
 - July 25, 2025. Fixed Pro Page Navigation with Proper Section Scrolling and Bilingual Support
   - RESOLVED: Fixed Pro page navigation links that were not scrolling to correct sections
   - Added proper section IDs to all Pro page sections (hero, demo, howItWorks, templates, pricing, contact)

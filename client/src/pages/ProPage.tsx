@@ -442,89 +442,80 @@ export default function ProPage() {
       {/* Hero Section */}
       <section 
         id="hero" 
-        className="py-5 position-relative d-flex align-items-center"
+        className={`hero-section position-relative d-flex`}
         style={{
-          minHeight: '60vh',
-          backgroundColor: '#f8f9fa'
+          height: '70vh',
+          minHeight: '500px',
+          backgroundColor: '#f8f9fa', // Light background for when image is transparent
+          alignItems: savedConfig?.heroVerticalAlignment === 'top' ? 'flex-start' : 
+                     savedConfig?.heroVerticalAlignment === 'bottom' ? 'flex-end' : 'center'
         }}
       >
-        {/* Background image with opacity control */}
         <div 
           className="position-absolute w-100 h-100"
           style={{
-            backgroundImage: savedConfig?.proHeroImage ? `url(${savedConfig.proHeroImage})` : 'none',
+            backgroundImage: savedConfig?.heroImage ? `url(${savedConfig.heroImage})` : 'none',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            opacity: savedConfig?.proHeroImage ? Math.max(0, Math.min(1, parseFloat(savedConfig?.proHeroImageOpacity || '0.8'))) : 1,
+            opacity: Math.max(0, Math.min(1, parseFloat(savedConfig?.heroImageOpacity || '0.5'))),
             top: 0,
             left: 0,
             zIndex: 1
           }}
         ></div>
-        
-        {/* Fixed dark overlay for text readability */}
+
         <div 
-          className="position-absolute w-100 h-100"
-          style={{
-            background: savedConfig?.proHeroImage ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)',
-            top: 0,
-            left: 0,
-            zIndex: 2
+          className="container position-relative" 
+          style={{ 
+            zIndex: 2,
+            paddingTop: savedConfig?.heroVerticalAlignment === 'top' ? '3rem' : '0',
+            paddingBottom: savedConfig?.heroVerticalAlignment === 'bottom' ? '3rem' : '0'
           }}
-        ></div>
-        
-        <div className="container position-relative" style={{ zIndex: 3 }}>
-          <div 
-            className="row" 
-            style={{ 
-              alignItems: savedConfig?.proHeroVerticalAlignment === 'top' ? 'flex-start' : 
-                         savedConfig?.proHeroVerticalAlignment === 'bottom' ? 'flex-end' : 'center',
-              minHeight: '50vh'
-            }}
-          >
+        >
+          <div className="row">
             <div 
               className={
-                savedConfig?.proHeroTextAlignment === 'left' ? 'col-lg-6 col-12 text-start' :
-                savedConfig?.proHeroTextAlignment === 'right' ? 'col-lg-6 col-12 ms-auto text-end' :
+                savedConfig?.heroTextAlignment === 'left' ? 'col-lg-6 col-12 text-start text-md-start text-center' :
+                savedConfig?.heroTextAlignment === 'right' ? 'col-lg-6 col-12 ms-auto text-end text-md-end text-center' :
                 'col-12 text-center'
               }
               style={{
-                marginTop: savedConfig?.proHeroTitlePosition === 'high' ? '-2rem' : 
-                          savedConfig?.proHeroTitlePosition === 'low' ? '2rem' : '0',
-                marginBottom: savedConfig?.proHeroTextSpacing === 'compact' ? '1rem' :
-                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '4rem' : '2rem'
+                marginTop: savedConfig?.heroTitlePosition === 'high' ? '-2rem' : 
+                          savedConfig?.heroTitlePosition === 'low' ? '2rem' : '0',
+                marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '1rem' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '4rem' : '2rem'
               }}
             >
               <h1 
-                className="hero-title fw-bold mb-3 mb-md-4" 
-                style={{ 
-                  color: savedConfig?.proHeroTextColor || '#ffffff',
+                className="hero-title fw-bold mb-3 mb-md-4"
+                style={{
+                  color: savedConfig?.heroTextColor || '#ffffff',
+                  fontSize: savedConfig?.heroTitleSize || '3.5rem',
                   textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-                  fontSize: savedConfig?.proHeroTitleSize || '3.5rem',
                   whiteSpace: 'pre-line',
-                  lineHeight: savedConfig?.proHeroTextSpacing === 'compact' ? '1.0' :
-                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '1.3' : '1.1',
-                  marginBottom: savedConfig?.proHeroTextSpacing === 'compact' ? '0.5rem' :
-                              savedConfig?.proHeroTextSpacing === 'relaxed' ? '2rem' : '1rem'
+                  lineHeight: savedConfig?.heroTextSpacing === 'compact' ? '1.0' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '1.3' : '1.1',
+                  marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' :
+                              savedConfig?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
                 }}
               >
-                {t('proHeroHeadline')}
+                {savedConfig?.translations?.[language]?.proHeroHeadline || t('proHeroHeadline')}
               </h1>
               <p 
-                className="hero-subtitle mb-3 mb-md-4" 
-                style={{ 
-                  color: savedConfig?.proHeroSubtextColor || '#ffffff',
+                className="hero-subtitle mb-3 mb-md-4"
+                style={{
+                  color: savedConfig?.heroSubtextColor || '#ffffff',
+                  fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
                   textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                  fontSize: savedConfig?.proHeroSubtitleSize || '1.25rem',
                   whiteSpace: 'pre-line',
-                  lineHeight: savedConfig?.proHeroTextSpacing === 'compact' ? '1.2' :
-                             savedConfig?.proHeroTextSpacing === 'relaxed' ? '1.6' : '1.4',
-                  marginTop: savedConfig?.proHeroTextSpacing === 'compact' ? '0.5rem' :
-                            savedConfig?.proHeroTextSpacing === 'relaxed' ? '1.5rem' : '1rem'
+                  lineHeight: savedConfig?.heroTextSpacing === 'compact' ? '1.2' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '1.6' : '1.4',
+                  marginTop: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' :
+                            savedConfig?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
                 }}
               >
-                {t('proHeroSubheadline')}
+                {savedConfig?.translations?.[language]?.proHeroSubheadline || t('proHeroSubheadline')}
               </p>
             </div>
           </div>
