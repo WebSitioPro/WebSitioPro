@@ -883,7 +883,7 @@ export default function ProfessionalsDemo() {
       {/* Floating Approval Button */}
       {savedConfig?.clientApproval?.isFormEnabled && savedConfig.clientApproval.showFloatingButton !== false && (
         <FloatingApprovalButton
-          text={savedConfig.clientApproval.floatingButtonText || (language === 'es' ? 'Aprobar Sitio' : 'Approve Website')}
+          text={savedConfig.clientApproval.floatingButtonText || (language === 'es' ? 'Editar/Aprobar Sitio Web' : 'Edit/Approve Website')}
           color={savedConfig.clientApproval.floatingButtonColor || '#C8102E'}
           language={language}
           show={true}

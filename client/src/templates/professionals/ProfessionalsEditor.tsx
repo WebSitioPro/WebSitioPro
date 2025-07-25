@@ -2075,7 +2075,7 @@ export default function ProfessionalsEditor() {
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={websiteData.clientApproval?.floatingButtonText || 'Edit/Approve Website'}
+                                  value={websiteData.clientApproval?.floatingButtonText || (websiteData.defaultLanguage === 'es' ? 'Editar/Aprobar Sitio Web' : 'Edit/Approve Website')}
                                   onChange={(e) => setWebsiteData(prev => ({
                                     ...prev,
                                     clientApproval: {
