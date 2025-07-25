@@ -13,14 +13,23 @@ export default function ProPage() {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
   };
 
-  const navigateToHomeSection = (sectionId: string) => {
-    setLocation('/');
-    setTimeout(() => {
+  const navigateToSection = (sectionId: string) => {
+    // For Pro page sections, scroll directly to them
+    if (sectionId === 'hero' || sectionId === 'demo' || sectionId === 'howItWorks' || sectionId === 'templates' || sectionId === 'pricing' || sectionId === 'contact') {
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 100);
+    } else {
+      // For home page sections like 'why', 'about', 'offerings' - navigate to home
+      setLocation('/');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
   };
 
   useEffect(() => {
@@ -277,16 +286,16 @@ export default function ProPage() {
               <div className="d-flex align-items-center justify-content-center gap-4 w-100">
                 <button 
                   className="btn btn-link text-decoration-none text-dark p-0" 
-                  onClick={() => navigateToHomeSection('hero')}
+                  onClick={() => navigateToSection('hero')}
                 >
-                  {t('home')}
+                  Inicio
                 </button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('why')}>{t('why')}</button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('about')}>{t('about')}</button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('offerings')}>{t('offerings')}</button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('pricing')}>{t('pricing')}</button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToHomeSection('contact')}>{t('contact')}</button>
-                <Link className="text-decoration-none fw-bold" href="/pro" style={{ color: 'hsl(var(--primary))' }}>{t('proSites')}</Link>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('demo')}>Demo</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('howItWorks')}>Proceso</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('templates')}>Plantillas</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('pricing')}>Precios</button>
+                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('contact')}>Contacto</button>
+                <Link className="text-decoration-none fw-bold" href="/" style={{ color: 'hsl(var(--primary))' }}>Página Principal</Link>
               </div>
             </div>
             
@@ -295,8 +304,8 @@ export default function ProPage() {
             {/* Desktop Language Toggle & WhatsApp CTA */}
             <div className="col-auto d-none d-md-flex">
               <div className="d-flex align-items-center gap-3">
-                <button className="btn btn-success text-white px-3 py-1" style={{ backgroundColor: 'hsl(var(--secondary))' }} onClick={() => navigateToHomeSection('domain')}>
-                  {t('domainChecker')}
+                <button className="btn btn-success text-white px-3 py-1" style={{ backgroundColor: 'hsl(var(--secondary))' }} onClick={() => navigateToSection('contact')}>
+                  Contactar
                 </button>
 
                 <button 
@@ -348,73 +357,63 @@ export default function ProPage() {
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
                       onClick={() => {
                         setShowMobileMenu(false);
-                        navigateToHomeSection('hero');
+                        navigateToSection('hero');
                       }}
                     >
-                      {t('home')}
+                      Inicio
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
                       onClick={() => {
                         setShowMobileMenu(false);
-                        navigateToHomeSection('why');
+                        navigateToSection('demo');
                       }}
                     >
-                      {t('why')}
+                      Demo
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
                       onClick={() => {
                         setShowMobileMenu(false);
-                        navigateToHomeSection('about');
+                        navigateToSection('howItWorks');
                       }}
                     >
-                      {t('about')}
+                      Proceso
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
                       onClick={() => {
                         setShowMobileMenu(false);
-                        navigateToHomeSection('offerings');
+                        navigateToSection('templates');
                       }}
                     >
-                      {t('offerings')}
+                      Plantillas
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
                       onClick={() => {
                         setShowMobileMenu(false);
-                        navigateToHomeSection('pricing');
+                        navigateToSection('pricing');
                       }}
                     >
-                      {t('pricing')}
-                    </button>
-                    <button 
-                      className="btn btn-success text-white mb-2" 
-                      style={{ backgroundColor: 'hsl(var(--secondary))' }}
-                      onClick={() => {
-                        setShowMobileMenu(false);
-                        navigateToHomeSection('domain');
-                      }}
-                    >
-                      {t('domainChecker')}
+                      Precios
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
                       onClick={() => {
                         setShowMobileMenu(false);
-                        navigateToHomeSection('contact');
+                        navigateToSection('contact');
                       }}
                     >
-                      {t('contact')}
+                      Contacto
                     </button>
                     <Link 
                       className="text-decoration-none fw-bold py-2 px-3 rounded" 
-                      href="/pro" 
+                      href="/" 
                       style={{ color: 'hsl(var(--primary))' }}
                       onClick={() => setShowMobileMenu(false)}
                     >
-                      {t('proSites')}
+                      Página Principal
                     </Link>
                     <a 
                       href="https://wa.me/529831234567?text=Interested in Pro sites!"
