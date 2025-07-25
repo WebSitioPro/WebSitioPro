@@ -534,6 +534,13 @@ export default function RetailEditor() {
                   <Palette size={16} className="me-2" />
                   Colors & Branding
                 </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'approval' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('approval')}
+                >
+                  <CheckCircle size={16} className="me-2" />
+                  Client Approval
+                </button>
               </div>
             </div>
           </div>
@@ -1195,6 +1202,196 @@ export default function RetailEditor() {
                         </div>
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {activeTab === 'approval' && (
+                  <div>
+                    <h5 className="mb-4">Client Approval Settings</h5>
+                    
+                    <div className="alert alert-info mb-4">
+                      <h6>✨ Client Approval System</h6>
+                      <p className="mb-0">Enable this feature to allow clients to review and approve their website directly. They can approve sections individually and provide feedback for revisions.</p>
+                    </div>
+
+                    <div className="card mb-4">
+                      <div className="card-header">
+                        <h6 className="mb-0">Approval Form Settings</h6>
+                      </div>
+                      <div className="card-body">
+                        <div className="mb-3">
+                          <div className="form-check form-switch">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              id="approvalFormEnabled"
+                              checked={websiteData.clientApproval?.isFormEnabled || false}
+                              onChange={(e) => setWebsiteData(prev => ({
+                                ...prev,
+                                clientApproval: {
+                                  ...prev.clientApproval,
+                                  isFormEnabled: e.target.checked,
+                                  formStatus: prev.clientApproval?.formStatus || 'waiting',
+                                  showFloatingButton: prev.clientApproval?.showFloatingButton !== false
+                                }
+                              }))}
+                            />
+                            <label className="form-check-label" htmlFor="approvalFormEnabled">
+                              Enable Client Approval Form
+                            </label>
+                          </div>
+                          <small className="text-muted">When enabled, clients can review and approve their website sections</small>
+                        </div>
+
+                        {websiteData.clientApproval?.isFormEnabled && (
+                          <>
+                            <div className="mb-3">
+                              <label className="form-label">General Instructions for Client</label>
+                              <textarea
+                                className="form-control"
+                                rows={4}
+                                placeholder="Add any special instructions or notes for your client about the website review process..."
+                                value={websiteData.clientApproval?.generalInstructions || ''}
+                                onChange={(e) => setWebsiteData(prev => ({
+                                  ...prev,
+                                  clientApproval: {
+                                    ...prev.clientApproval,
+                                    generalInstructions: e.target.value
+                                  }
+                                }))}
+                              />
+                              <small className="text-muted">These instructions will be shown to the client in the approval form</small>
+                            </div>
+
+                            <div className="mb-3">
+                              <div className="form-check form-switch">
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  id="showFloatingButton"
+                                  checked={websiteData.clientApproval?.showFloatingButton !== false}
+                                  onChange={(e) => setWebsiteData(prev => ({
+                                    ...prev,
+                                    clientApproval: {
+                                      ...prev.clientApproval,
+                                      showFloatingButton: e.target.checked
+                                    }
+                                  }))}
+                                />
+                                <label className="form-check-label" htmlFor="showFloatingButton">
+                                  Show Floating Approval Button
+                                </label>
+                              </div>
+                              <small className="text-muted">Display a floating button for easy access to the approval form</small>
+                            </div>
+
+                            <div className="row">
+                              <div className="col-md-8">
+                                <div className="mb-3">
+                                  <label className="form-label">Floating Button Text</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Editar/Aprobar Sitio Web"
+                                    value={websiteData.clientApproval?.floatingButtonText || ''}
+                                    onChange={(e) => setWebsiteData(prev => ({
+                                      ...prev,
+                                      clientApproval: {
+                                        ...prev.clientApproval,
+                                        floatingButtonText: e.target.value
+                                      }
+                                    }))}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-4">
+                                <div className="mb-3">
+                                  <label className="form-label">Button Color</label>
+                                  <input
+                                    type="color"
+                                    className="form-control form-control-color"
+                                    value={websiteData.clientApproval?.floatingButtonColor || '#C8102E'}
+                                    onChange={(e) => setWebsiteData(prev => ({
+                                      ...prev,
+                                      clientApproval: {
+                                        ...prev.clientApproval,
+                                        floatingButtonColor: e.target.value
+                                      }
+                                    }))}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {websiteData.clientApproval?.isFormEnabled && (
+                      <div className="card">
+                        <div className="card-header">
+                          <h6 className="mb-0">Approval Status Dashboard</h6>
+                        </div>
+                        <div className="card-body">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="text-center p-3 bg-light rounded">
+                                <h6 className="text-primary">Form Status</h6>
+                                <span className={`badge ${
+                                  websiteData.clientApproval?.formStatus === 'completed' ? 'bg-success' : 
+                                  websiteData.clientApproval?.formStatus === 'waiting' ? 'bg-warning' : 'bg-secondary'
+                                }`}>
+                                  {websiteData.clientApproval?.formStatus === 'completed' ? '✅ Completed' : 
+                                   websiteData.clientApproval?.formStatus === 'waiting' ? '⏳ Waiting' : '📝 Draft'}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="text-center p-3 bg-light rounded">
+                                <h6 className="text-success">Client Info</h6>
+                                {websiteData.clientApproval?.clientInfo ? (
+                                  <div>
+                                    <small className="d-block">{websiteData.clientApproval.clientInfo.name}</small>
+                                    <small className="text-muted">{websiteData.clientApproval.clientInfo.email}</small>
+                                  </div>
+                                ) : (
+                                  <small className="text-muted">Not provided</small>
+                                )}
+                              </div>
+                            </div>
+                            <div className="col-md-4">
+                              <div className="text-center p-3 bg-light rounded">
+                                <h6 className="text-info">Overall Status</h6>
+                                <span className={`badge ${websiteData.clientApproval?.overallApproved ? 'bg-success' : 'bg-warning'}`}>
+                                  {websiteData.clientApproval?.overallApproved ? '✅ Approved' : '⏳ Pending'}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {websiteData.clientApproval?.sectionApprovals && (
+                            <div className="mt-4">
+                              <h6>Section Approvals:</h6>
+                              <div className="row">
+                                {Object.entries(websiteData.clientApproval.sectionApprovals).map(([section, approval]) => (
+                                  <div key={section} className="col-md-6 mb-2">
+                                    <div className="d-flex justify-content-between align-items-center p-2 bg-light rounded">
+                                      <span className="text-capitalize">{section}</span>
+                                      <span className={`badge ${
+                                        approval.approved ? 'bg-success' : 
+                                        approval.status === 'needsEdit' ? 'bg-warning' : 'bg-secondary'
+                                      }`}>
+                                        {approval.approved ? '✅' : approval.status === 'needsEdit' ? '⚠️' : '⏳'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

@@ -554,6 +554,13 @@ export default function ServicesEditor() {
                   <Palette size={16} className="me-2" />
                   Colors & Branding
                 </button>
+                <button 
+                  className={`list-group-item list-group-item-action ${activeTab === 'approval' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('approval')}
+                >
+                  <CheckCircle size={16} className="me-2" />
+                  Client Approval
+                </button>
               </div>
             </div>
           </div>

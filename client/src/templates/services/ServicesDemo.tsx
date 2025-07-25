@@ -4,6 +4,8 @@ import { Phone, Mail, MapPin, Clock, Star, Menu, X, Wrench, Facebook, Instagram,
 import { OptimizedImage } from '../../components/OptimizedImage';
 import { usePerformance } from '../../hooks/use-performance';
 import { useIsSmallMobile } from '../../hooks/use-mobile';
+import { TemplateApprovalForm } from '../../components/TemplateApprovalForm';
+import { FloatingApprovalButton } from '../../components/FloatingApprovalButton';
 
 export default function ServicesDemo() {
   const [language, setLanguage] = useState('es');
@@ -745,6 +747,64 @@ export default function ServicesDemo() {
           </div>
         </div>
       </footer>
+
+      {/* Client Approval Form */}
+      {savedConfig?.clientApproval?.isFormEnabled && savedConfig.clientApproval.formStatus !== 'completed' && (
+        <TemplateApprovalForm 
+          config={savedConfig}
+          language={language}
+          templateType="services"
+          onSubmit={(formData) => {
+            console.log('CLIENT APPROVAL FORM SUBMITTED');
+            console.log('Template: Services');
+            console.log(`Client: ${formData.clientName} (${formData.clientEmail})`);
+            console.log(`Submitted: ${new Date().toISOString()}`);
+            console.log('Approved Sections:', Object.entries(formData.sectionApprovals).filter(([_, approval]) => approval.approved).map(([section]) => section));
+            console.log('Pending Edits:', Object.entries(formData.sectionApprovals).filter(([_, approval]) => approval.status === 'needsEdit').map(([section, approval]) => `${section}: ${approval.comments}`));
+            console.log('General Instructions from Admin:', savedConfig.clientApproval.generalInstructions || 'None');
+            
+            // Update the configuration with form data
+            const updatedConfig = {
+              ...savedConfig,
+              clientApproval: {
+                ...savedConfig.clientApproval,
+                formStatus: 'completed',
+                clientInfo: {
+                  name: formData.clientName,
+                  email: formData.clientEmail,
+                  submissionDate: new Date().toISOString()
+                },
+                sectionApprovals: formData.sectionApprovals,
+                overallApproved: formData.overallApproved,
+                lastSavedAt: new Date().toISOString()
+              }
+            };
+
+            fetch('/api/config/services-demo', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(updatedConfig)
+            }).then(response => {
+              if (response.ok) {
+                console.log('CLIENT APPROVAL DATA SAVED TO DATABASE');
+                // Refresh the config
+                setSavedConfig(updatedConfig);
+              }
+            }).catch(err => console.error('Error saving client approval:', err));
+          }}
+        />
+      )}
+
+      {/* Floating Approval Button */}
+      {savedConfig?.clientApproval?.isFormEnabled && savedConfig.clientApproval.showFloatingButton !== false && (
+        <FloatingApprovalButton
+          text={savedConfig.clientApproval.floatingButtonText || (language === 'es' ? 'Editar/Aprobar Sitio Web' : 'Edit/Approve Website')}
+          color={savedConfig.clientApproval.floatingButtonColor || '#C8102E'}
+          language={language}
+          show={true}
+        />
+      )}
+
     </div>
   );
 }
