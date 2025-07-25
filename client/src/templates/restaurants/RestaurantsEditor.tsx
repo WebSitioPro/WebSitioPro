@@ -1432,6 +1432,26 @@ export default function RestaurantsEditor() {
                             </div>
 
                             <div className="mb-3">
+                              <label className="form-label">Email Notification</label>
+                              <input
+                                type="email"
+                                className="form-control"
+                                value={websiteData.clientApproval?.notificationEmail || ''}
+                                onChange={(e) => setWebsiteData(prev => ({
+                                  ...prev,
+                                  clientApproval: {
+                                    ...prev.clientApproval,
+                                    notificationEmail: e.target.value
+                                  }
+                                }))}
+                                placeholder="your-email@example.com"
+                              />
+                              <small className="text-muted">
+                                You'll receive an email notification when the client submits their approval form.
+                              </small>
+                            </div>
+
+                            <div className="mb-3">
                               <div className="form-check form-switch">
                                 <input
                                   className="form-check-input"

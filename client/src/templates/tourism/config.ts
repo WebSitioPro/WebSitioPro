@@ -55,6 +55,29 @@ export interface TourismTemplateConfig {
   bannerBackgroundColor: string;
   bannerTextColor: string;
   bannerTextSize: string;
+  
+  // Client Approval System
+  clientApproval?: {
+    isFormEnabled: boolean;
+    formStatus: "active" | "completed" | "disabled";
+    notificationEmail?: string;
+    clientInfo: {
+      name: string;
+      email: string;
+      submissionDate: string;
+    };
+    sectionApprovals: {
+      hero: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      about: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      tours: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      photos: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      reviews: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+      contact: { status: "pending" | "approved" | "needsEdit"; approved: boolean; comments: string };
+    };
+    generalInstructions: string;
+    overallApproved: boolean;
+    lastSavedAt: string;
+  };
 }
 
 export const tourismTemplateMetadata = {
