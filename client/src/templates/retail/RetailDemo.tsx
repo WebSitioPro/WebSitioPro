@@ -135,6 +135,7 @@ const translations = {
 export default function RetailDemo() {
   const [language, setLanguage] = useState<'es' | 'en'>('es');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
