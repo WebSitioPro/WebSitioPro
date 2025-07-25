@@ -680,12 +680,7 @@ export default function RestaurantsDemo() {
         </div>
       </section>
 
-      {/* Chatbot Placeholder */}
-      <div id="chatbot" className="chatbot-placeholder position-fixed" style={{ bottom: '20px', right: '20px', zIndex: 1000 }}>
-        <button className="btn btn-success rounded-circle" style={{ width: '60px', height: '60px' }}>
-          💬
-        </button>
-      </div>
+
 
       {/* Footer */}
       <footer className="bg-dark text-white py-4">
