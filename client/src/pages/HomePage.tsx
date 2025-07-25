@@ -47,28 +47,36 @@ export default function HomePage() {
     // Use a dedicated 'homepage' configuration separate from client configs
     const loadConfig = async () => {
       try {
-        // Add cache-busting timestamp
+        // Add cache-busting timestamp to prevent browser caching
         const timestamp = Date.now();
-        const response = await fetch(`/api/config/homepage?_t=${timestamp}`);
+        const response = await fetch(`/api/config/homepage?_t=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+        
         if (response.ok) {
           const data = await response.json();
           
-          // Parse JSON fields that are stored as strings
-          if (data.pricingBannerText && typeof data.pricingBannerText === 'string') {
-            try {
-              data.pricingBannerText = JSON.parse(data.pricingBannerText);
-            } catch (e) {
-              console.log('Error parsing pricingBannerText:', e);
-            }
-          }
+          // Comprehensive JSON field parsing for all stored text content
+          const fieldsToParseAsJSON = [
+            'pricingBannerText', 'paymentText', 'bannerText', 'translations',
+            'heroTitle', 'heroSubtitle', 'aboutTitle', 'aboutText', 
+            'pricingTitle', 'pricingText', 'proBannerText'
+          ];
           
-          if (data.paymentText && typeof data.paymentText === 'string') {
-            try {
-              data.paymentText = JSON.parse(data.paymentText);
-            } catch (e) {
-              console.log('Error parsing paymentText:', e);
+          fieldsToParseAsJSON.forEach(field => {
+            if (data[field] && typeof data[field] === 'string') {
+              try {
+                data[field] = JSON.parse(data[field]);
+              } catch (e) {
+                console.log(`Error parsing ${field}:`, e);
+              }
             }
-          }
+          });
           
           setSavedConfig(data);
           console.log('Loaded saved config:', data);
@@ -99,10 +107,17 @@ export default function HomePage() {
 
     loadConfig();
 
-    // Reload config when returning to homepage
+    // Reload config when returning to homepage, but only if it's been a while
+    let lastLoadTime = Date.now();
+    
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        loadConfig();
+        const now = Date.now();
+        // Only reload if more than 30 seconds have passed to prevent conflicts with editor saves
+        if (now - lastLoadTime > 30000) {
+          loadConfig();
+          lastLoadTime = now;
+        }
       }
     };
 

@@ -90,7 +90,7 @@ interface ProPageData {
 
 export default function ProEditorPage() {
   const params = useParams();
-  const clientId = params.clientId || 'homepage';
+  const clientId = params.clientId || 'pro-editor-demo';
   const [activeTab, setActiveTab] = useState('banner');
   const [proPageData, setProPageData] = useState<ProPageData>({
     // Pro Page

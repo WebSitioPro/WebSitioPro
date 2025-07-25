@@ -23,11 +23,49 @@ export default function ProPage() {
   };
 
   useEffect(() => {
-    // Load saved configuration to demonstrate Editor functionality
-    fetch('/api/config/homepage')
-      .then(res => res.json())
-      .then(data => setSavedConfig(data))
-      .catch(err => console.log('Config not loaded:', err));
+    // Load saved configuration with cache-busting to match HomePage.tsx
+    const loadConfig = async () => {
+      try {
+        // Add cache-busting timestamp to prevent browser caching issues
+        const timestamp = Date.now();
+        const response = await fetch(`/api/config/homepage?_t=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Parse JSON fields to match HomePage.tsx behavior
+          const fieldsToParseAsJSON = [
+            'pricingBannerText', 'paymentText', 'bannerText', 'translations',
+            'heroTitle', 'heroSubtitle', 'aboutTitle', 'aboutText', 
+            'pricingTitle', 'pricingText', 'proBannerText'
+          ];
+          
+          fieldsToParseAsJSON.forEach(field => {
+            if (data[field] && typeof data[field] === 'string') {
+              try {
+                data[field] = JSON.parse(data[field]);
+              } catch (e) {
+                console.log(`ProPage - Error parsing ${field}:`, e);
+              }
+            }
+          });
+          
+          setSavedConfig(data);
+          console.log('Loaded config for client:', 'homepage', data);
+        }
+      } catch (err) {
+        console.log('ProPage config not loaded:', err);
+      }
+    };
+
+    loadConfig();
   }, []);
 
   const t = (key: string) => {

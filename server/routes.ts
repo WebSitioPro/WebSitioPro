@@ -48,9 +48,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const idParam = req.params.id;
       console.log(`[DEBUG] Getting config for ID: ${idParam}`);
 
-      // Special handling for homepage - bypass isolation system
+      // Add universal cache prevention for all config requests to prevent stale data
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'ETag': '', // Disable ETag caching
+        'Last-Modified': ''
+      });
+
+      // Special handling for homepage - bypass isolation system with additional debugging
       if (idParam === "homepage") {
         console.log(`[DEBUG] Homepage access - bypassing isolation system`);
+        
         try {
           const config = await storage.getWebsiteConfig(1);
           console.log(`[DEBUG] Homepage direct query result:`, config ? 'SUCCESS' : 'NOT FOUND');
