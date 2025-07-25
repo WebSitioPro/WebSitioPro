@@ -10,17 +10,11 @@ import {
   Wrench,
   ChevronRight
 } from 'lucide-react';
-import { professionalsTemplateOption } from '@/templates/professionals';
-import { restaurantsTemplateOption } from '@/templates/restaurants';
-import { tourismTemplateOption } from '@/templates/tourism';
-import { retailTemplateOption } from '@/templates/retail';
-import { servicesTemplateOption } from '@/templates/services';
-
 interface TemplateOption {
-  id: 'professionals' | 'restaurants' | 'tourism' | 'retail' | 'services';
+  id: string;
   name: string;
   description: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: React.ComponentType<any>;
   demoUrl: string;
   editorUrl: string;
   color: string;
@@ -28,12 +22,12 @@ interface TemplateOption {
 
 const templateOptions: TemplateOption[] = [
   {
-    id: professionalsTemplateOption.id,
-    name: professionalsTemplateOption.name,
-    description: professionalsTemplateOption.description.en,
+    id: 'professionals',
+    name: 'Professionals',
+    description: 'Professional template for doctors, dentists and other healthcare professionals',
     icon: Briefcase,
-    demoUrl: professionalsTemplateOption.demoRoute,
-    editorUrl: professionalsTemplateOption.editorRoute,
+    demoUrl: '/professionals-demo',
+    editorUrl: '/editor/professionals',
     color: '#C8102E'
   },
   {
@@ -124,7 +118,7 @@ export default function TemplateEditor() {
                           >
                             <IconComponent 
                               size={28} 
-                              style={{ color: template.color }}
+                              color={template.color}
                             />
                           </div>
                           <div className="flex-grow-1">
