@@ -150,6 +150,17 @@ Examples:
 
 ```
 Changelog:
+- July 25, 2025. Fixed Homepage Data Reversion and Content Flash Issues
+  - RESOLVED: Fixed critical data persistence issue where Hero, About, and Pricing text edits were reverting to old versions
+  - RESOLVED: Eliminated content flash between HomePage and ProPage navigation by adding loading screens
+  - CRITICAL FIX: Separated editor configurations - EditorPage and ProEditorPage now use 'editor-demo' and 'pro-editor-demo' instead of 'homepage'
+  - Enhanced cache-busting with comprehensive no-cache headers on both client and server sides
+  - Added conditional loading states that prevent display of content until real data loads
+  - Reduced automatic refresh frequency to prevent conflicts with editor saves (30+ second intervals)
+  - Universal cache prevention headers added to all config API requests to prevent stale data
+  - Fixed multiple components competing for same homepage configuration causing data overwrites
+  - Latest edits confirmed preserved in database with proper timestamp tracking
+  - Homepage and ProPage now load cleanly without showing old/placeholder content flashes
 - July 24, 2025. Template Flash Artifact Cleanup
   - RESOLVED: Removed all fallback mock data causing hero section and content flashing in template demos
   - Services template: Removed placeholder photo and review data that caused flash before real data loaded

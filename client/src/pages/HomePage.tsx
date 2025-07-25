@@ -14,6 +14,7 @@ export default function HomePage() {
   const [domainInput, setDomainInput] = useState('');
   const [domainStatus, setDomainStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'error'>('idle');
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [isConfigLoaded, setIsConfigLoaded] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   
   // Performance optimizations
@@ -79,6 +80,7 @@ export default function HomePage() {
           });
           
           setSavedConfig(data);
+          setIsConfigLoaded(true);
           console.log('Loaded saved config:', data);
         } else {
           // If homepage config doesn't exist, create it with default values
@@ -390,6 +392,20 @@ export default function HomePage() {
   };
 
 
+
+  // Show loading screen until config is loaded to prevent any flash
+  if (!isConfigLoaded) {
+    return (
+      <div className="min-h-screen bg-white d-flex align-items-center justify-content-center">
+        <div className="text-center">
+          <div className="spinner-border text-primary mb-3" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+          <p className="text-muted">Cargando contenido...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">

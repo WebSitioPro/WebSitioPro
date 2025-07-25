@@ -5,6 +5,7 @@ import { CheckCircle, Users, Palette, Rocket, Phone, Mail, MapPin, Globe, Messag
 export default function ProPage() {
   const [language, setLanguage] = useState('es');
   const [savedConfig, setSavedConfig] = useState<any>(null);
+  const [isConfigLoaded, setIsConfigLoaded] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [, setLocation] = useLocation();
   
@@ -58,6 +59,7 @@ export default function ProPage() {
           });
           
           setSavedConfig(data);
+          setIsConfigLoaded(true);
           console.log('Loaded config for client:', 'homepage', data);
         }
       } catch (err) {
@@ -242,6 +244,20 @@ export default function ProPage() {
       document.head.removeChild(style);
     };
   }, []);
+
+  // Show loading screen until config is loaded to prevent any flash
+  if (!isConfigLoaded) {
+    return (
+      <div className="min-h-screen bg-white d-flex align-items-center justify-content-center">
+        <div className="text-center">
+          <div className="spinner-border text-primary mb-3" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+          <p className="text-muted">Cargando página Pro...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
