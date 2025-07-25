@@ -2051,7 +2051,7 @@ export default function ProfessionalsEditor() {
                                 onChange={(e) => setWebsiteData(prev => ({
                                   ...prev,
                                   clientApproval: {
-                                    ...prev.clientApproval!,
+                                    ...prev.clientApproval,
                                     notificationEmail: e.target.value
                                   }
                                 }))}
