@@ -61,7 +61,7 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
     };
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!clientName.trim() || !clientEmail.trim()) {
@@ -71,19 +71,56 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
 
     const summary = getApprovalSummary();
     const overallApproved = summary.approved === summary.total;
-
+    
     setIsSubmitting(true);
 
-    // Simulate processing delay
-    setTimeout(() => {
+    try {
+      // First, call the original onSubmit to update the config
       onSubmit({
         clientName: clientName.trim(),
         clientEmail: clientEmail.trim(),
         sectionApprovals,
         overallApproved
       });
-      
-      setIsSubmitting(false);
+
+      // Send email notification if email is configured
+      if (config.clientApproval?.notificationEmail) {
+        const approvedSections = Object.entries(sectionApprovals)
+          .filter(([_, approval]) => approval.approved)
+          .map(([section]) => section);
+          
+        const pendingEdits = Object.entries(sectionApprovals)
+          .filter(([_, approval]) => approval.status === 'needsEdit')
+          .map(([section, approval]) => `${section}: ${approval.comments}`);
+
+        console.log('[EMAIL] Sending notification email...');
+        
+        const response = await fetch('/api/send-approval-notification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            notificationEmail: config.clientApproval.notificationEmail,
+            clientName: clientName.trim(),
+            clientEmail: clientEmail.trim(),
+            businessName: config.businessName || config.doctorName || 'Business',
+            templateType: config.templateType || 'professionals',
+            approvedSections,
+            pendingEdits,
+            generalInstructions: config.clientApproval.generalInstructions || 'None',
+            submissionDate: new Date().toISOString()
+          }),
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+          console.log('[EMAIL] Notification sent successfully:', result);
+        } else {
+          console.error('[EMAIL] Failed to send notification:', result);
+        }
+      }
       
       // Show success message
       alert(
@@ -91,7 +128,19 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
           ? `¡Gracias por tu feedback, ${clientName}! Hemos recibido tu aprobación del sitio web.`
           : `Thank you for your feedback, ${clientName}! We have received your website approval.`
       );
-    }, 1500);
+      
+    } catch (error) {
+      console.error('[EMAIL] Error sending notification:', error);
+      
+      // Still show success message for the form submission even if email fails
+      alert(
+        language === 'es' 
+          ? `¡Gracias por tu feedback, ${clientName}! Hemos recibido tu aprobación del sitio web.`
+          : `Thank you for your feedback, ${clientName}! We have received your website approval.`
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const summary = getApprovalSummary();

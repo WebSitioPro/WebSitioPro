@@ -18,6 +18,7 @@ import {
   clientUrlMiddleware,
   registerClientUrlRoutes
 } from "./client-urls";
+import { sendClientApprovalNotification } from "./sendgrid";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API route for getting all website configurations (for client manager)
@@ -898,6 +899,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Make webhook error:", error);
       res.status(500).json({ 
         error: "Make webhook processing failed",
+        details: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
+  // API route for sending client approval notification emails
+  app.post("/api/send-approval-notification", async (req: Request, res: Response) => {
+    try {
+      const {
+        notificationEmail,
+        clientName,
+        clientEmail,
+        businessName,
+        templateType,
+        approvedSections,
+        pendingEdits,
+        generalInstructions,
+        submissionDate
+      } = req.body;
+
+      // Validate required fields
+      if (!notificationEmail || !clientName || !clientEmail || !businessName) {
+        return res.status(400).json({ 
+          error: "Missing required fields: notificationEmail, clientName, clientEmail, businessName" 
+        });
+      }
+
+      console.log(`[EMAIL] Sending approval notification to: ${notificationEmail}`);
+      console.log(`[EMAIL] Client: ${clientName} (${clientEmail})`);
+      console.log(`[EMAIL] Business: ${businessName} (${templateType})`);
+
+      const emailSent = await sendClientApprovalNotification({
+        notificationEmail,
+        clientName,
+        clientEmail,
+        businessName,
+        templateType: templateType || 'professionals',
+        approvedSections: approvedSections || [],
+        pendingEdits: pendingEdits || [],
+        generalInstructions: generalInstructions || 'None',
+        submissionDate: submissionDate || new Date().toISOString()
+      });
+
+      if (emailSent) {
+        console.log(`[EMAIL] Notification sent successfully to ${notificationEmail}`);
+        res.json({ 
+          success: true, 
+          message: "Approval notification sent successfully",
+          recipient: notificationEmail
+        });
+      } else {
+        console.error(`[EMAIL] Failed to send notification to ${notificationEmail}`);
+        res.status(500).json({ 
+          error: "Failed to send email notification",
+          details: "Email service encountered an error"
+        });
+      }
+    } catch (error) {
+      console.error("[EMAIL] API endpoint error:", error);
+      res.status(500).json({ 
+        error: "Failed to process email notification request",
         details: error instanceof Error ? error.message : "Unknown error"
       });
     }
