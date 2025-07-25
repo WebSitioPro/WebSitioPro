@@ -1086,7 +1086,7 @@ export default function HomePage() {
       </footer>
 
       {/* Chatbot */}
-      {!chatOpen && (
+      {savedConfig?.showChatbot && !chatOpen && (
         <button 
           onClick={openChat}
           className="btn btn-primary rounded-circle position-fixed bottom-0 end-0 m-4"
@@ -1103,7 +1103,7 @@ export default function HomePage() {
       )}
 
       {/* Chat Window */}
-      {chatOpen && (
+      {savedConfig?.showChatbot && chatOpen && (
         <div 
           className="position-fixed bottom-0 end-0 m-4 bg-white rounded shadow-lg border"
           style={{ 

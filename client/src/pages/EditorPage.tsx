@@ -132,6 +132,7 @@ interface WebsiteData {
   heroTitlePosition: string;
   
   // Chatbot properties
+  showChatbot: boolean;
   chatbotIcon: string;
   chatbotColor: string;
   chatbotTitle: { es: string; en: string };
@@ -301,6 +302,7 @@ export default function EditorPage() {
     },
 
     // Chatbot settings
+    showChatbot: true,
     chatbotIcon: '📞',
     chatbotColor: '#007BFF',
     chatbotTitle: {
@@ -1070,6 +1072,7 @@ export default function EditorPage() {
               bannerTextSize: config.bannerTextSize || prev.bannerTextSize,
               showBanner: config.showBanner !== undefined ? config.showBanner : prev.showBanner,
               // Chatbot fields
+              showChatbot: config.showChatbot !== undefined ? config.showChatbot : prev.showChatbot,
               chatbotIcon: config.chatbotIcon || prev.chatbotIcon,
               chatbotColor: config.chatbotColor || prev.chatbotColor,
               chatbotTitle: config.chatbotTitle ? 
@@ -1232,6 +1235,7 @@ export default function EditorPage() {
         showProBanner: websiteData.showProBanner,
         proWhatsappButtons: websiteData.proWhatsappButtons,
         // Chatbot fields
+        showChatbot: websiteData.showChatbot,
         chatbotIcon: websiteData.chatbotIcon,
         chatbotColor: websiteData.chatbotColor,
         chatbotTitle: JSON.stringify(websiteData.chatbotTitle),
@@ -2536,6 +2540,28 @@ export default function EditorPage() {
               {activeTab === 'chatbot' && (
                 <div>
                   <h4 className="mb-4">Chatbot Settings</h4>
+                  
+                  {/* Chatbot Enable/Disable Toggle */}
+                  <div className="card mb-4">
+                    <div className="card-body">
+                      <div className="form-check form-switch">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          role="switch"
+                          id="chatbotToggle"
+                          checked={websiteData.showChatbot}
+                          onChange={(e) => handleInputChange('showChatbot', e.target.checked.toString())}
+                        />
+                        <label className="form-check-label fw-bold" htmlFor="chatbotToggle">
+                          Enable Chatbot Display
+                        </label>
+                      </div>
+                      <small className="text-muted">
+                        When disabled, the chatbot icon will be hidden from the homepage but all settings will be preserved.
+                      </small>
+                    </div>
+                  </div>
                   
                   <div className="row g-3 mb-4">
                     <div className="col-md-6">
