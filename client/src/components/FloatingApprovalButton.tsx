@@ -55,7 +55,7 @@ export function FloatingApprovalButton({ text, color, language, show }: Floating
       }}
     >
       <CheckCircle size={16} />
-      {text || (language === 'es' ? 'Aprobar Sitio' : 'Approve Website')}
+      {text || (language === 'es' ? 'Editar/Aprobar Sitio Web' : 'Edit/Approve Website')}
     </button>
   );
 }

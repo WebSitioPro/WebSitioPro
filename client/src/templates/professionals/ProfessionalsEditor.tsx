@@ -2075,7 +2075,7 @@ export default function ProfessionalsEditor() {
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={websiteData.clientApproval?.floatingButtonText || 'Approve Website'}
+                                  value={websiteData.clientApproval?.floatingButtonText || 'Edit/Approve Website'}
                                   onChange={(e) => setWebsiteData(prev => ({
                                     ...prev,
                                     clientApproval: {
@@ -2083,7 +2083,7 @@ export default function ProfessionalsEditor() {
                                       floatingButtonText: e.target.value
                                     }
                                   }))}
-                                  placeholder="Approve Website"
+                                  placeholder="Edit/Approve Website"
                                 />
                               </div>
                             </div>
