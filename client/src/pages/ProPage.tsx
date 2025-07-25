@@ -308,7 +308,6 @@ export default function ProPage() {
                 >
                   {t('navHome')}
                 </button>
-                <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('demo')}>{t('navDemo')}</button>
                 <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('howItWorks')}>{t('navProcess')}</button>
                 <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('templates')}>{t('navTemplates')}</button>
                 <button className="btn btn-link text-decoration-none text-dark p-0" onClick={() => navigateToSection('pricing')}>{t('navPricing')}</button>
@@ -379,15 +378,6 @@ export default function ProPage() {
                       }}
                     >
                       {t('navHome')}
-                    </button>
-                    <button 
-                      className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
-                      onClick={() => {
-                        setShowMobileMenu(false);
-                        navigateToSection('demo');
-                      }}
-                    >
-                      {t('navDemo')}
                     </button>
                     <button 
                       className="btn btn-link text-decoration-none text-dark py-2 px-3 rounded text-start w-100" 
