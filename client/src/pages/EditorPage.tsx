@@ -1437,6 +1437,13 @@ export default function EditorPage() {
                   <Settings size={16} className="me-2" />
                   Chatbot
                 </button>
+                <button 
+                  className={`nav-link text-start border-0 bg-transparent ${activeTab === 'templates' ? 'active fw-bold' : ''}`}
+                  onClick={() => setActiveTab('templates')}
+                >
+                  <Briefcase size={16} className="me-2" />
+                  Template Manager
+                </button>
                 <Link 
                   href="/editor/pro"
                   className="nav-link text-start border-0 bg-transparent text-decoration-none"
