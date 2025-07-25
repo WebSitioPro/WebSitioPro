@@ -145,7 +145,7 @@ interface WebsiteData {
 
 export default function EditorPage() {
   const params = useParams();
-  const clientId = params.clientId || 'editor-demo';
+  const clientId = params.clientId || 'homepage';
   const [activeTab, setActiveTab] = useState('colors');
   const [websiteData, setWebsiteData] = useState<WebsiteData>({
     // Default colors (Mexican theme)
@@ -2551,7 +2551,7 @@ export default function EditorPage() {
                           role="switch"
                           id="chatbotToggle"
                           checked={websiteData.showChatbot}
-                          onChange={(e) => handleInputChange('showChatbot', e.target.checked.toString())}
+                          onChange={(e) => setWebsiteData(prev => ({ ...prev, showChatbot: e.target.checked }))}
                         />
                         <label className="form-check-label fw-bold" htmlFor="chatbotToggle">
                           Enable Chatbot Display
