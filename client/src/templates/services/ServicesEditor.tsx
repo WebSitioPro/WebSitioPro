@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
-import { Save, ArrowLeft, Eye, Wrench, Camera, Phone, Star, Image, Type, Palette, Plus, Trash2, Settings } from 'lucide-react';
+import { Save, ArrowLeft, Eye, Wrench, Camera, Phone, Star, Image, Type, Palette, Plus, Trash2, Settings, CheckCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { ServicesTemplateConfig } from './config';
 
