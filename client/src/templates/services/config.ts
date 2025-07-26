@@ -51,6 +51,20 @@ export interface ServicesTemplateConfig {
   bannerTextColor: string;
   bannerTextSize: string;
   
+  // Hero Text Positioning & Styling
+  heroTextAlignment: string;
+  heroVerticalAlignment: string;
+  heroTextSpacing: string;
+  heroTitlePosition: string;
+  heroTextColor: string;
+  heroSubtextColor: string;
+  heroTitleSize: string;
+  heroSubtitleSize: string;
+  
+  // Social Media Links
+  facebookUrl: string;
+  instagramUrl: string;
+  
   // Client Approval System
   clientApproval?: {
     isFormEnabled: boolean;

@@ -321,35 +321,97 @@ export default function ProfessionalsDemo() {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-5" style={{ 
-        backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
-          `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${previewData?.heroImage || savedConfig?.heroImage})` : 
-          'none',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor: (previewData?.heroImage || savedConfig?.heroImage) ? 'transparent' : 'hsl(var(--primary) / 0.05)'
-      }}>
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-6">
-              <h1 className="display-4 fw-bold mb-3" style={{ 
-                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--primary))' 
-              }}>
-                {previewData?.doctorName || previewData?.businessName || t('heroTitle')}
+      <section 
+        id="hero" 
+        className="hero-section position-relative d-flex"
+        style={{
+          height: '70vh',
+          minHeight: '500px',
+          backgroundColor: '#f8f9fa',
+          alignItems: (previewData || savedConfig)?.heroVerticalAlignment === 'top' ? 'flex-start' : 
+                     (previewData || savedConfig)?.heroVerticalAlignment === 'bottom' ? 'flex-end' : 'center'
+        }}
+      >
+        <div 
+          className="position-absolute w-100 h-100"
+          style={{
+            backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
+              `url(${previewData?.heroImage || savedConfig?.heroImage})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.7,
+            top: 0,
+            left: 0,
+            zIndex: 1
+          }}
+        />
+
+        <div 
+          className="container position-relative" 
+          style={{ 
+            zIndex: 2,
+            paddingTop: (previewData || savedConfig)?.heroVerticalAlignment === 'top' ? '3rem' : '0',
+            paddingBottom: (previewData || savedConfig)?.heroVerticalAlignment === 'bottom' ? '3rem' : '0'
+          }}
+        >
+          <div className="row">
+            <div 
+              className={
+                (previewData || savedConfig)?.heroTextAlignment === 'left' ? 'col-lg-6 col-12 text-start text-md-start text-center' :
+                (previewData || savedConfig)?.heroTextAlignment === 'right' ? 'col-lg-6 col-12 ms-auto text-end text-md-end text-center' :
+                'col-12 text-center'
+              }
+              style={{
+                marginTop: (previewData || savedConfig)?.heroTitlePosition === 'high' ? '-2rem' : 
+                          (previewData || savedConfig)?.heroTitlePosition === 'low' ? '2rem' : '0',
+                marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1rem' :
+                             (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '4rem' : '2rem'
+              }}
+            >
+              <h1 
+                className="hero-title fw-bold mb-3 mb-md-4"
+                style={{
+                  color: (previewData || savedConfig)?.heroTextColor || '#ffffff',
+                  fontSize: (previewData || savedConfig)?.heroTitleSize || '3.5rem',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                  whiteSpace: 'pre-line',
+                  lineHeight: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1.0' :
+                             (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.3' : '1.1',
+                  marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '0.5rem' :
+                              (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
+                }}
+              >
+                {previewData?.doctorName || previewData?.businessName || savedConfig?.doctorName || savedConfig?.businessName || t('heroTitle')}
               </h1>
-              <h2 className="h3 mb-4" style={{ 
-                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--secondary))' 
-              }}>
-                {previewData?.specialty?.es || previewData?.subcategory || t('heroSubtitle')}
-              </h2>
-              <p className="lead mb-4" style={{ 
-                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--muted-foreground))' 
-              }}>
-                {previewData?.description?.es || previewData?.bio || t('heroDescription')}
+              <p 
+                className="hero-subtitle mb-3 mb-md-4"
+                style={{
+                  color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
+                  fontSize: (previewData || savedConfig)?.heroSubtitleSize || '1.25rem',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                  whiteSpace: 'pre-line',
+                  lineHeight: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1.2' :
+                             (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.6' : '1.4',
+                  marginTop: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '0.5rem' :
+                            (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
+                }}
+              >
+                {previewData?.specialty?.[language] || savedConfig?.specialty?.[language] || t('heroSubtitle')}
+              </p>
+              <p 
+                className="hero-description mb-3 mb-md-4"
+                style={{
+                  color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
+                  fontSize: '1.1rem',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                  whiteSpace: 'pre-line'
+                }}
+              >
+                {previewData?.heroDescription?.[language] || savedConfig?.heroDescription?.[language] || t('heroDescription')}
               </p>
               <a 
-                href={`https://wa.me/${(previewData?.whatsappNumber || previewData?.phone || '529831234567').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(previewData?.whatsappMessage?.es || 'Hola, me gustaría agendar una cita')}`}
+                href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529831234567').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(previewData?.whatsappMessage?.[language] || savedConfig?.whatsappMessage?.[language] || 'Hola, me gustaría agendar una cita')}`}
                 className="btn btn-primary btn-lg text-white"
                 style={{ backgroundColor: '#25D366' }}
                 target="_blank"
@@ -359,30 +421,31 @@ export default function ProfessionalsDemo() {
                 {t('scheduleAppointment')}
               </a>
             </div>
-            <div className="col-lg-6">
-              <div className="text-center">
-                <div 
-                  className="rounded-circle mx-auto mb-3 overflow-hidden border border-3"
-                  style={{ 
-                    width: '300px', 
-                    height: '300px', 
-                    backgroundColor: 'hsl(var(--primary) / 0.1)',
-                    borderColor: 'hsl(var(--primary)) !important'
-                  }}
-                >
-                  <img 
-                    src={previewData?.profileImage || previewData?.photo_url || savedConfig?.profileImage || "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business"}
-                    alt={previewData?.doctorName || previewData?.businessName || "Business"}
-                    className="w-100 h-100"
-                    style={{ objectFit: 'cover' }}
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Business";
+            {(previewData || savedConfig)?.heroTextAlignment !== 'center' && (
+              <div className="col-lg-6">
+                <div className="text-center">
+                  <div 
+                    className="rounded-circle mx-auto mb-3 overflow-hidden border border-3"
+                    style={{ 
+                      width: '300px', 
+                      height: '300px', 
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      borderColor: 'rgba(255, 255, 255, 0.5)'
                     }}
-                  />
+                  >
+                    <img 
+                      src={previewData?.profileImage || savedConfig?.profileImage || "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Profile"}
+                      alt={previewData?.doctorName || savedConfig?.doctorName || "Professional"}
+                      className="w-100 h-100"
+                      style={{ objectFit: 'cover' }}
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Profile";
+                      }}
+                    />
+                  </div>
                 </div>
-                
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>

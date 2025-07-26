@@ -263,33 +263,98 @@ export default function RestaurantsDemo() {
         </div>
       </nav>
 
-      {/* Hero Section with Background Image */}
+      {/* Hero Section with Pro Page Style Positioning */}
       <section 
-        id="home" 
-        className="py-5 position-relative d-flex align-items-center"
+        id="hero" 
+        className="hero-section position-relative d-flex"
         style={{
-          backgroundImage: savedConfig?.heroImage ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${savedConfig.heroImage}')` : 'linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          minHeight: isLargeScreen ? '70vh' : '50vh'
+          height: '70vh',
+          minHeight: '500px',
+          backgroundColor: '#f8f9fa',
+          alignItems: savedConfig?.heroVerticalAlignment === 'top' ? 'flex-start' : 
+                     savedConfig?.heroVerticalAlignment === 'bottom' ? 'flex-end' : 'center'
         }}
       >
-        <div className="container">
+        <div 
+          className="position-absolute w-100 h-100"
+          style={{
+            backgroundImage: savedConfig?.heroImage ? `url(${savedConfig.heroImage})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.7,
+            top: 0,
+            left: 0,
+            zIndex: 1
+          }}
+        />
+
+        <div 
+          className="container position-relative" 
+          style={{ 
+            zIndex: 2,
+            paddingTop: savedConfig?.heroVerticalAlignment === 'top' ? '3rem' : '0',
+            paddingBottom: savedConfig?.heroVerticalAlignment === 'bottom' ? '3rem' : '0'
+          }}
+        >
           <div className="row">
-            <div className="col-lg-8 col-xl-6">
-              <h1 className="display-4 fw-bold mb-4 text-white">
-                {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || t('businessName')}
+            <div 
+              className={
+                savedConfig?.heroTextAlignment === 'left' ? 'col-lg-8 col-12 text-start text-md-start text-center' :
+                savedConfig?.heroTextAlignment === 'right' ? 'col-lg-8 col-12 ms-auto text-end text-md-end text-center' :
+                'col-12 text-center'
+              }
+              style={{
+                marginTop: savedConfig?.heroTitlePosition === 'high' ? '-2rem' : 
+                          savedConfig?.heroTitlePosition === 'low' ? '2rem' : '0',
+                marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '1rem' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '4rem' : '2rem'
+              }}
+            >
+              <h1 
+                className="hero-title fw-bold mb-3 mb-md-4"
+                style={{
+                  color: savedConfig?.heroTextColor || '#ffffff',
+                  fontSize: savedConfig?.heroTitleSize || '3.5rem',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                  whiteSpace: 'pre-line',
+                  lineHeight: savedConfig?.heroTextSpacing === 'compact' ? '1.0' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '1.3' : '1.1',
+                  marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' :
+                              savedConfig?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
+                }}
+              >
+                {(savedConfig?.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || savedConfig?.businessName || t('businessName')}
               </h1>
-              <p className="lead mb-4 text-white">
-                {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || ''}
+              <p 
+                className="hero-subtitle mb-3 mb-md-4"
+                style={{
+                  color: savedConfig?.heroSubtextColor || '#ffffff',
+                  fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                  whiteSpace: 'pre-line',
+                  lineHeight: savedConfig?.heroTextSpacing === 'compact' ? '1.2' :
+                             savedConfig?.heroTextSpacing === 'spacious' ? '1.6' : '1.4',
+                  marginTop: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' :
+                            savedConfig?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
+                }}
+              >
+                {(savedConfig?.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || ''}
               </p>
-              <p className="mb-4 text-white">
-                {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
+              <p 
+                className="hero-description mb-3 mb-md-4"
+                style={{
+                  color: savedConfig?.heroSubtextColor || '#ffffff',
+                  fontSize: '1.1rem',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                  whiteSpace: 'pre-line'
+                }}
+              >
+                {(savedConfig?.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
               </p>
               {savedConfig?.whatsappNumber && (
                 <a 
-                  href={`https://wa.me/${savedConfig.whatsappNumber}?text=Hola, me gustaría hacer una reservación`}
+                  href={`https://wa.me/${savedConfig.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue(savedConfig.whatsappMessage) || 'Hola, me gustaría hacer una reservación')}`}
                   className="btn btn-lg text-white"
                   style={{ backgroundColor: '#25D366' }}
                   target="_blank"
