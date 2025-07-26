@@ -904,6 +904,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // API route to get EmailJS configuration (public key only)
+  app.get("/api/emailjs-config", (req: Request, res: Response) => {
+    res.json({
+      publicKey: process.env.EMAILJS_PUBLIC_KEY,
+      serviceId: 'service_ny04nlr',
+      templateId: 'template_moe6poc'
+    });
+  });
+
   // API route for sending client approval notification emails via EmailJS
   app.post("/api/send-emailjs-notification", async (req: Request, res: Response) => {
     try {
