@@ -904,7 +904,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // API route for sending client approval notification emails
+  // API route for sending client approval notification emails via EmailJS
+  app.post("/api/send-emailjs-notification", async (req: Request, res: Response) => {
+    try {
+      const {
+        to_email,
+        client_name,
+        client_email,
+        business_name,
+        template_type,
+        approved_sections,
+        pending_edits,
+        general_instructions,
+        submission_date
+      } = req.body;
+
+      // Validate required fields
+      if (!to_email || !client_name || !client_email || !business_name) {
+        return res.status(400).json({ 
+          error: "Missing required fields: to_email, client_name, client_email, business_name" 
+        });
+      }
+
+      console.log(`[EmailJS] Sending approval notification to: ${to_email}`);
+      console.log(`[EmailJS] Client: ${client_name} (${client_email})`);
+      console.log(`[EmailJS] Business: ${business_name} (${template_type})`);
+
+      // Prepare EmailJS template parameters
+      const templateParams = {
+        to_email,
+        client_name,
+        client_email,
+        business_name,
+        template_type: template_type.charAt(0).toUpperCase() + template_type.slice(1),
+        approved_sections: approved_sections || 'None',
+        pending_edits: pending_edits || 'None',
+        general_instructions: general_instructions || 'None',
+        submission_date: new Date(submission_date).toLocaleString(),
+        message: `Client Approval Form Submission for ${business_name}`
+      };
+
+      // Use node-fetch or axios to call EmailJS API directly from server
+      const emailjsResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          service_id: 'service_ny04nlr',
+          template_id: process.env.EMAILJS_TEMPLATE_ID,
+          user_id: process.env.EMAILJS_PUBLIC_KEY,
+          template_params: templateParams
+        }),
+      });
+
+      if (emailjsResponse.ok) {
+        console.log('[EmailJS] Email sent successfully');
+        res.json({ success: true, message: 'Email notification sent successfully' });
+      } else {
+        const errorText = await emailjsResponse.text();
+        console.error('[EmailJS] Failed to send email:', errorText);
+        res.status(500).json({ error: 'Failed to send email notification', details: errorText });
+      }
+
+    } catch (error) {
+      console.error('[EmailJS] Error:', error);
+      res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+  });
+
+  // Legacy API route for sending client approval notification emails
   app.post("/api/send-approval-notification", async (req: Request, res: Response) => {
     try {
       const {

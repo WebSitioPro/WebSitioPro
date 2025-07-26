@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CheckCircle, XCircle, AlertCircle, Send, User, Mail, MessageSquare, Eye } from 'lucide-react';
+import { sendClientApprovalEmail } from '../lib/emailjs';
 
 interface SectionApproval {
   status: "pending" | "approved" | "needsEdit";
@@ -97,32 +98,24 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
           .filter(([_, approval]) => approval.status === 'needsEdit')
           .map(([section, approval]) => `${section}: ${approval.comments}`);
 
-        console.log('[EMAIL] Sending notification email...');
+        console.log('[EmailJS] Sending notification email...');
         
-        const response = await fetch('/api/send-approval-notification', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            notificationEmail: config.clientApproval.notificationEmail,
-            clientName: clientName.trim(),
-            clientEmail: clientEmail.trim(),
-            businessName: config.businessName || config.doctorName || 'Business',
-            templateType: config.templateType || 'professionals',
-            approvedSections,
-            pendingEdits,
-            generalInstructions: config.clientApproval.generalInstructions || 'None',
-            submissionDate: new Date().toISOString()
-          }),
+        const emailSent = await sendClientApprovalEmail({
+          to_email: config.clientApproval.notificationEmail,
+          client_name: clientName.trim(),
+          client_email: clientEmail.trim(),
+          business_name: config.businessName || config.doctorName || 'Business',
+          template_type: config.templateType || 'professionals',
+          approved_sections: approvedSections.join(', '),
+          pending_edits: pendingEdits.join(', '),
+          general_instructions: config.clientApproval.generalInstructions || 'None',
+          submission_date: new Date().toISOString()
         });
-
-        const result = await response.json();
         
-        if (response.ok) {
-          console.log('[EMAIL] Notification sent successfully:', result);
+        if (emailSent) {
+          console.log('[EmailJS] Notification sent successfully');
         } else {
-          console.error('[EMAIL] Failed to send notification:', result);
+          console.error('[EmailJS] Failed to send notification');
         }
       }
       
