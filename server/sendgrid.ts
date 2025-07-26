@@ -141,7 +141,7 @@ This notification was sent automatically by WebSitioPro Client Approval System
 
   return await sendEmail({
     to: params.notificationEmail,
-    from: 'noreply@websitiopro.com', // You may need to verify this sender email in SendGrid
+    from: 'bluerockchris@gmail.com', // Using verified sender email for testing
     subject,
     html: htmlContent,
     text: textContent
