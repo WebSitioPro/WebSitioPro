@@ -194,7 +194,7 @@ export function ClientApprovalForm({ config, language, onSubmit }: ClientApprova
                         className="form-control"
                         value={clientName}
                         onChange={(e) => setClientName(e.target.value)}
-                        placeholder={language === 'es' ? 'Dr. María González' : 'Dr. María González'}
+                        placeholder={language === 'es' ? 'tu nombre aquí' : 'your name here'}
                         required
                       />
                     </div>

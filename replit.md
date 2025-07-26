@@ -150,6 +150,16 @@ Examples:
 
 ```
 Changelog:
+- July 26, 2025. EmailJS Integration Completed Successfully
+  - COMPLETED: Successfully switched from SendGrid to EmailJS for email notifications due to 403 Forbidden errors
+  - Fixed client-side EmailJS implementation (EmailJS doesn't support server-side API calls)
+  - Updated template ID to correct one: template_moe6poc
+  - Created secure endpoint (/api/emailjs-config) to fetch EmailJS configuration
+  - Implemented proper client-side email sending with environment variable integration
+  - Email notifications now working successfully on Professionals template
+  - Fixed Client Name placeholder text from "Dr.Maria Gonzalez" to "your name here"/"tu nombre aquí"
+  - EmailJS configuration: Service ID: service_ny04nlr, Template ID: template_moe6poc
+  - All 5 templates ready for email notification testing (Professionals confirmed working)
 - July 25, 2025. Client Approval System Expansion Complete
   - COMPLETED: Successfully expanded client approval system from Professionals template to all 5 templates
   - Created TemplateApprovalForm component with template-specific section names (menu for restaurants, tours for tourism, products for retail, services for services)
