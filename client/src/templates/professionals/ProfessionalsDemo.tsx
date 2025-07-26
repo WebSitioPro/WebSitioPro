@@ -355,91 +355,99 @@ export default function ProfessionalsDemo() {
             paddingBottom: (previewData || savedConfig)?.heroVerticalAlignment === 'bottom' ? '3rem' : '0'
           }}
         >
-          <div className="row">
+          <div className="row align-items-center">
+            {/* Text Content */}
             <div 
               className={
-                (previewData || savedConfig)?.heroTextAlignment === 'left' ? 'col-lg-6 col-12 text-start text-md-start text-center' :
-                (previewData || savedConfig)?.heroTextAlignment === 'right' ? 'col-lg-6 col-12 ms-auto text-end text-md-end text-center' :
-                'col-12 text-center'
+                (previewData || savedConfig)?.heroTextAlignment === 'center' ? 'col-12' : 'col-lg-8'
               }
-              style={{
-                marginTop: (previewData || savedConfig)?.heroTitlePosition === 'high' ? '-2rem' : 
-                          (previewData || savedConfig)?.heroTitlePosition === 'low' ? '2rem' : '0',
-                marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1rem' :
-                             (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '4rem' : '2rem'
-              }}
             >
-              <h1 
-                className="hero-title fw-bold mb-3 mb-md-4"
+              <div 
+                className={
+                  (previewData || savedConfig)?.heroTextAlignment === 'left' ? 'text-start' :
+                  (previewData || savedConfig)?.heroTextAlignment === 'right' ? 'text-end' :
+                  'text-center'
+                }
                 style={{
-                  color: (previewData || savedConfig)?.heroTextColor || '#ffffff',
-                  fontSize: (previewData || savedConfig)?.heroTitleSize || '3.5rem',
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-                  whiteSpace: 'pre-line',
-                  lineHeight: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1.0' :
-                             (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.3' : '1.1',
-                  marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '0.5rem' :
-                              (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
+                  marginTop: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1rem' :
+                            (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '3rem' : '2rem',
+                  marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1rem' :
+                               (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '3rem' : '2rem'
                 }}
               >
-                {previewData?.doctorName || previewData?.businessName || savedConfig?.doctorName || savedConfig?.businessName || t('heroTitle')}
-              </h1>
-              <p 
-                className="hero-subtitle mb-3 mb-md-4"
-                style={{
-                  color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
-                  fontSize: (previewData || savedConfig)?.heroSubtitleSize || '1.25rem',
-                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                  whiteSpace: 'pre-line',
-                  lineHeight: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1.2' :
-                             (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.6' : '1.4',
-                  marginTop: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '0.5rem' :
-                            (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
-                }}
-              >
-                {previewData?.specialty?.[language] || savedConfig?.specialty?.[language] || t('heroSubtitle')}
-              </p>
-              <p 
-                className="hero-description mb-3 mb-md-4"
-                style={{
-                  color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
-                  fontSize: '1.1rem',
-                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                  whiteSpace: 'pre-line'
-                }}
-              >
-                {previewData?.heroDescription?.[language] || savedConfig?.heroDescription?.[language] || t('heroDescription')}
-              </p>
-              <a 
-                href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529831234567').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(previewData?.whatsappMessage?.[language] || savedConfig?.whatsappMessage?.[language] || 'Hola, me gustaría agendar una cita')}`}
-                className="btn btn-primary btn-lg text-white"
-                style={{ backgroundColor: '#25D366' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Phone className="me-2" size={20} />
-                {t('scheduleAppointment')}
-              </a>
+                <h1 
+                  className="hero-title fw-bold"
+                  style={{
+                    color: (previewData || savedConfig)?.heroTextColor || '#ffffff',
+                    fontSize: (previewData || savedConfig)?.heroTitleSize || '3.5rem',
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                    lineHeight: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1.0' :
+                               (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.3' : '1.1',
+                    marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '0.5rem' :
+                                (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
+                  }}
+                >
+                  {previewData?.doctorName || previewData?.businessName || savedConfig?.doctorName || savedConfig?.businessName || t('heroTitle')}
+                </h1>
+                <p 
+                  className="hero-subtitle"
+                  style={{
+                    color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
+                    fontSize: (previewData || savedConfig)?.heroSubtitleSize || '1.25rem',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                    lineHeight: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1.2' :
+                               (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.6' : '1.4',
+                    marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '0.5rem' :
+                                (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
+                  }}
+                >
+                  {previewData?.specialty?.[language] || savedConfig?.specialty?.[language] || t('heroSubtitle')}
+                </p>
+                <p 
+                  className="hero-description"
+                  style={{
+                    color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
+                    fontSize: '1.1rem',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                    marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1rem' :
+                                (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '2rem' : '1.5rem'
+                  }}
+                >
+                  {previewData?.heroDescription?.[language] || savedConfig?.heroDescription?.[language] || t('heroDescription')}
+                </p>
+                <a 
+                  href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529831234567').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(previewData?.whatsappMessage?.[language] || savedConfig?.whatsappMessage?.[language] || 'Hola, me gustaría agendar una cita')}`}
+                  className="btn btn-primary btn-lg text-white"
+                  style={{ backgroundColor: '#25D366' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Phone className="me-2" size={20} />
+                  {t('scheduleAppointment')}
+                </a>
+              </div>
             </div>
+            
+            {/* Profile Image - Only show when NOT center aligned */}
             {(previewData || savedConfig)?.heroTextAlignment !== 'center' && (
-              <div className="col-lg-6">
+              <div className="col-lg-4">
                 <div className="text-center">
                   <div 
-                    className="rounded-circle mx-auto mb-3 overflow-hidden border border-3"
+                    className="rounded-circle mx-auto overflow-hidden border border-3"
                     style={{ 
-                      width: '300px', 
-                      height: '300px', 
+                      width: '250px', 
+                      height: '250px', 
                       backgroundColor: 'rgba(255, 255, 255, 0.1)',
                       borderColor: 'rgba(255, 255, 255, 0.5)'
                     }}
                   >
                     <img 
-                      src={previewData?.profileImage || savedConfig?.profileImage || "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Profile"}
+                      src={previewData?.profileImage || savedConfig?.profileImage || "https://via.placeholder.com/250x250/00A859/FFFFFF?text=Profile"}
                       alt={previewData?.doctorName || savedConfig?.doctorName || "Professional"}
                       className="w-100 h-100"
                       style={{ objectFit: 'cover' }}
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/300x300/00A859/FFFFFF?text=Profile";
+                        e.target.src = "https://via.placeholder.com/250x250/00A859/FFFFFF?text=Profile";
                       }}
                     />
                   </div>

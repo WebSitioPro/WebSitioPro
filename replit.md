@@ -150,6 +150,16 @@ Examples:
 
 ```
 Changelog:
+- July 26, 2025. Pro Page Style Text Positioning Controls Implemented Across All Templates
+  - COMPLETED: Successfully implemented sophisticated text positioning and color controls for all 5 business templates
+  - FIXED: Critical bugs in Professionals template where "bottom" positioning caused title to disappear and left alignment didn't work
+  - IMPLEMENTED: Comprehensive text controls including alignment (left/center/right), vertical position (top/center/bottom), spacing (compact/normal/spacious)
+  - ADDED: Title and subtitle color pickers with hex input, font size controls with dropdown options
+  - UPDATED: All template config interfaces (Professionals, Restaurants, Tourism, Retail, Services) with hero text positioning fields
+  - ENHANCED: Professionals and Restaurants templates with Pro page style hero sections and fixed layout structure
+  - PREPARED: Tourism, Retail, and Services templates with default values for text positioning controls
+  - All templates now provide users with professional-level control over hero section text appearance and positioning
+  - Text positioning controls match Pro page implementation for consistent user experience across all business types
 - July 26, 2025. EmailJS Integration Completed Successfully
   - COMPLETED: Successfully switched from SendGrid to EmailJS for email notifications due to 403 Forbidden errors
   - Fixed client-side EmailJS implementation (EmailJS doesn't support server-side API calls)

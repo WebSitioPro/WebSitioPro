@@ -154,7 +154,17 @@ export default function ServicesEditor() {
               bannerText: savedConfig.bannerText || { es: 'Anuncio especial o información importante', en: 'Special announcement or important information' },
               bannerBackgroundColor: savedConfig.bannerBackgroundColor || '#FFC107',
               bannerTextColor: savedConfig.bannerTextColor || '#000000',
-              bannerTextSize: savedConfig.bannerTextSize || '16px'
+              bannerTextSize: savedConfig.bannerTextSize || '16px',
+              
+              // Hero Text Positioning & Styling (with defaults)
+              heroTextAlignment: savedConfig.heroTextAlignment || 'center',
+              heroVerticalAlignment: savedConfig.heroVerticalAlignment || 'center',
+              heroTextSpacing: savedConfig.heroTextSpacing || 'normal',
+              heroTitlePosition: savedConfig.heroTitlePosition || 'normal',
+              heroTextColor: savedConfig.heroTextColor || '#ffffff',
+              heroSubtextColor: savedConfig.heroSubtextColor || '#ffffff',
+              heroTitleSize: savedConfig.heroTitleSize || '3.5rem',
+              heroSubtitleSize: savedConfig.heroSubtitleSize || '1.25rem'
             }));
           }
         }
