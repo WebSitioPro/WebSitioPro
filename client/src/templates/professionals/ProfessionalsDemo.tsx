@@ -508,28 +508,28 @@ export default function ProfessionalsDemo() {
           </div>
           
           {/* Mobile Text Content */}
-          <div className="bg-white py-3">
+          <div className="bg-white py-2">
             <div className="container">
               <div className="text-center">
                 <h1 
-                  className="hero-title fw-bold mb-2"
+                  className="hero-title fw-bold mb-1"
                   style={{
                     color: (previewData || savedConfig)?.heroTextColor || '#333',
-                    fontSize: '1.8rem',
-                    lineHeight: '1.2'
+                    fontSize: '1.6rem',
+                    lineHeight: '1.1'
                   }}
                 >
                   {previewData?.doctorName || previewData?.businessName || savedConfig?.doctorName || savedConfig?.businessName || t('heroTitle')}
                 </h1>
                 <p 
-                  className="hero-subtitle mb-2 text-muted"
+                  className="hero-subtitle mb-1 text-muted"
                   style={{
-                    fontSize: '1rem'
+                    fontSize: '0.9rem'
                   }}
                 >
                   {previewData?.specialty?.[language] || savedConfig?.specialty?.[language] || t('heroSubtitle')}
                 </p>
-                <p className="hero-description text-muted mb-0" style={{ fontSize: '0.9rem' }}>
+                <p className="hero-description text-muted mb-0" style={{ fontSize: '0.8rem' }}>
                   {previewData?.heroDescription?.[language] || savedConfig?.heroDescription?.[language] || t('heroDescription')}
                 </p>
               </div>
@@ -539,7 +539,7 @@ export default function ProfessionalsDemo() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-5" style={{ marginTop: '4.5rem' }}>
+      <section id="about" className="py-5" style={{ marginTop: '3rem' }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
