@@ -360,14 +360,14 @@ export default function TourismDemo() {
           )}
           
           {/* Hero Text Content */}
-          <div className="bg-white py-4">
+          <div className="bg-white py-3">
             <div className="container">
               <div className="text-center">
                 <h1 
-                  className="hero-title fw-bold mb-3"
+                  className="hero-title fw-bold mb-2"
                   style={{
                     color: savedConfig?.heroTextColor || '#333',
-                    fontSize: '2.5rem',
+                    fontSize: '2.2rem',
                     lineHeight: '1.2'
                   }}
                 >
@@ -376,9 +376,9 @@ export default function TourismDemo() {
                    t('businessName')}
                 </h1>
                 <p 
-                  className="hero-subtitle mb-3 text-muted"
+                  className="hero-subtitle mb-2 text-muted"
                   style={{
-                    fontSize: '1.1rem'
+                    fontSize: '1rem'
                   }}
                 >
                   {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
