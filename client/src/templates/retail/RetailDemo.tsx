@@ -411,7 +411,7 @@ export default function RetailDemo() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-5">
+      <section id="about" className="py-5" style={{ marginTop: '3rem' }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
