@@ -360,15 +360,15 @@ export default function TourismDemo() {
           )}
           
           {/* Hero Text Content */}
-          <div className="bg-white py-3">
+          <div className="bg-white py-2">
             <div className="container">
               <div className="text-center">
                 <h1 
-                  className="hero-title fw-bold mb-2"
+                  className="hero-title fw-bold mb-1"
                   style={{
                     color: savedConfig?.heroTextColor || '#333',
-                    fontSize: '2.2rem',
-                    lineHeight: '1.2'
+                    fontSize: '2rem',
+                    lineHeight: '1.1'
                   }}
                 >
                   {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
