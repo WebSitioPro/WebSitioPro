@@ -14,6 +14,8 @@ export default function ProfessionalsDemo() {
   const [savedConfig, setSavedConfig] = useState<any>(null);
   const [previewData, setPreviewData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [chatMessages, setChatMessages] = useState<Array<{text: string, isUser: boolean}>>([]);
+  const [showChat, setShowChat] = useState(false);
 
 
   useEffect(() => {
@@ -50,6 +52,13 @@ export default function ProfessionalsDemo() {
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'es' ? 'en' : 'es');
+  };
+
+  // Helper function to get localized value from bilingual objects
+  const getLocalizedValue = (obj: any) => {
+    if (!obj) return '';
+    if (typeof obj === 'string') return obj;
+    return obj[language] || obj.es || obj.en || '';
   };
 
   const handleChatSubmit = (question: string) => {
