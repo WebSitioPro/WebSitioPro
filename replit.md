@@ -150,6 +150,14 @@ Examples:
 
 ```
 Changelog:
+- July 27, 2025. Reset Client Approvals Functionality Added to All Templates
+  - COMPLETED: Successfully added handleResetClientApprovals function to Restaurant, Tourism, Retail, and Services template editors
+  - CONSISTENT: All 5 templates now have identical reset functionality matching the Professionals template implementation
+  - FUNCTIONALITY: Reset button clears all approval data including formStatus, clientInfo, sectionApprovals, and generalInstructions
+  - TEMPLATE-SPECIFIC: Each template resets appropriate section names (menu for restaurants, tours for tourism, products for retail, services for services)
+  - UI PLACEMENT: Reset button appears in approval status dashboard with warning styling and Settings icon
+  - USER FEEDBACK: Added explanatory text "This will reset all client approval data to start fresh"
+  - All 5 business templates now have complete client approval functionality with consistent reset capabilities
 - July 27, 2025. Client Approval Email Notifications Fixed for Restaurants, Tourism, Retail, and Services Templates
   - FIXED: Added missing EmailJS integration to TemplateApprovalForm component used by 4 templates
   - RESOLVED: Restaurant, Tourism, Retail, and Services templates now send email notifications when clients submit approval forms

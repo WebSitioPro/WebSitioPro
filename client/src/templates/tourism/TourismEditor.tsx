@@ -224,6 +224,32 @@ export default function TourismEditor() {
     window.location.href = '/tourism-demo';
   };
 
+  const handleResetClientApprovals = () => {
+    setWebsiteData(prev => {
+      const currentApproval = prev.clientApproval || { isFormEnabled: false };
+      
+      return {
+        ...prev,
+        clientApproval: {
+          isFormEnabled: currentApproval.isFormEnabled,
+          formStatus: "active",
+          clientInfo: { name: "", email: "", submissionDate: "" },
+          sectionApprovals: {
+            hero: { status: "pending", approved: false, comments: "" },
+            about: { status: "pending", approved: false, comments: "" },
+            tours: { status: "pending", approved: false, comments: "" },
+            photos: { status: "pending", approved: false, comments: "" },
+            reviews: { status: "pending", approved: false, comments: "" },
+            contact: { status: "pending", approved: false, comments: "" }
+          },
+          generalInstructions: "",
+          overallApproved: false,
+          lastSavedAt: ""
+        }
+      };
+    });
+  };
+
   const handleInputChange = (path: string, value: string, language?: 'es' | 'en') => {
     setWebsiteData(prev => {
       const newData = { ...prev };
@@ -1818,6 +1844,19 @@ export default function TourismEditor() {
                               </div>
                             </div>
                           )}
+
+                          <div className="mt-4 text-center">
+                            <button 
+                              className="btn btn-warning btn-sm"
+                              onClick={handleResetClientApprovals}
+                            >
+                              <Settings size={16} className="me-2" />
+                              Reset All Approvals
+                            </button>
+                            <div className="mt-2">
+                              <small className="text-muted">This will reset all client approval data to start fresh</small>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     )}
