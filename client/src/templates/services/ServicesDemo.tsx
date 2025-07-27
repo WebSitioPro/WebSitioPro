@@ -262,6 +262,16 @@ export default function ServicesDemo() {
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
               <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
               <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
+              <a 
+                href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529834567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(getLocalizedValue((previewData?.whatsappMessage || savedConfig?.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
+                className="btn btn-sm text-white"
+                style={{ backgroundColor: '#25D366' }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Phone size={16} className="me-1" />
+                WhatsApp
+              </a>
               <button
                 className="btn btn-outline-warning btn-sm"
                 onClick={toggleLanguage}
@@ -287,6 +297,19 @@ export default function ServicesDemo() {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#contact" onClick={() => setShowMobileMenu(false)}>{t('contact')}</a>
+              </li>
+              <li className="nav-item">
+                <a 
+                  href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529834567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(getLocalizedValue((previewData?.whatsappMessage || savedConfig?.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
+                  className="nav-link text-white"
+                  style={{ backgroundColor: '#25D366', borderRadius: '0.25rem', margin: '0.5rem' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  <Phone size={16} className="me-1" />
+                  WhatsApp
+                </a>
               </li>
               <li className="nav-item">
                 <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
@@ -359,17 +382,6 @@ export default function ServicesDemo() {
                   >
                     {t('heroSubtitle')}
                   </h2>
-
-                  <a 
-                    href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529834567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(getLocalizedValue((previewData?.whatsappMessage || savedConfig?.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
-                    className="btn btn-primary btn-lg text-white"
-                    style={{ backgroundColor: '#25D366' }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Phone className="me-2" size={20} />
-                    {t('whatsappButton')}
-                  </a>
                 </div>
               </div>
             </div>

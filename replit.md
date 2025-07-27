@@ -150,6 +150,15 @@ Examples:
 
 ```
 Changelog:
+- July 27, 2025. WhatsApp Button Relocation Completed Across All 5 Templates
+  - COMPLETED: Successfully moved WhatsApp buttons from hero sections to header navigation in all 5 business templates
+  - MOVED: WhatsApp buttons now appear in both desktop and mobile navigation menus for all templates (Professionals, Restaurants, Tourism, Retail, Services)
+  - DESKTOP NAVIGATION: Added WhatsApp button to right side of header navigation with green background (#25D366) and phone icon
+  - MOBILE NAVIGATION: Added WhatsApp button to mobile menu with consistent styling and proper close behavior
+  - REMOVED: WhatsApp buttons completely removed from all hero sections to clean up the hero display
+  - CONSISTENT MESSAGING: Each template uses appropriate WhatsApp messages (appointments for professionals, reservations for restaurants, tour inquiries for tourism, product inquiries for retail, technical services for services)
+  - RESPONSIVE DESIGN: WhatsApp buttons visible and functional on all screen sizes with proper touch targets
+  - All templates now have clean hero sections focused on text content with WhatsApp functionality easily accessible from header
 - July 26, 2025. Pro Page Style Text Positioning Controls Implemented Across All Templates
   - COMPLETED: Successfully implemented sophisticated text positioning and color controls for all 5 business templates
   - FIXED: Critical bugs in Professionals template where "bottom" positioning caused title to disappear and left alignment didn't work

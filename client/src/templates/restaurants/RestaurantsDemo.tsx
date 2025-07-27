@@ -226,6 +226,16 @@ export default function RestaurantsDemo() {
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
               <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
               <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
+              <a 
+                href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRestaurantData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue((savedConfig && savedConfig.whatsappMessage)) || (language === 'es' ? 'Hola, me gustaría hacer una reservación' : 'Hello, I would like to make a reservation'))}`}
+                className="btn btn-sm text-white"
+                style={{ backgroundColor: '#25D366' }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Phone size={16} className="me-1" />
+                WhatsApp
+              </a>
               <button
                 className="btn btn-outline-warning btn-sm"
                 onClick={toggleLanguage}
@@ -254,6 +264,19 @@ export default function RestaurantsDemo() {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#contact" onClick={() => setShowMobileMenu(false)}>{t('contact')}</a>
+              </li>
+              <li className="nav-item">
+                <a 
+                  href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRestaurantData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue((savedConfig && savedConfig.whatsappMessage)) || (language === 'es' ? 'Hola, me gustaría hacer una reservación' : 'Hello, I would like to make a reservation'))}`}
+                  className="nav-link text-white"
+                  style={{ backgroundColor: '#25D366', borderRadius: '0.25rem', margin: '0.5rem' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  <Phone size={16} className="me-1" />
+                  WhatsApp
+                </a>
               </li>
               <li className="nav-item">
                 <a href="/" className="nav-link text-decoration-none">← Volver a WebSitioPro</a>
@@ -352,18 +375,6 @@ export default function RestaurantsDemo() {
               >
                 {(savedConfig?.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
               </p>
-              {savedConfig?.whatsappNumber && (
-                <a 
-                  href={`https://wa.me/${savedConfig.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue(savedConfig.whatsappMessage) || 'Hola, me gustaría hacer una reservación')}`}
-                  className="btn btn-lg text-white"
-                  style={{ backgroundColor: '#25D366' }}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Phone size={20} className="me-2" />
-                  {t('whatsappButton')}
-                </a>
-              )}
             </div>
           </div>
         </div>
