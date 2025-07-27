@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CheckCircle, XCircle, AlertCircle, Send, User, Mail, MessageSquare, Eye } from 'lucide-react';
+import { sendClientApprovalEmail } from '../lib/emailjs';
 
 interface SectionApproval {
   status: "pending" | "approved" | "needsEdit";
@@ -107,7 +108,7 @@ export function TemplateApprovalForm({ config, language, templateType, onSubmit 
     };
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!clientName.trim() || !clientEmail.trim()) {
@@ -120,16 +121,49 @@ export function TemplateApprovalForm({ config, language, templateType, onSubmit 
 
     setIsSubmitting(true);
 
-    // Simulate processing delay
-    setTimeout(() => {
+    try {
+      // First, call the original onSubmit to update the config
       onSubmit({
         clientName: clientName.trim(),
         clientEmail: clientEmail.trim(),
         sectionApprovals,
         overallApproved
       });
+
+      // Debug: Check if email is configured
+      console.log('[EMAIL] Config:', config.clientApproval);
+      console.log('[EMAIL] Notification email:', config.clientApproval?.notificationEmail);
       
-      setIsSubmitting(false);
+      // Send email notification if email is configured
+      if (config.clientApproval?.notificationEmail) {
+        const approvedSections = Object.entries(sectionApprovals)
+          .filter(([_, approval]) => approval.approved)
+          .map(([section]) => section);
+          
+        const pendingEdits = Object.entries(sectionApprovals)
+          .filter(([_, approval]) => approval.status === 'needsEdit')
+          .map(([section, approval]) => `${section}: ${approval.comments}`);
+
+        console.log('[EmailJS] Sending notification email...');
+        
+        const emailSent = await sendClientApprovalEmail({
+          to_email: config.clientApproval.notificationEmail,
+          client_name: clientName.trim(),
+          client_email: clientEmail.trim(),
+          business_name: config.businessName || config.doctorName || 'Business',
+          template_type: templateType,
+          approved_sections: approvedSections.join(', '),
+          pending_edits: pendingEdits.join(', '),
+          general_instructions: config.clientApproval.generalInstructions || 'None',
+          submission_date: new Date().toISOString()
+        });
+        
+        if (emailSent) {
+          console.log('[EmailJS] Notification sent successfully');
+        } else {
+          console.error('[EmailJS] Failed to send notification');
+        }
+      }
       
       // Show success message
       alert(
@@ -137,7 +171,19 @@ export function TemplateApprovalForm({ config, language, templateType, onSubmit 
           ? `¡Gracias por tu feedback, ${clientName}! Hemos recibido tu aprobación del sitio web.`
           : `Thank you for your feedback, ${clientName}! We have received your website approval.`
       );
-    }, 1500);
+      
+    } catch (error) {
+      console.error('[EMAIL] Error sending notification:', error);
+      
+      // Still show success message for the form submission even if email fails
+      alert(
+        language === 'es' 
+          ? `¡Gracias por tu feedback, ${clientName}! Hemos recibido tu aprobación del sitio web.`
+          : `Thank you for your feedback, ${clientName}! We have received your website approval.`
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const summary = getApprovalSummary();

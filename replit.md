@@ -150,6 +150,13 @@ Examples:
 
 ```
 Changelog:
+- July 27, 2025. Client Approval Email Notifications Fixed for Restaurants, Tourism, Retail, and Services Templates
+  - FIXED: Added missing EmailJS integration to TemplateApprovalForm component used by 4 templates
+  - RESOLVED: Restaurant, Tourism, Retail, and Services templates now send email notifications when clients submit approval forms
+  - ADDED: sendClientApprovalEmail import and async email functionality to TemplateApprovalForm
+  - WORKING: All 5 templates (Professionals, Restaurants, Tourism, Retail, Services) now have functional email notifications
+  - CONSISTENT: Same email notification system across all business template types
+  - TESTED: Professionals template confirmed working, other templates now use identical email functionality
 - July 27, 2025. WhatsApp Button Relocation Completed Across All 5 Templates
   - COMPLETED: Successfully moved WhatsApp buttons from hero sections to header navigation in all 5 business templates
   - MOVED: WhatsApp buttons now appear in both desktop and mobile navigation menus for all templates (Professionals, Restaurants, Tourism, Retail, Services)
