@@ -490,14 +490,22 @@ export default function ProfessionalsDemo() {
             )}
             
             {/* Mobile Profile Image Overlay */}
-            <div className="position-absolute w-100 h-100 d-flex align-items-center justify-content-center" style={{ zIndex: 2 }}>
+            <div 
+              className="position-absolute w-100 h-100 d-flex align-items-center justify-content-center" 
+              style={{ 
+                zIndex: 3,
+                top: 0,
+                left: 0
+              }}
+            >
               <div 
                 className="rounded-circle overflow-hidden border border-3"
                 style={{ 
                   width: '120px', 
                   height: '120px', 
-                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                  borderColor: 'rgba(255, 255, 255, 0.8)'
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  borderColor: 'rgba(255, 255, 255, 0.9)',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
                 }}
               >
                 <img 
@@ -545,7 +553,7 @@ export default function ProfessionalsDemo() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-5" style={{ marginTop: '3rem' }}>
+      <section id="about" className="py-5" style={{ marginTop: '4rem' }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
