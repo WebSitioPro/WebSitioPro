@@ -102,7 +102,17 @@ export default function RetailEditor() {
     bannerText: { es: 'Anuncio especial o información importante', en: 'Special announcement or important information' },
     bannerBackgroundColor: '#FFC107',
     bannerTextColor: '#000000',
-    bannerTextSize: '16px'
+    bannerTextSize: '16px',
+    
+    // Hero Text Positioning & Styling
+    heroTextAlignment: 'center',
+    heroVerticalAlignment: 'center',
+    heroTextSpacing: 'normal',
+    heroTextColor: '#ffffff',
+    heroSubtextColor: '#ffffff',
+    heroTitleSize: '3.5rem',
+    heroSubtitleSize: '1.25rem',
+    heroImageOpacity: '0.9'
   });
   
   const [isSaving, setIsSaving] = useState(false);
@@ -577,6 +587,19 @@ export default function RetailEditor() {
                           />
                         </div>
                         <div className="mb-3">
+                          <label className="form-label">Image Opacity</label>
+                          <input 
+                            type="range" 
+                            className="form-range"
+                            min="0" 
+                            max="1" 
+                            step="0.1"
+                            value={websiteData.heroImageOpacity || '0.9'}
+                            onChange={(e) => handleInputChange('heroImageOpacity', e.target.value)}
+                          />
+                          <small className="text-muted">Current: {websiteData.heroImageOpacity || '0.9'}</small>
+                        </div>
+                        <div className="mb-3">
                           <label className="form-label">Business Name</label>
                           <input
                             type="text"
@@ -632,6 +655,113 @@ export default function RetailEditor() {
                             className="form-control"
                             value={websiteData.heroSubtitle.en}
                             onChange={(e) => handleInputChange('heroSubtitle', e.target.value, 'en')}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr className="my-4" />
+
+                    {/* Hero Text Positioning & Styling Controls */}
+                    <h5 className="mb-3">Text Placement & Styling</h5>
+                    <div className="row g-3 mb-4">
+                      <div className="col-md-4">
+                        <label className="form-label">Text Alignment</label>
+                        <select 
+                          className="form-control"
+                          value={websiteData.heroTextAlignment}
+                          onChange={(e) => handleInputChange('heroTextAlignment', e.target.value)}
+                        >
+                          <option value="left">Left Aligned</option>
+                          <option value="center">Center Aligned</option>
+                          <option value="right">Right Aligned</option>
+                        </select>
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label">Text Position (Vertical)</label>
+                        <select 
+                          className="form-control"
+                          value={websiteData.heroVerticalAlignment}
+                          onChange={(e) => handleInputChange('heroVerticalAlignment', e.target.value)}
+                        >
+                          <option value="top">Top of Section</option>
+                          <option value="center">Center of Section</option>
+                          <option value="bottom">Bottom of Section</option>
+                        </select>
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label">Text Spacing</label>
+                        <select 
+                          className="form-control"
+                          value={websiteData.heroTextSpacing || 'normal'}
+                          onChange={(e) => handleInputChange('heroTextSpacing', e.target.value)}
+                        >
+                          <option value="compact">Compact</option>
+                          <option value="normal">Normal</option>
+                          <option value="spacious">Spacious</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <div className="row g-3 mb-4">
+                      <div className="col-md-3">
+                        <label className="form-label">Title Size</label>
+                        <select 
+                          className="form-control"
+                          value={websiteData.heroTitleSize}
+                          onChange={(e) => handleInputChange('heroTitleSize', e.target.value)}
+                        >
+                          <option value="2rem">Small (2rem)</option>
+                          <option value="2.5rem">Medium (2.5rem)</option>
+                          <option value="3rem">Large (3rem)</option>
+                          <option value="3.5rem">Extra Large (3.5rem)</option>
+                          <option value="4rem">Huge (4rem)</option>
+                        </select>
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label">Subtitle Size</label>
+                        <select 
+                          className="form-control"
+                          value={websiteData.heroSubtitleSize}
+                          onChange={(e) => handleInputChange('heroSubtitleSize', e.target.value)}
+                        >
+                          <option value="1rem">Small (1rem)</option>
+                          <option value="1.1rem">Medium (1.1rem)</option>
+                          <option value="1.25rem">Large (1.25rem)</option>
+                          <option value="1.5rem">Extra Large (1.5rem)</option>
+                        </select>
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label">Title Color</label>
+                        <div className="d-flex gap-2">
+                          <input 
+                            type="color" 
+                            className="form-control form-control-color"
+                            value={websiteData.heroTextColor}
+                            onChange={(e) => handleInputChange('heroTextColor', e.target.value)}
+                          />
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={websiteData.heroTextColor}
+                            onChange={(e) => handleInputChange('heroTextColor', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label">Subtitle Color</label>
+                        <div className="d-flex gap-2">
+                          <input 
+                            type="color" 
+                            className="form-control form-control-color"
+                            value={websiteData.heroSubtextColor}
+                            onChange={(e) => handleInputChange('heroSubtextColor', e.target.value)}
+                          />
+                          <input 
+                            type="text" 
+                            className="form-control"
+                            value={websiteData.heroSubtextColor}
+                            onChange={(e) => handleInputChange('heroSubtextColor', e.target.value)}
                           />
                         </div>
                       </div>
