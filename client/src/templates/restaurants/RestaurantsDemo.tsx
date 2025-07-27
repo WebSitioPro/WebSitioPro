@@ -282,7 +282,7 @@ export default function RestaurantsDemo() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            opacity: savedConfig?.heroImageOpacity || 0.9,
+            opacity: parseFloat(savedConfig?.heroImageOpacity) || 0.9,
             top: 0,
             left: 0,
             zIndex: 1

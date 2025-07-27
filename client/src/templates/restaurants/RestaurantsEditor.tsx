@@ -94,7 +94,7 @@ export default function RestaurantsEditor() {
     heroSubtextColor: '#ffffff',
     heroTitleSize: '3.5rem',
     heroSubtitleSize: '1.25rem',
-    heroImageOpacity: 0.9
+    heroImageOpacity: '0.9'
   });
   
   const [isSaving, setIsSaving] = useState(false);
@@ -581,10 +581,10 @@ export default function RestaurantsEditor() {
                             min="0" 
                             max="1" 
                             step="0.1"
-                            value={websiteData.heroImageOpacity || 0.9}
-                            onChange={(e) => handleInputChange('heroImageOpacity', parseFloat(e.target.value))}
+                            value={websiteData.heroImageOpacity || '0.9'}
+                            onChange={(e) => handleInputChange('heroImageOpacity', e.target.value)}
                           />
-                          <small className="text-muted">Current: {websiteData.heroImageOpacity || 0.9}</small>
+                          <small className="text-muted">Current: {websiteData.heroImageOpacity || '0.9'}</small>
                         </div>
                         <div className="mb-3">
                           <label className="form-label">Restaurant Name</label>
