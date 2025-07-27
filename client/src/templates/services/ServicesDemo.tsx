@@ -425,7 +425,7 @@ export default function ServicesDemo() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-5" style={{ marginTop: '3rem' }}>
+      <section id="about" className="py-5" style={{ marginTop: '5rem' }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
