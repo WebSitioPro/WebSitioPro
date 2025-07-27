@@ -477,21 +477,12 @@ export default function ProfessionalsDemo() {
               backgroundColor: '#f8f9fa'
             }}
           >
-            {/* Dark overlay for better contrast */}
-            <div 
-              className="position-absolute w-100 h-100"
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.3)',
-                top: 0,
-                left: 0,
-                zIndex: 1
-              }}
-            />
+
             
             {/* Mobile Profile Image - Centered */}
             <div 
               className="position-relative d-flex align-items-center justify-content-center" 
-              style={{ zIndex: 2 }}
+              style={{ zIndex: 1 }}
             >
               <div 
                 className="rounded-circle overflow-hidden border border-4"
@@ -531,12 +522,15 @@ export default function ProfessionalsDemo() {
                   {previewData?.doctorName || previewData?.businessName || savedConfig?.doctorName || savedConfig?.businessName || t('heroTitle')}
                 </h1>
                 <p 
-                  className="hero-subtitle mb-1 text-muted"
+                  className="hero-subtitle mb-2 text-muted"
                   style={{
                     fontSize: '1rem'
                   }}
                 >
                   {previewData?.specialty?.[language] || savedConfig?.specialty?.[language] || t('heroSubtitle')}
+                </p>
+                <p className="hero-description text-muted mb-0" style={{ fontSize: '0.9rem' }}>
+                  {previewData?.heroDescription?.[language] || savedConfig?.heroDescription?.[language] || t('heroDescription')}
                 </p>
               </div>
             </div>
