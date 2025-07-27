@@ -352,130 +352,194 @@ export default function ProfessionalsDemo() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section 
-        id="hero" 
-        className="hero-section position-relative d-flex"
-        style={{
-          height: '70vh',
-          minHeight: '500px',
-          backgroundColor: '#f8f9fa',
-          alignItems: (previewData || savedConfig)?.heroVerticalAlignment === 'top' ? 'flex-start' : 
-                     (previewData || savedConfig)?.heroVerticalAlignment === 'bottom' ? 'flex-end' : 'center'
-        }}
-      >
+      {/* Hero Section - Professionals Special Mobile Layout */}
+      <section id="hero" className="hero-section">
+        {/* Desktop Version - Overlay Text with Profile Image */}
         <div 
-          className="position-absolute w-100 h-100"
+          className="d-none d-lg-block position-relative d-flex"
           style={{
-            backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
-              `url(${previewData?.heroImage || savedConfig?.heroImage})` : 'none',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            opacity: 0.7,
-            top: 0,
-            left: 0,
-            zIndex: 1
-          }}
-        />
-
-        <div 
-          className="container position-relative" 
-          style={{ 
-            zIndex: 2,
-            paddingTop: (previewData || savedConfig)?.heroVerticalAlignment === 'top' ? '3rem' : '0',
-            paddingBottom: (previewData || savedConfig)?.heroVerticalAlignment === 'bottom' ? '3rem' : '0'
+            height: '70vh',
+            minHeight: '500px',
+            backgroundColor: '#f8f9fa',
+            alignItems: (previewData || savedConfig)?.heroVerticalAlignment === 'top' ? 'flex-start' : 
+                       (previewData || savedConfig)?.heroVerticalAlignment === 'bottom' ? 'flex-end' : 'center'
           }}
         >
-          <div className="row align-items-center">
-            {/* Text Content */}
-            <div 
-              className={
-                (previewData || savedConfig)?.heroTextAlignment === 'center' ? 'col-12' : 'col-lg-8'
-              }
-            >
+          <div 
+            className="position-absolute w-100 h-100"
+            style={{
+              backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
+                `url(${previewData?.heroImage || savedConfig?.heroImage})` : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              opacity: 0.7,
+              top: 0,
+              left: 0,
+              zIndex: 1
+            }}
+          />
+
+          <div 
+            className="container position-relative" 
+            style={{ 
+              zIndex: 2,
+              paddingTop: (previewData || savedConfig)?.heroVerticalAlignment === 'top' ? '3rem' : '0',
+              paddingBottom: (previewData || savedConfig)?.heroVerticalAlignment === 'bottom' ? '3rem' : '0'
+            }}
+          >
+            <div className="row align-items-center">
+              <div className={(previewData || savedConfig)?.heroTextAlignment === 'center' ? 'col-12' : 'col-lg-8'}>
+                <div 
+                  className={
+                    (previewData || savedConfig)?.heroTextAlignment === 'left' ? 'text-start' :
+                    (previewData || savedConfig)?.heroTextAlignment === 'right' ? 'text-end' :
+                    'text-center'
+                  }
+                >
+                  <h1 
+                    className="hero-title fw-bold"
+                    style={{
+                      color: (previewData || savedConfig)?.heroTextColor || '#ffffff',
+                      fontSize: (previewData || savedConfig)?.heroTitleSize || '3.5rem',
+                      textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                      lineHeight: '1.1'
+                    }}
+                  >
+                    {previewData?.doctorName || previewData?.businessName || savedConfig?.doctorName || savedConfig?.businessName || t('heroTitle')}
+                  </h1>
+                  <p 
+                    className="hero-subtitle"
+                    style={{
+                      color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
+                      fontSize: (previewData || savedConfig)?.heroSubtitleSize || '1.25rem',
+                      textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                    }}
+                  >
+                    {previewData?.specialty?.[language] || savedConfig?.specialty?.[language] || t('heroSubtitle')}
+                  </p>
+                  <p 
+                    className="hero-description"
+                    style={{
+                      color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
+                      fontSize: '1.1rem',
+                      textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                    }}
+                  >
+                    {previewData?.heroDescription?.[language] || savedConfig?.heroDescription?.[language] || t('heroDescription')}
+                  </p>
+                </div>
+              </div>
+              
+              {/* Desktop Profile Image */}
+              {(previewData || savedConfig)?.heroTextAlignment !== 'center' && (
+                <div className="col-lg-4">
+                  <div className="text-center">
+                    <div 
+                      className="rounded-circle mx-auto overflow-hidden border border-3"
+                      style={{ 
+                        width: '250px', 
+                        height: '250px', 
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: 'rgba(255, 255, 255, 0.5)'
+                      }}
+                    >
+                      <img 
+                        src={previewData?.profileImage || savedConfig?.profileImage || "https://via.placeholder.com/250x250/00A859/FFFFFF?text=Profile"}
+                        alt={previewData?.doctorName || savedConfig?.doctorName || "Professional"}
+                        className="w-100 h-100"
+                        style={{ objectFit: 'cover' }}
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/250x250/00A859/FFFFFF?text=Profile";
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Version - Background Image with Profile Overlay */}
+        <div className="d-lg-none">
+          {/* Hero Background Image Section */}
+          <div 
+            className="position-relative"
+            style={{
+              height: '40vh',
+              minHeight: '250px',
+              backgroundColor: '#f8f9fa'
+            }}
+          >
+            {/* Background Image */}
+            {(previewData?.heroImage || savedConfig?.heroImage) && (
               <div 
-                className={
-                  (previewData || savedConfig)?.heroTextAlignment === 'left' ? 'text-start' :
-                  (previewData || savedConfig)?.heroTextAlignment === 'right' ? 'text-end' :
-                  'text-center'
-                }
+                className="position-absolute w-100 h-100"
                 style={{
-                  marginTop: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1rem' :
-                            (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '3rem' : '2rem',
-                  marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1rem' :
-                               (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '3rem' : '2rem'
+                  backgroundImage: `url(${previewData?.heroImage || savedConfig?.heroImage})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  opacity: 0.7,
+                  top: 0,
+                  left: 0,
+                  zIndex: 1
+                }}
+              />
+            )}
+            
+            {/* Mobile Profile Image Overlay */}
+            <div className="position-absolute w-100 h-100 d-flex align-items-center justify-content-center" style={{ zIndex: 2 }}>
+              <div 
+                className="rounded-circle overflow-hidden border border-3"
+                style={{ 
+                  width: '120px', 
+                  height: '120px', 
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  borderColor: 'rgba(255, 255, 255, 0.8)'
                 }}
               >
+                <img 
+                  src={previewData?.profileImage || savedConfig?.profileImage || "https://via.placeholder.com/120x120/00A859/FFFFFF?text=Profile"}
+                  alt={previewData?.doctorName || savedConfig?.doctorName || "Professional"}
+                  className="w-100 h-100"
+                  style={{ objectFit: 'cover' }}
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/120x120/00A859/FFFFFF?text=Profile";
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          
+          {/* Mobile Text Content */}
+          <div className="bg-white py-4">
+            <div className="container">
+              <div className="text-center">
                 <h1 
-                  className="hero-title fw-bold"
+                  className="hero-title fw-bold mb-3"
                   style={{
-                    color: (previewData || savedConfig)?.heroTextColor || '#ffffff',
-                    fontSize: (previewData || savedConfig)?.heroTitleSize || '3.5rem',
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-                    lineHeight: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1.0' :
-                               (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.3' : '1.1',
-                    marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '0.5rem' :
-                                (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
+                    color: (previewData || savedConfig)?.heroTextColor || '#333',
+                    fontSize: '2.5rem',
+                    lineHeight: '1.2'
                   }}
                 >
                   {previewData?.doctorName || previewData?.businessName || savedConfig?.doctorName || savedConfig?.businessName || t('heroTitle')}
                 </h1>
                 <p 
-                  className="hero-subtitle"
+                  className="hero-subtitle mb-3 text-muted"
                   style={{
-                    color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
-                    fontSize: (previewData || savedConfig)?.heroSubtitleSize || '1.25rem',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                    lineHeight: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1.2' :
-                               (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.6' : '1.4',
-                    marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '0.5rem' :
-                                (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
+                    fontSize: '1.1rem'
                   }}
                 >
                   {previewData?.specialty?.[language] || savedConfig?.specialty?.[language] || t('heroSubtitle')}
                 </p>
-                <p 
-                  className="hero-description"
-                  style={{
-                    color: (previewData || savedConfig)?.heroSubtextColor || '#ffffff',
-                    fontSize: '1.1rem',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                    marginBottom: (previewData || savedConfig)?.heroTextSpacing === 'compact' ? '1rem' :
-                                (previewData || savedConfig)?.heroTextSpacing === 'spacious' ? '2rem' : '1.5rem'
-                  }}
-                >
+                <p className="hero-description text-muted">
                   {previewData?.heroDescription?.[language] || savedConfig?.heroDescription?.[language] || t('heroDescription')}
                 </p>
               </div>
             </div>
-            
-            {/* Profile Image - Only show when NOT center aligned */}
-            {(previewData || savedConfig)?.heroTextAlignment !== 'center' && (
-              <div className="col-lg-4">
-                <div className="text-center">
-                  <div 
-                    className="rounded-circle mx-auto overflow-hidden border border-3"
-                    style={{ 
-                      width: '250px', 
-                      height: '250px', 
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      borderColor: 'rgba(255, 255, 255, 0.5)'
-                    }}
-                  >
-                    <img 
-                      src={previewData?.profileImage || savedConfig?.profileImage || "https://via.placeholder.com/250x250/00A859/FFFFFF?text=Profile"}
-                      alt={previewData?.doctorName || savedConfig?.doctorName || "Professional"}
-                      className="w-100 h-100"
-                      style={{ objectFit: 'cover' }}
-                      onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/250x250/00A859/FFFFFF?text=Profile";
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>

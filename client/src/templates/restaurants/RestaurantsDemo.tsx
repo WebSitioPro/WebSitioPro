@@ -286,95 +286,116 @@ export default function RestaurantsDemo() {
         </div>
       </nav>
 
-      {/* Hero Section with Pro Page Style Positioning */}
-      <section 
-        id="hero" 
-        className="hero-section position-relative d-flex"
-        style={{
-          height: '70vh',
-          minHeight: '500px',
-          backgroundColor: '#f8f9fa',
-          alignItems: savedConfig?.heroVerticalAlignment === 'top' ? 'flex-start' : 
-                     savedConfig?.heroVerticalAlignment === 'bottom' ? 'flex-end' : 'center'
-        }}
-      >
-        <div 
-          className="position-absolute w-100 h-100"
-          style={{
-            backgroundImage: savedConfig?.heroImage ? `url(${savedConfig.heroImage})` : 'none',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            opacity: parseFloat(savedConfig?.heroImageOpacity) || 0.9,
-            top: 0,
-            left: 0,
-            zIndex: 1
-          }}
-        />
+      {/* Hero Section - Mobile Optimized */}
+      <section id="hero" className="hero-section">
+        {/* Desktop Version - Overlay Text on Background */}
+        <div className="d-none d-lg-block position-relative" style={{ height: '70vh', minHeight: '500px' }}>
+          <div 
+            className="position-absolute w-100 h-100"
+            style={{
+              backgroundImage: savedConfig?.heroImage ? `url(${savedConfig.heroImage})` : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              opacity: parseFloat(savedConfig?.heroImageOpacity) || 0.9,
+              top: 0,
+              left: 0,
+              zIndex: 1
+            }}
+          />
+          <div 
+            className={`position-relative h-100 d-flex align-items-${savedConfig?.heroVerticalAlignment === 'top' ? 'start' : savedConfig?.heroVerticalAlignment === 'bottom' ? 'end' : 'center'}`}
+            style={{ zIndex: 2 }}
+          >
+            <div className="container">
+              <div className="row">
+                <div 
+                  className={
+                    savedConfig?.heroTextAlignment === 'left' ? 'col-lg-8 text-start' :
+                    savedConfig?.heroTextAlignment === 'right' ? 'col-lg-8 ms-auto text-end' :
+                    'col-12 text-center'
+                  }
+                >
+                  <h1 
+                    className="hero-title fw-bold mb-3"
+                    style={{
+                      color: savedConfig?.heroTextColor || '#ffffff',
+                      fontSize: savedConfig?.heroTitleSize || '3.5rem',
+                      textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                      lineHeight: '1.1'
+                    }}
+                  >
+                    {(savedConfig?.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || savedConfig?.businessName || t('businessName')}
+                  </h1>
+                  <p 
+                    className="hero-subtitle mb-3"
+                    style={{
+                      color: savedConfig?.heroSubtextColor || '#ffffff',
+                      fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
+                      textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                    }}
+                  >
+                    {(savedConfig?.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || ''}
+                  </p>
+                  <p 
+                    className="hero-description"
+                    style={{
+                      color: savedConfig?.heroSubtextColor || '#ffffff',
+                      fontSize: '1.1rem',
+                      textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                    }}
+                  >
+                    {(savedConfig?.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <div 
-          className="container position-relative" 
-          style={{ 
-            zIndex: 2,
-            paddingTop: savedConfig?.heroVerticalAlignment === 'top' ? '3rem' : '0',
-            paddingBottom: savedConfig?.heroVerticalAlignment === 'bottom' ? '3rem' : '0'
-          }}
-        >
-          <div className="row">
+        {/* Mobile Version - Image Above, Text Below */}
+        <div className="d-lg-none">
+          {/* Hero Image */}
+          {savedConfig?.heroImage && (
             <div 
-              className={
-                savedConfig?.heroTextAlignment === 'left' ? 'col-lg-8 col-12 text-start text-md-start text-center' :
-                savedConfig?.heroTextAlignment === 'right' ? 'col-lg-8 col-12 ms-auto text-end text-md-end text-center' :
-                'col-12 text-center'
-              }
+              className="w-100"
               style={{
-                marginTop: savedConfig?.heroTitlePosition === 'high' ? '-2rem' : 
-                          savedConfig?.heroTitlePosition === 'low' ? '2rem' : '0',
-                marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '1rem' :
-                             savedConfig?.heroTextSpacing === 'spacious' ? '4rem' : '2rem'
+                height: '40vh',
+                minHeight: '250px',
+                backgroundImage: `url(${savedConfig.heroImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
               }}
-            >
-              <h1 
-                className="hero-title fw-bold mb-3 mb-md-4"
-                style={{
-                  color: savedConfig?.heroTextColor || '#ffffff',
-                  fontSize: savedConfig?.heroTitleSize || '3.5rem',
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-                  whiteSpace: 'pre-line',
-                  lineHeight: savedConfig?.heroTextSpacing === 'compact' ? '1.0' :
-                             savedConfig?.heroTextSpacing === 'spacious' ? '1.3' : '1.1',
-                  marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' :
-                              savedConfig?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
-                }}
-              >
-                {(savedConfig?.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || savedConfig?.businessName || t('businessName')}
-              </h1>
-              <p 
-                className="hero-subtitle mb-3 mb-md-4"
-                style={{
-                  color: savedConfig?.heroSubtextColor || '#ffffff',
-                  fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
-                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                  whiteSpace: 'pre-line',
-                  lineHeight: savedConfig?.heroTextSpacing === 'compact' ? '1.2' :
-                             savedConfig?.heroTextSpacing === 'spacious' ? '1.6' : '1.4',
-                  marginTop: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' :
-                            savedConfig?.heroTextSpacing === 'spacious' ? '1.5rem' : '1rem'
-                }}
-              >
-                {(savedConfig?.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || ''}
-              </p>
-              <p 
-                className="hero-description mb-3 mb-md-4"
-                style={{
-                  color: savedConfig?.heroSubtextColor || '#ffffff',
-                  fontSize: '1.1rem',
-                  textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                  whiteSpace: 'pre-line'
-                }}
-              >
-                {(savedConfig?.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
-              </p>
+            />
+          )}
+          
+          {/* Hero Text Content */}
+          <div className="bg-white py-4">
+            <div className="container">
+              <div className="text-center">
+                <h1 
+                  className="hero-title fw-bold mb-3"
+                  style={{
+                    color: savedConfig?.heroTextColor || '#333',
+                    fontSize: '2.5rem',
+                    lineHeight: '1.2'
+                  }}
+                >
+                  {(savedConfig?.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || savedConfig?.businessName || t('businessName')}
+                </h1>
+                <p 
+                  className="hero-subtitle mb-3 text-muted"
+                  style={{
+                    fontSize: '1.1rem'
+                  }}
+                >
+                  {(savedConfig?.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || ''}
+                </p>
+                <p className="hero-description text-muted">
+                  {(savedConfig?.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
+                </p>
+              </div>
             </div>
           </div>
         </div>

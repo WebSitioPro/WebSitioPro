@@ -301,71 +301,109 @@ export default function RetailDemo() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section 
-        id="home" 
-        className="position-relative"
-        style={{
-          minHeight: '70vh',
-          height: '500px',
-          overflow: 'hidden'
-        }}
-      >
-        {/* Background Image */}
-        {savedConfig?.heroImage && (
+      {/* Hero Section - Mobile Optimized */}
+      <section id="home" className="hero-section">
+        {/* Desktop Version - Overlay Text on Background */}
+        <div className="d-none d-lg-block position-relative" style={{ height: '70vh', minHeight: '500px' }}>
+          {savedConfig?.heroImage && (
+            <div 
+              className="position-absolute w-100 h-100"
+              style={{
+                backgroundImage: `url(${savedConfig.heroImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                opacity: parseFloat(savedConfig?.heroImageOpacity) || 0.9,
+                top: 0,
+                left: 0,
+                zIndex: 1
+              }}
+            />
+          )}
           <div 
-            className="position-absolute w-100 h-100"
-            style={{
-              backgroundImage: `url(${savedConfig.heroImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-              opacity: parseFloat(savedConfig?.heroImageOpacity) || 0.9,
-              top: 0,
-              left: 0,
-              zIndex: 1
-            }}
-          />
-        )}
-        
-        {/* Content Container */}
-        <div 
-          className={`position-relative h-100 d-flex align-items-${savedConfig?.heroVerticalAlignment || 'center'}`}
-          style={{ zIndex: 2 }}
-        >
-          <div className="container">
-            <div className={`row justify-content-${savedConfig?.heroTextAlignment === 'left' ? 'start' : savedConfig?.heroTextAlignment === 'right' ? 'end' : 'center'}`}>
-              <div className="col-lg-8 col-xl-7">
-                <div className={`text-${savedConfig?.heroTextAlignment || 'center'}`}>
-                  <h1 
-                    className="fw-bold mb-3"
-                    style={{ 
-                      color: savedConfig?.heroTextColor || '#ffffff',
-                      fontSize: savedConfig?.heroTitleSize || '3.5rem',
-                      textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
-                      lineHeight: '1.2',
-                      marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' : 
-                                  savedConfig?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
-                    }}
-                  >
-                    {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
-                     (savedConfig && savedConfig.businessName) || 
-                     t('businessName')}
-                  </h1>
-                  <h2 
-                    className="mb-4"
-                    style={{ 
-                      color: savedConfig?.heroSubtextColor || '#ffffff',
-                      fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
-                      textShadow: '1px 1px 3px rgba(0,0,0,0.6)',
-                      marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '1rem' : 
-                                  savedConfig?.heroTextSpacing === 'spacious' ? '3rem' : '2rem'
-                    }}
-                  >
-                    {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
-                     (language === 'es' ? 'Moda y Estilo' : 'Fashion & Style')}
-                  </h2>
+            className={`position-relative h-100 d-flex align-items-${savedConfig?.heroVerticalAlignment || 'center'}`}
+            style={{ zIndex: 2 }}
+          >
+            <div className="container">
+              <div className={`row justify-content-${savedConfig?.heroTextAlignment === 'left' ? 'start' : savedConfig?.heroTextAlignment === 'right' ? 'end' : 'center'}`}>
+                <div className="col-lg-8 col-xl-7">
+                  <div className={`text-${savedConfig?.heroTextAlignment || 'center'}`}>
+                    <h1 
+                      className="fw-bold mb-3"
+                      style={{ 
+                        color: savedConfig?.heroTextColor || '#ffffff',
+                        fontSize: savedConfig?.heroTitleSize || '3.5rem',
+                        textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
+                        lineHeight: '1.2'
+                      }}
+                    >
+                      {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
+                       (savedConfig && savedConfig.businessName) || 
+                       t('businessName')}
+                    </h1>
+                    <h2 
+                      className="mb-4"
+                      style={{ 
+                        color: savedConfig?.heroSubtextColor || '#ffffff',
+                        fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
+                        textShadow: '1px 1px 3px rgba(0,0,0,0.6)'
+                      }}
+                    >
+                      {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
+                       (language === 'es' ? 'Moda y Estilo' : 'Fashion & Style')}
+                    </h2>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Version - Image Above, Text Below */}
+        <div className="d-lg-none">
+          {/* Hero Image */}
+          {savedConfig?.heroImage && (
+            <div 
+              className="w-100"
+              style={{
+                height: '40vh',
+                minHeight: '250px',
+                backgroundImage: `url(${savedConfig.heroImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
+          )}
+          
+          {/* Hero Text Content */}
+          <div className="bg-white py-4">
+            <div className="container">
+              <div className="text-center">
+                <h1 
+                  className="hero-title fw-bold mb-3"
+                  style={{
+                    color: savedConfig?.heroTextColor || '#333',
+                    fontSize: '2.5rem',
+                    lineHeight: '1.2'
+                  }}
+                >
+                  {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
+                   (savedConfig && savedConfig.businessName) || 
+                   t('businessName')}
+                </h1>
+                <p 
+                  className="hero-subtitle mb-3 text-muted"
+                  style={{
+                    fontSize: '1.1rem'
+                  }}
+                >
+                  {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
+                   (language === 'es' ? 'Moda y Estilo' : 'Fashion & Style')}
+                </p>
+                <p className="hero-description text-muted">
+                  {(savedConfig?.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
+                </p>
               </div>
             </div>
           </div>
