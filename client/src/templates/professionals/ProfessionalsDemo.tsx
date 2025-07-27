@@ -462,59 +462,54 @@ export default function ProfessionalsDemo() {
         </div>
 
         {/* Mobile Version - Background Image with Profile Overlay */}
-        <div className="d-lg-none" style={{ position: 'relative', zIndex: 1 }}>
-          {/* Hero Background Image Section */}
+        <div className="d-lg-none">
+          {/* Hero Background Image Section with Profile Overlay */}
           <div 
-            className="position-relative"
+            className="position-relative d-flex align-items-center justify-content-center"
             style={{
-              height: '35vh',
-              minHeight: '200px',
+              height: '40vh',
+              minHeight: '250px',
+              backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
+                `url(${previewData?.heroImage || savedConfig?.heroImage})` : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
               backgroundColor: '#f8f9fa'
             }}
           >
-            {/* Background Image */}
-            {(previewData?.heroImage || savedConfig?.heroImage) && (
-              <div 
-                className="position-absolute w-100 h-100"
-                style={{
-                  backgroundImage: `url(${previewData?.heroImage || savedConfig?.heroImage})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  opacity: 0.7,
-                  top: 0,
-                  left: 0,
-                  zIndex: 1
-                }}
-              />
-            )}
-            
-            {/* Mobile Profile Image Overlay */}
+            {/* Dark overlay for better contrast */}
             <div 
-              className="position-absolute w-100 h-100 d-flex align-items-center justify-content-center" 
-              style={{ 
-                zIndex: 3,
+              className="position-absolute w-100 h-100"
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.3)',
                 top: 0,
-                left: 0
+                left: 0,
+                zIndex: 1
               }}
+            />
+            
+            {/* Mobile Profile Image - Centered */}
+            <div 
+              className="position-relative d-flex align-items-center justify-content-center" 
+              style={{ zIndex: 2 }}
             >
               <div 
-                className="rounded-circle overflow-hidden border border-3"
+                className="rounded-circle overflow-hidden border border-4"
                 style={{ 
-                  width: '120px', 
-                  height: '120px', 
-                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                  borderColor: 'rgba(255, 255, 255, 0.9)',
-                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                  width: '150px', 
+                  height: '150px', 
+                  backgroundColor: '#fff',
+                  borderColor: '#fff',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.3)'
                 }}
               >
                 <img 
-                  src={previewData?.profileImage || savedConfig?.profileImage || "https://via.placeholder.com/120x120/00A859/FFFFFF?text=Profile"}
+                  src={previewData?.profileImage || savedConfig?.profileImage || "https://via.placeholder.com/150x150/00A859/FFFFFF?text=Profile"}
                   alt={previewData?.doctorName || savedConfig?.doctorName || "Professional"}
                   className="w-100 h-100"
                   style={{ objectFit: 'cover' }}
                   onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/120x120/00A859/FFFFFF?text=Profile";
+                    e.target.src = "https://via.placeholder.com/150x150/00A859/FFFFFF?text=Profile";
                   }}
                 />
               </div>
@@ -522,29 +517,26 @@ export default function ProfessionalsDemo() {
           </div>
           
           {/* Mobile Text Content */}
-          <div className="bg-white" style={{ padding: '1rem 0' }}>
+          <div className="bg-white py-3">
             <div className="container">
               <div className="text-center">
                 <h1 
-                  className="hero-title fw-bold mb-1"
+                  className="hero-title fw-bold mb-2"
                   style={{
                     color: (previewData || savedConfig)?.heroTextColor || '#333',
-                    fontSize: '2rem',
-                    lineHeight: '1.1'
+                    fontSize: '1.8rem',
+                    lineHeight: '1.2'
                   }}
                 >
                   {previewData?.doctorName || previewData?.businessName || savedConfig?.doctorName || savedConfig?.businessName || t('heroTitle')}
                 </h1>
                 <p 
-                  className="hero-subtitle mb-2 text-muted"
+                  className="hero-subtitle mb-1 text-muted"
                   style={{
                     fontSize: '1rem'
                   }}
                 >
                   {previewData?.specialty?.[language] || savedConfig?.specialty?.[language] || t('heroSubtitle')}
-                </p>
-                <p className="hero-description text-muted">
-                  {previewData?.heroDescription?.[language] || savedConfig?.heroDescription?.[language] || t('heroDescription')}
                 </p>
               </div>
             </div>
@@ -553,7 +545,7 @@ export default function ProfessionalsDemo() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-5" style={{ marginTop: '4rem' }}>
+      <section id="about" className="py-5" style={{ marginTop: '2rem' }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
