@@ -343,14 +343,14 @@ export default function TourismDemo() {
         </div>
 
         {/* Mobile Version - Image Above, Text Below */}
-        <div className="d-lg-none">
+        <div className="d-lg-none" style={{ position: 'relative', zIndex: 1 }}>
           {/* Hero Image */}
           {savedConfig?.heroImage && (
             <div 
               className="w-100"
               style={{
-                height: '40vh',
-                minHeight: '250px',
+                height: '35vh',
+                minHeight: '200px',
                 backgroundImage: `url(${savedConfig.heroImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -360,7 +360,7 @@ export default function TourismDemo() {
           )}
           
           {/* Hero Text Content */}
-          <div className="bg-white py-2">
+          <div className="bg-white" style={{ padding: '1rem 0' }}>
             <div className="container">
               <div className="text-center">
                 <h1 

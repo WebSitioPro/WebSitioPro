@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-first responsive fixes for hero sections */
+@media (max-width: 991.98px) {
+  .d-lg-none {
+    display: block !important;
+  }
+  .d-none.d-lg-block {
+    display: none !important;
+  }
+}
+
 :root {
   /* Mexican-inspired color scheme */
   --primary: 142 100% 33%; /* #00A859 */
