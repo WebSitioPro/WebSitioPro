@@ -301,43 +301,78 @@ export default function ServicesDemo() {
       {/* Hero Section */}
       <section 
         id="home" 
-        className="py-5 d-flex align-items-center" 
-        style={{ 
-          backgroundImage: (previewData?.heroImage || savedConfig?.heroImage) ? 
-            `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${previewData?.heroImage || savedConfig?.heroImage})` : 
-            'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: (previewData?.heroImage || savedConfig?.heroImage) ? 'transparent' : 'hsl(var(--primary) / 0.05)',
-          minHeight: '70vh'
+        className="position-relative"
+        style={{
+          minHeight: '70vh',
+          height: '500px',
+          overflow: 'hidden'
         }}
       >
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-12 text-center">
-              <h1 className="display-4 fw-bold mb-4" style={{ 
-                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--primary))' 
-              }}>
-                {t('heroTitle')}
-              </h1>
-              <h2 className="h3 mb-4" style={{ 
-                color: (previewData?.heroImage || savedConfig?.heroImage) ? 'white' : 'hsl(var(--secondary))' 
-              }}>
-                {t('heroSubtitle')}
-              </h2>
-              <a 
-                href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529834567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(getLocalizedValue((previewData?.whatsappMessage || savedConfig?.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
-                className="btn btn-primary btn-lg text-white"
-                style={{ backgroundColor: '#25D366' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Phone className="me-2" size={20} />
-                {t('whatsappButton')}
-              </a>
-            </div>
+        {/* Background Image */}
+        {(previewData?.heroImage || savedConfig?.heroImage) && (
+          <div 
+            className="position-absolute w-100 h-100"
+            style={{
+              backgroundImage: `url(${previewData?.heroImage || savedConfig?.heroImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              opacity: parseFloat(savedConfig?.heroImageOpacity) || 0.9,
+              top: 0,
+              left: 0,
+              zIndex: 1
+            }}
+          />
+        )}
+        
+        {/* Content Container */}
+        <div 
+          className={`position-relative h-100 d-flex align-items-${savedConfig?.heroVerticalAlignment || 'center'}`}
+          style={{ zIndex: 2, backgroundColor: !(previewData?.heroImage || savedConfig?.heroImage) ? 'hsl(var(--primary) / 0.05)' : 'transparent' }}
+        >
+          <div className="container">
+            <div className={`row justify-content-${savedConfig?.heroTextAlignment === 'left' ? 'start' : savedConfig?.heroTextAlignment === 'right' ? 'end' : 'center'}`}>
+              <div className="col-lg-8 col-xl-7">
+                <div className={`text-${savedConfig?.heroTextAlignment || 'center'}`}>
+                  <h1 
+                    className="fw-bold mb-3"
+                    style={{ 
+                      color: savedConfig?.heroTextColor || ((previewData?.heroImage || savedConfig?.heroImage) ? '#ffffff' : 'hsl(var(--primary))'),
+                      fontSize: savedConfig?.heroTitleSize || '3.5rem',
+                      textShadow: (previewData?.heroImage || savedConfig?.heroImage) ? '2px 2px 4px rgba(0,0,0,0.7)' : 'none',
+                      lineHeight: '1.2',
+                      marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' : 
+                                  savedConfig?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
+                    }}
+                  >
+                    {t('heroTitle')}
+                  </h1>
+                  <h2 
+                    className="mb-4"
+                    style={{ 
+                      color: savedConfig?.heroSubtextColor || ((previewData?.heroImage || savedConfig?.heroImage) ? '#ffffff' : 'hsl(var(--secondary))'),
+                      fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
+                      textShadow: (previewData?.heroImage || savedConfig?.heroImage) ? '1px 1px 3px rgba(0,0,0,0.6)' : 'none',
+                      marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '1rem' : 
+                                  savedConfig?.heroTextSpacing === 'spacious' ? '3rem' : '2rem'
+                    }}
+                  >
+                    {t('heroSubtitle')}
+                  </h2>
 
+                  <a 
+                    href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529834567890').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(getLocalizedValue((previewData?.whatsappMessage || savedConfig?.whatsappMessage)) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
+                    className="btn btn-primary btn-lg text-white"
+                    style={{ backgroundColor: '#25D366' }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Phone className="me-2" size={20} />
+                    {t('whatsappButton')}
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

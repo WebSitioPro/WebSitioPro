@@ -281,47 +281,81 @@ export default function RetailDemo() {
       {/* Hero Section */}
       <section 
         id="home" 
-        className="py-5 d-flex align-items-center" 
+        className="position-relative"
         style={{
-          backgroundImage: savedConfig?.heroImage ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${savedConfig.heroImage}')` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          minHeight: '70vh'
+          minHeight: '70vh',
+          height: '500px',
+          overflow: 'hidden'
         }}
       >
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-4" style={{ color: savedConfig?.heroImage ? 'white' : 'hsl(var(--primary))' }}>
-                {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
-                 (savedConfig && savedConfig.businessName) || 
-                 t('businessName')}
-              </h1>
-              <h2 className="h4 mb-4" style={{ color: savedConfig?.heroImage ? '#f8f9fa' : 'hsl(var(--primary))' }}>
-                {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
-                 (language === 'es' ? 'Moda y Estilo' : 'Fashion & Style')}
-              </h2>
-              <a 
-                href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRetailData.whatsappNumber}?text=Hola, me interesa conocer más sobre sus productos`}
-                className="btn btn-lg text-white"
-                style={{ backgroundColor: '#25D366' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Phone size={20} className="me-2" />
-                {t('whatsappButton')}
-              </a>
-            </div>
-            {!savedConfig?.heroImage && (
-              <div className="col-lg-4 text-center">
-                <img 
-                  src={savedConfig?.logo || "https://via.placeholder.com/400x300/C8102E/FFFFFF?text=Boutique+Logo"} 
-                  alt="Boutique" 
-                  className="img-fluid rounded shadow"
-                />
+        {/* Background Image */}
+        {savedConfig?.heroImage && (
+          <div 
+            className="position-absolute w-100 h-100"
+            style={{
+              backgroundImage: `url(${savedConfig.heroImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              opacity: parseFloat(savedConfig?.heroImageOpacity) || 0.9,
+              top: 0,
+              left: 0,
+              zIndex: 1
+            }}
+          />
+        )}
+        
+        {/* Content Container */}
+        <div 
+          className={`position-relative h-100 d-flex align-items-${savedConfig?.heroVerticalAlignment || 'center'}`}
+          style={{ zIndex: 2 }}
+        >
+          <div className="container">
+            <div className={`row justify-content-${savedConfig?.heroTextAlignment === 'left' ? 'start' : savedConfig?.heroTextAlignment === 'right' ? 'end' : 'center'}`}>
+              <div className="col-lg-8 col-xl-7">
+                <div className={`text-${savedConfig?.heroTextAlignment || 'center'}`}>
+                  <h1 
+                    className="fw-bold mb-3"
+                    style={{ 
+                      color: savedConfig?.heroTextColor || '#ffffff',
+                      fontSize: savedConfig?.heroTitleSize || '3.5rem',
+                      textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
+                      lineHeight: '1.2',
+                      marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '0.5rem' : 
+                                  savedConfig?.heroTextSpacing === 'spacious' ? '2rem' : '1rem'
+                    }}
+                  >
+                    {(savedConfig && savedConfig.heroTitle && getLocalizedValue(savedConfig.heroTitle)) || 
+                     (savedConfig && savedConfig.businessName) || 
+                     t('businessName')}
+                  </h1>
+                  <h2 
+                    className="mb-4"
+                    style={{ 
+                      color: savedConfig?.heroSubtextColor || '#ffffff',
+                      fontSize: savedConfig?.heroSubtitleSize || '1.25rem',
+                      textShadow: '1px 1px 3px rgba(0,0,0,0.6)',
+                      marginBottom: savedConfig?.heroTextSpacing === 'compact' ? '1rem' : 
+                                  savedConfig?.heroTextSpacing === 'spacious' ? '3rem' : '2rem'
+                    }}
+                  >
+                    {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
+                     (language === 'es' ? 'Moda y Estilo' : 'Fashion & Style')}
+                  </h2>
+
+                  <a 
+                    href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRetailData.whatsappNumber}?text=Hola, me interesa conocer más sobre sus productos`}
+                    className="btn btn-lg text-white"
+                    style={{ backgroundColor: '#25D366' }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Phone size={20} className="me-2" />
+                    {t('whatsappButton')}
+                  </a>
+                </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </section>
