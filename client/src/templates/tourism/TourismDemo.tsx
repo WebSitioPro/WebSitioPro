@@ -384,9 +384,7 @@ export default function TourismDemo() {
                   {(savedConfig && savedConfig.heroSubtitle && getLocalizedValue(savedConfig.heroSubtitle)) || 
                    (language === 'es' ? 'Descubre la belleza de México' : 'Discover the beauty of Mexico')}
                 </p>
-                <p className="hero-description text-muted">
-                  {(savedConfig && savedConfig.heroDescription && getLocalizedValue(savedConfig.heroDescription)) || ''}
-                </p>
+
               </div>
             </div>
           </div>
@@ -394,7 +392,7 @@ export default function TourismDemo() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-5" style={{ marginTop: '5rem' }}>
+      <section id="about" className="py-5" style={{ marginTop: '4rem' }}>
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">
