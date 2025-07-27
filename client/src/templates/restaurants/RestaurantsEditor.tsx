@@ -93,7 +93,8 @@ export default function RestaurantsEditor() {
     heroTextColor: '#ffffff',
     heroSubtextColor: '#ffffff',
     heroTitleSize: '3.5rem',
-    heroSubtitleSize: '1.25rem'
+    heroSubtitleSize: '1.25rem',
+    heroImageOpacity: 0.9
   });
   
   const [isSaving, setIsSaving] = useState(false);
@@ -138,7 +139,18 @@ export default function RestaurantsEditor() {
             bannerText: config.bannerText || websiteData.bannerText,
             bannerBackgroundColor: config.bannerBackgroundColor || websiteData.bannerBackgroundColor,
             bannerTextColor: config.bannerTextColor || websiteData.bannerTextColor,
-            bannerTextSize: config.bannerTextSize || websiteData.bannerTextSize
+            bannerTextSize: config.bannerTextSize || websiteData.bannerTextSize,
+            
+            // Hero Text Positioning & Styling (from saved config)
+            heroTextAlignment: config.heroTextAlignment || websiteData.heroTextAlignment,
+            heroVerticalAlignment: config.heroVerticalAlignment || websiteData.heroVerticalAlignment,
+            heroTextSpacing: config.heroTextSpacing || websiteData.heroTextSpacing,
+            heroTitlePosition: config.heroTitlePosition || websiteData.heroTitlePosition,
+            heroTextColor: config.heroTextColor || websiteData.heroTextColor,
+            heroSubtextColor: config.heroSubtextColor || websiteData.heroSubtextColor,
+            heroTitleSize: config.heroTitleSize || websiteData.heroTitleSize,
+            heroSubtitleSize: config.heroSubtitleSize || websiteData.heroSubtitleSize,
+            heroImageOpacity: config.heroImageOpacity || websiteData.heroImageOpacity
           };
           setWebsiteData(restaurantConfig);
         }
@@ -560,6 +572,19 @@ export default function RestaurantsEditor() {
                             value={websiteData.heroImage}
                             onChange={(e) => handleInputChange('heroImage', e.target.value)}
                           />
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Image Opacity</label>
+                          <input 
+                            type="range" 
+                            className="form-range"
+                            min="0" 
+                            max="1" 
+                            step="0.1"
+                            value={websiteData.heroImageOpacity || 0.9}
+                            onChange={(e) => handleInputChange('heroImageOpacity', parseFloat(e.target.value))}
+                          />
+                          <small className="text-muted">Current: {websiteData.heroImageOpacity || 0.9}</small>
                         </div>
                         <div className="mb-3">
                           <label className="form-label">Restaurant Name</label>
