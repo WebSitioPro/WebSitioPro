@@ -1530,6 +1530,45 @@ export default function EditorPage() {
                       </div>
                     </div>
                   </div>
+                  
+                  {/* Logo Section */}
+                  <div className="mt-4 pt-4 border-top">
+                    <h5 className="mb-3">Logo Settings</h5>
+                    <div className="row g-3">
+                      <div className="col-md-8">
+                        <label className="form-label">Logo URL</label>
+                        <input
+                          type="url"
+                          className="form-control"
+                          value={websiteData.logo || ''}
+                          onChange={(e) => handleInputChange('logo', e.target.value)}
+                          placeholder="https://example.com/logo.png"
+                        />
+                        <div className="form-text">Enter a direct link to your logo image (PNG, JPG, SVG)</div>
+                      </div>
+                      <div className="col-md-4">
+                        {websiteData.logo && (
+                          <div>
+                            <label className="form-label">Preview</label>
+                            <div className="border rounded p-2 bg-light text-center">
+                              <img 
+                                src={websiteData.logo} 
+                                alt="Logo Preview" 
+                                style={{ 
+                                  maxWidth: '100%', 
+                                  maxHeight: '60px',
+                                  objectFit: 'contain'
+                                }}
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
