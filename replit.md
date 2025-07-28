@@ -580,6 +580,16 @@ Changelog:
 - July 04, 2025. Initial setup
 ```
 
+## Editor Access Information
+
+### Password Protection
+The WebSitioPro editor is now password-protected for security:
+- **URL**: `websitiopro.com/editor` (or in development: `localhost:5000/editor`)
+- **Password**: `WebSitioPro2025!`
+- **Session**: Password is remembered during browser session (until tab/browser is closed)
+
+The editor link has been removed from the public homepage header to keep it secure from public access.
+
 ## User Preferences
 
 ```

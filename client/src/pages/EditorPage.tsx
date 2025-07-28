@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'wouter';
 import { Save, Download, Upload, Palette, Type, Image, Settings, Eye, Briefcase, UtensilsCrossed, MapPin, ShoppingBag, Wrench, Users, ChevronRight, Plus } from 'lucide-react';
+import PasswordProtection from '@/components/PasswordProtection';
 
 interface WebsiteData {
   // Colors
@@ -143,7 +144,7 @@ interface WebsiteData {
   }>;
 }
 
-export default function EditorPage() {
+function EditorPageContent() {
   const params = useParams();
   const clientId = params.clientId || 'homepage';
   const [activeTab, setActiveTab] = useState('colors');
@@ -2764,5 +2765,15 @@ export default function EditorPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function EditorPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  return (
+    <PasswordProtection onAuthenticated={() => setIsAuthenticated(true)}>
+      <EditorPageContent />
+    </PasswordProtection>
   );
 }

@@ -60,9 +60,7 @@ export default function UnifiedHeader({ language, toggleLanguage, currentPage = 
               <a className="text-decoration-none text-dark" href="/#pricing">{t('pricing')}</a>
               <a className="text-decoration-none text-dark" href="/#contact">{t('contact')}</a>
               <Link className="text-decoration-none text-dark" href="/pro">{t('proSites')}</Link>
-              {import.meta.env.DEV && (
-                <Link className="text-decoration-none fw-bold" href="/editor" style={{ color: '#007BFF' }}>Editor</Link>
-              )}
+
             </div>
           </div>
 
