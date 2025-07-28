@@ -555,7 +555,10 @@ export default function ServicesDemo() {
               <p className="mb-0">© {new Date().getFullYear()} {t('businessName')}. {language === 'es' ? 'Todos los derechos reservados' : 'All rights reserved'}.</p>
             </div>
             <div className="col-md-6 text-md-end">
-              <small className="text-muted">{t('poweredBy')}</small>
+              <small className="text-muted">
+                {language === 'es' ? 'Sitio creado por' : 'Site created by'}{' '}
+                <a href="/" className="text-decoration-none text-primary">WebSitioPro</a>
+              </small>
             </div>
           </div>
         </div>

@@ -150,6 +150,13 @@ Examples:
 
 ```
 Changelog:
+- July 28, 2025. Services Template Navigation, Layout, and Footer Link Fixed
+  - RESOLVED: Fixed missing navigation menu in Services template header by replacing Bootstrap collapse with explicit d-none d-lg-flex classes
+  - FIXED: Centered About section content using justify-content-center and text-center classes for proper page layout
+  - ENHANCED: Added clickable WebSitioPro link in footer that properly navigates to homepage (/) instead of plain text
+  - MAINTAINED: All contact functionality including WhatsApp (528932002000) and Facebook buttons working with target="_blank" behavior
+  - TECHNICAL: Navigation now displays all menu items (Home, About, Services, Photos, Reviews, Contact) on desktop and mobile
+  - LAYOUT: About section content properly centered on page instead of left-aligned for consistent design across templates
 - July 28, 2025. Services Template Contact Section and React Error Fixed
   - RESOLVED: Fixed critical React error "Objects are not valid as a React child" in Services template caused by translation function returning objects
   - FIXED: Services template Contact section now displays saved WhatsApp number (528932002000), Facebook URL, phone, email, and address from editor
