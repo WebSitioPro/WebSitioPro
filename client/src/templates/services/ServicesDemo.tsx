@@ -172,6 +172,9 @@ export default function ServicesDemo() {
               <li className="nav-item">
                 <a href="#contact" className="nav-link">{t('contact')}</a>
               </li>
+              <li className="nav-item">
+                <a href="#maps" className="nav-link">{language === 'es' ? 'Ubicación' : 'Maps'}</a>
+              </li>
             </ul>
             
             {/* Desktop Language Toggle */}
@@ -207,6 +210,7 @@ export default function ServicesDemo() {
               <li><a href="#photos" className="nav-link" onClick={() => setShowMobileMenu(false)}>{t('photos')}</a></li>
               <li><a href="#reviews" className="nav-link" onClick={() => setShowMobileMenu(false)}>{t('reviews')}</a></li>
               <li><a href="#contact" className="nav-link" onClick={() => setShowMobileMenu(false)}>{t('contact')}</a></li>
+              <li><a href="#maps" className="nav-link" onClick={() => setShowMobileMenu(false)}>{language === 'es' ? 'Ubicación' : 'Maps'}</a></li>
               <li className="nav-item mt-2">
                 <button 
                   onClick={() => { toggleLanguage(); setShowMobileMenu(false); }}
@@ -573,6 +577,126 @@ export default function ServicesDemo() {
                       </div>
                     </div>
                   )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Google Maps Section */}
+      <section id="maps" className="py-5 bg-light">
+        <div className="container">
+          <h2 className="text-center fw-bold mb-5" style={{ color: 'hsl(var(--primary))' }}>
+            {language === 'es' ? 'Ubicación' : 'Location'}
+          </h2>
+          <div className="row justify-content-center">
+            <div className="col-lg-10">
+              <div className="map-container" style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                {(() => {
+                  // Priority: preview data > saved config
+                  const embedCode = previewData?.googleMapsEmbed || data.googleMapsEmbed;
+                  
+                  if (embedCode) {
+                    // Check if it's a full iframe HTML embed code
+                    if (embedCode.includes('<iframe')) {
+                      // Extract the src URL from iframe
+                      const srcMatch = embedCode.match(/src="([^"]+)"/);
+                      if (srcMatch) {
+                        const embedUrl = srcMatch[1];
+                        return (
+                          <iframe
+                            src={embedUrl}
+                            width="100%"
+                            height="100%"
+                            style={{ 
+                              position: 'absolute', 
+                              top: 0, 
+                              left: 0, 
+                              border: 0,
+                              borderRadius: '8px'
+                            }}
+                            allowFullScreen=""
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title="Google Maps"
+                          />
+                        );
+                      }
+                    } else if (embedCode.includes('google.com/maps') || embedCode.includes('maps.app.goo.gl')) {
+                      // Handle direct Google Maps URLs
+                      let embedUrl = embedCode;
+                      if (embedCode.includes('maps.app.goo.gl')) {
+                        // Short URLs need to be converted - show helpful message
+                        return (
+                          <div className="d-flex align-items-center justify-content-center h-100">
+                            <div className="text-center">
+                              <MapPin size={48} className="text-muted mb-3" />
+                              <p className="text-muted">
+                                {language === 'es' 
+                                  ? 'Para mostrar el mapa, use el código de inserción completo de Google Maps' 
+                                  : 'To display the map, please use the full Google Maps embed code'}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      } else if (embedCode.includes('google.com/maps/embed')) {
+                        embedUrl = embedCode;
+                      } else {
+                        // Try to convert to embed URL
+                        embedUrl = embedCode.replace('google.com/maps', 'google.com/maps/embed');
+                      }
+                      
+                      return (
+                        <iframe
+                          src={embedUrl}
+                          width="100%"
+                          height="100%"
+                          style={{ 
+                            position: 'absolute', 
+                            top: 0, 
+                            left: 0, 
+                            border: 0,
+                            borderRadius: '8px'
+                          }}
+                          allowFullScreen=""
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          title="Google Maps"
+                        />
+                      );
+                    }
+                  }
+                  
+                  // Default placeholder when no embed code
+                  return (
+                    <div className="d-flex align-items-center justify-content-center h-100 bg-light rounded">
+                      <div className="text-center">
+                        <MapPin size={48} className="text-muted mb-3" />
+                        <p className="text-muted">
+                          {language === 'es' 
+                            ? 'Mapa no configurado' 
+                            : 'Map not configured'}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+              
+              {/* Address Display */}
+              <div className="text-center mt-4">
+                <div className="d-flex align-items-center justify-content-center">
+                  <MapPin className="me-2" size={20} style={{ color: 'hsl(var(--primary))' }} />
+                  <p className="mb-0 text-muted">
+                    {(() => {
+                      const address = previewData?.address || data.address;
+                      if (typeof address === 'object') {
+                        return getLocalizedValue(address);
+                      }
+                      return address || (language === 'es' ? 'Dirección no disponible' : 'Address not available');
+                    })()}
+                  </p>
                 </div>
               </div>
             </div>

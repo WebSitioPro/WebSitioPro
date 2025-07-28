@@ -150,6 +150,13 @@ Examples:
 
 ```
 Changelog:
+- July 28, 2025. Services Template Google Maps Section Restored Complete
+  - COMPLETED: Restored missing Google Maps section to Services template matching other 4 templates
+  - ADDED: Full Google Maps section with embedded iframe support and address display
+  - NAVIGATION: Added "Ubicación/Maps" navigation links to both desktop and mobile menus
+  - FUNCTIONALITY: Same Google Maps display logic as other templates (embed code processing, fallback messages)
+  - BILINGUAL: Proper Spanish/English support for section title and placeholder messages
+  - CONSISTENCY: All 5 templates now have identical Google Maps functionality in contact area
 - July 28, 2025. All Templates Facebook Button Consistency Complete
   - COMPLETED: Applied identical Facebook button improvements across all 5 business templates
   - RETAIL TEMPLATE: Updated to use small circular Facebook/Instagram buttons matching other templates
