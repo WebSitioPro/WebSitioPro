@@ -786,9 +786,11 @@ export default function ProPage() {
                     <MessageCircle className="text-success" style={{ color: 'hsl(var(--secondary))' }} />
                     <div>
                       <a 
-                        href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent(savedConfig?.whatsappMessage || 'Hola! Me interesa el servicio Pro de WebSitioPro.')}`}
+                        href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent('¡Hola! Me interesan los Sitios Pro de WebSitioPro.')}`}
                         className="text-decoration-none"
                         style={{ color: 'hsl(var(--secondary))' }}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         <h6 className="mb-0">WhatsApp</h6>
                         <small className="text-muted">{t('whatsappText')}</small>
