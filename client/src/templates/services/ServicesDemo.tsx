@@ -282,7 +282,7 @@ export default function ServicesDemo() {
                       'mb-3'
                     }`}
                     style={{ 
-                      color: data.heroTitleColor || (data.heroImage ? '#ffffff' : 'hsl(var(--primary))'),
+                      color: data.heroTextColor || (data.heroImage ? '#ffffff' : 'hsl(var(--primary))'),
                       fontSize: data.heroTitleSize === 'small' ? '2.5rem' :
                                data.heroTitleSize === 'large' ? '4.5rem' :
                                data.heroTitleSize === 'x-large' ? '5.5rem' :
@@ -300,7 +300,7 @@ export default function ServicesDemo() {
                       'mb-4'
                     }`}
                     style={{ 
-                      color: data.heroSubtitleColor || (data.heroImage ? '#ffffff' : 'hsl(var(--secondary))'),
+                      color: data.heroSubtextColor || (data.heroImage ? '#ffffff' : 'hsl(var(--secondary))'),
                       fontSize: data.heroSubtitleSize === 'small' ? '1rem' :
                                data.heroSubtitleSize === 'large' ? '1.5rem' :
                                '1.25rem',
@@ -313,7 +313,7 @@ export default function ServicesDemo() {
                     <p 
                       className="lead"
                       style={{ 
-                        color: data.heroDescriptionColor || (data.heroImage ? '#ffffff' : 'hsl(var(--muted))'),
+                        color: data.heroSubtextColor || (data.heroImage ? '#ffffff' : 'hsl(var(--muted))'),
                         textShadow: data.heroImage ? '1px 1px 2px rgba(0,0,0,0.5)' : 'none'
                       }}
                     >
