@@ -150,6 +150,21 @@ Examples:
 
 ```
 Changelog:
+- July 28, 2025. Tourism Template Facebook Button Updated to Match Other Templates
+  - COMPLETED: Applied same Facebook button improvements to Tourism template matching Professionals and Restaurant templates
+  - REPLACED: Old large Facebook icon with small circular button design (50px x 50px rounded-circle)
+  - ENHANCED: Button only shows when Facebook URL is provided and properly trimmed for validation
+  - FIXED: Updated WhatsApp integration to use saved configuration data instead of hardcoded mock data
+  - UPDATED: Social media section styling with proper bilingual support for section titles
+  - CONSISTENT: All templates (Professionals, Restaurants, Tourism) now have identical Facebook button behavior
+  - Tourism template Facebook button now properly links to saved URL configuration with clean circular design
+- July 28, 2025. Restaurant Template Facebook Button Fixed to Match Professionals Template
+  - COMPLETED: Updated Restaurant template Facebook button to match Professionals template design
+  - REPLACED: Large Facebook icon with small circular button (50px x 50px) that only appears when URL provided
+  - FIXED: Facebook URL now properly links to saved configuration instead of displaying non-functional button
+  - ENHANCED: Added proper URL validation with trim() check to hide button when no valid URL exists
+  - UPDATED: Social media section styling to match Professionals template with bilingual "Follow Us" title
+  - Restaurant template contact section now has same clean circular Facebook/Instagram buttons as Professionals template
 - July 28, 2025. Services Template Hero Text Positioning Controls and Color Fix Complete
   - COMPLETED: Implemented full text positioning system for Services template hero section matching other templates
   - FIXED: Text color controls now working by synchronizing field names between ServicesEditor and ServicesDemo (heroTextColor/heroSubtextColor)

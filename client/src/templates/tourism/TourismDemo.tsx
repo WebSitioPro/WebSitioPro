@@ -696,46 +696,13 @@ export default function TourismDemo() {
                       </div>
                     </div>
                     
-                    {/* Social Media Links */}
-                    {(savedConfig?.facebookUrl || savedConfig?.instagramUrl) && (
-                      <div className="col-12">
-                        <div className="d-flex align-items-center mb-3">
-                          <div className="me-3 d-flex">
-                            {savedConfig?.facebookUrl && (
-                              <a
-                                href={savedConfig.facebookUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="me-2"
-                                style={{ color: 'hsl(var(--primary))' }}
-                              >
-                                <Facebook size={24} />
-                              </a>
-                            )}
-                            {savedConfig?.instagramUrl && (
-                              <a
-                                href={savedConfig.instagramUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{ color: 'hsl(var(--primary))' }}
-                              >
-                                <Instagram size={24} />
-                              </a>
-                            )}
-                          </div>
-                          <div>
-                            <h6 className="mb-0">Redes Sociales</h6>
-                            <p className="mb-0 text-muted">Síguenos en redes sociales</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+
                   </div>
                   
                   <div className="mt-4">
                     <a 
-                      href={`https://wa.me/${mockTourismData.whatsappNumber}?text=Hola, me gustaría información sobre sus tours`}
-                      className="btn w-100 text-white mb-2"
+                      href={`https://wa.me/${savedConfig?.whatsappNumber || mockTourismData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue(savedConfig?.whatsappMessage) || 'Hola, me gustaría información sobre sus tours')}`}
+                      className="btn w-100 text-white"
                       style={{ backgroundColor: '#25D366' }}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -743,17 +710,41 @@ export default function TourismDemo() {
                       <Phone size={16} className="me-2" />
                       {t('whatsappButton')}
                     </a>
-                    {mockTourismData.socialLink && (
-                      <a 
-                        href={mockTourismData.socialLink}
-                        className="btn btn-outline-primary w-100"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {t('followUs')}
-                      </a>
-                    )}
                   </div>
+                  
+                  {/* Social Media Links */}
+                  {((savedConfig?.facebookUrl && savedConfig?.facebookUrl.trim()) || 
+                    (savedConfig?.instagramUrl && savedConfig?.instagramUrl.trim())) && (
+                    <div className="mt-4">
+                      <h6 className="mb-3">{language === 'es' ? 'Síguenos en Redes Sociales' : 'Follow Us on Social Media'}</h6>
+                      <div className="d-flex gap-3">
+                        {(savedConfig?.facebookUrl && savedConfig?.facebookUrl.trim()) && (
+                          <a
+                            href={savedConfig.facebookUrl}
+                            className="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: '50px', height: '50px' }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Facebook"
+                          >
+                            <Facebook size={24} />
+                          </a>
+                        )}
+                        {(savedConfig?.instagramUrl && savedConfig?.instagramUrl.trim()) && (
+                          <a
+                            href={savedConfig.instagramUrl}
+                            className="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: '50px', height: '50px' }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Instagram"
+                          >
+                            <Instagram size={24} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
