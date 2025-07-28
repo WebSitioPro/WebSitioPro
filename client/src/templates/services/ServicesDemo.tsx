@@ -526,59 +526,54 @@ export default function ServicesDemo() {
                   </div>
                 </div>
                 
-                {/* WhatsApp Button */}
-                {data.whatsappNumber && (
-                  <div className="col-12">
-                    <div className="d-flex align-items-center mb-3">
-                      <MessageCircle className="me-3" size={24} style={{ color: '#25D366' }} />
-                      <div className="flex-grow-1">
-                        <h6 className="mb-0">WhatsApp</h6>
-                        <p className="mb-2 text-muted">
-                          {language === 'es' ? 'Contacta directamente' : 'Contact directly'}
-                        </p>
-                        <a 
-                          href={`https://wa.me/${String(data.whatsappNumber || '').replace(/\D/g, '')}?text=${encodeURIComponent(getLocalizedValue(data.whatsappMessage) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
-                          className="btn btn-success btn-sm"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
-                        >
-                          <MessageCircle size={16} className="me-1" />
-                          {language === 'es' ? 'Enviar Mensaje' : 'Send Message'}
-                        </a>
+                <div className="col-12">
+                  <div className="mt-4">
+                    <a 
+                      href={`https://wa.me/${String(data.whatsappNumber || '').replace(/\D/g, '')}?text=${encodeURIComponent(getLocalizedValue(data.whatsappMessage) || (language === 'es' ? 'Hola, necesito un servicio técnico' : 'Hello, I need a technical service'))}`}
+                      className="btn w-100 text-white"
+                      style={{ backgroundColor: '#25D366' }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Phone size={16} className="me-2" />
+                      {language === 'es' ? 'WhatsApp' : 'WhatsApp'}
+                    </a>
+                  </div>
+                  
+                  {/* Social Media Links */}
+                  {((data.facebookUrl && data.facebookUrl.trim()) || 
+                    (data.instagramUrl && data.instagramUrl.trim())) && (
+                    <div className="mt-4">
+                      <h6 className="mb-3">{language === 'es' ? 'Síguenos en Redes Sociales' : 'Follow Us on Social Media'}</h6>
+                      <div className="d-flex gap-3">
+                        {(data.facebookUrl && data.facebookUrl.trim()) && (
+                          <a
+                            href={data.facebookUrl}
+                            className="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: '50px', height: '50px' }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Facebook"
+                          >
+                            <Facebook size={24} />
+                          </a>
+                        )}
+                        {(data.instagramUrl && data.instagramUrl.trim()) && (
+                          <a
+                            href={data.instagramUrl}
+                            className="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center"
+                            style={{ width: '50px', height: '50px' }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Instagram"
+                          >
+                            <Instagram size={24} />
+                          </a>
+                        )}
                       </div>
                     </div>
-                  </div>
-                )}
-                
-                {/* Facebook Button */}
-                {data.facebookUrl && (
-                  <div className="col-12">
-                    <div className="d-flex align-items-center mb-3">
-                      <svg className="me-3" width="24" height="24" viewBox="0 0 24 24" fill="#1877F2">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                      </svg>
-                      <div className="flex-grow-1">
-                        <h6 className="mb-0">Facebook</h6>
-                        <p className="mb-2 text-muted">
-                          {language === 'es' ? 'Síguenos en Facebook' : 'Follow us on Facebook'}
-                        </p>
-                        <a 
-                          href={data.facebookUrl}
-                          className="btn btn-primary btn-sm"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ backgroundColor: '#1877F2', borderColor: '#1877F2' }}
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="white" className="me-1">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                          </svg>
-                          {language === 'es' ? 'Ver Página' : 'View Page'}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>

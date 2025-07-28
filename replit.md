@@ -150,14 +150,16 @@ Examples:
 
 ```
 Changelog:
-- July 28, 2025. Tourism Template Facebook Button Updated to Match Other Templates
-  - COMPLETED: Applied same Facebook button improvements to Tourism template matching Professionals and Restaurant templates
-  - REPLACED: Old large Facebook icon with small circular button design (50px x 50px rounded-circle)
-  - ENHANCED: Button only shows when Facebook URL is provided and properly trimmed for validation
-  - FIXED: Updated WhatsApp integration to use saved configuration data instead of hardcoded mock data
-  - UPDATED: Social media section styling with proper bilingual support for section titles
-  - CONSISTENT: All templates (Professionals, Restaurants, Tourism) now have identical Facebook button behavior
-  - Tourism template Facebook button now properly links to saved URL configuration with clean circular design
+- July 28, 2025. All Templates Facebook Button Consistency Complete
+  - COMPLETED: Applied identical Facebook button improvements across all 5 business templates
+  - RETAIL TEMPLATE: Updated to use small circular Facebook/Instagram buttons matching other templates
+  - SERVICES TEMPLATE: Replaced custom SVG Facebook implementation with consistent circular button design
+  - TOURISM TEMPLATE: Applied same improvements matching Professionals and Restaurant templates
+  - CONSISTENT DESIGN: All templates now use 50px circular buttons that only show when URLs provided
+  - ENHANCED VALIDATION: All templates check for trimmed URLs to hide empty/invalid social media buttons
+  - IMPROVED WHATSAPP: Updated all templates to use saved configuration data instead of hardcoded values
+  - BILINGUAL SUPPORT: Social media sections now have proper "Síguenos en Redes Sociales" / "Follow Us" titles
+  - All 5 templates (Professionals, Restaurants, Tourism, Retail, Services) now have identical social media button behavior
 - July 28, 2025. Restaurant Template Facebook Button Fixed to Match Professionals Template
   - COMPLETED: Updated Restaurant template Facebook button to match Professionals template design
   - REPLACED: Large Facebook icon with small circular button (50px x 50px) that only appears when URL provided
