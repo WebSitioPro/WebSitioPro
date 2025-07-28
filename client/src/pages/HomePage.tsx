@@ -416,7 +416,7 @@ export default function HomePage() {
             {/* Logo */}
             <div className="col-auto">
               <a className="fw-bold text-decoration-none fs-4 d-flex align-items-center" href="#" style={{ color: 'hsl(var(--primary))' }}>
-                {savedConfig?.logo ? (
+                {savedConfig?.logo && savedConfig.logo.startsWith('http') ? (
                   <img 
                     src={savedConfig.logo} 
                     alt="Logo" 
@@ -426,6 +426,10 @@ export default function HomePage() {
                       objectFit: 'contain'
                     }}
                     className="me-2"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement!.textContent = 'WebSitioPro';
+                    }}
                   />
                 ) : (
                   'WebSitioPro'

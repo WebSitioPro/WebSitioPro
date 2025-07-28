@@ -1547,7 +1547,7 @@ export default function EditorPage() {
                         <div className="form-text">Enter a direct link to your logo image (PNG, JPG, SVG)</div>
                       </div>
                       <div className="col-md-4">
-                        {websiteData.logo && (
+                        {websiteData.logo && websiteData.logo.startsWith('http') && (
                           <div>
                             <label className="form-label">Preview</label>
                             <div className="border rounded p-2 bg-light text-center">
@@ -1577,21 +1577,37 @@ export default function EditorPage() {
                 <div>
                   <h4 className="mb-4">Header & Navigation Settings</h4>
                   <div className="row g-3">
-                    <div className="col-md-6">
-                      <label className="form-label">Site Logo/Name</label>
+                    <div className="col-md-8">
+                      <label className="form-label">Logo URL</label>
                       <input 
-                        type="text" 
+                        type="url" 
                         className="form-control"
-                        value={websiteData.logo}
+                        value={websiteData.logo || ''}
                         onChange={(e) => handleInputChange('logo', e.target.value)}
+                        placeholder="https://example.com/logo.png"
                       />
+                      <div className="form-text">Enter a direct link to your logo image (PNG, JPG, SVG)</div>
                     </div>
-                    <div className="col-md-6">
-                      <label className="form-label">Navigation Style</label>
-                      <select className="form-control">
-                        <option>Horizontal Menu</option>
-                        <option>Dropdown Menu</option>
-                      </select>
+                    <div className="col-md-4">
+                      {websiteData.logo && websiteData.logo.startsWith('http') && (
+                        <div>
+                          <label className="form-label">Preview</label>
+                          <div className="border rounded p-2 bg-light text-center">
+                            <img 
+                              src={websiteData.logo} 
+                              alt="Logo Preview" 
+                              style={{ 
+                                maxWidth: '100%', 
+                                maxHeight: '60px',
+                                objectFit: 'contain'
+                              }}
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
