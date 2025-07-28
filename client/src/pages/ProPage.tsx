@@ -352,9 +352,11 @@ export default function ProPage() {
                 </button>
                 
                 <a 
-                  href="https://wa.me/529831234567?text=Interested in Pro sites!"
+                  href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent('¡Hola! Me interesan los Sitios Pro de WebSitioPro.')}`}
                   className="btn btn-success text-white px-4"
                   style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {t('contactWhatsApp')}
                 </a>
@@ -441,9 +443,11 @@ export default function ProPage() {
                       {t('navHomePage')}
                     </Link>
                     <a 
-                      href="https://wa.me/529831234567?text=Interested in Pro sites!"
+                      href={`https://wa.me/${savedConfig?.whatsappNumber?.replace(/\D/g, '') || '529831234567'}?text=${encodeURIComponent('¡Hola! Me interesan los Sitios Pro de WebSitioPro.')}`}
                       className="btn btn-success text-white mt-2"
                       style={{ backgroundColor: 'hsl(var(--secondary))' }}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       onClick={() => setShowMobileMenu(false)}
                     >
                       {t('contactWhatsApp')}
