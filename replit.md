@@ -150,6 +150,13 @@ Examples:
 
 ```
 Changelog:
+- July 28, 2025. Services Template Contact Section and React Error Fixed
+  - RESOLVED: Fixed critical React error "Objects are not valid as a React child" in Services template caused by translation function returning objects
+  - FIXED: Services template Contact section now displays saved WhatsApp number (528932002000), Facebook URL, phone, email, and address from editor
+  - ADDED: WhatsApp and Facebook buttons to Services template Contact section with proper target="_blank" behavior
+  - ENHANCED: Contact section now uses dynamic configuration data instead of translation placeholders
+  - TECHNICAL: Fixed translation function logic to ensure all values return strings instead of objects with {es, en} keys
+  - COMPLETED: All contact information now properly displays from saved configuration
 - July 28, 2025. Homepage Logo System Fixed and Pro Page Mirroring Implemented
   - RESOLVED: Fixed homepage logo preview not showing in editor and fallback text disappearing when no logo loaded
   - FIXED: Header & Navigation Settings logo tool now properly working with URL input and preview functionality 
