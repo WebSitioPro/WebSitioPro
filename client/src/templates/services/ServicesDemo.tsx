@@ -150,8 +150,8 @@ export default function ServicesDemo() {
           </button>
 
           {/* Desktop Navigation */}
-          <div className="collapse navbar-collapse">
-            <ul className="navbar-nav ms-auto me-3">
+          <div className="d-none d-lg-flex align-items-center ms-auto">
+            <ul className="navbar-nav me-3">
               <li className="nav-item">
                 <a href="#home" className="nav-link">{t('home')}</a>
               </li>
@@ -292,8 +292,8 @@ export default function ServicesDemo() {
       {/* About Section */}
       <section id="about" className="py-5" style={{ marginTop: '3rem' }}>
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-6">
+          <div className="row justify-content-center">
+            <div className="col-lg-8 text-center">
               <h2 className="fw-bold mb-4" style={{ color: 'hsl(var(--primary))' }}>
                 {t('aboutTitle')}
               </h2>
