@@ -20,7 +20,7 @@ export default function ServicesEditor() {
     heroImage: 'https://via.placeholder.com/800x400/6C5CE7/FFFFFF?text=Services',
     heroTitle: { es: 'Servicios Técnicos Pro', en: 'Pro Technical Services' },
     heroSubtitle: { es: 'Reparaciones y Mantenimiento', en: 'Repairs & Maintenance' },
-    heroDescription: { es: 'Servicios técnicos profesionales', en: 'Professional technical services' },
+    heroDescription: { es: '', en: '' },
     businessName: 'Servicios Técnicos Pro',
     aboutTitle: { es: 'Acerca de Nosotros', en: 'About Us' },
     aboutText: { es: 'Ofrecemos servicios técnicos...', en: 'We offer technical services...' },
