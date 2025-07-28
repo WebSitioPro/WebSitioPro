@@ -1479,6 +1479,52 @@ export default function RestaurantsEditor() {
                 {activeTab === 'colors' && (
                   <div>
                     <h5 className="mb-4">Colors & Branding</h5>
+                    
+                    {/* Logo Section */}
+                    <div className="card mb-4">
+                      <div className="card-header">
+                        <h6 className="mb-0">Business Logo</h6>
+                      </div>
+                      <div className="card-body">
+                        <div className="row">
+                          <div className="col-md-8">
+                            <div className="mb-3">
+                              <label className="form-label">Logo URL</label>
+                              <input
+                                type="url"
+                                className="form-control"
+                                value={websiteData.logo || ''}
+                                onChange={(e) => handleInputChange('logo', e.target.value)}
+                                placeholder="https://example.com/logo.png"
+                              />
+                              <div className="form-text">Enter a direct link to your logo image (PNG, JPG, SVG)</div>
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            {websiteData.logo && (
+                              <div>
+                                <label className="form-label">Preview</label>
+                                <div className="border rounded p-2 bg-light">
+                                  <img 
+                                    src={websiteData.logo} 
+                                    alt="Logo Preview" 
+                                    style={{ 
+                                      maxWidth: '100%', 
+                                      maxHeight: '60px',
+                                      objectFit: 'contain'
+                                    }}
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = 'none';
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="row">
                       <div className="col-md-4">
                         <div className="mb-3">

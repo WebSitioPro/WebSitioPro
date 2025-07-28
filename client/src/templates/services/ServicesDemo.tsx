@@ -232,8 +232,21 @@ export default function ServicesDemo() {
       {/* Navigation */}
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
-          <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
-            {t('businessName')}
+          <a className="navbar-brand fw-bold d-flex align-items-center" href="#" style={{ color: 'hsl(var(--primary))' }}>
+            {(previewData?.logo || savedConfig?.logo) ? (
+              <img 
+                src={previewData?.logo || savedConfig?.logo} 
+                alt="Logo" 
+                style={{ 
+                  maxHeight: '40px', 
+                  width: 'auto',
+                  objectFit: 'contain'
+                }}
+                className="me-2"
+              />
+            ) : (
+              t('businessName')
+            )}
           </a>
           
           <div className="d-flex align-items-center d-lg-none">

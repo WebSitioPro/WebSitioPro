@@ -265,8 +265,21 @@ export default function ProfessionalsDemo() {
       {/* Header */}
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div className="container">
-          <a className="navbar-brand fw-bold" href="#" style={{ color: 'hsl(var(--primary))' }}>
-            {t('heroTitle')}
+          <a className="navbar-brand fw-bold d-flex align-items-center" href="#" style={{ color: 'hsl(var(--primary))' }}>
+            {(previewData?.logo || savedConfig?.logo) ? (
+              <img 
+                src={previewData?.logo || savedConfig?.logo} 
+                alt="Logo" 
+                style={{ 
+                  maxHeight: '40px', 
+                  width: 'auto',
+                  objectFit: 'contain'
+                }}
+                className="me-2"
+              />
+            ) : (
+              t('heroTitle')
+            )}
           </a>
           
           <div className="d-flex align-items-center d-lg-none">
@@ -538,8 +551,14 @@ export default function ProfessionalsDemo() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-5" style={{ marginTop: '3rem' }}>
+      {/* About Section with Dynamic Mobile Spacing */}
+      <section 
+        id="about" 
+        className="py-5" 
+        style={{ 
+          marginTop: window.innerWidth < 992 ? '6rem' : '3rem' 
+        }}
+      >
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mx-auto text-center">

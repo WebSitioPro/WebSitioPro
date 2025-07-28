@@ -917,6 +917,17 @@ export default function ProfessionalsEditor() {
                             placeholder="Consultorio Médico Dr. González"
                           />
                         </div>
+                        <div className="mb-3">
+                          <label className="form-label">Header Logo URL</label>
+                          <input
+                            type="url"
+                            className="form-control"
+                            value={websiteData.logo}
+                            onChange={(e) => handleInputChange('logo', e.target.value)}
+                            placeholder="Enter logo image URL (optional - will use business name if empty)"
+                          />
+                          <div className="form-text">Leave empty to display business name as text. When provided, logo will appear in header instead of text.</div>
+                        </div>
                       </div>
                       <div className="col-md-6">
                         {websiteData.heroImage && (
@@ -941,6 +952,19 @@ export default function ProfessionalsEditor() {
                                 alt="Profile preview" 
                                 className="img-thumbnail"
                                 style={{ maxWidth: '150px', maxHeight: '150px' }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                        {websiteData.logo && (
+                          <div className="mb-3">
+                            <label className="form-label">Header Logo Preview</label>
+                            <div>
+                              <img 
+                                src={websiteData.logo} 
+                                alt="Logo preview" 
+                                className="img-thumbnail"
+                                style={{ maxWidth: '200px', maxHeight: '60px', objectFit: 'contain' }}
                               />
                             </div>
                           </div>
