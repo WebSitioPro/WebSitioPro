@@ -76,6 +76,7 @@ export default function ServicesDemo() {
         businessName: data.businessName || 'Servicios Técnicos Pro',
         heroTitle: getLocalizedValue(data.heroTitle) || 'Servicios Técnicos Pro',
         heroSubtitle: getLocalizedValue(data.heroSubtitle) || 'Reparaciones y Mantenimiento',
+        heroDescription: getLocalizedValue(data.heroDescription) || 'Servicios técnicos profesionales con experiencia y calidad garantizada',
         aboutTitle: getLocalizedValue(data.aboutTitle) || 'Nuestra Experiencia',
         aboutText: getLocalizedValue(data.aboutText) || 'Con más de 15 años de experiencia en servicios técnicos, hemos construido nuestra reputación basada en la calidad, puntualidad y honestidad.',
         servicesTitle: 'Nuestros Servicios',
@@ -101,6 +102,7 @@ export default function ServicesDemo() {
         businessName: data.businessName || 'Technical Services Pro',
         heroTitle: getLocalizedValue(data.heroTitle) || 'Technical Services Pro',
         heroSubtitle: getLocalizedValue(data.heroSubtitle) || 'Repairs and Maintenance',
+        heroDescription: getLocalizedValue(data.heroDescription) || 'Professional technical services with experience and guaranteed quality',
         aboutTitle: getLocalizedValue(data.aboutTitle) || 'Our Experience',
         aboutText: getLocalizedValue(data.aboutText) || 'With over 15 years of experience in technical services, we have built our reputation based on quality, punctuality and honesty.',
         servicesTitle: 'Our Services',
@@ -247,7 +249,7 @@ export default function ServicesDemo() {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                opacity: 0.9,
+                opacity: data.heroImageOpacity || 0.9,
                 top: 0,
                 left: 0,
                 zIndex: 1
@@ -255,17 +257,36 @@ export default function ServicesDemo() {
             />
           )}
           <div 
-            className="position-relative h-100 d-flex align-items-center"
+            className={`position-relative h-100 d-flex ${
+              data.heroVerticalAlignment === 'top' ? 'align-items-start pt-5' :
+              data.heroVerticalAlignment === 'bottom' ? 'align-items-end pb-5' :
+              'align-items-center'
+            }`}
             style={{ zIndex: 2, backgroundColor: !data.heroImage ? 'hsl(var(--primary) / 0.05)' : 'transparent' }}
           >
             <div className="container">
-              <div className="row justify-content-center">
-                <div className="col-lg-8 col-xl-7 text-center">
+              <div className={`row ${
+                data.heroTextAlignment === 'left' ? 'justify-content-start' :
+                data.heroTextAlignment === 'right' ? 'justify-content-end' :
+                'justify-content-center'
+              }`}>
+                <div className={`col-lg-8 col-xl-7 ${
+                  data.heroTextAlignment === 'left' ? 'text-start' :
+                  data.heroTextAlignment === 'right' ? 'text-end' :
+                  'text-center'
+                }`}>
                   <h1 
-                    className="fw-bold mb-3"
+                    className={`fw-bold ${
+                      data.heroTextSpacing === 'compact' ? 'mb-2' :
+                      data.heroTextSpacing === 'relaxed' ? 'mb-4' :
+                      'mb-3'
+                    }`}
                     style={{ 
-                      color: data.heroImage ? '#ffffff' : 'hsl(var(--primary))',
-                      fontSize: '3.5rem',
+                      color: data.heroTitleColor || (data.heroImage ? '#ffffff' : 'hsl(var(--primary))'),
+                      fontSize: data.heroTitleSize === 'small' ? '2.5rem' :
+                               data.heroTitleSize === 'large' ? '4.5rem' :
+                               data.heroTitleSize === 'x-large' ? '5.5rem' :
+                               '3.5rem',
                       textShadow: data.heroImage ? '2px 2px 4px rgba(0,0,0,0.7)' : 'none',
                       lineHeight: '1.2'
                     }}
@@ -273,15 +294,32 @@ export default function ServicesDemo() {
                     {t('heroTitle')}
                   </h1>
                   <h2 
-                    className="mb-4"
+                    className={`${
+                      data.heroTextSpacing === 'compact' ? 'mb-2' :
+                      data.heroTextSpacing === 'relaxed' ? 'mb-5' :
+                      'mb-4'
+                    }`}
                     style={{ 
-                      color: data.heroImage ? '#ffffff' : 'hsl(var(--secondary))',
-                      fontSize: '1.25rem',
+                      color: data.heroSubtitleColor || (data.heroImage ? '#ffffff' : 'hsl(var(--secondary))'),
+                      fontSize: data.heroSubtitleSize === 'small' ? '1rem' :
+                               data.heroSubtitleSize === 'large' ? '1.5rem' :
+                               '1.25rem',
                       textShadow: data.heroImage ? '1px 1px 3px rgba(0,0,0,0.6)' : 'none'
                     }}
                   >
                     {t('heroSubtitle')}
                   </h2>
+                  {(data.heroDescription || t('heroDescription')) && (
+                    <p 
+                      className="lead"
+                      style={{ 
+                        color: data.heroDescriptionColor || (data.heroImage ? '#ffffff' : 'hsl(var(--muted))'),
+                        textShadow: data.heroImage ? '1px 1px 2px rgba(0,0,0,0.5)' : 'none'
+                      }}
+                    >
+                      {getLocalizedValue(data.heroDescription) || t('heroDescription')}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
