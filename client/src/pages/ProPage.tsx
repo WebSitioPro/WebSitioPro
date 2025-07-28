@@ -294,8 +294,25 @@ export default function ProPage() {
           <div className="row align-items-center py-3">
             {/* Logo */}
             <div className="col-auto">
-              <Link className="fw-bold text-decoration-none fs-4" href="/" style={{ color: 'hsl(var(--primary))' }}>
-                WebSitioPro
+              <Link className="fw-bold text-decoration-none fs-4 d-flex align-items-center" href="/" style={{ color: 'hsl(var(--primary))' }}>
+                {savedConfig?.logo && savedConfig.logo.startsWith('http') ? (
+                  <img 
+                    src={savedConfig.logo} 
+                    alt="Logo" 
+                    style={{ 
+                      maxHeight: '40px', 
+                      width: 'auto',
+                      objectFit: 'contain'
+                    }}
+                    className="me-2"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement!.textContent = 'WebSitioPro';
+                    }}
+                  />
+                ) : (
+                  'WebSitioPro'
+                )}
               </Link>
             </div>
 
