@@ -307,7 +307,7 @@ export default function ProfessionalsDemo() {
               <a className="text-decoration-none text-dark" href="#services">{t('services')}</a>
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
               <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
-              <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
+
               <a 
                 href={`https://wa.me/${(previewData?.whatsappNumber || savedConfig?.whatsappNumber || '529831234567').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(getLocalizedValue((previewData?.whatsappMessage || savedConfig?.whatsappMessage)) || (language === 'es' ? 'Hola, me gustaría agendar una cita' : 'Hello, I would like to schedule an appointment'))}`}
                 className="btn btn-sm text-white"

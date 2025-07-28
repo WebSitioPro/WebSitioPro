@@ -150,6 +150,12 @@ Examples:
 
 ```
 Changelog:
+- July 28, 2025. Header Home Links Removed from First 4 Templates Complete
+  - COMPLETED: Removed "← Volver a WebSitioPro" links from Professionals, Restaurants, Tourism, and Retail templates
+  - CONSISTENCY: All 5 templates now have clean navigation headers without homepage redirect links
+  - REMOVED: Desktop navigation links that redirected back to WebSitioPro homepage
+  - CLEANUP: Templates now focus on internal navigation without external redirect distractions
+  - Services template already did not have these links, maintaining consistency across all templates
 - July 28, 2025. Services Template Google Maps Section Restored Complete
   - COMPLETED: Restored missing Google Maps section to Services template matching other 4 templates
   - ADDED: Full Google Maps section with embedded iframe support and address display

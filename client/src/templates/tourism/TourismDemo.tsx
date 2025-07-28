@@ -232,7 +232,7 @@ export default function TourismDemo() {
               <a className="text-decoration-none text-dark" href="#photos">{t('photos')}</a>
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
               <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
-              <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
+
               <a 
                 href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockTourismData.whatsappNumber}?text=Hola, me gustaría información sobre sus tours`}
                 className="btn btn-sm text-white"

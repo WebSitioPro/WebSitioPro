@@ -238,7 +238,7 @@ export default function RestaurantsDemo() {
               <a className="text-decoration-none text-dark" href="#photos">{t('photos')}</a>
               <a className="text-decoration-none text-dark" href="#reviews">{t('reviews')}</a>
               <a className="text-decoration-none text-dark" href="#contact">{t('contact')}</a>
-              <a href="/" className="text-decoration-none text-dark">← Volver a WebSitioPro</a>
+
               <a 
                 href={`https://wa.me/${(savedConfig && savedConfig.whatsappNumber) || mockRestaurantData.whatsappNumber}?text=${encodeURIComponent(getLocalizedValue((savedConfig && savedConfig.whatsappMessage)) || (language === 'es' ? 'Hola, me gustaría hacer una reservación' : 'Hello, I would like to make a reservation'))}`}
                 className="btn btn-sm text-white"
