@@ -76,7 +76,7 @@ export default function ServicesDemo() {
         businessName: data.businessName || 'Servicios Técnicos Pro',
         heroTitle: getLocalizedValue(data.heroTitle) || 'Servicios Técnicos Pro',
         heroSubtitle: getLocalizedValue(data.heroSubtitle) || 'Reparaciones y Mantenimiento',
-        heroDescription: getLocalizedValue(data.heroDescription) || 'Servicios técnicos profesionales con experiencia y calidad garantizada',
+
         aboutTitle: getLocalizedValue(data.aboutTitle) || 'Nuestra Experiencia',
         aboutText: getLocalizedValue(data.aboutText) || 'Con más de 15 años de experiencia en servicios técnicos, hemos construido nuestra reputación basada en la calidad, puntualidad y honestidad.',
         servicesTitle: 'Nuestros Servicios',
@@ -102,7 +102,7 @@ export default function ServicesDemo() {
         businessName: data.businessName || 'Technical Services Pro',
         heroTitle: getLocalizedValue(data.heroTitle) || 'Technical Services Pro',
         heroSubtitle: getLocalizedValue(data.heroSubtitle) || 'Repairs and Maintenance',
-        heroDescription: getLocalizedValue(data.heroDescription) || 'Professional technical services with experience and guaranteed quality',
+
         aboutTitle: getLocalizedValue(data.aboutTitle) || 'Our Experience',
         aboutText: getLocalizedValue(data.aboutText) || 'With over 15 years of experience in technical services, we have built our reputation based on quality, punctuality and honesty.',
         servicesTitle: 'Our Services',
@@ -309,7 +309,7 @@ export default function ServicesDemo() {
                   >
                     {t('heroSubtitle')}
                   </h2>
-                  {(data.heroDescription || t('heroDescription')) && (
+                  {data.heroDescription && getLocalizedValue(data.heroDescription) && (
                     <p 
                       className="lead"
                       style={{ 
@@ -317,7 +317,7 @@ export default function ServicesDemo() {
                         textShadow: data.heroImage ? '1px 1px 2px rgba(0,0,0,0.5)' : 'none'
                       }}
                     >
-                      {getLocalizedValue(data.heroDescription) || t('heroDescription')}
+                      {getLocalizedValue(data.heroDescription)}
                     </p>
                   )}
                 </div>

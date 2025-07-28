@@ -150,6 +150,15 @@ Examples:
 
 ```
 Changelog:
+- July 28, 2025. Services Template Hero Text Positioning Controls and Color Fix Complete
+  - COMPLETED: Implemented full text positioning system for Services template hero section matching other templates
+  - FIXED: Text color controls now working by synchronizing field names between ServicesEditor and ServicesDemo (heroTextColor/heroSubtextColor)
+  - ENHANCED: Added comprehensive text alignment (left/center/right), vertical positioning (top/center/bottom), and spacing controls
+  - ADDED: Font size controls for title and subtitle with responsive options (small/medium/large/x-large)
+  - CLEANED: Removed unwanted hero description text "Servicios técnicos profesionales" that was displaying from old translation fallbacks
+  - TECHNICAL: Hero section now uses dynamic data fields (heroTextColor, heroSubtextColor) instead of hardcoded field names
+  - VERIFIED: All hero styling controls working: alignment, positioning, spacing, colors, and font sizes
+  - Services template now has complete parity with other templates for hero section customization
 - July 28, 2025. Services Template Navigation, Layout, and Footer Link Fixed
   - RESOLVED: Fixed missing navigation menu in Services template header by replacing Bootstrap collapse with explicit d-none d-lg-flex classes
   - FIXED: Centered About section content using justify-content-center and text-center classes for proper page layout
