@@ -96,7 +96,7 @@ function generateHTML(config: WebsiteConfig): string {
   const configData = config as any;
   // Determine business category for stock images
   const businessCategory = config.templateType?.toLowerCase() || 'business';
-  const stockCategories = {
+  const stockCategories: Record<string, string> = {
     'professionals': 'professional',
     'restaurant': 'food',
     'tourism': 'travel',
@@ -206,18 +206,18 @@ ${generateCSS(config)}
   <header id="home" class="header-image d-flex align-items-center" style="background-image: url('${coverImageUrl}');" data-cover-url="${encodeCssUrl(coverImageUrl)}">
     <div class="header-overlay"></div>
     <div class="container header-content text-center text-white">
-      <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations[defaultLanguage].tagline || ''}</h1>
-      <p class="lead mb-5" data-i18n="subtitle">${config.translations[defaultLanguage].subtitle || ''}</p>
+      <h1 class="display-3 fw-bold mb-3" data-i18n="tagline">${config.translations?.[defaultLanguage as 'en' | 'es']?.tagline || ''}</h1>
+      <p class="lead mb-5" data-i18n="subtitle">${config.translations?.[defaultLanguage as 'en' | 'es']?.subtitle || ''}</p>
       
       <div class="d-flex flex-wrap justify-content-center gap-3">
         ${config.showWhyWebsiteButton ? `
         <a href="https://websitiopro.com/why-you-need-a-website" target="_blank" class="btn btn-lg btn-primary-custom px-4 py-3" data-i18n="whyWebsite">
-          ${config.translations[defaultLanguage].whyWebsite || 'Why You Need a Website'}
+          ${config.translations?.[defaultLanguage as 'en' | 'es']?.whyWebsite || 'Why You Need a Website'}
         </a>
         ` : ''}
         ${config.showDomainButton ? `
         <a href="https://websitiopro.com/domain-checker" target="_blank" class="btn btn-lg btn-secondary-custom px-4 py-3" data-i18n="findDomain">
-          ${config.translations[defaultLanguage].findDomain || 'Find Your Domain Name'}
+          ${config.translations?.[defaultLanguage as 'en' | 'es']?.findDomain || 'Find Your Domain Name'}
         </a>
         ` : ''}
       </div>
@@ -331,9 +331,9 @@ ${generateCSS(config)}
       
       <div style="padding: 15px; border-top: 1px solid #eee;">
         <div style="margin-bottom: 10px;" id="chatbotQuestions">
-          ${config.chatbotQuestions.map(q => `
+          ${(config.chatbotQuestions || []).map(q => `
             <button style="background: white; border: 1px solid ${config.primaryColor}; color: ${config.primaryColor}; padding: 5px 10px; margin: 2px; border-radius: 15px; font-size: 12px; cursor: pointer;" data-question="${q.key}">
-              ${q.question[config.defaultLanguage]}
+              ${q.question[config.defaultLanguage as 'en' | 'es']}
             </button>
           `).join('')}
         </div>
@@ -746,7 +746,7 @@ function generateJS(config: WebsiteConfig): string {
   const chatbotSend = document.getElementById('chatbotSend');
   
   // Chatbot responses
-  const chatbotResponses = ${JSON.stringify((config.chatbotQuestions || []).reduce((acc, q) => {
+  const chatbotResponses = ${JSON.stringify((config.chatbotQuestions || []).reduce((acc: Record<string, { en: string; es: string }>, q) => {
     acc[q.key] = {
       en: q.answer.en,
       es: q.answer.es
