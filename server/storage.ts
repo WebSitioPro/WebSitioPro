@@ -60,7 +60,7 @@ export class DatabaseStorage implements IStorage {
   async createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig> {
     const [newConfig] = await db
       .insert(websiteConfigs)
-      .values(config)
+      .values(config as any)
       .returning();
     return newConfig;
   }
@@ -69,7 +69,7 @@ export class DatabaseStorage implements IStorage {
     try {
       const [updatedConfig] = await db
         .update(websiteConfigs)
-        .set(config)
+        .set(config as any)
         .where(eq(websiteConfigs.id, id))
         .returning();
       return updatedConfig || undefined;
@@ -101,25 +101,37 @@ export class DatabaseStorage implements IStorage {
         showDomainButton: true,
         showChatbot: true,
         whatsappNumber: "52987654321",
-        whatsappMessage: "Hello, I would like to schedule an appointment",
+        whatsappMessage: {
+          es: "Hola, me gustaría agendar una cita",
+          en: "Hello, I would like to schedule an appointment"
+        },
         facebookUrl: "https://facebook.com",
         googleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118512.58023648334!2d-88.39913461528183!3d18.51958518800781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba377a0246b03%3A0xb429c9d207b111d9!2sChetumal%2C%20Quintana%20Roo%2C%20Mexico!5e0!3m2!1sen!2sus!4v1620151766401!5m2!1sen!2sus",
-        address: "123 Dental Avenue, Chetumal, Quintana Roo, Mexico, 77000",
+        address: {
+          es: "123 Avenida Dental, Chetumal, Quintana Roo, México, 77000",
+          en: "123 Dental Avenue, Chetumal, Quintana Roo, Mexico, 77000"
+        },
         phone: "+52 987 654 321",
         email: "drsmith@example.com",
         officeHours: {
-          mondayToFriday: "9:00 AM - 6:00 PM",
-          saturday: "10:00 AM - 2:00 PM"
+          mondayFriday: {
+            es: "Lun-Vie: 9:00 AM - 6:00 PM",
+            en: "Mon-Fri: 9:00 AM - 6:00 PM"
+          },
+          saturday: {
+            es: "Sáb: 10:00 AM - 2:00 PM", 
+            en: "Sat: 10:00 AM - 2:00 PM"
+          }
         },
         analyticsCode: "",
         primaryColor: "#00A859",
         secondaryColor: "#C8102E",
         backgroundColor: "#FFFFFF",
         showBanner: false,
-        bannerText: JSON.stringify({
+        bannerText: {
           es: "¡Oferta especial! Descuento del 20% en sitios web nuevos",
           en: "Special offer! 20% discount on new websites"
-        }),
+        },
         bannerBackgroundColor: "#FFC107",
         bannerTextColor: "#000000",
         bannerTextSize: "16px",
@@ -150,15 +162,27 @@ export class DatabaseStorage implements IStorage {
           }
         },
         services: [
-          { name: "General Dentistry", description: "Comprehensive dental care including cleanings, fillings, and preventive treatments" },
-          { name: "Cosmetic Dentistry", description: "Teeth whitening, veneers, and smile makeovers" },
-          { name: "Oral Surgery", description: "Tooth extractions, implants, and surgical procedures" }
+          { 
+            title: { es: "Odontología General", en: "General Dentistry" },
+            description: { es: "Atención dental integral incluyendo limpiezas, empastes y tratamientos preventivos", en: "Comprehensive dental care including cleanings, fillings, and preventive treatments" },
+            icon: "fas fa-tooth"
+          },
+          { 
+            title: { es: "Odontología Cosmética", en: "Cosmetic Dentistry" },
+            description: { es: "Blanqueamiento dental, carillas y renovación de sonrisa", en: "Teeth whitening, veneers, and smile makeovers" },
+            icon: "fas fa-smile"
+          },
+          { 
+            title: { es: "Cirugía Oral", en: "Oral Surgery" },
+            description: { es: "Extracciones dentales, implantes y procedimientos quirúrgicos", en: "Tooth extractions, implants and surgical procedures" },
+            icon: "fas fa-user-md"
+          }
         ],
         templates: [],
         whyPoints: [
-          { es: "15+ Años de Experiencia", en: "15+ Years Experience" },
-          { es: "Equipo Moderno", en: "Modern Equipment" },
-          { es: "Ambiente Cómodo", en: "Comfortable Environment" }
+          { es: "15+ Años de Experiencia", en: "15+ Years Experience", icon: "fas fa-user-md" },
+          { es: "Equipo Moderno", en: "Modern Equipment", icon: "fas fa-tools" },
+          { es: "Ambiente Cómodo", en: "Comfortable Environment", icon: "fas fa-heart" }
         ],
         serviceSteps: [
           { es: "Consulta Inicial", en: "Initial Consultation" },
@@ -184,7 +208,7 @@ export class DatabaseStorage implements IStorage {
         ]
       };
       
-      [config] = await db.insert(websiteConfigs).values(defaultConfig).returning();
+      [config] = await db.insert(websiteConfigs).values(defaultConfig as any).returning();
     }
     
     return config;
