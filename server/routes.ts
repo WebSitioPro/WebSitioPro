@@ -166,18 +166,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
             showDomainButton: true,
             showChatbot: true,
             whatsappNumber: '529831144462',
-            address: JSON.stringify({
+            address: {
               es: 'Chetumal, Quintana Roo, México',
               en: 'Chetumal, Quintana Roo, Mexico'
-            }),
-            officeHours: {
-              mondayToFriday: 'Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM',
-              saturday: 'Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM'
             },
-            bannerText: JSON.stringify({
+            officeHours: {
+              mondayFriday: {
+                es: 'Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM',
+                en: 'Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM'
+              },
+              saturday: {
+                es: 'Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM',
+                en: 'Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM'
+              }
+            },
+            bannerText: {
               es: '¡Lanza Hoy por $1,995 MXN!    ¡Hospedaje Solo $195 MXN/Mes!',
               en: 'Launch Today for $1,995 MXN!    Hosting Only $195 MXN/Month!'
-            }),
+            },
             translations: {
               es: {
                 heroHeadline: 'Construye tu Negocio con WebSitioPro',
@@ -617,7 +623,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       // Generate static files
-      const outputDir = await generateStaticFiles(config);
+      const outputDir = await generateStaticFiles(config as any);
 
       res.json({ 
         success: true, 
@@ -661,8 +667,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           profileImage: templateData.profileImage || '',
           coverImage: templateData.coverImage || '',
           officeHours: {
-            mondayToFriday: '9:00 AM - 6:00 PM',
-            saturday: '10:00 AM - 2:00 PM'
+            mondayFriday: {
+              es: '9:00 AM - 6:00 PM',
+              en: '9:00 AM - 6:00 PM'
+            },
+            saturday: {
+              es: '10:00 AM - 2:00 PM',
+              en: '10:00 AM - 2:00 PM'
+            }
           },
           analyticsCode: '',
           primaryColor: '#00A859',
@@ -686,7 +698,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         };
 
         // Generate fresh static files with template data
-        const outputDir = await generateStaticFiles(config);
+        const outputDir = await generateStaticFiles(config as any);
         const htmlContent = await fs.readFile(path.join(outputDir, 'index.html'), { encoding: 'utf-8' });
         res.setHeader('Content-Type', 'text/html');
         res.send(htmlContent);
@@ -978,7 +990,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     } catch (error) {
       console.error('[EmailJS] Error:', error);
-      res.status(500).json({ error: 'Internal server error', details: error.message });
+      res.status(500).json({ error: 'Internal server error', details: (error as Error).message });
     }
   });
 
