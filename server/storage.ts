@@ -86,7 +86,7 @@ export class DatabaseStorage implements IStorage {
     return (result.rowCount || 0) > 0;
   }
 
- async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
+async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
   try {
     let [config] = await db.select().from(websiteConfigs).limit(1);
     if (!config) {
