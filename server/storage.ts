@@ -4,12 +4,9 @@ import { eq } from "drizzle-orm";
 
 // Expanded storage interface to handle website configs
 export interface IStorage {
-  // User methods (keeping from original template)
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
-  
-  // Website config methods
   getWebsiteConfig(id: number): Promise<WebsiteConfig | undefined>;
   getAllWebsiteConfigs(): Promise<WebsiteConfig[]>;
   createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig>;
@@ -30,10 +27,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(insertUser)
-      .returning();
+    const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
 
@@ -58,10 +52,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig> {
-    const [newConfig] = await db
-      .insert(websiteConfigs)
-      .values(config as any)
-      .returning();
+    const [newConfig] = await db.insert(websiteConfigs).values(config).returning();
     return newConfig;
   }
 
@@ -69,7 +60,7 @@ export class DatabaseStorage implements IStorage {
     try {
       const [updatedConfig] = await db
         .update(websiteConfigs)
-        .set(config as any)
+        .set(config)
         .where(eq(websiteConfigs.id, id))
         .returning();
       return updatedConfig || undefined;
@@ -80,70 +71,70 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteWebsiteConfig(id: number): Promise<boolean> {
-    const result = await db
-      .delete(websiteConfigs)
-      .where(eq(websiteConfigs.id, id));
+    const result = await db.delete(websiteConfigs).where(eq(websiteConfigs.id, id));
     return (result.rowCount || 0) > 0;
   }
 
-async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
-  try {
-    let [config] = await db.select().from(websiteConfigs).limit(1);
-    if (!config) {
-      const defaultConfig: InsertWebsiteConfig = {
-        id: 1,
-        name: "WebSitioPro Homepage",
-        templateType: "homepage",
-        businessName: "WebSitioPro",
-        logo: "WebSitioPro",
-        heroImage: "https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg",
-        phone: "+52 983 114 4462",
-        email: "ventas@websitiopro.com",
-        primaryColor: "#C8102E",
-        secondaryColor: "#00A859",
-        backgroundColor: "#FFFFFF",
-        defaultLanguage: "es",
-        showWhyWebsiteButton: true,
-        showDomainButton: true,
-        showChatbot: true,
-        whatsappNumber: "529831144462",
-        address: {
-          es: "Chetumal, Quintana Roo, México",
-          en: "Chetumal, Quintana Roo, Mexico"
-        },
-        officeHours: {
-          mondayFriday: {
-            es: "Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM",
-            en: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM"
+  async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
+    try {
+      let [config] = await db.select().from(websiteConfigs).limit(1);
+      if (!config) {
+        const defaultConfig: InsertWebsiteConfig = {
+          id: 1,
+          name: "WebSitioPro Homepage",
+          templateType: "homepage",
+          businessName: "WebSitioPro",
+          logo: "WebSitioPro",
+          heroImage: "https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg",
+          phone: "+52 983 114 4462",
+          email: "ventas@websitiopro.com",
+          primaryColor: "#C8102E",
+          secondaryColor: "#00A859",
+          backgroundColor: "#FFFFFF",
+          defaultLanguage: "es",
+          showWhyWebsiteButton: true,
+          showDomainButton: true,
+          showChatbot: true,
+          whatsappNumber: "529831144462",
+          address: {
+            es: "Chetumal, Quintana Roo, México",
+            en: "Chetumal, Quintana Roo, Mexico"
           },
-          saturday: {
-            es: "Sáb: 10:00 AM - 2:00 PM",
-            en: "Sat: 10:00 AM - 2:00 PM"
-          }
-        },
-        bannerText: {
-          es: "¡Lanza Hoy por $1,995 MXN!",
-          en: "Launch Today for $1,995 MXN!"
-        },
-        translations: {
-          es: {
-            heroHeadline: "Construye tu Negocio con WebSitioPro",
-            heroSubheadline: "Sitios web accesibles y personalizados para México—desde $1,995 pesos"
+          officeHours: {
+            mondayFriday: {
+              es: "Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM",
+              en: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM"
+            },
+            saturday: {
+              es: "Sáb: 10:00 AM - 2:00 PM",
+              en: "Sat: 10:00 AM - 2:00 PM"
+            }
           },
-          en: {
-            heroHeadline: "Build Your Business with WebSitioPro",
-            heroSubheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos"
-          }
-        },
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
-      [config] = await db.insert(websiteConfigs).values(defaultConfig).returning();
+          bannerText: {
+            es: "¡Lanza Hoy por $1,995 MXN!",
+            en: "Launch Today for $1,995 MXN!"
+          },
+          translations: {
+            es: {
+              heroHeadline: "Construye tu Negocio con WebSitioPro",
+              heroSubheadline: "Sitios web accesibles y personalizados para México—desde $1,995 pesos"
+            },
+            en: {
+              heroHeadline: "Build Your Business with WebSitioPro",
+              heroSubheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos"
+            }
+          },
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+        [config] = await db.insert(websiteConfigs).values(defaultConfig).returning();
+      }
+      return config;
+    } catch (error) {
+      console.error("getDefaultWebsiteConfig error:", error);
+      throw error;
     }
-    return config;
-  } catch (error) {
-    console.error("getDefaultWebsiteConfig error:", error);
-    throw error;
   }
 }
+
 export const storage = new DatabaseStorage();
