@@ -90,7 +90,6 @@ export class DatabaseStorage implements IStorage {
   try {
     let [config] = await db.select().from(websiteConfigs).limit(1);
     if (!config) {
-      // Create default config matching Neon's data
       const defaultConfig: InsertWebsiteConfig = {
         id: 1,
         name: "WebSitioPro Homepage",
@@ -135,9 +134,11 @@ export class DatabaseStorage implements IStorage {
             heroHeadline: "Build Your Business with WebSitioPro",
             heroSubheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos"
           }
-        }
+        },
+        createdAt: new Date(),
+        updatedAt: new Date()
       };
-      [config] = await db.insert(websiteConfigs).values(defaultConfig as any).returning();
+      [config] = await db.insert(websiteConfigs).values(defaultConfig).returning();
     }
     return config;
   } catch (error) {
