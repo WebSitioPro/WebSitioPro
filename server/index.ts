@@ -79,11 +79,15 @@ app.use((req, res, next) => {
   });
 
   // Setup based on environment
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    app.use(express.static(path.join(__dirname, "../dist")));
-  }
+  if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../dist")));
+  app.get("*", (req, res) => {
+    res.setHeader("Content-Type", "text/html");
+    res.sendFile(path.join(__dirname, "../dist", "index.html"));
+  });
+} else {
+  await setupVite(app, server);
+}
 
   // Force explicit external binding for Replit
   const port = parseInt(process.env.PORT || '5000');
