@@ -86,133 +86,63 @@ export class DatabaseStorage implements IStorage {
     return (result.rowCount || 0) > 0;
   }
 
-  async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
+ async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
+  try {
     let [config] = await db.select().from(websiteConfigs).limit(1);
-    
     if (!config) {
-      // Create default config if none exists
+      // Create default config matching Neon's data
       const defaultConfig: InsertWebsiteConfig = {
-        name: "Dr. John Smith",
-        templateType: "professionals",
-        logo: "https://via.placeholder.com/150x50",
-        heroImage: "https://via.placeholder.com/800x400",
-        defaultLanguage: "en",
+        id: 1,
+        name: "WebSitioPro Homepage",
+        templateType: "homepage",
+        businessName: "WebSitioPro",
+        logo: "WebSitioPro",
+        heroImage: "https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg",
+        phone: "+52 983 114 4462",
+        email: "ventas@websitiopro.com",
+        primaryColor: "#C8102E",
+        secondaryColor: "#00A859",
+        backgroundColor: "#FFFFFF",
+        defaultLanguage: "es",
         showWhyWebsiteButton: true,
         showDomainButton: true,
         showChatbot: true,
-        whatsappNumber: "52987654321",
-        whatsappMessage: {
-          es: "Hola, me gustaría agendar una cita",
-          en: "Hello, I would like to schedule an appointment"
-        },
-        facebookUrl: "https://facebook.com",
-        googleMapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118512.58023648334!2d-88.39913461528183!3d18.51958518800781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5ba377a0246b03%3A0xb429c9d207b111d9!2sChetumal%2C%20Quintana%20Roo%2C%20Mexico!5e0!3m2!1sen!2sus!4v1620151766401!5m2!1sen!2sus",
+        whatsappNumber: "529831144462",
         address: {
-          es: "123 Avenida Dental, Chetumal, Quintana Roo, México, 77000",
-          en: "123 Dental Avenue, Chetumal, Quintana Roo, Mexico, 77000"
+          es: "Chetumal, Quintana Roo, México",
+          en: "Chetumal, Quintana Roo, Mexico"
         },
-        phone: "+52 987 654 321",
-        email: "drsmith@example.com",
         officeHours: {
           mondayFriday: {
-            es: "Lun-Vie: 9:00 AM - 6:00 PM",
-            en: "Mon-Fri: 9:00 AM - 6:00 PM"
+            es: "Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM",
+            en: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM"
           },
           saturday: {
-            es: "Sáb: 10:00 AM - 2:00 PM", 
+            es: "Sáb: 10:00 AM - 2:00 PM",
             en: "Sat: 10:00 AM - 2:00 PM"
           }
         },
-        analyticsCode: "",
-        primaryColor: "#00A859",
-        secondaryColor: "#C8102E",
-        backgroundColor: "#FFFFFF",
-        showBanner: false,
         bannerText: {
-          es: "¡Oferta especial! Descuento del 20% en sitios web nuevos",
-          en: "Special offer! 20% discount on new websites"
+          es: "¡Lanza Hoy por $1,995 MXN!",
+          en: "Launch Today for $1,995 MXN!"
         },
-        bannerBackgroundColor: "#FFC107",
-        bannerTextColor: "#000000",
-        bannerTextSize: "16px",
         translations: {
-          en: {
-            tagline: "Experienced Dentist in Chetumal",
-            heroText: "Quality dental care with a personal touch. Modern treatments in a comfortable environment.",
-            aboutTitle: "About Dr. Smith",
-            aboutText: "With over 15 years of experience in dentistry, Dr. Smith provides comprehensive dental care using the latest technology and techniques. Our clinic is equipped with state-of-the-art equipment to ensure the best possible treatment outcomes.",
-            servicesTitle: "Our Services",
-            whyUsTitle: "Why Choose Us",
-            contactTitle: "Contact Us",
-            chatbotTitle: "Ask Dr. Smith",
-            footerText: "© 2024 Dr. John Smith Dental Clinic. All rights reserved.",
-            bannerText: "Special offer! 20% discount on new websites"
-          },
           es: {
-            tagline: "Dentista Experimentado en Chetumal",
-            heroText: "Cuidado dental de calidad con un toque personal. Tratamientos modernos en un ambiente cómodo.",
-            aboutTitle: "Sobre Dr. Smith",
-            aboutText: "Con más de 15 años de experiencia en odontología, Dr. Smith ofrece atención dental integral utilizando la última tecnología y técnicas. Nuestra clínica está equipada con equipo de última generación para garantizar los mejores resultados de tratamiento posibles.",
-            servicesTitle: "Nuestros Servicios",
-            whyUsTitle: "Por Qué Elegirnos",
-            contactTitle: "Contáctanos",
-            chatbotTitle: "Pregúntale al Dr. Smith",
-            footerText: "© 2024 Clínica Dental Dr. John Smith. Todos los derechos reservados.",
-            bannerText: "¡Oferta especial! Descuento del 20% en sitios web nuevos"
+            heroHeadline: "Construye tu Negocio con WebSitioPro",
+            heroSubheadline: "Sitios web accesibles y personalizados para México—desde $1,995 pesos"
+          },
+          en: {
+            heroHeadline: "Build Your Business with WebSitioPro",
+            heroSubheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos"
           }
-        },
-        services: [
-          { 
-            title: { es: "Odontología General", en: "General Dentistry" },
-            description: { es: "Atención dental integral incluyendo limpiezas, empastes y tratamientos preventivos", en: "Comprehensive dental care including cleanings, fillings, and preventive treatments" },
-            icon: "fas fa-tooth"
-          },
-          { 
-            title: { es: "Odontología Cosmética", en: "Cosmetic Dentistry" },
-            description: { es: "Blanqueamiento dental, carillas y renovación de sonrisa", en: "Teeth whitening, veneers, and smile makeovers" },
-            icon: "fas fa-smile"
-          },
-          { 
-            title: { es: "Cirugía Oral", en: "Oral Surgery" },
-            description: { es: "Extracciones dentales, implantes y procedimientos quirúrgicos", en: "Tooth extractions, implants and surgical procedures" },
-            icon: "fas fa-user-md"
-          }
-        ],
-        templates: [],
-        whyPoints: [
-          { es: "15+ Años de Experiencia", en: "15+ Years Experience", icon: "fas fa-user-md" },
-          { es: "Equipo Moderno", en: "Modern Equipment", icon: "fas fa-tools" },
-          { es: "Ambiente Cómodo", en: "Comfortable Environment", icon: "fas fa-heart" }
-        ],
-        serviceSteps: [
-          { es: "Consulta Inicial", en: "Initial Consultation" },
-          { es: "Opciones de Tratamiento", en: "Treatment Options" },
-          { es: "Cuidado Profesional", en: "Professional Care" }
-        ],
-        chatbotQuestions: [
-          { 
-            key: "office_hours",
-            question: { es: "¿Cuáles son sus horarios de oficina?", en: "What are your office hours?" },
-            answer: { es: "Estamos abiertos de lunes a viernes de 9:00 AM - 6:00 PM, y sábados de 10:00 AM - 2:00 PM", en: "We're open Monday to Friday 9:00 AM - 6:00 PM, and Saturday 10:00 AM - 2:00 PM" }
-          },
-          { 
-            key: "insurance",
-            question: { es: "¿Aceptan seguro?", en: "Do you accept insurance?" },
-            answer: { es: "Sí, aceptamos la mayoría de los planes de seguro dental. Por favor llame para verificar su cobertura.", en: "Yes, we accept most dental insurance plans. Please call to verify your coverage." }
-          },
-          { 
-            key: "appointment",
-            question: { es: "¿Cómo programo una cita?", en: "How do I schedule an appointment?" },
-            answer: { es: "Puede llamarnos al +52 987 654 321 o enviarnos un mensaje de WhatsApp.", en: "You can call us at +52 987 654 321 or send us a WhatsApp message." }
-          }
-        ]
+        }
       };
-      
       [config] = await db.insert(websiteConfigs).values(defaultConfig as any).returning();
     }
-    
     return config;
+  } catch (error) {
+    console.error("getDefaultWebsiteConfig error:", error);
+    throw error;
   }
 }
-
 export const storage = new DatabaseStorage();
