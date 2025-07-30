@@ -1,7 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, log } from "./vite";
-
+import path from "path";
 const app = express();
 
 // Enable trust proxy for proper IP handling behind Replit's proxy
@@ -82,7 +82,7 @@ app.use((req, res, next) => {
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    serveStatic(app);
+    app.use(express.static(path.join(__dirname, "../dist")));
   }
 
   // Force explicit external binding for Replit
