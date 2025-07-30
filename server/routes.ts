@@ -35,13 +35,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // API route for getting the default website configuration
   app.get("/api/config", async (_req: Request, res: Response) => {
-    try {
-      const config = await storage.getDefaultWebsiteConfig();
-      res.json(config);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch website configuration" });
+  try {
+    const config = await storage.getDefaultWebsiteConfig();
+    if (!config) {
+      return res.status(404).json({ error: "Default configuration not found, using fallback" });
     }
-  });
+    res.json(config);
+  } catch (error) {
+    console.error("Error fetching default config:", error);
+    res.status(500).json({ error: "Database error, please try again later" });
+  }
+});
 
   // API route for getting a specific website configuration
   app.get("/api/config/:id", async (req: Request, res: Response) => {
@@ -60,22 +64,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Special handling for homepage - bypass isolation system with additional debugging
       if (idParam === "homepage") {
-        console.log(`[DEBUG] Homepage access - bypassing isolation system`);
-        
-        try {
-          const config = await storage.getWebsiteConfig(1);
-          console.log(`[DEBUG] Homepage direct query result:`, config ? 'SUCCESS' : 'NOT FOUND');
-          
-          if (config) {
-            return res.json(config);
-          } else {
-            return res.status(404).json({ error: "Homepage configuration not found" });
-          }
-        } catch (error) {
-          console.error(`[DEBUG] Homepage query error:`, error);
-          return res.status(500).json({ error: "Homepage database error" });
-        }
+  console.log(`[DEBUG] Homepage access - bypassing isolation system`);
+  try {
+    const config = await storage.getWebsiteConfig(1);
+    console.log(`[DEBUG] Homepage direct query result:`, config ? 'SUCCESS' : 'NOT FOUND');
+    if (config) {
+      return res.json(config);
+    }
+    // Fallback default config
+    const defaultConfig = {
+      id: 1,
+      name: "WebSitioPro Homepage",
+      templateType: "homepage",
+      businessName: "WebSitioPro",
+      logo: "WebSitioPro",
+      heroImage: "https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg",
+      phone: "+52 983 114 4462",
+      email: "ventas@websitiopro.com",
+      primaryColor: "#C8102E",
+      secondaryColor: "#00A859",
+      backgroundColor: "#FFFFFF",
+      defaultLanguage: "es",
+      showWhyWebsiteButton: true,
+      showDomainButton: true,
+      showChatbot: true,
+      whatsappNumber: "529831144462",
+      address: { es: "Chetumal, Quintana Roo, México", en: "Chetumal, Quintana Roo, Mexico" },
+      officeHours: {
+        mondayFriday: { es: "Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM", en: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM" },
+        saturday: { es: "Sáb: 10:00 AM - 2:00 PM", en: "Sat: 10:00 AM - 2:00 PM" }
+      },
+      bannerText: { es: "¡Lanza Hoy por $1,995 MXN!", en: "Launch Today for $1,995 MXN!" },
+      translations: {
+        es: { heroHeadline: "Construye tu Negocio con WebSitioPro", heroSubheadline: "Sitios web accesibles y personalizados para México—desde $1,995 pesos" },
+        en: { heroHeadline: "Build Your Business with WebSitioPro", heroSubheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos" }
       }
+    };
+    return res.json(defaultConfig);
+  } catch (error) {
+    console.error(`[DEBUG] Homepage query error:`, error);
+    return res.status(500).json({ error: "Homepage database error" });
+  }
+}
 
       // Validate configuration access using isolation system for non-homepage requests
       const accessValidation = validateConfigAccess(idParam, 'read');
