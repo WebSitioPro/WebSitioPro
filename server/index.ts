@@ -77,7 +77,8 @@ app.use((req, res, next) => {
     res.status(status).json({ message });
     throw err;
   });
-
+  
+app.get("/favicon.ico", (req, res) => res.status(204).end());
   // Setup based on environment
   if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../dist/public")));
