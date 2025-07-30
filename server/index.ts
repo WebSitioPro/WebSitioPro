@@ -80,10 +80,10 @@ app.use((req, res, next) => {
 
   // Setup based on environment
   if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../dist")));
+  app.use(express.static(path.join(__dirname, "../dist/public")));
   app.get("*", (req, res) => {
     res.setHeader("Content-Type", "text/html");
-    res.sendFile(path.join(__dirname, "../dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../dist/public", "index.html"));
   });
 } else {
   await setupVite(app, server);
