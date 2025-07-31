@@ -1,221 +1,87 @@
-import { users, type User, type InsertUser, type WebsiteConfig, type InsertWebsiteConfig, websiteConfigs } from "@shared/schema";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from '@neondatabase/serverless';
+import { eq } from 'drizzle-orm';
+import { users, website_configs } from './schema';
+import type { WebsiteConfig, InsertWebsiteConfig, User, InsertUser } from './schema';
 
-// Expanded storage interface to handle website configs
-export interface IStorage {
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-  getWebsiteConfig(id: number): Promise<WebsiteConfig | undefined>;
-  getAllWebsiteConfigs(): Promise<WebsiteConfig[]>;
-  createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig>;
-  updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined>;
-  deleteWebsiteConfig(id: number): Promise<boolean>;
+interface IStorage {
   getDefaultWebsiteConfig(): Promise<WebsiteConfig>;
+  getWebsiteConfig(id: number): Promise<WebsiteConfig | null>;
+  createUser(username: string, password: string): Promise<User>;
+  // Add other methods as needed
 }
 
-export class DatabaseStorage implements IStorage {
-  async getUser(id: number): Promise<User | undefined> {
-    try {
-      const user = await db.select().from(users).where(eq(users.id, id)).limit(1);
-      return user[0] || undefined;
-    } catch (error) {
-      console.error("getUser error:", error);
-      return undefined;
-    }
-  }
+class DatabaseStorage implements IStorage {
+  private db: ReturnType<typeof drizzle>;
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    try {
-      const user = await db.select().from(users).where(eq(users.username, username)).limit(1);
-      return user[0] || undefined;
-    } catch (error) {
-      console.error("getUserByUsername error:", error);
-      return undefined;
-    }
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    try {
-      const user = await db.insert(users).values(insertUser).returning();
-      return user[0];
-    } catch (error) {
-      console.error("createUser error:", error);
-      throw error;
-    }
-  }
-
-  async getWebsiteConfig(id: number): Promise<WebsiteConfig | undefined> {
-    try {
-      const config = await db.select().from(websiteConfigs).where(eq(websiteConfigs.id, id)).limit(1);
-      return config[0] || undefined;
-    } catch (error) {
-      console.error("getWebsiteConfig error:", error);
-      return undefined;
-    }
-  }
-
-  async getAllWebsiteConfigs(): Promise<WebsiteConfig[]> {
-    try {
-      const configs = await db.select().from(websiteConfigs);
-      return configs;
-    } catch (error) {
-      console.error("getAllWebsiteConfigs error:", error);
-      return [];
-    }
-  }
-
-  async createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig> {
-    try {
-      const newConfig = await db.insert(websiteConfigs).values(config).returning();
-      return newConfig[0];
-    } catch (error) {
-      console.error("createWebsiteConfig error:", error);
-      throw error;
-    }
-  }
-
-  async updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined> {
-    try {
-      const updatedConfig = await db
-        .update(websiteConfigs)
-        .set(config)
-        .where(eq(websiteConfigs.id, id))
-        .returning();
-      return updatedConfig[0] || undefined;
-    } catch (error) {
-      console.error("updateWebsiteConfig error:", error);
-      return undefined;
-    }
-  }
-
-  async deleteWebsiteConfig(id: number): Promise<boolean> {
-    try {
-      const result = await db.delete(websiteConfigs).where(eq(websiteConfigs.id, id));
-      return (result.rowCount || 0) > 0;
-    } support@websitiopro.com
-      console.error("deleteWebsiteConfig error:", error);
-      return false;
-    }
+  constructor() {
+    const databaseUrl = process.env.DATABASE_URL;
+    if (!databaseUrl) throw new Error('DATABASE_URL is not set');
+    const sql = neon(databaseUrl);
+    this.db = drizzle(sql);
   }
 
   async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
     try {
-      let config = await db.select().from(websiteConfigs).limit(1);
-      if (!config[0]) {
+      const configs = await this.db
+        .select()
+        .from(website_configs)
+        .where(eq(website_configs.id, 1))
+        .limit(1);
+
+      const config = configs[0];
+
+      if (!config) {
         const defaultConfig: Partial<InsertWebsiteConfig> = {
-          name: "WebSitioPro Homepage",
-          templateType: "homepage",
-          businessName: "WebSitioPro",
-          logo: "WebSitioPro",
-          heroImage: "https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg",
-          phone: "+52 983 114 4462",
-          email: "ventas@websitiopro.com",
-          primaryColor: "#C8102E",
-          secondaryColor: "#00A859",
-          backgroundColor: "#FFFFFF",
-          defaultLanguage: "es",
-          showWhyWebsiteButton: true,
-          showDomainButton: true,
-          showChatbot: true,
-          whatsappNumber: "529831144462",
-          address: {
-            es: "Chetumal, Quintana Roo, México",
-            en: "Chetumal, Quintana Roo, Mexico"
-          },
-          officeHours: {
-            mondayFriday: {
-              es: "Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM",
-              en: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM"
-            },
-            saturday: {
-              es: "Sáb: 10:00 AM - 2:00 PM",
-              en: "Sat: 10:00 AM - 2:00 PM"
-            }
-          },
-          bannerText: {
-            es: "¡Lanza Hoy por $1,995 MXN!",
-            en: "Launch Today for $1,995 MXN!"
-          },
-          translations: {
-            es: {
-              heroHeadline: "Construye tu Negocio con WebSitioPro",
-              heroSubheadline: "Sitios web accesibles y personalizados para México—desde $1,995 pesos"
-            },
-            en: {
-              heroHeadline: "Build Your Business with WebSitioPro",
-              heroSubheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos"
-            }
-          },
-          showcaseFeatures: [
-            { es: "Diseño Personalizado", en: "Custom Design" },
-            { es: "Soporte 24/7", en: "24/7 Support" },
-            { es: "Precios Accesibles", en: "Affordable Pricing" }
-          ]
+          name: 'WebSitioPro Homepage',
+          profileImage: '',
+          whatsappMessage: '',
+          facebookUrl: '',
+          instagramUrl: '',
+          // Add all required fields from WebsiteConfig
         };
-        config = await db.insert(websiteConfigs).values(defaultConfig).returning();
+        await this.db.insert(website_configs).values(defaultConfig);
+        return { id: 1, ...defaultConfig } as WebsiteConfig;
       }
-      return config[0];
+
+      return config;
     } catch (error) {
-      console.error("getDefaultWebsiteConfig error:", error);
+      console.error('Error fetching default config:', error);
       return {
         id: 1,
-        name: "WebSitioPro Homepage",
-        templateType: "homepage",
-        businessName: "WebSitioPro",
-        logo: "WebSitioPro",
-        heroImage: "https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg",
-        profileImage: "",
-        phone: "+52 983 114 4462",
-        email: "ventas@websitiopro.com",
-        primaryColor: "#C8102E",
-        secondaryColor: "#00A859",
-        backgroundColor: "#FFFFFF",
-        defaultLanguage: "es",
-        showWhyWebsiteButton: true,
-        showDomainButton: true,
-        showChatbot: true,
-        whatsappNumber: "529831144462",
-        whatsappMessage: "",
-        facebookUrl: "",
-        instagramUrl: "",
-        address: {
-          es: "Chetumal, Quintana Roo, México",
-          en: "Chetumal, Quintana Roo, Mexico"
-        },
-        officeHours: {
-          mondayFriday: {
-            es: "Lun-Vie: 9:00 AM - 6:00 PM, Sáb: 10:00 AM - 2:00 PM",
-            en: "Mon-Fri: 9:00 AM - 6:00 PM, Sat: 10:00 AM - 2:00 PM"
-          },
-          saturday: {
-            es: "Sáb: 10:00 AM - 2:00 PM",
-            en: "Sat: 10:00 AM - 2:00 PM"
-          }
-        },
-        bannerText: {
-          es: "¡Lanza Hoy por $1,995 MXN!",
-          en: "Launch Today for $1,995 MXN!"
-        },
-        translations: {
-          es: {
-            heroHeadline: "Construye tu Negocio con WebSitioPro",
-            heroSubheadline: "Sitios web accesibles y personalizados para México—desde $1,995 pesos"
-          },
-          en: {
-            heroHeadline: "Build Your Business with WebSitioPro",
-            heroSubheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos"
-          }
-        },
-        showcaseFeatures: [
-          { es: "Diseño Personalizado", en: "Custom Design" },
-          { es: "Soporte 24/7", en: "24/7 Support" },
-          { es: "Precios Accesibles", en: "Affordable Pricing" }
-        ],
-        createdAt: new Date(),
-        updatedAt: new Date()
+        name: 'WebSitioPro Homepage',
+        profileImage: '',
+        whatsappMessage: '',
+        facebookUrl: '',
+        instagramUrl: '',
+        // Add other required fields
       };
+    }
+  }
+
+  async getWebsiteConfig(id: number): Promise<WebsiteConfig | null> {
+    try {
+      const configs = await this.db
+        .select()
+        .from(website_configs)
+        .where(eq(website_configs.id, id))
+        .limit(1);
+
+      return configs[0] || null;
+    } catch (error) {
+      console.error('Error fetching config:', error);
+      return null;
+    }
+  }
+
+  async createUser(username: string, password: string): Promise<User> {
+    try {
+      const newUser: Partial<InsertUser> = { username, password };
+      const result = await this.db.insert(users).values(newUser).returning();
+      return result[0];
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw error;
     }
   }
 }
