@@ -445,23 +445,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // API route for deleting a website configuration
-  app.delete("/api/config/:id", async (req: Request, res: Response) => {
-    try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "Invalid ID format" });
-      }
-
-      const success = await storage.deleteWebsiteConfig(id);
-      if (!success) {
-        return res.status(404).json({ error: "Configuration not found" });
-      }
-
-      res.status(204).send();
-    } catch (error) {
-      res.status(500).json({ error: "Failed to delete website configuration" });
+app.delete("/api/config/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid ID format" });
     }
-  });
+
+    await storage.deleteWebsiteConfig(id);
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting config:', error);
+    res.status(500).json({ error: "Failed to delete website configuration" });
+  }
+});
 
   // API route for generating static HTML files from the current configuration
   app.post("/api/generate-static", async (req: Request, res: Response) => {
