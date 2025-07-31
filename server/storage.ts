@@ -1,15 +1,15 @@
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import { eq } from 'drizzle-orm';
-import { users, website_configs } from './schema'; // Adjust path if schema file is elsewhere
+import { users, website_configs } from './schema';
 import type { WebsiteConfig, InsertWebsiteConfig, User, InsertUser } from './schema';
 
 interface IStorage {
   getDefaultWebsiteConfig(): Promise<WebsiteConfig>;
   getWebsiteConfig(id: number): Promise<WebsiteConfig | null>;
   getAllWebsiteConfigs(): Promise<WebsiteConfig[]>;
-  createWebsiteConfig(config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig>;
-  updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | null>;
+  createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig>;
+  updateWebsiteConfig(id: number, config: InsertWebsiteConfig): Promise<WebsiteConfig | null>;
   deleteWebsiteConfig(id: number): Promise<void>;
   createUser(username: string, password: string): Promise<User>;
 }
@@ -35,16 +35,26 @@ class DatabaseStorage implements IStorage {
       const config = configs[0];
 
       if (!config) {
-        const defaultConfig: Partial<InsertWebsiteConfig> = {
+        const defaultConfig: InsertWebsiteConfig = {
           name: 'WebSitioPro Homepage',
+          templateType: 'default',
+          logo: '',
+          heroImage: '',
           profileImage: '',
-          whatsappMessage: '',
+          whatsappMessage: { es: '', en: '' },
           facebookUrl: '',
           instagramUrl: '',
-          // Add other required fields from WebsiteConfig
+          defaultLanguage: 'es',
+          showWhyWebsiteButton: false,
+          showDomainButton: false,
+          showChatbot: false,
+          whatsappNumber: '',
+          clientApproval: {},
+          createdAt: new Date(),
+          updatedAt: new Date(),
         };
         await this.db.insert(website_configs).values(defaultConfig);
-        return { id: 1, ...defaultConfig } as WebsiteConfig;
+        return defaultConfig;
       }
 
       return config;
@@ -53,11 +63,21 @@ class DatabaseStorage implements IStorage {
       return {
         id: 1,
         name: 'WebSitioPro Homepage',
+        templateType: 'default',
+        logo: '',
+        heroImage: '',
         profileImage: '',
-        whatsappMessage: '',
+        whatsappMessage: { es: '', en: '' },
         facebookUrl: '',
         instagramUrl: '',
-        // Add other required fields
+        defaultLanguage: 'es',
+        showWhyWebsiteButton: false,
+        showDomainButton: false,
+        showChatbot: false,
+        whatsappNumber: '',
+        clientApproval: {},
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
     }
   }
@@ -87,7 +107,7 @@ class DatabaseStorage implements IStorage {
     }
   }
 
-  async createWebsiteConfig(config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig> {
+  async createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig> {
     try {
       const result = await this.db.insert(website_configs).values(config).returning();
       return result[0];
@@ -97,7 +117,7 @@ class DatabaseStorage implements IStorage {
     }
   }
 
-  async updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | null> {
+  async updateWebsiteConfig(id: number, config: InsertWebsiteConfig): Promise<WebsiteConfig | null> {
     try {
       const result = await this.db
         .update(website_configs)
@@ -122,7 +142,7 @@ class DatabaseStorage implements IStorage {
 
   async createUser(username: string, password: string): Promise<User> {
     try {
-      const newUser: Partial<InsertUser> = { username, password };
+      const newUser: InsertUser = { username, password };
       const result = await this.db.insert(users).values(newUser).returning();
       return result[0];
     } catch (error) {
