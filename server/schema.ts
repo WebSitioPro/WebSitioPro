@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, timestamp, jsonb } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -9,12 +9,17 @@ export const users = pgTable('users', {
 export const website_configs = pgTable('website_configs', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
+  templateType: text('templateType').notNull().default('default'),
+  logo: text('logo').notNull().default(''),
+  heroImage: text('heroImage').notNull().default(''),
   profileImage: text('profileImage').notNull().default(''),
-  whatsappMessage: text('whatsappMessage').notNull().default(''),
+  whatsappMessage: jsonb('whatsappMessage').notNull().default({ es: '', en: '' }),
   facebookUrl: text('facebookUrl').notNull().default(''),
   instagramUrl: text('instagramUrl').notNull().default(''),
+  defaultLanguage: text('defaultLanguage').notNull().default('es'),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+  clientApproval: jsonb('clientApproval').notNull().default({}),
 });
 
 export type User = typeof users.$inferSelect;
