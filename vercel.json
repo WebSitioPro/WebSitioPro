@@ -22,7 +22,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/public/index.html"
+      "dest": "/static/index.html"
     }
   ],
   "outputDirectory": "dist/public",
