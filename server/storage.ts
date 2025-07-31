@@ -75,7 +75,7 @@ export class DatabaseStorage implements IStorage {
     return (result.rowCount || 0) > 0;
   }
 
- async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
+async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
   try {
     let [config] = await db.select().from(websiteConfigs).limit(1);
     if (!config) {
@@ -120,16 +120,14 @@ export class DatabaseStorage implements IStorage {
           },
           en: {
             heroHeadline: "Build Your Business with WebSitioPro",
-            subheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos"
+            heroSubheadline: "Affordable, custom sites for Mexico—starting at $1,995 pesos"
           }
         },
         showcaseFeatures: [
           { es: "Diseño Personalizado", en: "Custom Design" },
           { es: "Soporte 24/7", en: "24/7 Support" },
           { es: "Precios Accesibles", en: "Affordable Pricing" }
-        ],
-        createdAt: new Date(),
-        updatedAt: new Date()
+        ] as { es: string; en: string }[]
       };
       [config] = await db.insert(websiteConfigs).values(defaultConfig).returning();
     }
