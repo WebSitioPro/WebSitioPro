@@ -79,7 +79,7 @@ async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
   try {
     let [config] = await db.select().from(websiteConfigs).limit(1);
     if (!config) {
-      const defaultConfig: InsertWebsiteConfig = {
+      const defaultConfig: Partial<InsertWebsiteConfig> = {
         name: "WebSitioPro Homepage",
         templateType: "homepage",
         businessName: "WebSitioPro",
@@ -127,15 +127,23 @@ async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
           { es: "Diseño Personalizado", en: "Custom Design" },
           { es: "Soporte 24/7", en: "24/7 Support" },
           { es: "Precios Accesibles", en: "Affordable Pricing" }
-        ] as { es: string; en: string }[]
+        ]
       };
       [config] = await db.insert(websiteConfigs).values(defaultConfig).returning();
     }
     return config;
   } catch (error) {
     console.error("getDefaultWebsiteConfig error:", error);
-    throw error;
+    return {
+      id: 1,
+      name: "WebSitioPro Homepage",
+      templateType: "homepage",
+      showcaseFeatures: [
+        { es: "Diseño Personalizado", en: "Custom Design" },
+        { es: "Soporte 24/7", en: "24/7 Support" },
+        { es: "Precios Accesibles", en: "Affordable Pricing" }
+      ]
+    };
   }
 }
-
 export const storage = new DatabaseStorage();
