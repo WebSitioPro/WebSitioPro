@@ -18,8 +18,8 @@ export interface IStorage {
 export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
     try {
-      const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
-      return user || undefined;
+      const user = await db.select().from(users).where(eq(users.id, id)).limit(1);
+      return user[0] || undefined;
     } catch (error) {
       console.error("getUser error:", error);
       return undefined;
@@ -28,8 +28,8 @@ export class DatabaseStorage implements IStorage {
 
   async getUserByUsername(username: string): Promise<User | undefined> {
     try {
-      const [user] = await db.select().from(users).where(eq(users.username, username)).limit(1);
-      return user || undefined;
+      const user = await db.select().from(users).where(eq(users.username, username)).limit(1);
+      return user[0] || undefined;
     } catch (error) {
       console.error("getUserByUsername error:", error);
       return undefined;
@@ -38,8 +38,8 @@ export class DatabaseStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     try {
-      const [user] = await db.insert(users).values(insertUser).returning();
-      return user;
+      const user = await db.insert(users).values(insertUser).returning();
+      return user[0];
     } catch (error) {
       console.error("createUser error:", error);
       throw error;
@@ -48,8 +48,8 @@ export class DatabaseStorage implements IStorage {
 
   async getWebsiteConfig(id: number): Promise<WebsiteConfig | undefined> {
     try {
-      const [config] = await db.select().from(websiteConfigs).where(eq(websiteConfigs.id, id)).limit(1);
-      return config || undefined;
+      const config = await db.select().from(websiteConfigs).where(eq(websiteConfigs.id, id)).limit(1);
+      return config[0] || undefined;
     } catch (error) {
       console.error("getWebsiteConfig error:", error);
       return undefined;
@@ -68,8 +68,8 @@ export class DatabaseStorage implements IStorage {
 
   async createWebsiteConfig(config: InsertWebsiteConfig): Promise<WebsiteConfig> {
     try {
-      const [newConfig] = await db.insert(websiteConfigs).values(config).returning();
-      return newConfig;
+      const newConfig = await db.insert(websiteConfigs).values(config).returning();
+      return newConfig[0];
     } catch (error) {
       console.error("createWebsiteConfig error:", error);
       throw error;
@@ -78,12 +78,12 @@ export class DatabaseStorage implements IStorage {
 
   async updateWebsiteConfig(id: number, config: Partial<InsertWebsiteConfig>): Promise<WebsiteConfig | undefined> {
     try {
-      const [updatedConfig] = await db
+      const updatedConfig = await db
         .update(websiteConfigs)
         .set(config)
         .where(eq(websiteConfigs.id, id))
         .returning();
-      return updatedConfig || undefined;
+      return updatedConfig[0] || undefined;
     } catch (error) {
       console.error("updateWebsiteConfig error:", error);
       return undefined;
@@ -94,7 +94,7 @@ export class DatabaseStorage implements IStorage {
     try {
       const result = await db.delete(websiteConfigs).where(eq(websiteConfigs.id, id));
       return (result.rowCount || 0) > 0;
-    } catch (error) {
+    } support@websitiopro.com
       console.error("deleteWebsiteConfig error:", error);
       return false;
     }
@@ -102,8 +102,8 @@ export class DatabaseStorage implements IStorage {
 
   async getDefaultWebsiteConfig(): Promise<WebsiteConfig> {
     try {
-      let [config] = await db.select().from(websiteConfigs).limit(1);
-      if (!config) {
+      let config = await db.select().from(websiteConfigs).limit(1);
+      if (!config[0]) {
         const defaultConfig: Partial<InsertWebsiteConfig> = {
           name: "WebSitioPro Homepage",
           templateType: "homepage",
@@ -154,9 +154,9 @@ export class DatabaseStorage implements IStorage {
             { es: "Precios Accesibles", en: "Affordable Pricing" }
           ]
         };
-        [config] = await db.insert(websiteConfigs).values(defaultConfig).returning();
+        config = await db.insert(websiteConfigs).values(defaultConfig).returning();
       }
-      return config;
+      return config[0];
     } catch (error) {
       console.error("getDefaultWebsiteConfig error:", error);
       return {
@@ -166,6 +166,7 @@ export class DatabaseStorage implements IStorage {
         businessName: "WebSitioPro",
         logo: "WebSitioPro",
         heroImage: "https://i.ibb.co/TykNJz0/HOMEPAGE-SAVE-SUCCESS.jpg",
+        profileImage: "",
         phone: "+52 983 114 4462",
         email: "ventas@websitiopro.com",
         primaryColor: "#C8102E",
@@ -176,6 +177,9 @@ export class DatabaseStorage implements IStorage {
         showDomainButton: true,
         showChatbot: true,
         whatsappNumber: "529831144462",
+        whatsappMessage: "",
+        facebookUrl: "",
+        instagramUrl: "",
         address: {
           es: "Chetumal, Quintana Roo, México",
           en: "Chetumal, Quintana Roo, Mexico"
