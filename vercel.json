@@ -4,13 +4,15 @@
       "src": "server/index.ts",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["dist/**"],
-        "excludeFiles": ["**/*.ts", "**/*.tsx"]
+        "includeFiles": ["dist/index.js"]
       }
     },
     {
       "src": "dist/public/**",
-      "use": "@vercel/static"
+      "use": "@vercel/static",
+      "config": {
+        "outputDirectory": "dist/public"
+      }
     }
   ],
   "routes": [
@@ -23,6 +25,7 @@
       "dest": "/dist/public/index.html"
     }
   ],
+  "outputDirectory": "dist/public",
   "env": {
     "VERCEL_FORCE_NO_BUILD_CACHE": "1"
   }
